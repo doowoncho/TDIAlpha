@@ -3,8 +3,10 @@ const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient();
 const app = express();
+const bodyParser = require('body-parser');
 const cors = require('cors');
 
+app.use(bodyParser.json());
 app.use(cors({
     origin: 'http://localhost:3000',
   }));
@@ -21,14 +23,22 @@ app.get('/api/jobs', async (req, res) => {
   }
 });
 
-app.get('/api/specificJobs/:customer', async (req, res) => {
+app.get('/api/specificJobs', async (req, res) => {
   try {
-    const { customer } = req.params;
+    const { id, customer, date, status, setup, permit_number, notes, wo_number, po_number} = req.query
     const posts = await prisma.jobs.findMany({
       where: {
         customer: customer,
+        id: id, 
+        status: status,
+        setup: setup,
+        permit_number: permit_number, 
+        notes: notes, 
+        wo_number: wo_number, 
+        po_number: po_number
       },
     });
+    console.log(req.query)
     res.json(posts);
   } catch (error) {
     console.error(error);
@@ -36,26 +46,24 @@ app.get('/api/specificJobs/:customer', async (req, res) => {
   }
 });
 
-app.delete('/api/jobs-delete/:id', async (req, res) => {
+app.delete('/api/jobs-delete', async (req, res) => {
   try {
-    const { id } = req.params;
-
-    const job = await prisma.jobs.findUnique({
-      where: {
-        id: parseInt(id),
-      },
-    });
-
-    if (!job) {
-      return res.status(404).json({ error: 'Job not found' });
-    }
+    const { id, customer, date, status, setup, permit_number, notes, wo_number, po_number} = req.body
 
     const deletedJob = await prisma.jobs.delete({
       where: {
-        id: parseInt(id),
+        customer: customer,
+        id: id, 
+        status: status,
+        setup: setup,
+        permit_number: permit_number, 
+        notes: notes, 
+        wo_number: wo_number, 
+        po_number: po_number
       },
     });
 
+    console.log(req.body)
     res.json(deletedJob);
   } catch (error) {
     console.error(error);
@@ -63,14 +71,20 @@ app.delete('/api/jobs-delete/:id', async (req, res) => {
   }
 });
 
-app.post('/api/create-job/:customer', async (req, res) => {
+app.post('/api/create-job', async (req, res) => {
   try {
-    const { customer } = req.params;
-    res.json(req.params)
+    const { id, customer, date, status, setup, permit_number, notes, wo_number, po_number } = req.body;
+
     const newJob = await prisma.jobs.create({
       data: {
-        customer,
-        setup
+        customer: customer,
+        id: id, 
+        status: status,
+        setup: setup,
+        permit_number: permit_number, 
+        notes: notes, 
+        wo_number: wo_number, 
+        po_number: po_number
       },
     });
 
