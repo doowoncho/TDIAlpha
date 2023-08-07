@@ -20,7 +20,7 @@ export default function JobsTable(){
 
     return(
         <div className="my-4 container text-center">
-            <h1>JobsTable</h1>
+            <h1>All Jobs</h1>
             <Table data = {jobList}></Table>
         </div>
     )
