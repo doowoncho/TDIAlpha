@@ -42,7 +42,7 @@ export default function Table({ data }) {
                   <td>
                     <a href='/'>{item.id}</a>
                   </td>
-                  <td>{item.startDate}</td>
+                  <td>{item.startdate}</td>
                   <td>{item.status}</td>
                   <td>{item.setup}</td>
                   <td>{item.customer}</td>
