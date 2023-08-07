@@ -12,7 +12,9 @@ app.use(cors({
   }));
 
 
-//api endpoints to be called in the code to make calls in the databse
+//api endpoints to be called in the code to make calls in the database
+
+//gets all jobs
 app.get('/api/jobs', async (req, res) => {
   try {
     const posts = await prisma.jobs.findMany();
@@ -23,6 +25,7 @@ app.get('/api/jobs', async (req, res) => {
   }
 });
 
+//gets all jobs with specific criteria... takes in an object with the properties
 app.get('/api/specificJobs', async (req, res) => {
   try {
     const { id, customer, startDate, endDate, status, setup, permit_number, notes, wo_number, po_number} = req.query
@@ -45,6 +48,7 @@ app.get('/api/specificJobs', async (req, res) => {
   }
 });
 
+//updates the job with the id
 app.put('/api/updateJob/:id', async (req, res) => {
   try {
 
@@ -73,20 +77,13 @@ app.put('/api/updateJob/:id', async (req, res) => {
   }
 });
 
-app.delete('/api/jobs-delete', async (req, res) => {
+//Deletes job with particular id
+app.delete('/api/deleteJob/:id', async (req, res) => {
   try {
-    const { id, customer, startDate, endDate, status, setup, permit_number, notes, wo_number, po_number} = req.body
-
+    const jobId = parseInt(req.params.id) 
     const deletedJob = await prisma.jobs.delete({
       where: {
-        customer: customer,
-        id: id, 
-        status: status,
-        setup: setup,
-        permit_number: permit_number, 
-        notes: notes, 
-        wo_number: wo_number, 
-        po_number: po_number
+        id: jobId
       },
     });
 
@@ -98,14 +95,14 @@ app.delete('/api/jobs-delete', async (req, res) => {
   }
 });
 
-app.post('/api/create-job', async (req, res) => {
+//creates job with provided properties
+app.post('/api/createJob', async (req, res) => {
   try {
-    const { id, customer, startDate, endDate, status, setup, permit_number, notes, wo_number, po_number } = req.body;
+    const { customer, startDate, endDate, status, setup, permit_number, notes, wo_number, po_number } = req.body;
 
     const newJob = await prisma.jobs.create({
       data: {
         customer: customer,
-        id: id, 
         status: status,
         setup: setup,
         permit_number: permit_number, 

@@ -49,14 +49,13 @@ export async function updateJob(id, options) {
   }
   
 // Deletes job with params from options
-export async function deleteJob(options) {
+export async function deleteJob(id) {
     try {
-        const response = await fetch('http://localhost:3001/api/jobs-delete', {
+        const response = await fetch(`http://localhost:3001/api/deleteJob/${id}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
-            },
-        body: JSON.stringify(options), 
+            }
         });
 
         const deletedJob = await response.json();
@@ -69,7 +68,7 @@ export async function deleteJob(options) {
 // Creates job with params from options
 export async function createJob(options) {
     try {
-        const response = await fetch('http://localhost:3001/api/create-job', {
+        const response = await fetch('http://localhost:3001/api/createJob', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
