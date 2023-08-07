@@ -28,6 +28,26 @@ export async function getSpecificJobs(options) {
     }
 }
   
+// Changes specific property of job with the given job id
+export async function updateJob(id, options) {
+    try {
+      const url = `http://localhost:3001/api/updateJob/${id}`; // Use the id as a URL parameter
+  
+      const response = await fetch(url, {
+        method: 'PUT', 
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(options),
+      });
+  
+      const jobChanged = await response.json();
+      console.log('Job changed:', jobChanged);
+    } catch (error) {
+      console.error('Error updating job:', error);
+    }
+  }
+  
 // Deletes job with params from options
 export async function deleteJob(options) {
     try {

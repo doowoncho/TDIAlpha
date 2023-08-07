@@ -1,4 +1,4 @@
-import {createJob, getAllJobs, deleteJob, getSpecificJobs} from '../Components/APICalls'
+import {createJob, getAllJobs, deleteJob, getSpecificJobs, updateJob} from '../Components/APICalls'
 
 //FYI if this id is already in DB than it can't make it
 const createJobExample = {
@@ -12,6 +12,7 @@ const createJobExample = {
 
 const deleteExample = {id: 36}
 const getSpecificJobExample = {customer:'doowon'}
+const updateJobExample = {status:'Declined'}
 
 export default function HomePage() {
   return (
@@ -21,7 +22,8 @@ export default function HomePage() {
         <button onClick={()=>createJob(createJobExample)}>Add Job</button>
         <button onClick={()=>getAllJobs()}>Get Jobs</button>
         <button onClick={()=>deleteJob(deleteExample)}>Delete Job</button>
-        <button onClick={()=>getSpecificJobs(getSpecificJobExample)}>specific Job</button>
+        <button onClick={()=>getSpecificJobs(getSpecificJobExample)}>Get Specific Job</button>
+        <button onClick={()=>updateJob(36, updateJobExample)}>Update Job</button>
       </header>
     </div>
   );

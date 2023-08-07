@@ -45,6 +45,34 @@ app.get('/api/specificJobs', async (req, res) => {
   }
 });
 
+app.put('/api/updateJob/:id', async (req, res) => {
+  try {
+
+    const jobId = parseInt(req.params.id) //id of job we are changing
+    const { id, customer, startDate, endDate, status, setup, permit_number, notes, wo_number, po_number} = req.body
+    const posts = await prisma.jobs.updateMany({
+      where: {
+        id: jobId
+      },
+      data:{
+        customer: customer,
+        id: id, 
+        status: status,
+        setup: setup,
+        permit_number: permit_number, 
+        notes: notes, 
+        wo_number: wo_number, 
+        po_number: po_number
+      }
+    });
+    res.json(posts);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 app.delete('/api/jobs-delete', async (req, res) => {
   try {
     const { id, customer, startDate, endDate, status, setup, permit_number, notes, wo_number, po_number} = req.body
