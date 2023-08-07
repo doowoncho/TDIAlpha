@@ -22,7 +22,7 @@ export default function NewRequests(){
       }, []);
 
     return(
-        <div className="container text-center">
+        <div className="my-4 container text-center">
             <h1>New Requests</h1>
             <RequestsTable data = {jobList}></RequestsTable>
         </div>
