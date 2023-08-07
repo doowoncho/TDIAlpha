@@ -11,7 +11,7 @@ export default function Table({ data }) {
                   ID
                 </th>
                 <th scope='col' className='fw-normal'>
-                  Date
+                  Start Date
                 </th>
                 <th scope='col' className='fw-normal'>
                   Status
@@ -42,7 +42,7 @@ export default function Table({ data }) {
                   <td>
                     <a href='/'>{item.id}</a>
                   </td>
-                  <td>{item.date}</td>
+                  <td>{item.startDate}</td>
                   <td>{item.status}</td>
                   <td>{item.setup}</td>
                   <td>{item.customer}</td>

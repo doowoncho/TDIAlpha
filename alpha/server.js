@@ -25,7 +25,7 @@ app.get('/api/jobs', async (req, res) => {
 
 app.get('/api/specificJobs', async (req, res) => {
   try {
-    const { id, customer, date, status, setup, permit_number, notes, wo_number, po_number} = req.query
+    const { id, customer, startDate, endDate, status, setup, permit_number, notes, wo_number, po_number} = req.query
     const posts = await prisma.jobs.findMany({
       where: {
         customer: customer,
@@ -47,7 +47,7 @@ app.get('/api/specificJobs', async (req, res) => {
 
 app.delete('/api/jobs-delete', async (req, res) => {
   try {
-    const { id, customer, date, status, setup, permit_number, notes, wo_number, po_number} = req.body
+    const { id, customer, startDate, endDate, status, setup, permit_number, notes, wo_number, po_number} = req.body
 
     const deletedJob = await prisma.jobs.delete({
       where: {
@@ -72,7 +72,7 @@ app.delete('/api/jobs-delete', async (req, res) => {
 
 app.post('/api/create-job', async (req, res) => {
   try {
-    const { id, customer, date, status, setup, permit_number, notes, wo_number, po_number } = req.body;
+    const { id, customer, startDate, endDate, status, setup, permit_number, notes, wo_number, po_number } = req.body;
 
     const newJob = await prisma.jobs.create({
       data: {

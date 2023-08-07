@@ -9,7 +9,7 @@ datasource db {
 
 model jobs {
   id            Int       @id @default(autoincrement())
-  date          DateTime? @db.Date
+  startdate     DateTime? @db.Date
   status        String?   @db.VarChar(255)
   setup         String?   @db.VarChar(255)
   customer      String?   @db.VarChar(255)
@@ -17,4 +17,13 @@ model jobs {
   notes         String?   @db.VarChar(255)
   wo_number     String?   @db.VarChar(255)
   po_number     String?   @db.VarChar(255)
+  enddate       DateTime? @db.Date
+}
+
+model users {
+  id         Int     @id @default(autoincrement())
+  name       String? @db.Char(1)
+  permission Int?
+  email      String? @db.Char(1)
+  password   String? @db.Char(1)
 }
