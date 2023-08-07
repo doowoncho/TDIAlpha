@@ -3,12 +3,12 @@ import { getAllJobs } from "../Components/APICalls";
 import Table from "../Components/Table";
 
 export default function JobsTable(){
-    const [dataList, setDataList] = useState([]);
+    const [jobList, setJobList] = useState([]);
 
     const fetchData = async () => {
         try {
           const data = await getAllJobs();
-          setDataList(data);
+          setJobList(data);
         } catch (error) {
           console.error("Error fetching data:", error);
         }
@@ -21,7 +21,7 @@ export default function JobsTable(){
     return(
         <div className="container text-center">
             <h1>JobsTable</h1>
-            <Table data = {dataList}></Table>
+            <Table data = {jobList}></Table>
         </div>
     )
 }

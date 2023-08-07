@@ -3,7 +3,7 @@ import { getSpecificJobs } from "../Components/APICalls";
 import Table from "../Components/Table";
 
 export default function DeclinedTable(){
-    const [dataList, setDataList] = useState([]);
+    const [jobList, setJobList] = useState([]);
 
     const fetchData = async () => {
         try {
@@ -11,7 +11,7 @@ export default function DeclinedTable(){
             status: 'Declined'
           }
           const data = await getSpecificJobs(searchParameters);
-          setDataList(data);
+          setJobList(data);
         } catch (error) {
           console.error("Error fetching data:", error);
         }
@@ -24,7 +24,7 @@ export default function DeclinedTable(){
     return(
         <div className="container text-center">
             <h1>New Requests</h1>
-            <Table data = {dataList}></Table>
+            <Table data = {jobList}></Table>
         </div>
     )
 }

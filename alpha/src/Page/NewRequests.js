@@ -3,7 +3,7 @@ import { getSpecificJobs } from "../Components/APICalls";
 import RequestsTable from "../Components/RequestsTable";
 
 export default function NewRequests(){
-    const [dataList, setDataList] = useState([]);
+    const [jobList, setJobList] = useState([]);
 
     const fetchData = async () => {
         try {
@@ -11,7 +11,7 @@ export default function NewRequests(){
             status: 'New'
           }
           const data = await getSpecificJobs(searchParameters);
-          setDataList(data);
+          setJobList(data);
         } catch (error) {
           console.error("Error fetching data:", error);
         }
@@ -24,7 +24,7 @@ export default function NewRequests(){
     return(
         <div className="container text-center">
             <h1>New Requests</h1>
-            <RequestsTable data = {dataList}></RequestsTable>
+            <RequestsTable data = {jobList}></RequestsTable>
         </div>
     )
 }
