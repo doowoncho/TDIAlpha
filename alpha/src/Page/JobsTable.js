@@ -19,7 +19,7 @@ export default function JobsTable(){
       }, []);
 
     return(
-        <div className="container text-center">
+        <div className="my-4 container text-center">
             <h1>JobsTable</h1>
             <Table data = {jobList}></Table>
         </div>

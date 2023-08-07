@@ -22,8 +22,8 @@ export default function DeclinedTable(){
       }, []);
 
     return(
-        <div className="container text-center">
-            <h1>New Requests</h1>
+        <div className="my-4 container text-center">
+            <h1>Declined Permit Jobs</h1>
             <Table data = {jobList}></Table>
         </div>
     )
