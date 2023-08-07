@@ -1,9 +1,9 @@
 // Gets a list of all the jobs
-export async function getJobs() {
+export async function getAllJobs() {
     try {
       const response = await fetch('http://localhost:3001/api/jobs');
       const data = await response.json();
-      console.log(data);
+      return(data)
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -21,9 +21,8 @@ export async function getSpecificJobs(options) {
             'Content-Type': 'application/json',
         },
         });
-
         const data = await response.json();
-        console.log(data);
+        return(data)
     } catch (error) {
         console.error('Error fetching data:', error);
     }

@@ -38,7 +38,6 @@ app.get('/api/specificJobs', async (req, res) => {
         po_number: po_number
       },
     });
-    console.log(req.query)
     res.json(posts);
   } catch (error) {
     console.error(error);

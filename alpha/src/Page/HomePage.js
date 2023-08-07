@@ -1,4 +1,4 @@
-import {createJob, getJobs, deleteJob, getSpecificJobs} from '../Components/APICalls'
+import {createJob, getAllJobs, deleteJob, getSpecificJobs} from '../Components/APICalls'
 
 //FYI if this id is already in DB than it can't make it
 const createJobExample = {
@@ -19,7 +19,7 @@ export default function HomePage() {
       <header className='container text-center my-4'>
         <h1>Welcome</h1>
         <button onClick={()=>createJob(createJobExample)}>Add Job</button>
-        <button onClick={()=>getJobs()}>Get Jobs</button>
+        <button onClick={()=>getAllJobs()}>Get Jobs</button>
         <button onClick={()=>deleteJob(deleteExample)}>Delete Job</button>
         <button onClick={()=>getSpecificJobs(getSpecificJobExample)}>specific Job</button>
       </header>
