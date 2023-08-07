@@ -11,8 +11,6 @@ export default function NavBar() {
           <Nav.Link href="/">Home</Nav.Link>
           <Nav.Link href="/test">Test</Nav.Link>
           <Nav.Link href="/jobstable">All Jobs</Nav.Link>
-          <Nav.Link href="/newtable">New Requests</Nav.Link>
-          <Nav.Link href="/declinedtable">Declined Jobs</Nav.Link>
         </Nav>
       </Container>
     </Navbar>
