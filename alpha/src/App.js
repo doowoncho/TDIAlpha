@@ -5,6 +5,7 @@ import TestPage from "./Page/TestPage";
 import JobsTable from "./Page/JobsTable";
 import NewRequests from "./Page/NewRequests"
 import DeclinedTable from "./Page/DeclinedTable";
+import FormPage from "./Page/FormPage";
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
       <Route path="/jobstable" element={<JobsTable />} />
       <Route path="/newtable" element={<NewRequests />} />
       <Route path="/declinedtable" element={<DeclinedTable />} />
+      <Route path="/form" element={<FormPage />} />
     </Routes>
   );
 }
