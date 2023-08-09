@@ -1,6 +1,45 @@
 
 
 export default function Table({ data }) {
+
+  if (!data) {
+    return <div><div className='container my-4'>
+     <table id='table' className='table table-hover'>
+            <thead>
+              <tr>
+                <th scope='col' className='fw-normal bg-'>
+                  ID
+                </th>
+                <th scope='col' className='fw-normal'>
+                  Start Date
+                </th>
+                <th scope='col' className='fw-normal'>
+                  Status
+                </th>
+                <th scope='col' className='fw-normal'>
+                  Setup
+                </th>
+                <th scope='col' className='fw-normal'>
+                  Customer
+                </th>
+                <th scope='col' className='fw-normal'>
+                  Permit/Request#
+                </th>
+                <th scope='col' className='fw-normal'>
+                  Notes
+                </th>
+                <th scope='col' className='fw-normal'>
+                  WO#
+                </th>
+                <th scope='col' className='fw-normal'>
+                  PO#
+                </th>
+              </tr>
+            </thead>
+          </table>
+  </div>Loading...</div>; // You can display a loading indicator or a message
+  }
+
     return (
       <div>
         <div className='container my-4'>
