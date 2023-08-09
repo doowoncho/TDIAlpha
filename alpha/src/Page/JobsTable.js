@@ -27,11 +27,18 @@ export default function JobsTable(){
   );
 
     const [jobList, setJobList] = useState([]);
+    const [requestCount, setRequestCount] = useState([])
+    const [declinedCount, setDeclinedtCount] = useState([])
+    const [completedCount, setCompletedCount] = useState([])
 
     const fetchData = async () => {
         try {
           const data = await getAllJobs();
           setJobList(data);
+          setRequestCount(data.filter(job => job.status == "New").length)
+          setDeclinedtCount(data.filter(job => job.status == "Declined").length)
+          setCompletedCount(data.filter(job => job.status == "Completed").length)
+
         } catch (error) {
           console.error("Error fetching data:", error);
         }
@@ -45,9 +52,9 @@ export default function JobsTable(){
       <div>
         <div className='border border-1 bg-light'>
           <div className="container d-flex justify-content-center my-3">
-            <Card header="New Requests" num="12" icon="bi bi-bell-fill" color="text-primary" link="/newtable"/>
-            <Card header="Declined Jobs" icon="bi bi-exclamation-lg" color="text-danger" link="/declinedtable"/>
-            <Card header="Completed" icon="bi bi-check-lg" color="text-success" num="10" link="/"/>
+            <Card header="New Requests" num={requestCount} icon="bi bi-bell-fill" color="text-primary" link="/newtable"/>
+            <Card header="Declined Jobs" num={declinedCount} icon="bi bi-exclamation-lg" color="text-danger" link="/declinedtable"/>
+            <Card header="Completed" num={completedCount} icon="bi bi-check-lg" color="text-success" link="/"/>
           </div>
         </div>
           <div className="my-4 container text-center">
