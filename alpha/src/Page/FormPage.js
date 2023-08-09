@@ -38,7 +38,7 @@ export default function formPage(){
                 <label for="location">Location</label>
                 <input type="text" class="form-control" id="location" placeholder="Enter Location"/>
             </div>
-                <button type="button" class="btn btn-primary" onClick={()=> {onSubmit()}}>Submit</button>
+                <button type="submit" class="btn btn-primary" onClick={()=> {onSubmit()}}>Submit</button>
             </form>
         </div>
     )
