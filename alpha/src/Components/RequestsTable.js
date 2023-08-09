@@ -1,6 +1,40 @@
 
 
 export default function RequestsTable({ data }) {
+
+  if (!data) {
+    return <div><div className='container my-4'>
+    <table id='table' className='table table-hover'>
+      <thead>
+        <tr>
+          <th scope='col' className='fw-normal bg-'>
+            ID
+          </th>
+          <th scope='col' className='fw-normal'>
+            Start Date
+          </th>
+          <th scope='col' className='fw-normal'>
+            Status
+          </th>
+          <th scope='col' className='fw-normal'>
+            Setup
+          </th>
+          <th scope='col' className='fw-normal'>
+            Customer
+          </th>
+          <th scope='col' className='fw-normal'>
+            WO#
+          </th>
+          <th scope='col' className='fw-normal'>
+            PO#
+          </th>
+        </tr>
+      </thead>
+    </table>
+  </div>Loading...</div>; // You can display a loading indicator or a message
+  }
+  else{}
+
     return (
       <div>
         <div className='container my-4'>
@@ -31,7 +65,7 @@ export default function RequestsTable({ data }) {
               </tr>
             </thead>
             <tbody>
-              {data.map((item) => (
+              { data.map((item) => (
                 <tr key={item.id}>
                   <td>
                     <a href='/'>{item.id}</a>
