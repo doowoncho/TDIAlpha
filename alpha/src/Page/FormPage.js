@@ -1,13 +1,17 @@
 import {createJob} from '../Components/APICalls'
 
-const newJob = {
-    customer: document.getElementById('customerName'),
-    status: 'In progress',
-    po_number: document.getElementById('poNumber'),
-    wo_number: document.getElementById('woNumber'),
-    setup: document.getElementById('location'),
-    permit_number: document.getElementById('permitNumber')
-    }
+
+function onSubmit(){
+    const newJob = {
+        customer: document.getElementById('customerName').value,
+        status: 'New',
+        email: document.getElementById('email').value,
+        po_number: document.getElementById('poNumber').value,
+        wo_number: document.getElementById('woNumber').value,
+        setup: document.getElementById('location').value,
+        }
+    createJob(newJob)
+}
 
 export default function formPage(){
     return(
@@ -16,15 +20,11 @@ export default function formPage(){
             <form>     
             <div class="form-group">
                 <label for="customerName">Name</label>
-                <input type="string" class="form-control" id="customerName" placeholder="Enter name"/>
+                <input type="text" class="form-control" id="customerName" placeholder="Enter name"/>
             </div>
             <div class="form-group">
                 <label for="email">Email address</label>
                 <input type="text" class="form-control" id="email" placeholder="Enter email"/>
-            </div>
-            <div class="form-group">
-                <label for="permitNumber">Permit Number</label>
-                <input type="text" class="form-control" id="permitNumber" placeholder="Enter Permit Number"/>
             </div>
             <div class="form-group">
                 <label for="poNumber">PO Number</label>
@@ -38,7 +38,7 @@ export default function formPage(){
                 <label for="location">Location</label>
                 <input type="text" class="form-control" id="location" placeholder="Enter Location"/>
             </div>
-                <button type="submit" class="btn btn-primary" onClick={()=>createJob(newJob)}>Submit</button>
+                <button type="button" class="btn btn-primary" onClick={()=> {onSubmit()}}>Submit</button>
             </form>
         </div>
     )
