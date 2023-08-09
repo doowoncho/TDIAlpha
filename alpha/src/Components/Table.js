@@ -1,4 +1,5 @@
-
+import { Dropdown } from 'react-bootstrap';
+import { updateJob } from './APICalls';
 
 export default function Table({ data }) {
 
@@ -89,6 +90,18 @@ export default function Table({ data }) {
                   <td>{item.notes}</td>
                   <td>{item.wo}</td>
                   <td>{item.po}</td>
+                  <td>
+                  <Dropdown>
+                    <Dropdown.Toggle variant='white' id="dropdownMenuButton">
+                    <i className="bi bi-three-dots-vertical"></i>
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      <Dropdown.Item onClick={()=>{const params = {status: "New"}; updateJob(item.id, params)}}>New Request</Dropdown.Item>
+                      <Dropdown.Item onClick={()=>{const params = {status: "Declined"}; updateJob(item.id, params)}}>Declined</Dropdown.Item>
+                      <Dropdown.Item onClick={()=>{const params = {status: "Completed"}; updateJob(item.id, params)}}>Completed</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                  </td>
                 </tr>
               ))}
             </tbody>

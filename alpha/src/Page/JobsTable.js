@@ -1,5 +1,5 @@
 import { useEffect, useState  } from "react";
-import { getAllJobs } from "../Components/APICalls";
+import { getAllJobs} from "../Components/APICalls";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Table from "../Components/Table";
 
