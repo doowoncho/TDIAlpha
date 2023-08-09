@@ -98,11 +98,12 @@ app.delete('/api/deleteJob/:id', async (req, res) => {
 //creates job with provided properties
 app.post('/api/createJob', async (req, res) => {
   try {
-    const { customer, startDate, endDate, status, setup, permit_number, notes, wo_number, po_number } = req.body;
+    const { customer, startDate, endDate, status, setup, permit_number, notes, wo_number, po_number, email } = req.body;
 
     const newJob = await prisma.jobs.create({
       data: {
         customer: customer,
+        email: email,
         status: status,
         setup: setup,
         permit_number: permit_number, 
