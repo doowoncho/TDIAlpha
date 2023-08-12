@@ -86,8 +86,6 @@ app.delete('/api/deleteJob/:id', async (req, res) => {
         id: jobId
       },
     });
-
-    console.log(req.body)
     res.json(deletedJob);
   } catch (error) {
     console.error(error);

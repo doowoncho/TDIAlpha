@@ -1,9 +1,14 @@
 import { Dropdown } from 'react-bootstrap';
-import { updateJob } from './APICalls';
+import { deleteJob, updateJob } from './APICalls';
 
-export default function Table({ data, CallBack, displayColumns, table }) {
+export default function Table({ data, CallBack, displayColumns }) {
   async function OnClick(id, params) {
     await updateJob(id, params);
+    CallBack();
+  }
+
+  async function Delete(id){
+    await deleteJob(id)
     CallBack();
   }
 
@@ -30,7 +35,7 @@ export default function Table({ data, CallBack, displayColumns, table }) {
 
   return (
     <div>
-      <div className='container my-4'>
+      <div className='container my-3'>
         <table className='table table-hover'>
           <thead>
             <tr>
@@ -44,10 +49,9 @@ export default function Table({ data, CallBack, displayColumns, table }) {
           <tbody>
             {data.map((property) => (
               <tr key={property.id}> 
-                <td><a href={`/jobdetails/${property.id}`}>{property.id}</a></td>
                 {displayColumns.map((column) => (
                   <td key={`${property.id}-${column}`}>
-                  {property[column.toLowerCase()]}
+                    {column.toLowerCase() === 'id' ? (<a href={`/jobdetails/${property.id}`}>{property.id}</a>) : property[column.toLowerCase()] }        
                   </td>))}
                 <td>
                   <Dropdown>
@@ -81,6 +85,11 @@ export default function Table({ data, CallBack, displayColumns, table }) {
                       </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
+                </td>
+                <td>  
+                  <button className='my-1 btn btn-outline-danger' onClick={ ()=> { Delete(property.id) }}>
+                    <i className="bi bi-trash"></i>
+                  </button>
                 </td>
               </tr>
             ))}

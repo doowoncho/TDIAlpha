@@ -33,10 +33,10 @@ export default function JobsTable(){
     const [completedCount, setCompletedCount] = useState([])
 
     const TableRender = () => {
-      var columns = ["startDate", "status", "setup", "customer", "permit_number", "notes", "wo_number", "po_number"]
-      if(tableType === 'New'){
-        columns = ["startDate", "status", "setup", "customer"]
-      }
+      var columns = ["id", "startDate", "status", "setup", "customer", "permit_number", "notes", "wo_number", "po_number"]
+      // if(tableType == 'New'){
+      //   columns = ["id", "startDate", "status", "setup", "customer"]
+      // }
       return (<Table data={jobList} CallBack={()=>fetchData({status: tableType})} displayColumns={columns}/>)
     }
 
