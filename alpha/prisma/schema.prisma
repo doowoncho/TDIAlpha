@@ -23,8 +23,8 @@ model jobs {
 
 model users {
   id         Int     @id @default(autoincrement())
-  name       String? @db.Char(1)
+  name       String? @db.VarChar(50)
   permission Int?
-  email      String? @db.Char(1)
-  password   String? @db.Char(1)
+  email      String? @db.VarChar(50)
+  password   String? @db.VarChar(50)
 }
