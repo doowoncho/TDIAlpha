@@ -96,11 +96,12 @@ app.delete('/api/deleteJob/:id', async (req, res) => {
 //creates job with provided properties
 app.post('/api/createJob', async (req, res) => {
   try {
-    const { customer, startDate, endDate, status, setup, permit_number, notes, wo_number, po_number } = req.body;
+    const { customer, startDate, endDate, status, setup, permit_number, notes, wo_number, po_number, email } = req.body;
 
     const newJob = await prisma.jobs.create({
       data: {
         customer: customer,
+        email: email,
         status: status,
         setup: setup,
         permit_number: permit_number, 
@@ -120,4 +121,24 @@ app.post('/api/createJob', async (req, res) => {
 
 app.listen(3001, () => {
   console.log('Server is running on port 3001');
+});
+
+// Add this route to get a job by ID
+app.get('/api/getJob/:id', async (req, res) => {
+  try {
+    const jobId = parseInt(req.params.id);
+    const job = await prisma.jobs.findUnique({
+      where: {
+        id: jobId
+      }
+    });
+    if (job) {
+      res.json(job);
+    } else {
+      res.status(404).json({ error: 'Job not found' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });

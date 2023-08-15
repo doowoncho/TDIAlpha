@@ -82,4 +82,20 @@ export async function createJob(options) {
         console.error('Error creating job:', error);
     }
 }
-  
+
+// Gets a single job by ID
+export async function getJobById(id) {
+  try {
+      const response = await fetch(`http://localhost:3001/api/getJob/${id}`, {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+      });
+
+      const job = await response.json();
+      return job;
+  } catch (error) {
+      console.error('Error fetching job:', error);
+  }
+}
