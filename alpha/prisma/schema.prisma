@@ -19,6 +19,7 @@ model jobs {
   po_number     String?   @db.VarChar(255)
   enddate       DateTime? @db.Date
   email         String?   @db.VarChar(50)
+  assigned      Int?
 }
 
 model users {

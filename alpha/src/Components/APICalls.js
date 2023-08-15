@@ -99,3 +99,20 @@ export async function getJobById(id) {
       console.error('Error fetching job:', error);
   }
 }
+
+// Gets a single user by ID
+export async function getUserById(id) {
+  try {
+      const response = await fetch(`http://localhost:3001/api/getUser/${id}`, {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+      });
+
+      const job = await response.json();
+      return job;
+  } catch (error) {
+      console.error('Error fetching job:', error);
+  }
+}

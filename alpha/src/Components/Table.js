@@ -1,5 +1,20 @@
 import { Dropdown } from 'react-bootstrap';
-import { deleteJob, updateJob } from './APICalls';
+import { deleteJob, updateJob, getUserById} from './APICalls';
+
+function renderTableCell(property, column) {
+  
+  const name = column.toLowerCase();
+
+  if (name === 'id') {
+    return <a href={`/jobdetails/${property.id}`}>{property.id}</a>;
+  } 
+  else if(name === 'assigned'){
+    return 'doowon'
+  }
+  else {
+    return property[name];
+  }
+}
 
 export default function Table({ data, CallBack, displayColumns }) {
   async function OnClick(id, params) {
@@ -51,7 +66,7 @@ export default function Table({ data, CallBack, displayColumns }) {
               <tr key={property.id}> 
                 {displayColumns.map((column) => (
                   <td key={`${property.id}-${column}`}>
-                    {column.toLowerCase() === 'id' ? (<a href={`/jobdetails/${property.id}`}>{property.id}</a>) : property[column.toLowerCase()] }        
+                    {renderTableCell(property,column)}   
                   </td>))}
                 <td>
                   <Dropdown>

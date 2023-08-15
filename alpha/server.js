@@ -119,10 +119,6 @@ app.post('/api/createJob', async (req, res) => {
 });
 
 
-app.listen(3001, () => {
-  console.log('Server is running on port 3001');
-});
-
 // Add this route to get a job by ID
 app.get('/api/getJob/:id', async (req, res) => {
   try {
@@ -142,3 +138,28 @@ app.get('/api/getJob/:id', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+// Add this route to get a job by ID
+app.get('/api/getUser/:id', async (req, res) => {
+  try {
+    const userId = parseInt(req.params.id);
+    const user = await prisma.users.findUnique({
+      where: {
+        id: userId
+      }
+    });
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404).json({ error: 'User not found' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.listen(3001, () => {
+  console.log('Server is running on port 3001');
+});
+
