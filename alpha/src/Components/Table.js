@@ -1,32 +1,56 @@
 import { Dropdown } from 'react-bootstrap';
-import { deleteJob, updateJob, getUserById} from './APICalls';
+import { getUserById, getAllUsers, updateJob} from './APICalls';
+import { useEffect, useState } from 'react';
+import JobsTable from '../Page/JobsTable';
 
-function renderTableCell(property, column) {
+function RenderAssignedDropdown({ property, handleJobUpdate }) {
+  const [users, setUsers] = useState([]);
   
-  const name = column.toLowerCase();
+  useEffect(() => {
+    getAllUsers()
+      .then(users => {
+        setUsers(users);
+      })
+      .catch(error => {
+        console.error("Error fetching users:", error);
+      });
+  }, []);
+  
+  return (
+    <Dropdown>
+      <Dropdown.Toggle variant='white' id='dropdownMenuButton'>
+        {users.find(user => user.id === property.assigned)?.name || "No User Assigned"}
+      </Dropdown.Toggle>
+      <Dropdown.Menu>
+        {users.map((user) => (
+          <Dropdown.Item
+            key={user.id}
+            onClick={() =>
+              handleJobUpdate(property.id, { assigned: user.id })
+            }
+          >
+            {user.name}
+          </Dropdown.Item>
+        ))}
+      </Dropdown.Menu>
+    </Dropdown>
+  );
+}
 
+function renderTableCell({ property, column, handleJobUpdate}) {
+  const name = column.toLowerCase();
   if (name === 'id') {
     return <a href={`/jobdetails/${property.id}`}>{property.id}</a>;
   } 
-  else if(name === 'assigned'){
-    return 'doowon'
+  else if (name === 'assigned') {
+    return <RenderAssignedDropdown property = {property} handleJobUpdate={handleJobUpdate}/>;
   }
   else {
     return property[name];
   }
 }
 
-export default function Table({ data, CallBack, displayColumns }) {
-  async function OnClick(id, params) {
-    await updateJob(id, params);
-    CallBack();
-  }
-
-  async function Delete(id){
-    await deleteJob(id)
-    CallBack();
-  }
-
+export default function Table({ data, displayColumns, handleJobUpdate, handleJobDelete}) {
   if (!data) {
     return (
       <div>
@@ -66,7 +90,7 @@ export default function Table({ data, CallBack, displayColumns }) {
               <tr key={property.id}> 
                 {displayColumns.map((column) => (
                   <td key={`${property.id}-${column}`}>
-                    {renderTableCell(property,column)}   
+                     {renderTableCell({ property, column, handleJobUpdate })} 
                   </td>))}
                 <td>
                   <Dropdown>
@@ -77,7 +101,7 @@ export default function Table({ data, CallBack, displayColumns }) {
                       <Dropdown.Item
                         onClick={() => {
                           const params = { status: 'New' };
-                          OnClick(property.id, params);
+                          handleJobUpdate(property.id, params)
                         }}
                       >
                         New Request
@@ -85,7 +109,7 @@ export default function Table({ data, CallBack, displayColumns }) {
                       <Dropdown.Item
                         onClick={() => {
                           const params = { status: 'Declined' };
-                          OnClick(property.id, params);
+                          handleJobUpdate(property.id, params)
                         }}
                       >
                         Declined
@@ -93,7 +117,7 @@ export default function Table({ data, CallBack, displayColumns }) {
                       <Dropdown.Item
                         onClick={() => {
                           const params = { status: 'Completed' };
-                          OnClick(property.id, params);
+                          handleJobUpdate(property.id, params);
                         }}
                       >
                         Completed
@@ -102,7 +126,7 @@ export default function Table({ data, CallBack, displayColumns }) {
                   </Dropdown>
                 </td>
                 <td>  
-                  <button className='my-1 btn btn-outline-danger' onClick={ ()=> { Delete(property.id) }}>
+                  <button className='my-1 btn btn-outline-danger' onClick={ ()=> { handleJobDelete(property.id) }}>
                     <i className="bi bi-trash"></i>
                   </button>
                 </td>

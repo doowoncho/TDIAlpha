@@ -28,7 +28,7 @@ app.get('/api/jobs', async (req, res) => {
 //gets all jobs with specific criteria... takes in an object with the properties
 app.get('/api/specificJobs', async (req, res) => {
   try {
-    const { id, customer, startDate, endDate, status, setup, permit_number, notes, wo_number, po_number} = req.query
+    const { id, customer, startDate, endDate, status, setup, permit_number, notes, wo_number, po_number, assigned} = req.query
     const posts = await prisma.jobs.findMany({
       where: {
         customer: customer,
@@ -38,7 +38,8 @@ app.get('/api/specificJobs', async (req, res) => {
         permit_number: permit_number, 
         notes: notes, 
         wo_number: wo_number, 
-        po_number: po_number
+        po_number: po_number,
+        assigned : assigned
       },
     });
     res.json(posts);
@@ -51,10 +52,9 @@ app.get('/api/specificJobs', async (req, res) => {
 //updates the job with the id
 app.put('/api/updateJob/:id', async (req, res) => {
   try {
-
     const jobId = parseInt(req.params.id) //id of job we are changing
-    const { id, customer, startDate, endDate, status, setup, permit_number, notes, wo_number, po_number} = req.body
-    const posts = await prisma.jobs.updateMany({
+    const { id, customer, startDate, endDate, status, setup, permit_number, notes, wo_number, po_number, assigned} = req.body
+    const posts = await prisma.jobs.update({
       where: {
         id: jobId
       },
@@ -66,7 +66,8 @@ app.put('/api/updateJob/:id', async (req, res) => {
         permit_number: permit_number, 
         notes: notes, 
         wo_number: wo_number, 
-        po_number: po_number
+        po_number: po_number,
+        assigned: assigned
       }
     });
     res.json(posts);
@@ -76,6 +77,7 @@ app.put('/api/updateJob/:id', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
 
 //Deletes job with particular id
 app.delete('/api/deleteJob/:id', async (req, res) => {
@@ -143,16 +145,23 @@ app.get('/api/getJob/:id', async (req, res) => {
 app.get('/api/getUser/:id', async (req, res) => {
   try {
     const userId = parseInt(req.params.id);
-    const user = await prisma.users.findUnique({
+    const user = await prisma.users.findFirst({
       where: {
         id: userId
       }
     });
-    if (user) {
-      res.json(user);
-    } else {
-      res.status(404).json({ error: 'User not found' });
-    }
+    res.json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+//gets all users
+app.get('/api/users', async (req, res) => {
+  try {
+    const posts = await prisma.users.findMany();
+    res.json(posts);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });

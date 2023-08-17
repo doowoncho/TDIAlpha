@@ -1,5 +1,5 @@
 import { useEffect, useState  } from "react";
-import { getAllJobs, getSpecificJobs} from "../Components/APICalls";
+import { getAllJobs, getSpecificJobs, updateJob, deleteJob} from "../Components/APICalls";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Table from "../Components/Table";
 
@@ -25,72 +25,87 @@ const TableCards = ({bg, header, icon, color, num}) =>
         )
 }
 
-export default function JobsTable(){
-    const [tableType, setTableType] = useState([])
-    const [jobList, setJobList] = useState([])
-    const [requestCount, setRequestCount] = useState([])
-    const [declinedCount, setDeclinedtCount] = useState([])
-    const [completedCount, setCompletedCount] = useState([])
+export default function JobsTable() {
+  const [tableType, setTableType] = useState("All");
+  const [jobList, setJobList] = useState([]);
+  const [counts, setCounts] = useState({New: 0, Declined: 0, Completed: 0});
 
-    const TableRender = () => {
-      var columns = ["ID", "StartDate", "EndDate", "Status", "Setup", "Customer", "Permit_number", "Notes", "WO_number", "PO_number", "Assigned"]
-      // if(tableType == 'New'){
-      //   columns = ["id", "startDate", "status", "setup", "customer"]
-      // }
-      return (<Table data={jobList} CallBack={()=>fetchData({status: tableType})} displayColumns={columns}/>)
+
+  async function fetchData() {
+    try {
+      const data = await getAllJobs();
+      if (data == null) return;
+      
+      const newCount = data.filter(job => job.status === "New").length;
+      const declinedCount = data.filter(job => job.status === "Declined").length;
+      const completedCount = data.filter(job => job.status === "Completed").length;
+      
+      setCounts({New: newCount, Declined: declinedCount, Completed: completedCount});
+
+      tableType !== "All" ? setJobList(data.filter(job => job.status === tableType)) : setJobList(data);
+
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
+  }
 
-    async function ReRenderCounts(){
-      const data = await getAllJobs()
-      if(data==null){return}
-      setRequestCount(data.filter(job => job.status === "New").length)
-      setDeclinedtCount(data.filter(job => job.status === "Declined").length)
-      setCompletedCount(data.filter(job => job.status === "Completed").length)
+  useEffect(() => {fetchData()}, [tableType]);
+
+  const handleTableTypeChange = newTableType => {
+    if (tableType !== newTableType) {
+      setTableType(newTableType);
     }
+  };
 
-    const fetchData = async (table) => {
-        try {
-          ReRenderCounts()
-          setJobList(await getSpecificJobs(table));
+  const handleJobUpdate = async (id, params) => {
+    await updateJob(id, params);
+    fetchData()
+  };
 
-          if(table == null){
-            setTableType("All")
-          }
-          else{
-            setTableType(table.status)
-          }
+  const handleJobDelete = async id => {
+    await deleteJob(id);
+    fetchData()
+  };
 
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        }
-      };
+  // const updateAssignedUser = async (id) =>{
+  //   await updateAssignedUser(id)
+  //   fetchData()
+  // }
 
-    useEffect(() => {
-      fetchData();
-      // eslint-disable-next-line
-      }, []);
+  const renderButtons = () => {
+    return (
+      <div className="container d-flex justify-content-center my-3">
+        <button className="btn btn-link" onClick={() => handleTableTypeChange("New")}>
+          <TableCards header="New Requests" num={counts.New} icon="bi bi-bell-fill" color="text-primary" />
+        </button>
+        <button className="btn btn-link" onClick={() => handleTableTypeChange("Declined")}>
+          <TableCards header="Declined Jobs" num={counts.Declined} icon="bi bi-exclamation-lg" color="text-danger" />
+        </button>
+        <button className="btn btn-link" onClick={() => handleTableTypeChange("Completed")}>
+          <TableCards header="Completed" num={counts.Completed} icon="bi bi-check-lg" color="text-success" />
+        </button>
+        <button className="btn btn-link" onClick={() => handleTableTypeChange("All")}>
+          <TableCards header="All Jobs" num={counts.New + counts.Declined + counts.Completed} icon="bi bi-list" color="text-info" />
+        </button>
+      </div>
+    );
+  };
 
-      return (
+  return (
+    <div>
+      <div className='border border-1 bg-light'>
+        {renderButtons()}
+      </div>
+      <div className="my-4 container text-center">
+        <h1>{tableType}</h1>
         <div>
-          <div className='border border-1 bg-light'>
-            <div className="container d-flex justify-content-center my-3">
-              <button style={{border: "none", background: "none"}} onClick={() => fetchData({status: 'New'})}>
-                <TableCards header="New Requests" num={requestCount} icon="bi bi-bell-fill" color="text-primary"/>
-              </button>
-              <button style={{border: "none", background: "none"}} onClick={() => fetchData({status: 'Declined'})}>
-                <TableCards header="Declined Jobs" num={declinedCount} icon="bi bi-exclamation-lg" color="text-danger"/>
-              </button>
-              <button style={{border: "none", background: "none"}} onClick={() => fetchData({status: 'Completed'})}>
-                <TableCards header="Completed" num={completedCount} icon="bi bi-check-lg" color="text-success"/>
-              </button>
-            </div>
-          </div>
-          <div className="my-4 container text-center">
-            <h1>{tableType}</h1>
-              <div>
-                {TableRender()}
-              </div>
-          </div>
+        <Table
+            data={jobList}
+            displayColumns={["ID", "StartDate", "EndDate", "Status", "Setup", "Customer", "Permit_number", "Notes", "WO_number", "PO_number", "Assigned"]}
+            handleJobUpdate={handleJobUpdate} handleJobDelete={handleJobDelete} 
+          />
         </div>
-      )
+      </div>
+    </div>
+  )
 }

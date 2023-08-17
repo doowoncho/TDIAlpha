@@ -10,9 +10,9 @@ export async function getAllJobs() {
   }
   
 // Gets all the jobs params from options
-export async function getSpecificJobs(options) {
+export async function getSpecificJobs(params) {
     try {
-        const queryString = new URLSearchParams(options).toString();
+        const queryString = new URLSearchParams(params).toString();
         const url = `http://localhost:3001/api/specificJobs?${queryString}`;
 
         const response = await fetch(url, {
@@ -29,7 +29,7 @@ export async function getSpecificJobs(options) {
 }
   
 // Changes specific property of job with the given job id
-export async function updateJob(id, options) {
+export async function updateJob(id, params) {
     try {
       const url = `http://localhost:3001/api/updateJob/${id}`; // Use the id as a URL parameter
   
@@ -38,7 +38,7 @@ export async function updateJob(id, options) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(options),
+        body: JSON.stringify(params),
       });
   
       const jobChanged = await response.json();
@@ -66,14 +66,14 @@ export async function deleteJob(id) {
     }
 }
 // Creates job with params from options
-export async function createJob(options) {
+export async function createJob(params) {
     try {
         const response = await fetch('http://localhost:3001/api/createJob', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(options), 
+        body: JSON.stringify(params), 
         });
 
         const createdJob = await response.json();
@@ -109,10 +109,20 @@ export async function getUserById(id) {
               'Content-Type': 'application/json',
           },
       });
-
       const job = await response.json();
       return job;
   } catch (error) {
       console.error('Error fetching job:', error);
   }
 }
+
+// Gets a list of all the users
+export async function getAllUsers() {
+    try {
+      const response = await fetch('http://localhost:3001/api/users');
+      const data = await response.json();
+      return(data)
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
