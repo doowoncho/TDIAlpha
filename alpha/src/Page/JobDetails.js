@@ -2,6 +2,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import { useState, useEffect } from "react";
 import { getJobById } from "../Components/APICalls";
 import { useParams } from 'react-router-dom';
+import FileUpload from "../Components/FileUpload";
 
 export default function Orders() {
 
@@ -127,15 +128,18 @@ export default function Orders() {
         <div style={{marginBottom:"3rem"}}>
           <div className="card " style={{width:"83%", margin:"auto"}}>
             <div className="card-title" style={{fontSize:"1.5rem", marginRight:"auto", marginLeft:"5%", marginTop:"2%"}}>Files</div>
-            <div style={{display:"flex", alignItems:"center", justifyContent:"space-around"}}>
-              <Files type="Permit Confirmation" width="14rem" icon="bi bi-clipboard2-check"></Files>
-              <div class="mb-3 mx-auto">
-                <label for="formFileDisabled" class="form-label">Permit</label>
-                <input class="form-control" type="file" id="formFileDisabled"/>
+            <div style={{display:"flex", alignItems:"center", justifyContent:"center", flexDirection:"column"}}>
+              <div class="mb-3 mx-auto" style={{width:"16rem"}}>
+                <label for="formFileDisabled" class="form-label">Permit Confirmation</label>
+                <FileUpload></FileUpload>
               </div>
-              <div class="mb-3 mx-4">
+              <div class="mb-3 mx-auto" style={{width:"16rem"}}>
+                <label for="formFileDisabled" class="form-label">Permit</label>
+                <FileUpload></FileUpload>
+              </div>
+              <div class="mb-3 mx-4" style={{width:"16rem"}}>
                 <label for="formFileDisabled" class="form-label">Map Drawing</label>
-                <input class="form-control" type="file" id="formFileDisabled"/>
+                <FileUpload></FileUpload>
               </div>
             </div>
           </div>
