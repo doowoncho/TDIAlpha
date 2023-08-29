@@ -67,11 +67,6 @@ export default function JobsTable() {
     fetchData()
   };
 
-  // const updateAssignedUser = async (id) =>{
-  //   await updateAssignedUser(id)
-  //   fetchData()
-  // }
-
   const renderButtons = () => {
     return (
       <div className="container d-flex justify-content-center my-3">
