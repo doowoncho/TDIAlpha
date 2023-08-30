@@ -168,6 +168,41 @@ app.get('/api/users', async (req, res) => {
   }
 });
 
+app.get('/api/getUserByEmail/:email', async (req, res) => {
+  try {
+    const emailID = req.params.email;
+    const user = await prisma.users.findFirst({
+      where: {
+        email: emailID
+      }
+    });
+    res.json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.post('/api/createUser', async (req, res) => {
+  try {
+    const { email, name, permission, password } = req.body;
+
+    const newJob = await prisma.jobs.create({
+      data: {
+        email: email,
+        name: name,
+        permission: permission,
+        password: password
+      },
+    });
+
+    res.json(newJob);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 app.listen(3001, () => {
   console.log('Server is running on port 3001');
 });

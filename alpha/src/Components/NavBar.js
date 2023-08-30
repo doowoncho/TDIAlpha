@@ -8,9 +8,10 @@ export default function NavBar() {
       <Container>
         <Navbar.Brand href="/">Navbar</Navbar.Brand>
         <Nav className="me-auto">
-          <Nav.Link href="/">Home</Nav.Link>
+          <Nav.Link href="/home">Home</Nav.Link>
           <Nav.Link href="/jobstable">All Jobs</Nav.Link>
           <Nav.Link href="/form">Form</Nav.Link>
+          <Nav.Link href="/">Logout</Nav.Link>
         </Nav>
       </Container>
     </Navbar>
