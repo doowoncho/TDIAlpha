@@ -109,12 +109,14 @@ app.post('/api/createJob', async (req, res) => {
         permit_number: permit_number, 
         notes: notes, 
         wo_number: wo_number, 
-        po_number: po_number
+        po_number: po_number,
+        startdate: startDate,
+        enddate: endDate
       },
     });
-
     res.json(newJob);
   } catch (error) {
+    onsole.log(startDate)
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });
   }
