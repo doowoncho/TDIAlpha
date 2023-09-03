@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
+import { Link } from "react-router-dom";
 import { DateRangePicker } from 'react-dates';
-import { addDays, differenceInDays } from 'date-fns'
-import {createJob} from '../Components/APICalls'
-
+import {createJob, getSpecificJobs} from '../Components/APICalls'
 
 class formPage extends Component{
     constructor(props) {
@@ -30,9 +29,10 @@ class formPage extends Component{
         createJob(newJob)
     }
 
-    Button = () => {
+    onSubmitList = () => {
         const {differenceInDays, addDays } = require("date-fns");
-        const result = differenceInDays(
+        var result = 0;
+        result = differenceInDays(
             new Date(this.state.endDate),
             new Date(this.state.startDate),
         ) + 1;
@@ -40,13 +40,14 @@ class formPage extends Component{
         arr.length = result;
         var currentDay = new Date(this.state.startDate);
         for (let i = 0; i <result; i ++){
-            arr[i] = currentDay;
+            arr[i] = currentDay.toString();
             currentDay = addDays(currentDay, 1)
         }
+        console.log(arr)
+        return arr
     }
 
-
-render() {
+render(){
     return(
         <div className="container text-center">
             <h1>Create a new form</h1>
@@ -82,10 +83,9 @@ render() {
                 onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
                 />
             </div>
-            <div className="mb-3">
-                <button type="button" onClick={this.Button}> Number of Days</button>
-            </div>
+            <Link to="/time" state={{data: this.onSubmit.newJob}}>
                 <button type="button" className="btn btn-primary" onClick={this.onSubmit}>Submit</button>
+            </Link>
             </form>
         </div>
     );

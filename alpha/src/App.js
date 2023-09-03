@@ -5,6 +5,7 @@ import JobsTable from "./Page/JobsTable";
 import FormPage from "./Page/FormPage";
 import JobDetails from "./Page/JobDetails";
 import LoginPage from "./Page/LoginPage";
+import TimePage from "./Page/TimePage";
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
       <Route path="/jobstable" element={<JobsTable />} />
       <Route path="/jobdetails/:id" element={<JobDetails />} />
       <Route path="/form" element={<FormPage />} />
+      <Route path="/time" element={<TimePage />} />
     </Routes>
   );
 }

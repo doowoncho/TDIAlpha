@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { createUser, getUserByEmail } from "../Components/APICalls";
+import {  getUserByEmail } from "../Components/APICalls";
 
 // minsu@gmail.com  doowon@gmail.com jungsu@gmail.com PW: 123, Doowon permission 1, jungsu 2, minsu 3
 
