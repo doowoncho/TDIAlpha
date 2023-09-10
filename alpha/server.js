@@ -168,6 +168,22 @@ app.get('/api/users', async (req, res) => {
   }
 });
 
+// get jobs for a user by id
+app.get('/api/getJobByUserId/:id', async (req, res) => {
+  try {
+    const userId = parseInt(req.params.id);
+    const user = await prisma.jobs.findMany({
+      where: {
+        assigned: userId
+      }
+    });
+    res.json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 app.listen(3001, () => {
   console.log('Server is running on port 3001');
 });
