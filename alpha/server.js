@@ -168,7 +168,7 @@ app.get('/api/users', async (req, res) => {
   }
 });
 
-// Add this route to get a job by ID
+// get jobs for a user by id
 app.get('/api/getJobByUserId/:id', async (req, res) => {
   try {
     const userId = parseInt(req.params.id);
