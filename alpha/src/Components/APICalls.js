@@ -126,3 +126,19 @@ export async function getAllUsers() {
       console.error('Error fetching data:', error);
     }
   }
+
+// Get assigned jobs by userID
+export async function getJobByUserId(id) {
+  try {
+      const response = await fetch(`http://localhost:3001/api/getJobByUserId/${id}`, {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+      });
+      const job = await response.json();
+      return job;
+  } catch (error) {
+      console.error('Error fetching job:', error);
+  }
+}

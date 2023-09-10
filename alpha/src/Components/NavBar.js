@@ -10,6 +10,7 @@ export default function NavBar() {
         <Nav className="me-auto">
           <Nav.Link href="/">Home</Nav.Link>
           <Nav.Link href="/jobstable">All Jobs</Nav.Link>
+          <Nav.Link href="/todo">ToDo</Nav.Link>
           <Nav.Link href="/form">Form</Nav.Link>
         </Nav>
       </Container>
