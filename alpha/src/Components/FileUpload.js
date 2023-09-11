@@ -39,6 +39,8 @@ function FileUpload(type) {
         update = {map: fileBlob};
       }
 
+      console.log(type);
+
       updateJob(id, update);
 
   }
