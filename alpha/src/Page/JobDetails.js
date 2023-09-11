@@ -131,15 +131,15 @@ export default function Orders() {
             <div style={{display:"flex", alignItems:"center", justifyContent:"center", flexDirection:"column"}}>
               <div class="mb-3 mx-auto" style={{width:"16rem"}}>
                 <label for="formFileDisabled" class="form-label">Permit Confirmation</label>
-                <FileUpload></FileUpload>
+                <FileUpload type="p_confirm"></FileUpload>
               </div>
               <div class="mb-3 mx-auto" style={{width:"16rem"}}>
                 <label for="formFileDisabled" class="form-label">Permit</label>
-                <FileUpload></FileUpload>
+                <FileUpload type="permit"></FileUpload>
               </div>
               <div class="mb-3 mx-4" style={{width:"16rem"}}>
                 <label for="formFileDisabled" class="form-label">Map Drawing</label>
-                <FileUpload></FileUpload>
+                <FileUpload type="map"></FileUpload>
               </div>
             </div>
           </div>

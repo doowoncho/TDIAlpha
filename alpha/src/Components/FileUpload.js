@@ -3,29 +3,44 @@
 import React, { useState } from 'react';
 import { storage } from '../Components/Firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { updateJob } from './APICalls';
+import { useParams } from 'react-router-dom';
 
-function FileUpload() {
+function FileUpload(type) {
   const [file, setFile] = useState(null);
-  const [progress, setProgress] = useState(0);
+  const { id } = useParams();
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     setFile(selectedFile);
   };
 
-  function handleUpload(){
+  async function handleUpload(){
     const fileRef = ref(storage, `${file.name}`);
+    let fileBlob;
 
-    uploadBytes(fileRef, file).then((snapshot) => {
+    await uploadBytes(fileRef, file).then((snapshot) => {
         console.log('Uploaded a blob or file!');
       });
     
-    // Gets the download/source URL of the file uploaded, MUST BE UPLOADED FIRST TO GET THE URL!!!
-    // getDownloadURL(ref(storage, `${file.name}`))
-    //   .then((url) => {
-    //     // `url` is the download URL for 'images/stars.jpg'
-    //     console.log(url);
-    //   })
+    await getDownloadURL(ref(storage, `${file.name}`))
+      .then((url) => {
+        // `url` is the download URL for 'images/stars.jpg'
+        fileBlob = url
+      })
+
+      let update = {};
+
+      if(type.type === "p_confirm"){
+        update = {p_confirm: fileBlob};
+      }else if(type.type === "permit"){
+        update = {permit: fileBlob};
+      }else{
+        update = {map: fileBlob};
+      }
+
+      updateJob(id, update);
+
   }
 
   return (

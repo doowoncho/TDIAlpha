@@ -32,6 +32,7 @@ export async function getSpecificJobs(params) {
 export async function updateJob(id, params) {
     try {
       const url = `http://localhost:3001/api/updateJob/${id}`; // Use the id as a URL parameter
+      console.log(params);
   
       const response = await fetch(url, {
         method: 'PUT', 
