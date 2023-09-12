@@ -176,6 +176,14 @@ app.get('/api/getUserByEmail/:email', async (req, res) => {
     const user = await prisma.users.findFirst({
       where: {
         email: emailID
+// get jobs for a user by id
+app.get('/api/getJobByUserId/:id', async (req, res) => {
+  try {
+    const userId = parseInt(req.params.id);
+    const user = await prisma.jobs.findMany({
+      where: {
+        assigned: userId
+
       }
     });
     res.json(user);
