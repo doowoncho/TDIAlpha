@@ -57,7 +57,6 @@ function FileUpload(type) {
 
       setUploaded(updatedUploaded);
       console.log(uploaded[type.type]);
-      console.log(uploaded);
 
   }
 
