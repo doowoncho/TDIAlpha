@@ -129,27 +129,15 @@ export default function Orders() {
             <div style={{display:"flex", alignItems:"center", justifyContent:"center", flexDirection:"column"}}>
               <div class="mb-3 mx-auto" style={{width:"16rem"}}>
                 <label for="formFileDisabled" class="form-label">Permit Confirmation</label>
-                {job.p_confirm ? (
-                  <Files width="16rem" bg="light" icon="bi bi-file-check" link={job.p_confirm}></Files>
-                ) : (
                   <FileUpload type="p_confirm"></FileUpload>
-                )}
               </div>
               <div class="mb-3 mx-auto" style={{width:"16rem"}}>
                 <label for="formFileDisabled" class="form-label">Permit</label>
-                {job.permit ? (
-                  <Files width="16rem" bg="light" icon="bi bi-file-text" ></Files>
-                ) : (
                   <FileUpload type="permit"></FileUpload>
-                )}
               </div>
               <div class="mb-3 mx-4" style={{width:"16rem"}}>
                 <label for="formFileDisabled" class="form-label">Map Drawing</label>
-                {job.map ? (
-                  <Files width="16rem" bg="light" icon="bi bi-map" ></Files>
-                ) : (
                   <FileUpload type="map"></FileUpload>
-                )}
               </div>
             </div>
           </div>

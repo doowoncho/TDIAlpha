@@ -9,6 +9,17 @@ import { useParams } from 'react-router-dom';
 function FileUpload(type) {
   const [file, setFile] = useState(null);
   const { id } = useParams();
+  const [uploaded, setUploaded] = useState({
+    "p_confirm": false,
+    "permit": false,
+    "map": false,
+  })
+  let fileBlob;
+  const fileType = {
+    "p_confirm": "bi bi-file-check",
+    "permit": "bi bi-file-text",
+    "map": "bi bi-map"
+  }
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
@@ -17,7 +28,6 @@ function FileUpload(type) {
 
   async function handleUpload(){
     const fileRef = ref(storage, `${file.name}`);
-    let fileBlob;
 
     await uploadBytes(fileRef, file).then((snapshot) => {
         console.log('Uploaded a blob or file!');
@@ -41,15 +51,33 @@ function FileUpload(type) {
 
       console.log(type);
 
-      updateJob(id, update);
+      await updateJob(id, update);
+
+      const updatedUploaded = { ...uploaded, [type.type]: true };
+
+      setUploaded(updatedUploaded);
+      console.log(uploaded[type.type]);
+      console.log(uploaded);
 
   }
 
   return (
-    <div className='card' style={{margin:"0"}}>
-      <input type="file" onChange={handleFileChange}/>
-      <button onClick={handleUpload}>Upload File</button>
-    </div>
+    <>
+      {uploaded[type.type] ? (
+          <div className={`card border border-success  bg-light mb-2 `} style={{width:"16rem"}}>
+            <div className="card-body">
+              <div style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
+                <a href={`${fileBlob}`}><i className={`${fileType[type.type]}`} style={{ fontSize: "2rem" }}></i></a>
+              </div>
+            </div>
+          </div>
+      ) : (
+        <div className='card' style={{margin:"0"}}>
+          <input type="file" onChange={handleFileChange}/>
+          <button onClick={handleUpload}>Upload File</button>
+        </div>
+      )}
+    </>
   );
 }
 
