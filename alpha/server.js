@@ -109,12 +109,14 @@ app.post('/api/createJob', async (req, res) => {
         permit_number: permit_number, 
         notes: notes, 
         wo_number: wo_number, 
-        po_number: po_number
+        po_number: po_number,
+        startdate: startDate,
+        enddate: endDate
       },
     });
-
     res.json(newJob);
   } catch (error) {
+    onsole.log(startDate)
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });
   }
@@ -168,6 +170,12 @@ app.get('/api/users', async (req, res) => {
   }
 });
 
+app.get('/api/getUserByEmail/:email', async (req, res) => {
+  try {
+    const emailID = req.params.email;
+    const user = await prisma.users.findFirst({
+      where: {
+        email: emailID
 // get jobs for a user by id
 app.get('/api/getJobByUserId/:id', async (req, res) => {
   try {
@@ -175,9 +183,30 @@ app.get('/api/getJobByUserId/:id', async (req, res) => {
     const user = await prisma.jobs.findMany({
       where: {
         assigned: userId
+
       }
     });
     res.json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.post('/api/createUser', async (req, res) => {
+  try {
+    const { email, name, permission, password } = req.body;
+
+    const newJob = await prisma.jobs.create({
+      data: {
+        email: email,
+        name: name,
+        permission: permission,
+        password: password
+      },
+    });
+
+    res.json(newJob);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });
