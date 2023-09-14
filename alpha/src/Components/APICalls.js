@@ -127,7 +127,37 @@ export async function getAllUsers() {
       console.error('Error fetching data:', error);
     }
   }
+  export async function getUserByEmail(email) {
+    try {
+        const response = await fetch(`http://localhost:3001/api/getUserByEmail/${email}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const job = await response.json();
+        return job;
+    } catch (error) {
+        console.error('Error fetching job:', error);
+    }
+  }
+  export async function createUser(params) {
+    try {
+        const response = await fetch('http://localhost:3001/api/createUser', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(params), 
+        });
 
+        const createdJob = await response.json();
+        console.log('Created Job:', createdJob);
+    } catch (error) {
+        console.error('Error creating job:', error);
+    }
+}
+  
 // Get assigned jobs by userID
 export async function getJobByUserId(id) {
   try {
@@ -143,3 +173,4 @@ export async function getJobByUserId(id) {
       console.error('Error fetching job:', error);
   }
 }
+
