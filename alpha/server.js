@@ -179,6 +179,17 @@ app.get('/api/getUserByEmail/:email', async (req, res) => {
     const user = await prisma.users.findFirst({
       where: {
         email: emailID
+      }
+    });
+      res.json(user);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+
+
+
 // get jobs for a user by id
 app.get('/api/getJobByUserId/:id', async (req, res) => {
   try {
