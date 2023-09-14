@@ -29,7 +29,6 @@ export default function Orders() {
     fetchJob();
   }, [id]);
 
-  console.log(job)
 
   const Card = ({info, bg, tc, width, background, type, height}) => (
     <div className={`card bg-${bg} mb-3 `} style={{width:`${width}`, backgroundColor:`${background}`, height:`${height}`, backgroundColor:"#FF6969"}}>
@@ -40,12 +39,11 @@ export default function Orders() {
     </div>
   )
 
-  const Files = ({type, width, bg, icon}) => (
-    <div className={` mx-3 card border border-success  bg-${bg} mb-3 `} style={{width:`${width}`}}>
+  const Files = ({width, bg, icon, link}) => (
+    <div className={`card border border-success  bg-${bg} mb-2 `} style={{width:`${width}`}}>
       <div className="card-body">
-        <h6 className="card-header" style={{textAlign:"center", fontSize:"0.8rem", marginTop:"1%"}}>{type}</h6>
         <div style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
-          <i className={`${icon}`} style={{ fontSize: "2rem" }}></i>
+          <a href={`${link}`}><i className={`${icon}`} style={{ fontSize: "2rem" }}></i></a>
         </div>
       </div>
     </div>
@@ -131,15 +129,15 @@ export default function Orders() {
             <div style={{display:"flex", alignItems:"center", justifyContent:"center", flexDirection:"column"}}>
               <div class="mb-3 mx-auto" style={{width:"16rem"}}>
                 <label for="formFileDisabled" class="form-label">Permit Confirmation</label>
-                <FileUpload></FileUpload>
+                  <FileUpload type="p_confirm" job={job.p_confirm}></FileUpload>
               </div>
               <div class="mb-3 mx-auto" style={{width:"16rem"}}>
                 <label for="formFileDisabled" class="form-label">Permit</label>
-                <FileUpload></FileUpload>
+                  <FileUpload type="permit" job={job.permit}></FileUpload>
               </div>
               <div class="mb-3 mx-4" style={{width:"16rem"}}>
                 <label for="formFileDisabled" class="form-label">Map Drawing</label>
-                <FileUpload></FileUpload>
+                  <FileUpload type="map" job={job.map}></FileUpload>
               </div>
             </div>
           </div>

@@ -20,6 +20,9 @@ model jobs {
   enddate       DateTime? @db.Date
   email         String?   @db.VarChar(50)
   assigned      Int?
+  map           String?   @db.VarChar(255)
+  p_confirm     String?   @db.VarChar(255)
+  permit        String?   @db.VarChar(255)
 }
 
 model users {
