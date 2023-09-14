@@ -6,7 +6,7 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { updateJob } from './APICalls';
 import { useParams } from 'react-router-dom';
 
-function FileUpload(type) {
+function FileUpload({type, job}) {
   const [file, setFile] = useState(null);
   const { id } = useParams();
   const [uploaded, setUploaded] = useState({
@@ -60,13 +60,15 @@ function FileUpload(type) {
 
   }
 
+  console.log(job);
+
   return (
     <>
-      {uploaded[type.type] ? (
+      {job ? (
           <div className={`card border border-success  bg-light mb-2 `} style={{width:"16rem"}}>
             <div className="card-body">
               <div style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
-                <a href={`${fileBlob}`}><i className={`${fileType[type.type]}`} style={{ fontSize: "2rem" }}></i></a>
+                <a href={job}><i className={`${fileType[type]}`} style={{ fontSize: "2rem" }}></i></a>
               </div>
             </div>
           </div>
