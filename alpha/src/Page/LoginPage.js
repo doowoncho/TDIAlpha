@@ -1,46 +1,29 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import {  getUserByEmail } from "../Components/APICalls";
 
 // minsu@gmail.com  doowon@gmail.com jungsu@gmail.com PW: 123, Doowon permission 1, jungsu 2, minsu 3
 
 export default function LoginPage() {
 
-  const navigate = useNavigate();
-
   async function login() {
-
-    var userEmail = await getUserByEmail(document.getElementById("email").value);
-
+    if(window.sessionStorage.getItem("user") != null){
+      console.log("already logged in")
+      return
+    }
+    
+    var user = await getUserByEmail(document.getElementById("email").value);   
     var emailID = document.getElementById("email").value;
-
     var passwordID = document.getElementById("password").value;
-
-  
-    if(window.sessionStorage.getItem("user") == null){
-      window.sessionStorage.setItem("user", 1);
-      console.log("not logged in")
+    if (user !=null && user.email === emailID && passwordID === user.password){
+      window.sessionStorage.setItem("user", user.id)
+      //change in the future so that you don't have to reload the page for navbar to update
+      await window.location.reload()
     }
     else{
-      console.log("logged in as user " + window.sessionStorage.getItem("user"))
-      if (userEmail.email === emailID && passwordID === userEmail.password){
-        if (userEmail.permission === 1){
-          navigate("/home")
-        }
-        if (userEmail.permission === 2){
-          navigate("/home")
-        }
-        if (userEmail.permission === 3){
-          navigate("/home")
-        }
-
-      }
-      else{
-        alert("Error, invalid email or password.")
-      }
+      alert("Error, invalid email or password.")
     }
-  
   }
+  
   return (
     <div>
       <div className='container text-center my-4'>
@@ -54,7 +37,7 @@ export default function LoginPage() {
           <input type="text" className="form-control" id="password" placeholder="Enter password"/>
         </div>
         <div className="mb-3">
-          <button type="submit" onClick={()=>login() }>cmon</button>
+          <button type="submit" class="btn btn-primary" onClick={()=>login() }>login</button>
         </div>
       </div>
     </div>

@@ -83,9 +83,10 @@ render(){
                 onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
                 />
             </div>
-            <Link to="/time" state={{data: this.onSubmit.newJob}}>
+            {/* <Link to="/time" state={{data: this.onSubmit.newJob}}> */}
+
                 <button type="button" className="btn btn-primary" onClick={this.onSubmit}>Submit</button>
-            </Link>
+            {/* </Link> */}
             </form>
         </div>
     );

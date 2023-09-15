@@ -25,6 +25,7 @@ export default function ToDoPage() {
 
   async function getJobsForPage() {
     try {
+      console.log(window.sessionStorage.getItem("user").id)
       let jobs = await getJobByUserId(window.sessionStorage.getItem("user"));
       let tempEvents = [];
       for (let job of jobs) {

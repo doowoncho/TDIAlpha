@@ -6,7 +6,7 @@ import Table from "../Components/Table";
 const TableCards = ({bg, header, icon, color, num}) =>
 {
     return(
-        <div className={`card ${bg} mx-2 border p-2 bg-white rounded`}>
+        <div className={`card ${bg} mx-2 border p-2 bg-white rounded`} >
           <div className="card-content">
             <div className="card-body">
               <div className="media d-flex">
@@ -70,16 +70,16 @@ export default function JobsTable() {
   const renderButtons = () => {
     return (
       <div className="container d-flex justify-content-center my-3">
-        <button className="btn btn-link" onClick={() => handleTableTypeChange("New")}>
+        <button className="btn btn-link" onClick={() => handleTableTypeChange("New")} style={{ textDecoration: "none" }}>
           <TableCards header="New Requests" num={counts.New} icon="bi bi-bell-fill" color="text-primary" />
         </button>
-        <button className="btn btn-link" onClick={() => handleTableTypeChange("Declined")}>
+        <button className="btn btn-link" onClick={() => handleTableTypeChange("Declined")} style={{ textDecoration: "none" }}>
           <TableCards header="Declined Jobs" num={counts.Declined} icon="bi bi-exclamation-lg" color="text-danger" />
         </button>
-        <button className="btn btn-link" onClick={() => handleTableTypeChange("Completed")}>
+        <button className="btn btn-link" onClick={() => handleTableTypeChange("Completed")} style={{ textDecoration: "none" }}>
           <TableCards header="Completed" num={counts.Completed} icon="bi bi-check-lg" color="text-success" />
         </button>
-        <button className="btn btn-link" onClick={() => handleTableTypeChange("All")}>
+        <button className="btn btn-link" onClick={() => handleTableTypeChange("All")} style={{ textDecoration: "none" }}>
           <TableCards header="All Jobs" num={counts.New + counts.Declined + counts.Completed} icon="bi bi-list" color="text-info" />
         </button>
       </div>
