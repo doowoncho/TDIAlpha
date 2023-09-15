@@ -9,11 +9,6 @@ import { useParams } from 'react-router-dom';
 function FileUpload({type, job}) {
   const [file, setFile] = useState(null);
   const { id } = useParams();
-  const [uploaded, setUploaded] = useState({
-    "p_confirm": false,
-    "permit": false,
-    "map": false,
-  })
   let fileBlob;
   const fileType = {
     "p_confirm": "bi bi-file-check",
@@ -41,9 +36,9 @@ function FileUpload({type, job}) {
 
       let update = {};
 
-      if(type.type === "p_confirm"){
+      if(type === "p_confirm"){
         update = {p_confirm: fileBlob};
-      }else if(type.type === "permit"){
+      }else if(type === "permit"){
         update = {permit: fileBlob};
       }else{
         update = {map: fileBlob};
@@ -53,11 +48,7 @@ function FileUpload({type, job}) {
 
       await updateJob(id, update);
 
-      const updatedUploaded = { ...uploaded, [type.type]: true };
-
-      setUploaded(updatedUploaded);
-      console.log(uploaded[type.type]);
-
+      window.location.reload()
   }
 
   console.log(job);

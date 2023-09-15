@@ -1,5 +1,5 @@
 
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import HomePage from "./Page/HomePage";
 import JobsTable from "./Page/JobsTable";
 import FormPage from "./Page/FormPage";
@@ -10,15 +10,30 @@ import ToDoPage from "./Page/ToDoPage";
 
 
 const App = () => {
+  const isUserLoggedIn = window.sessionStorage.getItem("user");
+
   return (
     <Routes>
-      <Route path="/" element={<LoginPage />} />
-      <Route path="/home" element={<HomePage />} />
-      <Route path="/jobstable" element={<JobsTable />} />
-      <Route path="/jobdetails/:id" element={<JobDetails />} />
-      <Route path="/todo" element={<ToDoPage />} />
-      <Route path="/form" element={<FormPage />} />
-      <Route path="/time" element={<TimePage />} />
+      {isUserLoggedIn ? (
+        <>
+          <Route path="/" element={<JobsTable />} />
+          <Route path="/jobstable" element={<JobsTable />} />
+          <Route path="/jobdetails/:id" element={<JobDetails />} />
+          <Route path="/todo" element={<ToDoPage />} />
+          <Route path="/form" element={<FormPage />} />
+          <Route path="/time" element={<TimePage />} />
+        </>
+      ) : (
+        <>
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/jobstable" element={<LoginPage />} />
+        <Route path="/jobdetails/:id" element={<LoginPage />} />
+        <Route path="/todo" element={<LoginPage />} />
+        <Route path="/form" element={<LoginPage />} />
+        <Route path="/time" element={<LoginPage />} /> 
+        </>
+      )}
+      <Route path="/login" element={<LoginPage />} />
     </Routes>
   );
 }
