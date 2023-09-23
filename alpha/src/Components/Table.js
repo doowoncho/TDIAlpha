@@ -3,6 +3,8 @@ import { getUserById, getAllUsers, updateJob} from './APICalls';
 import { useEffect, useState } from 'react';
 import JobsTable from '../Page/JobsTable';
 
+let user = await getUserById(window.sessionStorage.getItem("user"))
+
 function RenderAssignedDropdown({ property, handleJobUpdate }) {
   const [users, setUsers] = useState([]);
   
@@ -38,12 +40,55 @@ function RenderAssignedDropdown({ property, handleJobUpdate }) {
 }
 
 function renderTableCell({ property, column, handleJobUpdate}) {
+  console.log((window.sessionStorage.getItem("user")))
   const name = column.toLowerCase();
+
   if (name === 'id') {
     return <a href={`/jobdetails/${property.id}`}>{property.id}</a>;
   } 
-  else if (name === 'assigned') {
+  else if (name === 'assigned' && user.permission == 1) {
     return <RenderAssignedDropdown property = {property} handleJobUpdate={handleJobUpdate}/>;
+  }
+  else if(name == 'status'){
+    return <Dropdown>
+    <Dropdown.Toggle variant='white' id='dropdownMenuButton'>
+        {property[name]}
+    </Dropdown.Toggle>
+    <Dropdown.Menu>
+      <Dropdown.Item
+        onClick={() => {
+          const params = { status: 'New' };
+          handleJobUpdate(property.id, params)
+        }}
+      >
+        New Request
+      </Dropdown.Item>
+      <Dropdown.Item
+        onClick={() => {
+          const params = { status: 'Declined' };
+          handleJobUpdate(property.id, params)
+        }}
+      >
+        Declined
+      </Dropdown.Item>
+      <Dropdown.Item
+        onClick={() => {
+          const params = { status: 'Completed' };
+          handleJobUpdate(property.id, params);
+        }}
+      >
+        Completed
+      </Dropdown.Item>
+      <Dropdown.Item
+        onClick={() => {
+          const params = { status: 'Waiting' };
+          handleJobUpdate(property.id, params);
+        }}
+      >
+        Waiting For Stamp
+      </Dropdown.Item>
+    </Dropdown.Menu>
+  </Dropdown>
   }
   else {
     return property[name];
@@ -92,39 +137,6 @@ export default function Table({ data, displayColumns, handleJobUpdate, handleJob
                   <td key={`${property.id}-${column}`}>
                      {renderTableCell({ property, column, handleJobUpdate })} 
                   </td>))}
-                <td>
-                  <Dropdown>
-                    <Dropdown.Toggle variant='white' id='dropdownMenuButton'>
-                      <i className='bi bi-three-dots-vertical'></i>
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                      <Dropdown.Item
-                        onClick={() => {
-                          const params = { status: 'New' };
-                          handleJobUpdate(property.id, params)
-                        }}
-                      >
-                        New Request
-                      </Dropdown.Item>
-                      <Dropdown.Item
-                        onClick={() => {
-                          const params = { status: 'Declined' };
-                          handleJobUpdate(property.id, params)
-                        }}
-                      >
-                        Declined
-                      </Dropdown.Item>
-                      <Dropdown.Item
-                        onClick={() => {
-                          const params = { status: 'Completed' };
-                          handleJobUpdate(property.id, params);
-                        }}
-                      >
-                        Completed
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </td>
                 <td>  
                   <button className='my-1 btn btn-outline-danger' onClick={ ()=> { handleJobDelete(property.id) }}>
                     <i className="bi bi-trash"></i>
