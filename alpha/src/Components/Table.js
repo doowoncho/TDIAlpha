@@ -1,23 +1,11 @@
 import { Dropdown } from 'react-bootstrap';
 import { getUserById, getAllUsers, updateJob} from './APICalls';
 import { useEffect, useState } from 'react';
-import JobsTable from '../Page/JobsTable';
 
 let user = await getUserById(window.sessionStorage.getItem("user"))
+let users = await getAllUsers()
 
-function RenderAssignedDropdown({ property, handleJobUpdate }) {
-  const [users, setUsers] = useState([]);
-  
-  useEffect(() => {
-    getAllUsers()
-      .then(users => {
-        setUsers(users);
-      })
-      .catch(error => {
-        console.error("Error fetching users:", error);
-      });
-  }, []);
-  
+function RenderAssignedDropdown({ property, handleJobUpdate }) {  
   return (
     <Dropdown>
       <Dropdown.Toggle variant='white' id='dropdownMenuButton'>
@@ -40,7 +28,6 @@ function RenderAssignedDropdown({ property, handleJobUpdate }) {
 }
 
 function renderTableCell({ property, column, handleJobUpdate}) {
-  console.log((window.sessionStorage.getItem("user")))
   const name = column.toLowerCase();
 
   if (name === 'id') {
@@ -48,6 +35,9 @@ function renderTableCell({ property, column, handleJobUpdate}) {
   } 
   else if (name === 'assigned' && user.permission == 1) {
     return <RenderAssignedDropdown property = {property} handleJobUpdate={handleJobUpdate}/>;
+  }
+  else if (name === 'assigned') {
+    return users.filter(x => x.id == property[name])[0].name;
   }
   else if(name == 'status'){
     return <Dropdown>
@@ -86,6 +76,14 @@ function renderTableCell({ property, column, handleJobUpdate}) {
         }}
       >
         Waiting For Stamp
+      </Dropdown.Item>
+      <Dropdown.Item
+        onClick={() => {
+          const params = { status: 'Invoice' };
+          handleJobUpdate(property.id, params);
+        }}
+      >
+        Invoice
       </Dropdown.Item>
     </Dropdown.Menu>
   </Dropdown>

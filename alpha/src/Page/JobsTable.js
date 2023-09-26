@@ -42,7 +42,7 @@ export default function JobsTable() {
       
       setCounts({New: newCount, Declined: declinedCount, Completed: completedCount});
 
-      tableType !== "All" ? setJobList(data.filter(job => job.status === tableType)) : setJobList(data);
+      tableType !== "All" ? setJobList(data.filter(job => job.status === tableType)) : setJobList(data.filter(job => job.status !== "Invoice"));
 
     } catch (error) {
       console.error("Error fetching data:", error);
