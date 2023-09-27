@@ -9,7 +9,8 @@ datasource db {
 
 model jobs {
   id            Int       @id @default(autoincrement())
-  startdate     DateTime? @db.Date
+  starttime     DateTime? @db.Timestamp
+  endtime       DateTime? @db.Timestamp
   status        String?   @db.VarChar(255)
   setup         String?   @db.VarChar(255)
   customer      String?   @db.VarChar(255)
@@ -17,12 +18,12 @@ model jobs {
   notes         String?   @db.VarChar(255)
   wo_number     String?   @db.VarChar(255)
   po_number     String?   @db.VarChar(255)
-  enddate       DateTime? @db.Date
   email         String?   @db.VarChar(50)
   assigned      Int?
   map           String?   @db.VarChar(255)
   p_confirm     String?   @db.VarChar(255)
   permit        String?   @db.VarChar(255)
+  photo         String?   @db.VarChar(255)
 }
 
 model users {

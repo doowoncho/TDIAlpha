@@ -28,7 +28,7 @@ app.get('/api/jobs', async (req, res) => {
 //gets all jobs with specific criteria... takes in an object with the properties
 app.get('/api/specificJobs', async (req, res) => {
   try {
-    const { id, customer, startDate, endDate, status, setup, permit_number, notes, wo_number, po_number, assigned} = req.query
+    const { id, customer, starttime, endtime, status, setup, permit_number, notes, wo_number, po_number, assigned} = req.query
     const posts = await prisma.jobs.findMany({
       where: {
         customer: customer,
@@ -39,7 +39,9 @@ app.get('/api/specificJobs', async (req, res) => {
         notes: notes, 
         wo_number: wo_number, 
         po_number: po_number,
-        assigned : assigned
+        assigned : assigned,
+        starttime: starttime,
+        endtime: endtime
       },
     });
     res.json(posts);
@@ -53,7 +55,7 @@ app.get('/api/specificJobs', async (req, res) => {
 app.put('/api/updateJob/:id', async (req, res) => {
   try {
     const jobId = parseInt(req.params.id) //id of job we are changing
-    const { id, customer, startDate, endDate, status, setup, permit_number, notes, wo_number, po_number, assigned, p_confirm, permit, map} = req.body
+    const { id, customer, starttime, endtime, status, setup, permit_number, notes, wo_number, po_number, assigned, p_confirm, permit, map} = req.body
     const posts = await prisma.jobs.update({
       where: {
         id: jobId
@@ -70,7 +72,9 @@ app.put('/api/updateJob/:id', async (req, res) => {
         assigned: assigned,
         p_confirm: p_confirm,
         permit: permit,
-        map: map
+        map: map,
+        starttime: starttime,
+        endtime: endtime
       }
     });
     res.json(posts);
@@ -101,7 +105,7 @@ app.delete('/api/deleteJob/:id', async (req, res) => {
 //creates job with provided properties
 app.post('/api/createJob', async (req, res) => {
   try {
-    const { customer, startDate, endDate, status, setup, permit_number, notes, wo_number, po_number, email } = req.body;
+    const { customer, starttime, endtime, status, setup, permit_number, notes, wo_number, po_number, email } = req.body;
 
     const newJob = await prisma.jobs.create({
       data: {
@@ -113,13 +117,12 @@ app.post('/api/createJob', async (req, res) => {
         notes: notes, 
         wo_number: wo_number, 
         po_number: po_number,
-        startdate: startDate,
-        enddate: endDate
+        starttime: starttime,
+        endtime: endtime
       },
     });
     res.json(newJob);
   } catch (error) {
-    onsole.log(startDate)
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });
   }
