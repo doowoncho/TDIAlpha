@@ -55,7 +55,7 @@ app.get('/api/specificJobs', async (req, res) => {
 app.put('/api/updateJob/:id', async (req, res) => {
   try {
     const jobId = parseInt(req.params.id) //id of job we are changing
-    const { id, customer, starttime, endtime, status, setup, permit_number, notes, wo_number, po_number, assigned, p_confirm, permit, map} = req.body
+    const { id, customer, startDate, endDate, status, setup, permit_number, notes, wo_number, po_number, assigned, p_confirm, permit, map, photo } = req.body
     const posts = await prisma.jobs.update({
       where: {
         id: jobId
@@ -75,6 +75,7 @@ app.put('/api/updateJob/:id', async (req, res) => {
         map: map,
         starttime: starttime,
         endtime: endtime
+        photo: photo
       }
     });
     res.json(posts);
@@ -190,7 +191,6 @@ app.get('/api/getUserByEmail/:email', async (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
     }
   });
-
 
 
 // get jobs for a user by id
