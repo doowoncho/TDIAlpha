@@ -9,8 +9,6 @@ datasource db {
 
 model jobs {
   id            Int       @id @default(autoincrement())
-  starttime     DateTime? @db.Timestamp
-  endtime       DateTime? @db.Timestamp
   status        String?   @db.VarChar(255)
   setup         String?   @db.VarChar(255)
   customer      String?   @db.VarChar(255)
@@ -24,6 +22,8 @@ model jobs {
   p_confirm     String?   @db.VarChar(255)
   permit        String?   @db.VarChar(255)
   photo         String?   @db.VarChar(255)
+  endtime       DateTime? @db.Timestamp(6)
+  starttime     DateTime? @db.Timestamp(6)
 }
 
 model users {
