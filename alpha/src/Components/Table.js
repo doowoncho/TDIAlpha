@@ -37,7 +37,10 @@ function renderTableCell({ property, column, handleJobUpdate}) {
     return <RenderAssignedDropdown property = {property} handleJobUpdate={handleJobUpdate}/>;
   }
   else if (name === 'assigned') {
-    return users.filter(x => x.id == property[name])[0].name;
+    if (property[name] == null){
+      return 'Not Assigned'
+    }
+    return  users.filter(x => x.id == property[name])[0].name;
   }
   else if(name == 'starttime' || name == 'endtime'){
     const readableTime = new Date(property[name]).toLocaleString();
