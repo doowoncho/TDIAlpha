@@ -43,7 +43,7 @@ export default function JobsTable() {
       setCounts({New: newCount, Declined: declinedCount, Completed: completedCount});
 
       tableType !== "All" ? setJobList(data.filter(job => job.status === tableType)) : setJobList(data.filter(job => job.status !== "Invoice"));
-
+      console.log(jobList)
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -96,7 +96,7 @@ export default function JobsTable() {
         <div>
         <Table
             data={jobList}
-            displayColumns={["ID", "StartDate", "EndDate", "Status", "Setup", "Customer", "Permit_number", "Notes", "WO_number", "PO_number", "Assigned"]}
+            displayColumns={["ID", "StartTime", "EndTime", "Status", "Setup", "Customer", "Permit_number", "Notes", "WO_number", "PO_number", "Assigned"]}
             handleJobUpdate={handleJobUpdate} handleJobDelete={handleJobDelete} 
           />
         </div>

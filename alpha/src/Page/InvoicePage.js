@@ -36,7 +36,7 @@ export default function InvoicePage() {
         <h1>Invoice Page</h1>
         <Table
             data={jobList}
-            displayColumns={["ID", "StartDate", "EndDate", "Status", "Setup", "Customer", "Permit_number", "Notes", "WO_number", "PO_number"]}
+            displayColumns={["ID", "StartTime", "EndTime", "Status", "Setup", "Customer", "Permit_number", "Notes", "WO_number", "PO_number"]}
             handleJobUpdate={handleJobUpdate} handleJobDelete={handleJobDelete} 
           />
       </header>

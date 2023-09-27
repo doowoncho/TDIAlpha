@@ -85,7 +85,7 @@ export default function Orders() {
 
               <fieldset disabled>
                 <label for="exampleInputDate" style={{marginRight: "5px"}}>Date:</label>
-                <input type="email" class="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={job.startdate}/>
+                <input type="email" class="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={job.starttime}/>
               </fieldset>
             </div>
             </div>

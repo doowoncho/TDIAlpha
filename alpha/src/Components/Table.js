@@ -39,6 +39,10 @@ function renderTableCell({ property, column, handleJobUpdate}) {
   else if (name === 'assigned') {
     return users.filter(x => x.id == property[name])[0].name;
   }
+  else if(name == 'starttime' || name == 'endtime'){
+    const readableTime = new Date(property[name]).toLocaleString();
+    return readableTime
+  }
   else if(name == 'status'){
     return <Dropdown>
     <Dropdown.Toggle variant='white' id='dropdownMenuButton'>
