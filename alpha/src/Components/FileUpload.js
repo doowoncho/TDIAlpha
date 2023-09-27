@@ -18,7 +18,8 @@ function FileUpload({type, job}) {
   const fileType = {
     "p_confirm": "bi bi-file-check",
     "permit": "bi bi-file-text",
-    "map": "bi bi-map"
+    "map": "bi bi-map",
+    "photo": "bi bi-image"
   }
 
   const handleFileChange = (event) => {
@@ -41,22 +42,24 @@ function FileUpload({type, job}) {
 
       let update = {};
 
-      if(type.type === "p_confirm"){
+      if(type === "p_confirm"){
         update = {p_confirm: fileBlob};
-      }else if(type.type === "permit"){
+      }else if(type === "permit"){
         update = {permit: fileBlob};
-      }else{
+      }else if(type === "map"){
         update = {map: fileBlob};
+      }else{
+        update = {photo: fileBlob};
       }
 
       console.log(type);
 
       await updateJob(id, update);
 
-      const updatedUploaded = { ...uploaded, [type.type]: true };
+      const updatedUploaded = { ...uploaded, [type]: true };
 
       setUploaded(updatedUploaded);
-      console.log(uploaded[type.type]);
+      console.log(uploaded[type]);
 
   }
 

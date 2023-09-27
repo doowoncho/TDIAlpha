@@ -71,7 +71,7 @@ export default function Orders() {
 
   return (
     <div>
-      <div className="card border shadow-lg container mt-4" style={{width:"50%", border: "none"}}>
+      <div className="card border shadow-lg container mt-4 mb-5" style={{width:"50%", border: "none"}}>
         <div style={{display:"flex", alignItems:"center", justifyContent:"center", flexDirection:"row", gap:"5%"}}>
           <div className="card " style={{display:"flex", alignItems:"center", justifyContent:"center", width:"60%", marginTop:"2rem", marginBottom:"2rem"}}>
             <div className="card-title" style={{fontSize:"2rem", marginRight:"auto", marginLeft:"5%", marginTop:"2%"}}>{job.customer}</div>
@@ -138,6 +138,10 @@ export default function Orders() {
               <div class="mb-3 mx-4" style={{width:"16rem"}}>
                 <label for="formFileDisabled" class="form-label">Map Drawing</label>
                   <FileUpload type="map" job={job.map}></FileUpload>
+              </div>
+              <div class="mb-3 mx-4" style={{width:"16rem"}}>
+                <label for="formFileDisabled" class="form-label">Photo</label>
+                  <FileUpload type="photo" job={job.photo}></FileUpload>
               </div>
             </div>
           </div>

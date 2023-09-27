@@ -23,6 +23,7 @@ model jobs {
   map           String?   @db.VarChar(255)
   p_confirm     String?   @db.VarChar(255)
   permit        String?   @db.VarChar(255)
+  photo         String?
 }
 
 model users {
