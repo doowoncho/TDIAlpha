@@ -10,6 +10,11 @@ export default function Orders() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [job, setJob] = useState(null);
+  const [permitNumber, setPermitNumber] = useState();
+  const [woNumber, setWoNumber] = useState();
+  const [poNumber, setPoNumber] = useState();
+
+
 
   let status_bg;
 
@@ -20,6 +25,9 @@ export default function Orders() {
         const fetchedJob = await getJobById(id);
         setJob(fetchedJob);
         setIsLoading(false);
+        setPermitNumber(fetchedJob.permit_number);
+        setPermitNumber(fetchedJob.wo_number);
+        setPermitNumber(fetchedJob.po_number);
       } catch (error){
         setError("Error retriving Job!");
         setIsLoading(false);
@@ -28,6 +36,23 @@ export default function Orders() {
 
     fetchJob();
   }, [id]);
+
+  function updateJob(){
+    // changes = {
+    //     customer: customer,
+    //     id: id, 
+    //     status: status,
+    //     setup: setup,
+    //     permit_number: permitNumber, 
+    //     notes: notes, 
+    //     wo_number: woNumber, 
+    //     po_number: poNumber,
+    //     p_confirm: p_confirm,
+    //     permit: permit,
+    //     map: map,
+    //     photo: photo
+    // }
+  }
 
 
   const Card = ({info, bg, tc, width, background, type, height}) => (
@@ -39,6 +64,15 @@ export default function Orders() {
     </div>
   )
 
+  const Files = ({width, bg, icon, link}) => (
+    <div className={`card border border-success  bg-${bg} mb-2 `} style={{width:`${width}`}}>
+      <div className="card-body">
+        <div style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
+          <a href={`${link}`}><i className={`${icon}`} style={{ fontSize: "2rem" }}></i></a>
+        </div>
+      </div>
+    </div>
+  )
   
   if (isLoading) {
     return <div></div>;
@@ -60,12 +94,13 @@ export default function Orders() {
     status_bg = "secondary";
   }
 
+  function updateJob(){
+    
+  }
+
   return (
     <div>
       <div className="card border shadow-lg container mt-4 mb-5" style={{width:"50%", border: "none"}}>
-        <div className="card-body bg-primary mt-3" style={{width:"10%", textAlign:"center", borderRadius:"5%", color:"white", marginLeft:"85%", padding:"0.5rem", paddingBottom:"0.2rem", paddingTop:"0.2rem"}}>
-          <a href={`/jobedit/${job.id}`} style={{textDecoration:"None", textAlign:"center", color:"white"}}>Edit</a>
-        </div>
         <div style={{display:"flex", alignItems:"center", justifyContent:"center", flexDirection:"row", gap:"5%"}}>
           <div className="card " style={{display:"flex", alignItems:"center", justifyContent:"center", width:"60%", marginTop:"2rem", marginBottom:"2rem"}}>
             <div className="card-title" style={{fontSize:"2rem", marginRight:"auto", marginLeft:"5%", marginTop:"2%"}}>{job.customer}</div>
@@ -92,17 +127,17 @@ export default function Orders() {
         <div style={{display:"flex", alignItems:"center", justifyContent:"center", flexDirection:"row", gap:"3%", marginLeft:"3%", marginRight:"2%"}}>
           <div className="card border" style={{display:"flex", alignItems:"center", justifyContent:"center", width:"50%", marginBottom:"2rem", border: "none"}}>
             <div className="card-title" style={{fontSize:"1.5rem", marginRight:"auto", marginLeft:"5%", marginTop:"2%"}}>{job.setup}</div>
-            <fieldset className="mt-3" disabled>
+            <fieldset className="mt-3">
                 <label for="exampleInputDate" style={{marginRight: "5px"}}>Permit/Request#:</label>
-                <input type="email" class="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={job.permit_number}/>
+                <input type="email" class="form-control" id="exampleInputDate" aria-describedby="emailHelp" placeholder={job.permit_number} value={permitNumber} onChange={event => setPermitNumber(event.target.value)}/>
             </fieldset>
-            <fieldset className="my-3" disabled>
+            <fieldset className="my-3">
                 <label for="exampleInputDate" style={{marginRight: "5px"}}>WO#:</label>
-                <input type="email" class="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={job.wo_number}/>
+                <input type="email" class="form-control" id="exampleInputDate" aria-describedby="emailHelp" placeholder={job.wo_number} value={woNumber} onChange={event => setWoNumber(event.target.value)}/>
             </fieldset>
-            <fieldset className="mb-5" disabled>
+            <fieldset className="mb-5">
                 <label for="exampleInputDate" style={{marginRight: "5px"}}>PO#:</label>
-                <input type="email" class="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={job.po_number}/>
+                <input type="email" class="form-control" id="exampleInputDate" aria-describedby="emailHelp" placeholder={job.po_number} value={poNumber} onChange={event => setPoNumber(event.target.value)}/>
             </fieldset>
           </div>
           <div style={{marginTop:"1rem", marginBottom:"2rem"}}>
@@ -110,7 +145,7 @@ export default function Orders() {
             <div class="card">
               <div class="card-header">Notes</div>
               <div class="card-body">
-                  <input type="email" class="form-control text-center" id="exampleInputEmail1" aria-describedby="emailHelp" value={job.notes}/>
+                  <input type="email" class="form-control text-center" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder={job.notes}/>
               </div>
             </div>
             <div className="card text-center" width="20rem" height="19rem">
@@ -139,6 +174,9 @@ export default function Orders() {
               </div>
             </div>
           </div>
+        </div>
+        <div className="mx-auto" style={{width:"30%", height:"20%"}}>
+            <button type="button" class="btn btn-secondary mb-3" style={{width:"100%", height:"100%"}} onClick={updateJob}>Submit</button>
         </div>
       </div>
     </div>
