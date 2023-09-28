@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getJobById, updateJob } from "../Components/APICalls";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'react-dates/initialize';
-import 'react-dates/lib/css/_datepicker.css';
 import DateInput from '../Components/DateInput';
 import { useNavigate } from "react-router-dom";
 
