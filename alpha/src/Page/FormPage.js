@@ -54,10 +54,6 @@ function FormPage() {
     });
   }
   
-  const uploadFileBeforeSubmit = () =>{
-
-  }
-  
   return (
     <div className="container" style={{ maxWidth: '900px' }}>
       <h1 className="my-4 text-center">Request a job </h1>
@@ -95,8 +91,8 @@ function FormPage() {
             />
           ))}
           <button type="button" className="btn btn-primary my-2" onClick={addDate}>Add Date and Time</button>
-
-          <FileUpload type="photo" callback={uploadFileBeforeSubmit}></FileUpload>
+{/* 
+          <FileUpload type="photo" callback={uploadFileBeforeSubmit}></FileUpload> */}
 
         <div className="text-center">
           <button type="submit" className="btn btn-primary">Submit</button>
