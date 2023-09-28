@@ -49,6 +49,25 @@ export async function updateJob(id, params) {
     }
   }
 
+  // Uploads into the file table
+  export async function uploadFile(params) {
+    try {
+        const url = `http://localhost:3001/api/uploadfile/`;
+        const response = await fetch(url, {
+        method: 'POST', 
+        headers: {
+            'Content-Type': 'application/json',
+        },
+            body: JSON.stringify(params),
+        });
+
+        const fileUpdate = await response.json();
+        console.log('File uploaded:', fileUpdate);
+    } catch (error) {
+        console.error('Error updating job:', error);
+    }
+}
+
 export async function files(id, params) {
     try {
         const url = `http://localhost:3001/api/file/${id}`; // Use the id as a URL parameter

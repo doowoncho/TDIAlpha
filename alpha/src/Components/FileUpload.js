@@ -33,7 +33,7 @@ function FileUpload({type, job, name}) {
     const selectedFile = event.target.files[0];
     setFile(selectedFile);
   };
-
+  
   async function handleUpload(){
     const fileRef = ref(storage, `${file.name}`);
 

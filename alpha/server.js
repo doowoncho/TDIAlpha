@@ -129,6 +129,30 @@ app.post('/api/createJob', async (req, res) => {
   }
 });
 
+app.post('/api/uploadfile/', async (req, res) => {
+  try {
+    const { photo_name, photo_file, permit_name, permit_file, permit_confirmation_name, permit_confirmation_file, map_drawing_name, map_file } = req.body;
+    
+      const createdFile = await prisma.files.create({
+        data: {
+          photo_name: photo_name,
+          photo_file: photo_file,
+          permit_name: permit_name,
+          permit_file: permit_file,
+          permit_confirmation_name: permit_confirmation_name,
+          permit_confirmation_file: permit_confirmation_file,
+          map_drawing_name: map_drawing_name,
+          map_file: map_file 
+        }
+      });
+      res.json(createdFile);
+    }
+    catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Internal server error'})
+  }
+})
+
 app.post('/api/file/:id', async (req, res) => {
   try {
     const { id, photo_name, photo_file, permit_name, permit_file, permit_confirmation_name, permit_confirmation_file, map_drawing_name, map_file } = req.body;

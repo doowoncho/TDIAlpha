@@ -1,9 +1,9 @@
+//got too tired but basically need to change this so that on submit we upload the photo file but difficult because that is in a child 
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
-
-// Import createJob function if it's defined in '../Components/APICalls'
+import FileUpload from '../Components/FileUploadGeneric';
 import { createJob } from '../Components/APICalls';
 import DateInput from '../Components/DateInput';
 
@@ -34,8 +34,7 @@ function FormPage() {
     const poNumber = document.getElementById('poNumber').value;
     const woNumber = document.getElementById('woNumber').value;
     const location = document.getElementById('location').value;
-
-    console.log(dates)
+    const photo = document.getElementById('fileUpload').value;
 
     dates.forEach((dateTime) => {     
       const startTime = new Date(dateTime.date + 'T' + dateTime.startTime);
@@ -53,6 +52,10 @@ function FormPage() {
       const createdJob = createJob(newJob);
       setJob(createdJob);
     });
+  }
+  
+  const uploadFileBeforeSubmit = () =>{
+
   }
   
   return (
@@ -92,9 +95,13 @@ function FormPage() {
             />
           ))}
           <button type="button" className="btn btn-primary my-2" onClick={addDate}>Add Date and Time</button>
+
+          <FileUpload type="photo" callback={uploadFileBeforeSubmit}></FileUpload>
+
         <div className="text-center">
           <button type="submit" className="btn btn-primary">Submit</button>
         </div>
+
       </form>
     </div>
   );
