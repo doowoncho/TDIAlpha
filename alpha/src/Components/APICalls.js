@@ -99,6 +99,7 @@ export async function createJob(params) {
 
         const createdJob = await response.json();
         console.log('Created Job:', createdJob);
+        return createdJob
     } catch (error) {
         console.error('Error creating job:', error);
     }
@@ -120,6 +121,22 @@ export async function getJobById(id) {
       console.error('Error fetching job:', error);
   }
 }
+
+export async function getFilesById(id) {
+    try {
+        const response = await fetch(`http://localhost:3001/api/getFiles/${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+  
+        const job = await response.json();
+        return job;
+    } catch (error) {
+        console.error('Error fetching job:', error);
+    }
+  }
 
 // Gets a single user by ID
 export async function getUserById(id) {

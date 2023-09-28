@@ -135,7 +135,7 @@ app.post('/api/file/:id', async (req, res) => {
     
     const jobId = parseInt(req.params.id);
     
-    const existingID = await prisma.files.findMany({
+    const existingID = await prisma.files.findUnique({
       where: {
         id: jobId
       }
@@ -162,7 +162,7 @@ app.post('/api/file/:id', async (req, res) => {
     }else {
       const createID = await prisma.files.create({
         data: {
-          id: id,
+          id: jobId,
           photo_name: photo_name,
           photo_file: photo_file,
           permit_name: permit_name,
@@ -181,6 +181,25 @@ app.post('/api/file/:id', async (req, res) => {
     res.status(500).json({ error: 'Internal server error'})
   }
 })
+
+app.get('/api/getFiles/:id', async (req, res) => {
+  try {
+    const jobId = parseInt(req.params.id);
+    const files = await prisma.files.findUnique({
+      where: {
+        id: jobId
+      }
+    });
+    if (files) {
+      res.json(files);
+    } else {
+      res.status(404).json({ error: 'Job not found' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 
 // Add this route to get a job by ID

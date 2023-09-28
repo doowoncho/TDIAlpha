@@ -1,6 +1,6 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useState, useEffect } from "react";
-import { getJobById } from "../Components/APICalls";
+import { getJobById, getFilesById } from "../Components/APICalls";
 import { useParams } from 'react-router-dom';
 import FileUpload from "../Components/FileUpload";
 
@@ -10,6 +10,7 @@ export default function Orders() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [job, setJob] = useState(null);
+  const [files, setFiles] = useState("");
 
   let status_bg;
 
@@ -26,7 +27,18 @@ export default function Orders() {
       }
     }
 
+    async function fetchFiles() {
+      try {
+        const fetchedFiles = await getFilesById(id);
+        setFiles(fetchedFiles);
+        console.log(fetchedFiles);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
     fetchJob();
+    fetchFiles();
   }, [id]);
 
 
@@ -123,19 +135,19 @@ export default function Orders() {
             <div style={{display:"flex", alignItems:"center", justifyContent:"center", flexDirection:"column"}}>
               <div class="mb-3 mx-auto" style={{width:"16rem"}}>
                 <label for="formFileDisabled" class="form-label">Permit Confirmation</label>
-                  <FileUpload type="p_confirm" job={job.p_confirm}></FileUpload>
+                  <FileUpload type="p_confirm" job={files.permit_confirmation_file} name={files.permit_confirmation_name}></FileUpload>
               </div>
               <div class="mb-3 mx-auto" style={{width:"16rem"}}>
                 <label for="formFileDisabled" class="form-label">Permit</label>
-                  <FileUpload type="permit" job={job.permit}></FileUpload>
+                  <FileUpload type="permit" job={files.permit_file} name={files.permit_name}></FileUpload>
               </div>
               <div class="mb-3 mx-4" style={{width:"16rem"}}>
                 <label for="formFileDisabled" class="form-label">Map Drawing</label>
-                  <FileUpload type="map" job={job.map}></FileUpload>
+                  <FileUpload type="map" job={files.map_filep} name={files.map_drawing_name}></FileUpload>
               </div>
               <div class="mb-3 mx-4" style={{width:"16rem"}}>
                 <label for="formFileDisabled" class="form-label">Photo</label>
-                  <FileUpload type="photo" job={job.photo}></FileUpload>
+                  <FileUpload type="photo" job={files.photo_file} name={files.photo_name}></FileUpload>
               </div>
             </div>
           </div>

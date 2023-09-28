@@ -9,6 +9,7 @@ import DateInput from '../Components/DateInput';
 
 function FormPage() {
   const [dates, setDates] = useState([{ date: '', startTime: '', endTime: '' }]);
+  const [job, setJob] = useState();
 
   const handleDateChange = (index, field, value) => {
     const updatedDates = [...dates];
@@ -49,7 +50,8 @@ function FormPage() {
         starttime: startTime,
         endtime: endTime
       };
-      createJob(newJob);
+      const createdJob = createJob(newJob);
+      setJob(createdJob);
     });
   }
   

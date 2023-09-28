@@ -1,184 +1,133 @@
-import "bootstrap-icons/font/bootstrap-icons.css";
-import { useState, useEffect } from "react";
-import { getJobById } from "../Components/APICalls";
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import FileUpload from "../Components/FileUpload";
+import { getJobById } from "../Components/APICalls";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-dates/initialize';
+import 'react-dates/lib/css/_datepicker.css';
 
-export default function Orders() {
+// Import createJob function if it's defined in '../Components/APICalls'
+import { createJob } from '../Components/APICalls';
+import DateInput from '../Components/DateInput';
 
+function JobEditPage() {
   const { id } = useParams();
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [dates, setDates] = useState([{ date: '', startTime: '', endTime: '' }]);
   const [job, setJob] = useState(null);
-  const [permitNumber, setPermitNumber] = useState();
-  const [woNumber, setWoNumber] = useState();
-  const [poNumber, setPoNumber] = useState();
 
+  const handleDateChange = (index, field, value) => {
+    const updatedDates = [...dates];
+    updatedDates[index][field] = value;
+    setDates(updatedDates);
+  };
 
+  const addDate = () => {
+    setDates([...dates, { date: '', startTime: '', endTime: '' }]);
+  };
 
-  let status_bg;
+  const deleteDate = (index) => {
+    const updatedDates = [...dates];
+    updatedDates.splice(index, 1);
+    setDates(updatedDates);
+  };
 
+  const handleSubmit = (e) => {
+    e.preventDefault(); 
+    const customer = document.getElementById('customerName').value;
+    const email = document.getElementById('email').value;
+    const poNumber = document.getElementById('poNumber').value;
+    const woNumber = document.getElementById('woNumber').value;
+    const location = document.getElementById('location').value;
+
+    console.log(dates)
+
+    dates.forEach((dateTime) => {     
+      const startTime = new Date(dateTime.date + 'T' + dateTime.startTime);
+      const endTime = new Date(dateTime.date + 'T' + dateTime.endTime);
+      const newJob = {
+        customer,
+        status: 'New',
+        email,
+        po_number: poNumber,
+        wo_number: woNumber,
+        setup: location,
+        starttime: startTime,
+        endtime: endTime
+      };
+      createJob(newJob);
+    });
+  }
 
   useEffect(() => {
     async function fetchJob() {
       try{
         const fetchedJob = await getJobById(id);
+        console.log(fetchedJob);
         setJob(fetchedJob);
-        setIsLoading(false);
-        setPermitNumber(fetchedJob.permit_number);
-        setPermitNumber(fetchedJob.wo_number);
-        setPermitNumber(fetchedJob.po_number);
       } catch (error){
-        setError("Error retriving Job!");
-        setIsLoading(false);
+        console.error(error);
       }
     }
-
     fetchJob();
   }, [id]);
 
-  function updateJob(){
-    // changes = {
-    //     customer: customer,
-    //     id: id, 
-    //     status: status,
-    //     setup: setup,
-    //     permit_number: permitNumber, 
-    //     notes: notes, 
-    //     wo_number: woNumber, 
-    //     po_number: poNumber,
-    //     p_confirm: p_confirm,
-    //     permit: permit,
-    //     map: map,
-    //     photo: photo
-    // }
-  }
-
-
-  const Card = ({info, bg, tc, width, background, type, height}) => (
-    <div className={`card bg-${bg} mb-3 `} style={{width:`${width}`, backgroundColor:`${background}`, height:`${height}`, backgroundColor:"#FF6969"}}>
-      <div className="card-body">
-        <h6 className={`card-header text-${tc}`} style={{textAlign:"center", fontSize:"0.8rem", marginTop:"1%", color:"#582525"}}>{type}</h6>
-        <h4 className={`card-title text-center text-${tc}`} style={{marginTop:"2%", textAlign:"center", color:"#582525"}}>{info}</h4>
-      </div>
-    </div>
-  )
-
-  const Files = ({width, bg, icon, link}) => (
-    <div className={`card border border-success  bg-${bg} mb-2 `} style={{width:`${width}`}}>
-      <div className="card-body">
-        <div style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
-          <a href={`${link}`}><i className={`${icon}`} style={{ fontSize: "2rem" }}></i></a>
-        </div>
-      </div>
-    </div>
-  )
-  
-  if (isLoading) {
-    return <div></div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
-  if(job.status === "Completed"){
-    status_bg = "success";
-  }else if(job.status === "Declined"){
-    status_bg = "danger";
-  }else if(job.status === "New"){
-    status_bg = "primary";
-  }else if(job.status === "InProgress"){
-    status_bg = "warning";
-  }else{
-    status_bg = "secondary";
-  }
-
-  function updateJob(){
-    
-  }
-
   return (
-    <div>
-      <div className="card border shadow-lg container mt-4 mb-5" style={{width:"50%", border: "none"}}>
-        <div style={{display:"flex", alignItems:"center", justifyContent:"center", flexDirection:"row", gap:"5%"}}>
-          <div className="card " style={{display:"flex", alignItems:"center", justifyContent:"center", width:"60%", marginTop:"2rem", marginBottom:"2rem"}}>
-            <div className="card-title" style={{fontSize:"2rem", marginRight:"auto", marginLeft:"5%", marginTop:"2%"}}>{job.customer}</div>
-            <div className="card-body" style={{display:"flex", alignItems:"center", justifyContent:"space-around", gap:"5%", width:"90%"}}>
-            <div style={{display: "flex"}}>
-            <div style={{display: "flex"}}>
-              <fieldset disabled style={{marginRight: "20px"}}>
-                <label for="exampleInputEmail1">ID</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={job.id}/>
-              </fieldset>
-
-              <fieldset disabled>
-                <label for="exampleInputDate" style={{marginRight: "5px"}}>Date:</label>
-                <input type="email" class="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={job.startdate}/>
-              </fieldset>
-            </div>
-            </div>
-            </div>
-          </div>
-          <div>
-            <img src="https://www.kadencewp.com/wp-content/uploads/2020/10/alogo-1.png" style={{height:"8rem"}}></img>
-          </div>
+    <div className="container" style={{ maxWidth: '900px' }}>
+      <h1 className="my-4 text-center">Edit Job </h1>
+      <form onSubmit={handleSubmit}>
+        {job.customer ? (
+        <div className="mb-3">
+          <label htmlFor="customerName">Customer</label>
+          <input type="text" className="form-control" id="customer"/>
         </div>
-        <div style={{display:"flex", alignItems:"center", justifyContent:"center", flexDirection:"row", gap:"3%", marginLeft:"3%", marginRight:"2%"}}>
-          <div className="card border" style={{display:"flex", alignItems:"center", justifyContent:"center", width:"50%", marginBottom:"2rem", border: "none"}}>
-            <div className="card-title" style={{fontSize:"1.5rem", marginRight:"auto", marginLeft:"5%", marginTop:"2%"}}>{job.setup}</div>
-            <fieldset className="mt-3">
-                <label for="exampleInputDate" style={{marginRight: "5px"}}>Permit/Request#:</label>
-                <input type="email" class="form-control" id="exampleInputDate" aria-describedby="emailHelp" placeholder={job.permit_number} value={permitNumber} onChange={event => setPermitNumber(event.target.value)}/>
-            </fieldset>
-            <fieldset className="my-3">
-                <label for="exampleInputDate" style={{marginRight: "5px"}}>WO#:</label>
-                <input type="email" class="form-control" id="exampleInputDate" aria-describedby="emailHelp" placeholder={job.wo_number} value={woNumber} onChange={event => setWoNumber(event.target.value)}/>
-            </fieldset>
-            <fieldset className="mb-5">
-                <label for="exampleInputDate" style={{marginRight: "5px"}}>PO#:</label>
-                <input type="email" class="form-control" id="exampleInputDate" aria-describedby="emailHelp" placeholder={job.po_number} value={poNumber} onChange={event => setPoNumber(event.target.value)}/>
-            </fieldset>
-          </div>
-          <div style={{marginTop:"1rem", marginBottom:"2rem"}}>
-            <Card info={job.status} type="Status" width="20rem" bg={status_bg} tc="white"></Card>
-            <div class="card">
-              <div class="card-header">Notes</div>
-              <div class="card-body">
-                  <input type="email" class="form-control text-center" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder={job.notes}/>
-              </div>
-            </div>
-            <div className="card text-center" width="20rem" height="19rem">
-            </div>
-          </div>
+        ) : (
+        <div className="mb-3">
+          <label htmlFor="customerName">Name</label>
+          <input type="text" className="form-control" id="customerName" placeholder={job.customer}/>
         </div>
-        <div style={{marginBottom:"3rem"}}>
-          <div className="card " style={{width:"83%", margin:"auto"}}>
-            <div className="card-title" style={{fontSize:"1.5rem", marginRight:"auto", marginLeft:"5%", marginTop:"2%"}}>Files</div>
-            <div style={{display:"flex", alignItems:"center", justifyContent:"center", flexDirection:"column"}}>
-              <div class="mb-3 mx-auto" style={{width:"16rem"}}>
-                <label for="formFileDisabled" class="form-label">Permit Confirmation</label>
-                  <FileUpload type="p_confirm" job={job.p_confirm}></FileUpload>
-              </div>
-              <div class="mb-3 mx-auto" style={{width:"16rem"}}>
-                <label for="formFileDisabled" class="form-label">Permit</label>
-                  <FileUpload type="permit" job={job.permit}></FileUpload>
-              </div>
-              <div class="mb-3 mx-4" style={{width:"16rem"}}>
-                <label for="formFileDisabled" class="form-label">Map Drawing</label>
-                  <FileUpload type="map" job={job.map}></FileUpload>
-              </div>
-              <div class="mb-3 mx-4" style={{width:"16rem"}}>
-                <label for="formFileDisabled" class="form-label">Photo</label>
-                  <FileUpload type="photo" job={job.photo}></FileUpload>
-              </div>
-            </div>
-          </div>
+        )}
+        <div className="mb-3">
+          <label htmlFor="customerName">Setup</label>
+          <input type="text" className="form-control" id="setup" placeholder={job.setup}/>
         </div>
-        <div className="mx-auto" style={{width:"30%", height:"20%"}}>
-            <button type="button" class="btn btn-secondary mb-3" style={{width:"100%", height:"100%"}} onClick={updateJob}>Submit</button>
+        <div className="mb-3">
+          <label htmlFor="email">Email address</label>
+          <input type="text" className="form-control" id="email" placeholder={job.email}/>
         </div>
-      </div>
+        <div className="mb-3">
+          <label htmlFor="email">Permit Number</label>
+          <input type="text" className="form-control" id="permit_number" placeholder={job.permit_number == null ? "" : job.permit_number}/>
+        </div>
+        <div className="mb-3">
+          <label htmlFor="poNumber">PO Number</label>
+          <input type="text" className="form-control" id="poNumber" placeholder={job.po_number} />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="woNumber">WO Number</label>
+          <input type="text" className="form-control" id="woNumber" placeholder={job.wo_number} />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="location">Location</label>
+          <input type="text" className="form-control" id="location" placeholder="Enter Location" />
+        </div>
+        <p className="text-danger">
+          Experimental way to handle multiple dates and times that a client might ask for.
+        </p>
+            {dates.map((date, index) => (
+            <DateInput
+              key={index}
+              date={date}
+              index={index}
+              handleDateChange={handleDateChange}
+              deleteDate={deleteDate}
+            />
+          ))}
+          <button type="button" className="btn btn-primary my-2" onClick={addDate}>Add Date and Time</button>
+        <div className="text-center">
+          <button type="submit" className="btn btn-primary">Submit</button>
+        </div>
+      </form>
     </div>
-  )
+  );
 }
+
+export default JobEditPage;
