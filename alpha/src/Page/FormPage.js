@@ -1,8 +1,6 @@
 //got too tired but basically need to change this so that on submit we upload the photo file but difficult because that is in a child 
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'react-dates/initialize';
-import 'react-dates/lib/css/_datepicker.css';
 import FileUpload from '../Components/FileUploadGeneric';
 import { createJob } from '../Components/APICalls';
 import DateInput from '../Components/DateInput';
