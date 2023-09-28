@@ -34,7 +34,6 @@ function FormPage() {
     const poNumber = document.getElementById('poNumber').value;
     const woNumber = document.getElementById('woNumber').value;
     const location = document.getElementById('location').value;
-    const photo = document.getElementById('fileUpload').value;
 
     dates.forEach((dateTime) => {     
       const startTime = new Date(dateTime.date + 'T' + dateTime.startTime);
@@ -60,11 +59,11 @@ function FormPage() {
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="customerName">Name</label>
-          <input type="text" className="form-control" id="customerName" placeholder="Enter name"/>
+          <input type="text" className="form-control" id="customerName" placeholder="Enter name" required/>
         </div>
         <div className="mb-3">
           <label htmlFor="email">Email address</label>
-          <input type="text" className="form-control" id="email" placeholder="Enter email"/>
+          <input type="text" className="form-control" id="email" placeholder="Enter email" required/>
         </div>
         <div className="mb-3">
           <label htmlFor="poNumber">PO Number</label>
@@ -76,11 +75,8 @@ function FormPage() {
         </div>
         <div className="mb-3">
           <label htmlFor="location">Location</label>
-          <input type="text" className="form-control" id="location" placeholder="Enter Location" />
+          <input type="text" className="form-control" id="location" placeholder="Enter Location" required/>
         </div>
-        <p className="text-danger">
-          Experimental way to handle multiple dates and times that a client might ask for.
-        </p>
             {dates.map((date, index) => (
             <DateInput
               key={index}
@@ -91,8 +87,9 @@ function FormPage() {
             />
           ))}
           <button type="button" className="btn btn-primary my-2" onClick={addDate}>Add Date and Time</button>
-{/* 
-          <FileUpload type="photo" callback={uploadFileBeforeSubmit}></FileUpload> */}
+
+          <FileUpload type="photo"></FileUpload> 
+          <p1 className = "text-danger">Currently not functional</p1>
 
         <div className="text-center">
           <button type="submit" className="btn btn-primary">Submit</button>

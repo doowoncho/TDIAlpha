@@ -11,7 +11,6 @@ export default function Orders() {
   const [error, setError] = useState(null);
   const [job, setJob] = useState(null);
   const [files, setFiles] = useState("");
-
   let status_bg;
 
 
@@ -72,6 +71,12 @@ export default function Orders() {
     status_bg = "secondary";
   }
 
+
+function readableTime(time){
+  let readable = new Date(time).toLocaleString()
+  return readable
+}
+
   return (
     <div>
       <div className="card border shadow-lg container mt-4 mb-5" style={{width:"50%", border: "none"}}>
@@ -79,7 +84,7 @@ export default function Orders() {
           <a href={`/jobedit/${job.id}`} style={{textDecoration:"None", textAlign:"center", color:"white"}}>Edit</a>
         </div>
         <div style={{display:"flex", alignItems:"center", justifyContent:"center", flexDirection:"row", gap:"5%"}}>
-          <div className="card " style={{display:"flex", alignItems:"center", justifyContent:"center", width:"60%", marginTop:"2rem", marginBottom:"2rem"}}>
+          <div className="card " style={{display:"flex", alignItems:"center", justifyContent:"center", width:"90%", marginTop:"2rem", marginBottom:"2rem"}}>
             <div className="card-title" style={{fontSize:"2rem", marginRight:"auto", marginLeft:"5%", marginTop:"2%"}}>{job.customer}</div>
             <div className="card-body" style={{display:"flex", alignItems:"center", justifyContent:"space-around", gap:"5%", width:"90%"}}>
             <div style={{display: "flex"}}>
@@ -90,15 +95,14 @@ export default function Orders() {
               </fieldset>
 
               <fieldset disabled>
-                <label for="exampleInputDate" style={{marginRight: "5px"}}>Date:</label>
-                <input type="email" class="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={job.starttime}/>
+                <label for="exampleInputDate" style={{marginRight: "5px"}}>StartTime:</label>
+                <input type="email" class="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={readableTime(job.starttime)}/>
+                <label for="exampleInputDate" style={{marginRight: "5px"}}>End Time:</label>
+                <input type="email" class="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={readableTime(job.endtime)}/>
               </fieldset>
             </div>
             </div>
             </div>
-          </div>
-          <div>
-            <img src="https://www.kadencewp.com/wp-content/uploads/2020/10/alogo-1.png" style={{height:"8rem"}}></img>
           </div>
         </div>
         <div style={{display:"flex", alignItems:"center", justifyContent:"center", flexDirection:"row", gap:"3%", marginLeft:"3%", marginRight:"2%"}}>
@@ -122,7 +126,9 @@ export default function Orders() {
             <div class="card">
               <div class="card-header">Notes</div>
               <div class="card-body">
+              <fieldset className="mb-5" disabled>
                   <input type="email" class="form-control text-center" id="exampleInputEmail1" aria-describedby="emailHelp" value={job.notes}/>
+              </fieldset>
               </div>
             </div>
             <div className="card text-center" width="20rem" height="19rem">
