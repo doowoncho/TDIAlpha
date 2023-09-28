@@ -33,3 +33,15 @@ model users {
   email      String? @db.VarChar(50)
   password   String? @db.VarChar(50)
 }
+
+model files {
+  id                       Int     @id @default(autoincrement())
+  photo_name               String?  @db.VarChar(255)
+  photo_file               String?  @db.VarChar(255)
+  permit_name              String?  @db.VarChar(255)
+  permit_file              String?  @db.VarChar(255)
+  permit_confirmation_name String?  @db.VarChar(255)
+  permit_confirmation_file String?  @db.VarChar(255)
+  map_drawing_name         String?  @db.VarChar(255)
+  map_file                 String?  @db.VarChar(255)
+}
