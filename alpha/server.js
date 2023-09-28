@@ -129,6 +129,59 @@ app.post('/api/createJob', async (req, res) => {
   }
 });
 
+app.post('/api/file/:id', async (req, res) => {
+  try {
+    const { id, photo_name, photo_file, permit_name, permit_file, permit_confirmation_name, permit_confirmation_file, map_drawing_name, map_file } = req.body;
+    
+    const jobId = parseInt(req.params.id);
+    
+    const existingID = await prisma.files.findMany({
+      where: {
+        id: jobId
+      }
+    });
+
+    if (existingID) {
+      const updatedID = await prisma.files.update({
+        where: {
+          id: jobId
+        },
+        data: {
+          photo_name: photo_name,
+          photo_file: photo_file,
+          permit_name: permit_name,
+          permit_file: permit_file,
+          permit_confirmation_name: permit_confirmation_name,
+          permit_confirmation_file: permit_confirmation_file,
+          map_drawing_name: map_drawing_name,
+          map_file: map_file                 
+        }
+      });
+
+      res.json(updatedID);
+    }else {
+      const createID = await prisma.files.create({
+        data: {
+          id: id,
+          photo_name: photo_name,
+          photo_file: photo_file,
+          permit_name: permit_name,
+          permit_file: permit_file,
+          permit_confirmation_name: permit_confirmation_name,
+          permit_confirmation_file: permit_confirmation_file,
+          map_drawing_name: map_drawing_name,
+          map_file: map_file 
+        }
+      });
+
+      res.json(createID);
+    }
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Internal server error'})
+  }
+})
+
 
 // Add this route to get a job by ID
 app.get('/api/getJob/:id', async (req, res) => {

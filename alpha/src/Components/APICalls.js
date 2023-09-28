@@ -48,6 +48,26 @@ export async function updateJob(id, params) {
       console.error('Error updating job:', error);
     }
   }
+
+export async function files(id, params) {
+    try {
+        const url = `http://localhost:3001/api/file/${id}`; // Use the id as a URL parameter
+
+        console.log(params);
+        const response = await fetch(url, {
+        method: 'POST', 
+        headers: {
+            'Content-Type': 'application/json',
+        },
+            body: JSON.stringify(params),
+        });
+
+        const fileUpdate = await response.json();
+        console.log('File updated:', fileUpdate);
+    } catch (error) {
+        console.error('Error updating job:', error);
+    }
+}
   
 // Deletes job with params from options
 export async function deleteJob(id) {

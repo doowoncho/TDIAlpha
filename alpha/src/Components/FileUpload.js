@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { storage } from '../Components/Firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { updateJob } from './APICalls';
+import { files } from './APICalls';
 import { useParams } from 'react-router-dom';
 
 function FileUpload({type, job}) {
@@ -48,24 +48,20 @@ function FileUpload({type, job}) {
 
       let update = {};
       if(type === "p_confirm"){
-        update = {p_confirm: fileBlob};
+        update = {permit_confirmation_file: fileBlob, permit_confirmation_name: file.name};
       }else if(type === "permit"){
-        update = {permit: fileBlob};
+        update = {permit_file: fileBlob, permit_name: file.name};
       }else if(type === "map"){
-        update = {map: fileBlob};
+        update = {map_file: fileBlob, map_drawing_name: file.name};
       }else{
-        update = {photo: fileBlob};
+        update = {photo_file: fileBlob, photo_name: file.name};
       }
       
-      await updateJob(id, update);
+      await files(id, update);
       
       const updatedUploaded = { ...uploaded, [type]: true };
       const updatedFileName = { ...fileName };
 
-      // Update the specific property in the copy
-  
-      // Update the state with the modified copy
-      setFileName(updatedFileName);
       
       setUploaded(updatedUploaded);
 
@@ -99,7 +95,7 @@ function FileUpload({type, job}) {
         update = {photo: fileBlob};
       }
 
-      await updateJob(id, update);
+      await files(id, update);
 
       window.location.reload();
       const updatedUploaded = { ...uploaded, [type]: true };
