@@ -1,18 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getJobById } from "../Components/APICalls";
+import { getJobById, updateJob } from "../Components/APICalls";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
-
-// Import createJob function if it's defined in '../Components/APICalls'
-import { createJob } from '../Components/APICalls';
 import DateInput from '../Components/DateInput';
 
 function JobEditPage() {
   const { id } = useParams();
   const [dates, setDates] = useState([{ date: '', startTime: '', endTime: '' }]);
-  const [job, setJob] = useState(null);
+  const [job, setJob] = useState();
+
+  const handleFieldChange = (fieldName, event) => {
+    const newValue = event.target.value;
+
+    if (newValue !== job[fieldName]) {
+      setJob({ ...job, [fieldName]: newValue });
+      console.log(job);
+    }
+  };
 
   const handleDateChange = (index, field, value) => {
     const updatedDates = [...dates];
@@ -32,28 +38,15 @@ function JobEditPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault(); 
-    const customer = document.getElementById('customerName').value;
-    const email = document.getElementById('email').value;
-    const poNumber = document.getElementById('poNumber').value;
-    const woNumber = document.getElementById('woNumber').value;
-    const location = document.getElementById('location').value;
 
     console.log(dates)
 
     dates.forEach((dateTime) => {     
       const startTime = new Date(dateTime.date + 'T' + dateTime.startTime);
       const endTime = new Date(dateTime.date + 'T' + dateTime.endTime);
-      const newJob = {
-        customer,
-        status: 'New',
-        email,
-        po_number: poNumber,
-        wo_number: woNumber,
-        setup: location,
-        starttime: startTime,
-        endtime: endTime
-      };
-      createJob(newJob);
+      setJob({ ...job, ['starttime']: startTime });
+      setJob({ ...job, ['endtime']: endTime });
+      updateJob(id, job);
     });
   }
 
@@ -61,7 +54,6 @@ function JobEditPage() {
     async function fetchJob() {
       try{
         const fetchedJob = await getJobById(id);
-        console.log(fetchedJob);
         setJob(fetchedJob);
       } catch (error){
         console.error(error);
@@ -74,40 +66,33 @@ function JobEditPage() {
     <div className="container" style={{ maxWidth: '900px' }}>
       <h1 className="my-4 text-center">Edit Job </h1>
       <form onSubmit={handleSubmit}>
-        {job.customer ? (
-        <div className="mb-3">
-          <label htmlFor="customerName">Customer</label>
-          <input type="text" className="form-control" id="customer"/>
-        </div>
-        ) : (
         <div className="mb-3">
           <label htmlFor="customerName">Name</label>
-          <input type="text" className="form-control" id="customerName" placeholder={job.customer}/>
+          <input type="text" className="form-control" id="customerName" value={job ? job.customer : ""} onChange={(e) => handleFieldChange('customer', e)}/>
         </div>
-        )}
         <div className="mb-3">
-          <label htmlFor="customerName">Setup</label>
-          <input type="text" className="form-control" id="setup" placeholder={job.setup}/>
+          <label htmlFor="setup">Location</label>
+          <input type="text" className="form-control" id="setup" value={job ? job.setup : ""} onChange={(e) => handleFieldChange('setup', e)}/>
         </div>
         <div className="mb-3">
           <label htmlFor="email">Email address</label>
-          <input type="text" className="form-control" id="email" placeholder={job.email}/>
+          <input type="text" className="form-control" id="email" value={job ? job.email : ""} onChange={(e) => handleFieldChange('email', e)}/>
         </div>
         <div className="mb-3">
-          <label htmlFor="email">Permit Number</label>
-          <input type="text" className="form-control" id="permit_number" placeholder={job.permit_number == null ? "" : job.permit_number}/>
+          <label htmlFor="permit_number">Permit Number</label>
+          <input type="text" className="form-control" id="permit_number" value={job ? job.permit_number : ""} onChange={(e) => handleFieldChange('permit_number', e)}/>
         </div>
         <div className="mb-3">
           <label htmlFor="poNumber">PO Number</label>
-          <input type="text" className="form-control" id="poNumber" placeholder={job.po_number} />
+          <input type="text" className="form-control" id="poNumber" value={job ? job.po_number : ""} onChange={(e) => handleFieldChange('po_number', e)}/>
         </div>
         <div className="mb-3">
           <label htmlFor="woNumber">WO Number</label>
-          <input type="text" className="form-control" id="woNumber" placeholder={job.wo_number} />
+          <input type="text" className="form-control" id="woNumber" value={job ? job.wo_number : ""} onChange={(e) => handleFieldChange('wo_number', e)}/>
         </div>
         <div className="mb-3">
-          <label htmlFor="location">Location</label>
-          <input type="text" className="form-control" id="location" placeholder="Enter Location" />
+          <label htmlFor="notes">Notes</label>
+          <input type="text" className="form-control" id="notes" value={job ? job.notes : ""} onChange={(e) => handleFieldChange('notes', e)}/>
         </div>
         <p className="text-danger">
           Experimental way to handle multiple dates and times that a client might ask for.
