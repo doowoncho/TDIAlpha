@@ -19,7 +19,6 @@ function JobEditPage() {
 
     if (newValue !== job[fieldName]) {
       setJob({ ...job, [fieldName]: newValue });
-      console.log(job);
     }
   };
 
@@ -27,10 +26,11 @@ function JobEditPage() {
     const updatedDates = [...dates];
     updatedDates[index][field] = value;
     setDates(updatedDates);
-  };
 
-  const addDate = () => {
-    setDates([...dates, { date: '', startTime: '', endTime: '' }]);
+    const startTime = new Date(updatedDates.date + 'T' + updatedDates.startTime);
+    const endTime = new Date(updatedDates.date + 'T' + updatedDates.endTime);
+    setJob({ ...job, ['starttime']: startTime });
+    setJob({ ...job, ['endtime']: endTime });
   };
 
   const deleteDate = (index) => {
@@ -41,18 +41,15 @@ function JobEditPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault(); 
-
-    console.log(dates)
+    const STARTTIME = 'starttime'
+    const ENDTIME = 'endtime'
 
     dates.forEach((dateTime) => {     
-      const startTime = new Date(dateTime.date + 'T' + dateTime.startTime);
-      const endTime = new Date(dateTime.date + 'T' + dateTime.endTime);
-      setJob({ ...job, ['starttime']: startTime });
-      setJob({ ...job, ['endtime']: endTime });
+
       updateJob(id, job);
     });
-    navigate("/jobdetails/"+id);
-    window.location.reload()
+    // navigate("/jobdetails/"+id);
+    // window.location.reload()
   }
 
   useEffect(() => {
@@ -108,10 +105,10 @@ function JobEditPage() {
               date={date}
               index={index}
               handleDateChange={handleDateChange}
+              editMode={false}
               deleteDate={deleteDate}
             />
           ))}
-          <button type="button" className="btn btn-primary my-2" onClick={addDate}>Add Date and Time</button>
         <div className="text-center">
           <button type="submit" className="btn btn-primary">Submit</button>
         </div>

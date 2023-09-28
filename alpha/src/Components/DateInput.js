@@ -1,4 +1,4 @@
-export default function DateInput({ date, index, handleDateChange, deleteDate }) {
+export default function DateInput({ date, index, handleDateChange, deleteDate, editMode }) {
     return (
       <div className="d-flex align-items-center">
         <label>Date</label>
