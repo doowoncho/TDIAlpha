@@ -52,7 +52,6 @@ export default function ToDoPage() {
       <Calendar
         min={new Date(0, 0, 0, 6, 0, 0)}
         max={new Date(0, 0, 0, 23, 0, 0)}
-        defaultView='week'
         tooltipAccessor={"start"}
         localizer={localizer}
         events={events}

@@ -6,10 +6,12 @@ import 'react-dates/lib/css/_datepicker.css';
 import FileUpload from '../Components/FileUploadGeneric';
 import { createJob } from '../Components/APICalls';
 import DateInput from '../Components/DateInput';
+import { useNavigate } from "react-router-dom";
 
 function FormPage() {
   const [dates, setDates] = useState([{ date: '', startTime: '', endTime: '' }]);
   const [job, setJob] = useState();
+  const navigate = useNavigate();
 
   const handleDateChange = (index, field, value) => {
     const updatedDates = [...dates];
@@ -50,6 +52,8 @@ function FormPage() {
       };
       const createdJob = createJob(newJob);
       setJob(createdJob);
+      navigate("/jobstable/");
+      window.location.reload()
     });
   }
   

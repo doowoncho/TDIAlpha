@@ -5,11 +5,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import DateInput from '../Components/DateInput';
+import { useNavigate } from "react-router-dom";
 
 function JobEditPage() {
   const { id } = useParams();
   const [dates, setDates] = useState([{ date: '', startTime: '', endTime: '' }]);
   const [job, setJob] = useState();
+  const navigate = useNavigate();
+
 
   const handleFieldChange = (fieldName, event) => {
     const newValue = event.target.value;
@@ -48,6 +51,8 @@ function JobEditPage() {
       setJob({ ...job, ['endtime']: endTime });
       updateJob(id, job);
     });
+    navigate("/jobdetails/"+id);
+    window.location.reload()
   }
 
   useEffect(() => {
