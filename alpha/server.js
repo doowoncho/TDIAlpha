@@ -55,7 +55,7 @@ app.get('/api/specificJobs', async (req, res) => {
 app.put('/api/updateJob/:id', async (req, res) => {
   try {
     const jobId = parseInt(req.params.id) //id of job we are changing
-    const { id, customer, starttime, endtime, status, setup, permit_number, notes, wo_number, po_number, assigned, p_confirm, permit, map} = req.body
+    const { id, customer, starttime, endtime, status, setup, permit_number, notes, wo_number, po_number, assigned, p_confirm, permit, map, photo } = req.body
     const posts = await prisma.jobs.update({
       where: {
         id: jobId
@@ -74,7 +74,8 @@ app.put('/api/updateJob/:id', async (req, res) => {
         permit: permit,
         map: map,
         starttime: starttime,
-        endtime: endtime
+        endtime: endtime,
+        photo: photo
       }
     });
     res.json(posts);
@@ -122,6 +123,102 @@ app.post('/api/createJob', async (req, res) => {
       },
     });
     res.json(newJob);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.post('/api/uploadfile/', async (req, res) => {
+  try {
+    const { photo_name, photo_file, permit_name, permit_file, permit_confirmation_name, permit_confirmation_file, map_drawing_name, map_file } = req.body;
+    
+      const createdFile = await prisma.files.create({
+        data: {
+          photo_name: photo_name,
+          photo_file: photo_file,
+          permit_name: permit_name,
+          permit_file: permit_file,
+          permit_confirmation_name: permit_confirmation_name,
+          permit_confirmation_file: permit_confirmation_file,
+          map_drawing_name: map_drawing_name,
+          map_file: map_file 
+        }
+      });
+      res.json(createdFile);
+    }
+    catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Internal server error'})
+  }
+})
+
+app.post('/api/file/:id', async (req, res) => {
+  try {
+    const { id, photo_name, photo_file, permit_name, permit_file, permit_confirmation_name, permit_confirmation_file, map_drawing_name, map_file } = req.body;
+    
+    const jobId = parseInt(req.params.id);
+    
+    const existingID = await prisma.files.findUnique({
+      where: {
+        id: jobId
+      }
+    });
+
+    if (existingID) {
+      const updatedID = await prisma.files.update({
+        where: {
+          id: jobId
+        },
+        data: {
+          photo_name: photo_name,
+          photo_file: photo_file,
+          permit_name: permit_name,
+          permit_file: permit_file,
+          permit_confirmation_name: permit_confirmation_name,
+          permit_confirmation_file: permit_confirmation_file,
+          map_drawing_name: map_drawing_name,
+          map_file: map_file                 
+        }
+      });
+
+      res.json(updatedID);
+    }else {
+      const createID = await prisma.files.create({
+        data: {
+          id: jobId,
+          photo_name: photo_name,
+          photo_file: photo_file,
+          permit_name: permit_name,
+          permit_file: permit_file,
+          permit_confirmation_name: permit_confirmation_name,
+          permit_confirmation_file: permit_confirmation_file,
+          map_drawing_name: map_drawing_name,
+          map_file: map_file 
+        }
+      });
+
+      res.json(createID);
+    }
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Internal server error'})
+  }
+})
+
+app.get('/api/getFiles/:id', async (req, res) => {
+  try {
+    const jobId = parseInt(req.params.id);
+    const files = await prisma.files.findUnique({
+      where: {
+        id: jobId
+      }
+    });
+    if (files) {
+      res.json(files);
+    } else {
+      res.status(404).json({ error: 'Job not found' });
+    }
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });
@@ -190,7 +287,6 @@ app.get('/api/getUserByEmail/:email', async (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
     }
   });
-
 
 
 // get jobs for a user by id

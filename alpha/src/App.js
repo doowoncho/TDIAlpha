@@ -8,6 +8,7 @@ import LoginPage from "./Page/LoginPage";
 import TimePage from "./Page/TimePage";
 import ToDoPage from "./Page/ToDoPage";
 import InvoicePage from "./Page/InvoicePage";
+import JobEdit from "./Page/JobEdit";
 
 
 const App = () => {
@@ -20,6 +21,7 @@ const App = () => {
           <Route path="/" element={<JobsTable />} />
           <Route path="/jobstable" element={<JobsTable />} />
           <Route path="/jobdetails/:id" element={<JobDetails />} />
+          <Route path="/jobedit/:id" element={<JobEdit />} />
           <Route path="/todo" element={<ToDoPage />} />
           <Route path="/form" element={<FormPage />} />
           <Route path="/time" element={<TimePage />} />
@@ -30,6 +32,7 @@ const App = () => {
         <Route path="/" element={<LoginPage />} />
         <Route path="/jobstable" element={<LoginPage />} />
         <Route path="/jobdetails/:id" element={<LoginPage />} />
+        <Route path="/jobedit/:id" element={<JobEdit />} />
         <Route path="/todo" element={<LoginPage />} />
         <Route path="/form" element={<LoginPage />} />
         <Route path="/time" element={<LoginPage />} /> 

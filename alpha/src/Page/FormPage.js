@@ -1,14 +1,15 @@
+//got too tired but basically need to change this so that on submit we upload the photo file but difficult because that is in a child 
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'react-dates/initialize';
-import 'react-dates/lib/css/_datepicker.css';
-
-// Import createJob function if it's defined in '../Components/APICalls'
+import FileUpload from '../Components/FileUploadGeneric';
 import { createJob } from '../Components/APICalls';
 import DateInput from '../Components/DateInput';
+import { useNavigate } from "react-router-dom";
 
 function FormPage() {
   const [dates, setDates] = useState([{ date: '', startTime: '', endTime: '' }]);
+  const [job, setJob] = useState();
+  const navigate = useNavigate();
 
   const handleDateChange = (index, field, value) => {
     const updatedDates = [...dates];
@@ -34,8 +35,6 @@ function FormPage() {
     const woNumber = document.getElementById('woNumber').value;
     const location = document.getElementById('location').value;
 
-    console.log(dates)
-
     dates.forEach((dateTime) => {     
       const startTime = new Date(dateTime.date + 'T' + dateTime.startTime);
       const endTime = new Date(dateTime.date + 'T' + dateTime.endTime);
@@ -49,7 +48,10 @@ function FormPage() {
         starttime: startTime,
         endtime: endTime
       };
-      createJob(newJob);
+      const createdJob = createJob(newJob);
+      setJob(createdJob);
+      navigate("/jobstable/");
+      window.location.reload()
     });
   }
   
@@ -59,11 +61,11 @@ function FormPage() {
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="customerName">Name</label>
-          <input type="text" className="form-control" id="customerName" placeholder="Enter name"/>
+          <input type="text" className="form-control" id="customerName" placeholder="Enter name" required/>
         </div>
         <div className="mb-3">
           <label htmlFor="email">Email address</label>
-          <input type="text" className="form-control" id="email" placeholder="Enter email"/>
+          <input type="text" className="form-control" id="email" placeholder="Enter email" required/>
         </div>
         <div className="mb-3">
           <label htmlFor="poNumber">PO Number</label>
@@ -75,11 +77,8 @@ function FormPage() {
         </div>
         <div className="mb-3">
           <label htmlFor="location">Location</label>
-          <input type="text" className="form-control" id="location" placeholder="Enter Location" />
+          <input type="text" className="form-control" id="location" placeholder="Enter Location" required/>
         </div>
-        <p className="text-danger">
-          Experimental way to handle multiple dates and times that a client might ask for.
-        </p>
             {dates.map((date, index) => (
             <DateInput
               key={index}
@@ -90,9 +89,14 @@ function FormPage() {
             />
           ))}
           <button type="button" className="btn btn-primary my-2" onClick={addDate}>Add Date and Time</button>
+
+          <FileUpload type="photo"></FileUpload> 
+          <p1 className = "text-danger">Currently not functional</p1>
+
         <div className="text-center">
           <button type="submit" className="btn btn-primary">Submit</button>
         </div>
+
       </form>
     </div>
   );

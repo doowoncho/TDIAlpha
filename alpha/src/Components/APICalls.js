@@ -48,6 +48,45 @@ export async function updateJob(id, params) {
       console.error('Error updating job:', error);
     }
   }
+
+  // Uploads into the file table
+  export async function uploadFile(params) {
+    try {
+        const url = `http://localhost:3001/api/uploadfile/`;
+        const response = await fetch(url, {
+        method: 'POST', 
+        headers: {
+            'Content-Type': 'application/json',
+        },
+            body: JSON.stringify(params),
+        });
+
+        const fileUpdate = await response.json();
+        console.log('File uploaded:', fileUpdate);
+    } catch (error) {
+        console.error('Error updating job:', error);
+    }
+}
+
+export async function files(id, params) {
+    try {
+        const url = `http://localhost:3001/api/file/${id}`; // Use the id as a URL parameter
+
+        console.log(params);
+        const response = await fetch(url, {
+        method: 'POST', 
+        headers: {
+            'Content-Type': 'application/json',
+        },
+            body: JSON.stringify(params),
+        });
+
+        const fileUpdate = await response.json();
+        console.log('File updated:', fileUpdate);
+    } catch (error) {
+        console.error('Error updating job:', error);
+    }
+}
   
 // Deletes job with params from options
 export async function deleteJob(id) {
@@ -79,6 +118,7 @@ export async function createJob(params) {
 
         const createdJob = await response.json();
         console.log('Created Job:', createdJob);
+        return createdJob
     } catch (error) {
         console.error('Error creating job:', error);
     }
@@ -100,6 +140,22 @@ export async function getJobById(id) {
       console.error('Error fetching job:', error);
   }
 }
+
+export async function getFilesById(id) {
+    try {
+        const response = await fetch(`http://localhost:3001/api/getFiles/${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+  
+        const job = await response.json();
+        return job;
+    } catch (error) {
+        console.error('Error fetching job:', error);
+    }
+  }
 
 // Gets a single user by ID
 export async function getUserById(id) {

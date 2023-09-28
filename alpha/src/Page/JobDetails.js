@@ -1,6 +1,6 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useState, useEffect } from "react";
-import { getJobById } from "../Components/APICalls";
+import { getJobById, getFilesById } from "../Components/APICalls";
 import { useParams } from 'react-router-dom';
 import FileUpload from "../Components/FileUpload";
 
@@ -10,7 +10,7 @@ export default function Orders() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [job, setJob] = useState(null);
-
+  const [files, setFiles] = useState("");
   let status_bg;
 
 
@@ -26,7 +26,18 @@ export default function Orders() {
       }
     }
 
+    async function fetchFiles() {
+      try {
+        const fetchedFiles = await getFilesById(id);
+        setFiles(fetchedFiles);
+        console.log(fetchedFiles);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
     fetchJob();
+    fetchFiles();
   }, [id]);
 
 
@@ -39,15 +50,6 @@ export default function Orders() {
     </div>
   )
 
-  const Files = ({width, bg, icon, link}) => (
-    <div className={`card border border-success  bg-${bg} mb-2 `} style={{width:`${width}`}}>
-      <div className="card-body">
-        <div style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
-          <a href={`${link}`}><i className={`${icon}`} style={{ fontSize: "2rem" }}></i></a>
-        </div>
-      </div>
-    </div>
-  )
   
   if (isLoading) {
     return <div></div>;
@@ -69,11 +71,20 @@ export default function Orders() {
     status_bg = "secondary";
   }
 
+
+function readableTime(time){
+  let readable = new Date(time).toLocaleString()
+  return readable
+}
+
   return (
     <div>
-      <div className="card border shadow-lg container mt-4" style={{width:"50%", border: "none"}}>
+      <div className="card border shadow-lg container mt-4 mb-5" style={{width:"50%", border: "none"}}>
+        <div className="card-body bg-primary mt-3" style={{width:"10%", textAlign:"center", borderRadius:"5%", color:"white", marginLeft:"85%", padding:"0.5rem", paddingBottom:"0.2rem", paddingTop:"0.2rem"}}>
+          <a href={`/jobedit/${job.id}`} style={{textDecoration:"None", textAlign:"center", color:"white"}}>Edit</a>
+        </div>
         <div style={{display:"flex", alignItems:"center", justifyContent:"center", flexDirection:"row", gap:"5%"}}>
-          <div className="card " style={{display:"flex", alignItems:"center", justifyContent:"center", width:"60%", marginTop:"2rem", marginBottom:"2rem"}}>
+          <div className="card " style={{display:"flex", alignItems:"center", justifyContent:"center", width:"90%", marginTop:"2rem", marginBottom:"2rem"}}>
             <div className="card-title" style={{fontSize:"2rem", marginRight:"auto", marginLeft:"5%", marginTop:"2%"}}>{job.customer}</div>
             <div className="card-body" style={{display:"flex", alignItems:"center", justifyContent:"space-around", gap:"5%", width:"90%"}}>
             <div style={{display: "flex"}}>
@@ -84,15 +95,14 @@ export default function Orders() {
               </fieldset>
 
               <fieldset disabled>
-                <label for="exampleInputDate" style={{marginRight: "5px"}}>Date:</label>
-                <input type="email" class="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={job.starttime}/>
+                <label for="exampleInputDate" style={{marginRight: "5px"}}>StartTime:</label>
+                <input type="email" class="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={readableTime(job.starttime)}/>
+                <label for="exampleInputDate" style={{marginRight: "5px"}}>End Time:</label>
+                <input type="email" class="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={readableTime(job.endtime)}/>
               </fieldset>
             </div>
             </div>
             </div>
-          </div>
-          <div>
-            <img src="https://www.kadencewp.com/wp-content/uploads/2020/10/alogo-1.png" style={{height:"8rem"}}></img>
           </div>
         </div>
         <div style={{display:"flex", alignItems:"center", justifyContent:"center", flexDirection:"row", gap:"3%", marginLeft:"3%", marginRight:"2%"}}>
@@ -116,7 +126,9 @@ export default function Orders() {
             <div class="card">
               <div class="card-header">Notes</div>
               <div class="card-body">
+              <fieldset className="mb-5" disabled>
                   <input type="email" class="form-control text-center" id="exampleInputEmail1" aria-describedby="emailHelp" value={job.notes}/>
+              </fieldset>
               </div>
             </div>
             <div className="card text-center" width="20rem" height="19rem">
@@ -129,15 +141,19 @@ export default function Orders() {
             <div style={{display:"flex", alignItems:"center", justifyContent:"center", flexDirection:"column"}}>
               <div class="mb-3 mx-auto" style={{width:"16rem"}}>
                 <label for="formFileDisabled" class="form-label">Permit Confirmation</label>
-                  <FileUpload type="p_confirm" job={job.p_confirm}></FileUpload>
+                  <FileUpload type="p_confirm" job={files.permit_confirmation_file} name={files.permit_confirmation_name}></FileUpload>
               </div>
               <div class="mb-3 mx-auto" style={{width:"16rem"}}>
                 <label for="formFileDisabled" class="form-label">Permit</label>
-                  <FileUpload type="permit" job={job.permit}></FileUpload>
+                  <FileUpload type="permit" job={files.permit_file} name={files.permit_name}></FileUpload>
               </div>
               <div class="mb-3 mx-4" style={{width:"16rem"}}>
                 <label for="formFileDisabled" class="form-label">Map Drawing</label>
-                  <FileUpload type="map" job={job.map}></FileUpload>
+                  <FileUpload type="map" job={files.map_filep} name={files.map_drawing_name}></FileUpload>
+              </div>
+              <div class="mb-3 mx-4" style={{width:"16rem"}}>
+                <label for="formFileDisabled" class="form-label">Photo</label>
+                  <FileUpload type="photo" job={files.photo_file} name={files.photo_name}></FileUpload>
               </div>
             </div>
           </div>
