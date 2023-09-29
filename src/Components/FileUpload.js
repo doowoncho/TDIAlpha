@@ -65,7 +65,7 @@ function FileUpload({type, job, name}) {
 
       
       setUploaded(updatedUploaded);
-
+      setFileName(updatedFileName)
   }
 
   return (

@@ -20,34 +20,23 @@ function JobEditPage() {
     }
   };
 
-  const handleDateChange = (index, field, value) => {
-    const updatedDates = [...dates];
-    updatedDates[index][field] = value;
-    setDates(updatedDates);
+  // const handleDateChange = (index, field, value) => {
+  //   const updatedDates = [...dates];
+  //   updatedDates[index][field] = value;
+  //   setDates(updatedDates);
 
-    const startTime = new Date(updatedDates.date + 'T' + updatedDates.startTime);
-    const endTime = new Date(updatedDates.date + 'T' + updatedDates.endTime);
-    setJob({ ...job, ['starttime']: startTime });
-    setJob({ ...job, ['endtime']: endTime });
-  };
-
-  const deleteDate = (index) => {
-    const updatedDates = [...dates];
-    updatedDates.splice(index, 1);
-    setDates(updatedDates);
-  };
+  //   const startTime = new Date(updatedDates.date + 'T' + updatedDates.startTime);
+  //   const endTime = new Date(updatedDates.date + 'T' + updatedDates.endTime);
+  //   setJob({ ...job, ['starttime']: startTime });
+  //   setJob({ ...job, ['endtime']: endTime });
+  // };
 
   const handleSubmit = (e) => {
     e.preventDefault(); 
-    const STARTTIME = 'starttime'
-    const ENDTIME = 'endtime'
-
-    dates.forEach((dateTime) => {     
 
       updateJob(id, job);
-    });
-    // navigate("/jobdetails/"+id);
-    // window.location.reload()
+    navigate("/jobdetails/"+id);
+    window.location.reload()
   }
 
   useEffect(() => {
@@ -71,7 +60,7 @@ function JobEditPage() {
           <input type="text" className="form-control" id="customerName" value={job ? job.customer : ""} onChange={(e) => handleFieldChange('customer', e)}/>
         </div>
         <div className="mb-3">
-          <label htmlFor="setup">Location</label>
+          <label htmlFor="setup">Setup</label>
           <input type="text" className="form-control" id="setup" value={job ? job.setup : ""} onChange={(e) => handleFieldChange('setup', e)}/>
         </div>
         <div className="mb-3">
@@ -94,10 +83,7 @@ function JobEditPage() {
           <label htmlFor="notes">Notes</label>
           <input type="text" className="form-control" id="notes" value={job ? job.notes : ""} onChange={(e) => handleFieldChange('notes', e)}/>
         </div>
-        <p className="text-danger">
-          Experimental way to handle multiple dates and times that a client might ask for.
-        </p>
-            {dates.map((date, index) => (
+            {/* {dates.map((date, index) => (
             <DateInput
               key={index}
               date={date}
@@ -106,7 +92,7 @@ function JobEditPage() {
               editMode={false}
               deleteDate={deleteDate}
             />
-          ))}
+          ))} */}
         <div className="text-center">
           <button type="submit" className="btn btn-primary">Submit</button>
         </div>
