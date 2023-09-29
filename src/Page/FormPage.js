@@ -58,6 +58,7 @@ function FormPage() {
   return (
     <div className="container" style={{ maxWidth: '900px' }}>
       <h1 className="my-4 text-center">Request a job </h1>
+      <p1>This would be on the TDI website so clients could make a request</p1>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="customerName">Name</label>
@@ -89,9 +90,9 @@ function FormPage() {
             />
           ))}
           <button type="button" className="btn btn-primary my-2" onClick={addDate}>Add Date and Time</button>
-          <label>Image Upload</label>
+
           <FileUpload type="photo"></FileUpload> 
-          <p1 className = "text-danger">Currently not functional</p1>
+          <p1 className = "text-danger">Currently not functional but this would be the image upload</p1>
 
         <div className="text-center">
           <button type="submit" className="btn btn-primary">Submit</button>
