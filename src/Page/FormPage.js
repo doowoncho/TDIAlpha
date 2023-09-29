@@ -89,7 +89,7 @@ function FormPage() {
             />
           ))}
           <button type="button" className="btn btn-primary my-2" onClick={addDate}>Add Date and Time</button>
-
+          <label>Image Upload</label>
           <FileUpload type="photo"></FileUpload> 
           <p1 className = "text-danger">Currently not functional</p1>
 
