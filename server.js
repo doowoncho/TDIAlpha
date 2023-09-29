@@ -8,7 +8,7 @@ const cors = require('cors');
 
 app.use(bodyParser.json());
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: 'http://18.117.181.144:3001',
   }));
 
 
