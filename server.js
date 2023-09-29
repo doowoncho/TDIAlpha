@@ -8,7 +8,7 @@ const cors = require('cors');
 
 app.use(bodyParser.json());
 app.use(cors({
-    origin: 'http://18.117.181.144:3001',
+    origin: 'https://main.d3uj1gkliipo6a.amplifyapp.com',
   }));
 
 
