@@ -66,6 +66,8 @@ function FileUpload({type, job, name}) {
       
       setUploaded(updatedUploaded);
       setFileName(updatedFileName)
+
+      window.location.reload()
   }
 
   return (
@@ -75,7 +77,7 @@ function FileUpload({type, job, name}) {
             <div className="card-body">
               <p className='text-center'>{name}</p>
               <div style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
-                <a href={job}><i className={`${fileType[type]}`} style={{ fontSize: "2rem" }}></i></a>
+                <a href={job} target="_blank"><i className={`${fileType[type]}`} style={{ fontSize: "2rem" }}></i></a>
               </div>
                   <input type="file" onChange={handleFileChange}/>
                   <button onClick={handleUpload} style={{width:"100%"}}>Replace File</button>
