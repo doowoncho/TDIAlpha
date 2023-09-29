@@ -58,7 +58,6 @@ function FormPage() {
   return (
     <div className="container" style={{ maxWidth: '900px' }}>
       <h1 className="my-4 text-center">Request a job </h1>
-      <p1>This would be on the TDI website so clients could make a request</p1>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="customerName">Name</label>
