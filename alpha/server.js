@@ -1,4 +1,5 @@
 const express = require('express');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient();
@@ -11,7 +12,14 @@ app.use(cors({
     origin: 'http://localhost:3000',
   }));
 
-
+app.use(
+  '/api', // Define the base URL path that should be proxied
+  createProxyMiddleware({
+    target: 'http://3.147.57.120:3001', // Specify the target URL of your HTTP server
+    changeOrigin: true, // Add this line to handle the change in origin
+  })
+);
+  
 //api endpoints to be called in the code to make calls in the database
 
 //gets all jobs
