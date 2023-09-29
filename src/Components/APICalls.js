@@ -187,7 +187,7 @@ export async function getAllUsers() {
   }
   export async function getUserByEmail(email) {
     try {
-        const response = await fetch(`${server}/api/getUserByEmail${email}`, {
+        const response = await fetch(`${server}/api/getUserByEmail/${email}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
