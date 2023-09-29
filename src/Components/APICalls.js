@@ -1,7 +1,9 @@
+const server = "http://18.117.181.144:3001"
+
 // Gets a list of all the jobs
 export async function getAllJobs() {
     try {
-      const response = await fetch('http://3.147.57.120:3001/api/jobs');
+      const response = await fetch(`${server}/api/jobs`);
       const data = await response.json();
       return(data)
     } catch (error) {
@@ -13,7 +15,7 @@ export async function getAllJobs() {
 export async function getSpecificJobs(params) {
     try {
         const queryString = new URLSearchParams(params).toString();
-        const url = `http://3.147.57.120:3001/api/specificJobs?${queryString}`;
+        const url = `${server}/api/specificJobs?${queryString}`;
 
         const response = await fetch(url, {
         method: 'GET',
@@ -31,7 +33,7 @@ export async function getSpecificJobs(params) {
 // Changes specific property of job with the given job id
 export async function updateJob(id, params) {
     try {
-      const url = `http://3.147.57.120:3001/api/updateJob/${id}`; // Use the id as a URL parameter
+      const url = `${server}/api/updateJob/${id}`; // Use the id as a URL parameter
       console.log(params);
   
       const response = await fetch(url, {
@@ -52,7 +54,7 @@ export async function updateJob(id, params) {
   // Uploads into the file table
   export async function uploadFile(params) {
     try {
-        const url = `http://3.147.57.120:3001/api/uploadfile/`;
+        const url =`${server}/api/uploadfile/`;
         const response = await fetch(url, {
         method: 'POST', 
         headers: {
@@ -70,7 +72,7 @@ export async function updateJob(id, params) {
 
 export async function files(id, params) {
     try {
-        const url = `http://3.147.57.120:3001/api/file/${id}`; // Use the id as a URL parameter
+        const url = `${server}/api/file/${id}`; // Use the id as a URL parameter
 
         console.log(params);
         const response = await fetch(url, {
@@ -91,7 +93,7 @@ export async function files(id, params) {
 // Deletes job with params from options
 export async function deleteJob(id) {
     try {
-        const response = await fetch(`http://3.147.57.120:3001/api/deleteJob/${id}`, {
+        const response = await fetch(`${server}/api/deleteJob/${id}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
@@ -108,7 +110,7 @@ export async function deleteJob(id) {
 // Creates job with params from options
 export async function createJob(params) {
     try {
-        const response = await fetch('http://3.147.57.120:3001/api/createJob', {
+        const response = await fetch(`${server}/api/createJob`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -127,7 +129,7 @@ export async function createJob(params) {
 // Gets a single job by ID
 export async function getJobById(id) {
   try {
-      const response = await fetch(`http://3.147.57.120:3001/api/getJob/${id}`, {
+      const response = await fetch(`${server}/api/getJob/${id}`, {
           method: 'GET',
           headers: {
               'Content-Type': 'application/json',
@@ -143,7 +145,7 @@ export async function getJobById(id) {
 
 export async function getFilesById(id) {
     try {
-        const response = await fetch(`http://3.147.57.120:3001/api/getFiles/${id}`, {
+        const response = await fetch(`${server}/api/getFiles/${id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -160,7 +162,7 @@ export async function getFilesById(id) {
 // Gets a single user by ID
 export async function getUserById(id) {
   try {
-      const response = await fetch(`http://3.147.57.120:3001/api/getUser/${id}`, {
+      const response = await fetch(`${server}/api/getUser/${id}`, {
           method: 'GET',
           headers: {
               'Content-Type': 'application/json',
@@ -176,7 +178,7 @@ export async function getUserById(id) {
 // Gets a list of all the users
 export async function getAllUsers() {
     try {
-      const response = await fetch('http://3.147.57.120:3001/api/users');
+      const response = await fetch(`${server}/api/users`);
       const data = await response.json();
       return(data)
     } catch (error) {
@@ -185,7 +187,7 @@ export async function getAllUsers() {
   }
   export async function getUserByEmail(email) {
     try {
-        const response = await fetch(`http://3.147.57.120:3001/api/getUserByEmail/${email}`, {
+        const response = await fetch(`${server}/${email}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -199,7 +201,7 @@ export async function getAllUsers() {
   }
   export async function createUser(params) {
     try {
-        const response = await fetch('http://3.147.57.120:3001/api/createUser', {
+        const response = await fetch(`${server}/api/createUser`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -217,7 +219,7 @@ export async function getAllUsers() {
 // Get assigned jobs by userID
 export async function getJobByUserId(id) {
   try {
-      const response = await fetch(`http://3.147.57.120:3001/api/getJobByUserId/${id}`, {
+      const response = await fetch(`${server}/api/getJobByUserId/${id}`, {
           method: 'GET',
           headers: {
               'Content-Type': 'application/json',
