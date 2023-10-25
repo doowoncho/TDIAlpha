@@ -5,10 +5,12 @@ const prisma = new PrismaClient();
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const { ReadableStreamDefaultController } = require('stream/web');
 
 app.use(bodyParser.json());
 app.use(cors({
-    origin: 'https://main.d3uj1gkliipo6a.amplifyapp.com',
+    // origin: 'https://main.d3uj1gkliipo6a.amplifyapp.com',
+       origin: 'http://localhost:3000',
   }));
 
 
