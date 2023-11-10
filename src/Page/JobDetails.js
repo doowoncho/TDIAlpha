@@ -149,7 +149,7 @@ function readableTime(time){
               </div>
               <div class="mb-3 mx-4" style={{width:"16rem"}}>
                 <label for="formFileDisabled" class="form-label">Map Drawing</label>
-                  <FileUpload type="map" job={files.map_filep} name={files.map_drawing_name}></FileUpload>
+                  <FileUpload type="map" job={files.map_file} name={files.map_drawing_name}></FileUpload>
               </div>
               <div class="mb-3 mx-4" style={{width:"16rem"}}>
                 <label for="formFileDisabled" class="form-label">Photo</label>
