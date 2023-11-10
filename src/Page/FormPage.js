@@ -1,14 +1,16 @@
 //got too tired but basically need to change this so that on submit we upload the photo file but difficult because that is in a child 
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import FileUpload from '../Components/FileUploadGeneric';
-import { createJob } from '../Components/APICalls';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { storage } from '../Components/Firebase';
+import { createJob, files } from '../Components/APICalls';
 import DateInput from '../Components/DateInput';
 import { useNavigate } from "react-router-dom";
 
 function FormPage() {
   const [dates, setDates] = useState([{ date: '', startTime: '', endTime: '' }]);
   const [job, setJob] = useState();
+  const [file, setFile] = useState(null);
   const navigate = useNavigate();
 
   const handleDateChange = (index, field, value) => {
@@ -27,6 +29,11 @@ function FormPage() {
     setDates(updatedDates);
   };
 
+  const handleFileChange = (event) => {
+    const selectedFile = event.target.files[0];
+    setFile(selectedFile);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault(); 
     const customer = document.getElementById('customerName').value;
@@ -35,7 +42,7 @@ function FormPage() {
     const woNumber = document.getElementById('woNumber').value;
     const location = document.getElementById('location').value;
 
-    dates.forEach((dateTime) => {     
+    dates.forEach(async (dateTime) => {     
       const startTime = new Date(dateTime.date + 'T' + dateTime.startTime);
       const endTime = new Date(dateTime.date + 'T' + dateTime.endTime);
       const newJob = {
@@ -48,11 +55,31 @@ function FormPage() {
         starttime: startTime,
         endtime: endTime
       };
-      const createdJob = createJob(newJob);
+      const createdJob = await createJob(newJob);
       setJob(createdJob);
+
+      const fileRef = ref(storage, `${file.name}`);
+      let fileBlob;
+      const id = createdJob.id;
+
+      await uploadBytes(fileRef, file).then((snapshot) => {
+          console.log('Uploaded a blob or file!');
+        });
+      
+      await getDownloadURL(ref(storage, `${file.name}`))
+        .then((url) => {
+          // `url` is the download URL for 'images/stars.jpg'
+          fileBlob = url
+        });
+
+      let update = {photo_file: fileBlob, photo_name: file.name};   
+      await files(id, update);
+      
       navigate("/jobstable/");
       window.location.reload()
+
     });
+
   }
   
   return (
@@ -90,7 +117,7 @@ function FormPage() {
           ))}
           <button type="button" className="btn btn-primary my-2" onClick={addDate}>Add Date and Time</button>
 
-          <FileUpload type="photo"></FileUpload> 
+          <input type="file" id="fileUpload" className='form-control' onChange={handleFileChange}/>
           <p1 className = "text-danger">Currently not functional but this would be the image upload</p1>
 
         <div className="text-center">
