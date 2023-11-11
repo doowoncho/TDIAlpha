@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getJobByUserId } from '../Components/APICalls';
+import { getAllJobs, getJobByUserId } from '../Components/APICalls';
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import format from 'date-fns/format';
 import parse from 'date-fns/parse';
@@ -23,11 +23,22 @@ const localizer = dateFnsLocalizer({
 
 export default function ToDoPage() {
   const [events, setEvents] = useState([]);
+  const [toggle, setToggle] = useState(true);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    async function fetchData() {
+      await getJobsForPage();
+    }
+
+    fetchData();
+  }, [toggle]); // Run this effect whenever the toggle state changes
+
   async function getJobsForPage() {
     try {
-      let jobs = await getJobByUserId(window.sessionStorage.getItem("user"));
+      let jobs = toggle ? await getJobByUserId(window.sessionStorage.getItem("user")) : await getAllJobs()
       let tempEvents = [];
+      console.log(jobs)
       for (let job of jobs) {
         let event = {
           title: job.customer,
@@ -44,17 +55,19 @@ export default function ToDoPage() {
   }
 
   const handleEventClick = (event) => {
-    // Navigate to a different part of the site when an event is clicked
     navigate(`/jobdetails/${event.id}`);
-    console.log(event)
   };
 
-  useEffect(() => {
-    getJobsForPage();
-  }, []); // Empty dependency array to mimic componentDidMount
+  const handleToggle = () => {
+    setToggle(!toggle);
+  };
 
   return (
     <div>
+      <div className="form-check form-switch my-3 mx-5">
+        <label className="form-check-label" htmlFor="flexSwitchCheckDefault">Show All Jobs</label>
+        <input className="form-check-input" type="checkbox" id="flexSwitchCheckDefault" onChange={handleToggle}/>
+      </div>
       <Calendar
         min={new Date(0, 0, 0, 6, 0, 0)}
         max={new Date(0, 0, 0, 23, 0, 0)}
