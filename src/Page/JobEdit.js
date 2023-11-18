@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 
 function JobEditPage() {
   const { id } = useParams();
-  const [dates, setDates] = useState([{ date: '', startTime: '', endTime: '' }]);
   const [job, setJob] = useState();
   const navigate = useNavigate();
 
@@ -19,17 +18,6 @@ function JobEditPage() {
       setJob({ ...job, [fieldName]: newValue });
     }
   };
-
-  // const handleDateChange = (index, field, value) => {
-  //   const updatedDates = [...dates];
-  //   updatedDates[index][field] = value;
-  //   setDates(updatedDates);
-
-  //   const startTime = new Date(updatedDates.date + 'T' + updatedDates.startTime);
-  //   const endTime = new Date(updatedDates.date + 'T' + updatedDates.endTime);
-  //   setJob({ ...job, ['starttime']: startTime });
-  //   setJob({ ...job, ['endtime']: endTime });
-  // };
 
   const handleSubmit = (e) => {
     e.preventDefault(); 
@@ -83,16 +71,6 @@ function JobEditPage() {
           <label htmlFor="notes">Notes</label>
           <input type="text" className="form-control" id="notes" value={job ? job.notes : ""} onChange={(e) => handleFieldChange('notes', e)}/>
         </div>
-            {/* {dates.map((date, index) => (
-            <DateInput
-              key={index}
-              date={date}
-              index={index}
-              handleDateChange={handleDateChange}
-              editMode={false}
-              deleteDate={deleteDate}
-            />
-          ))} */}
         <div className="text-center">
           <button type="submit" className="btn btn-primary">Submit</button>
         </div>
