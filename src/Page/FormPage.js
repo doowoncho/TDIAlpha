@@ -5,6 +5,7 @@ import FileUpload from '../Components/FileUploadGeneric';
 import { createJob } from '../Components/APICalls';
 import DateInput from '../Components/DateInput';
 import { useNavigate } from "react-router-dom";
+// import { create } from 'domain';
 
 function FormPage() {
   const [dates, setDates] = useState([{ date: '', startTime: '', endTime: '' }]);
@@ -34,6 +35,7 @@ function FormPage() {
     const poNumber = document.getElementById('poNumber').value;
     const woNumber = document.getElementById('woNumber').value;
     const location = document.getElementById('location').value;
+    const phone_number = document.getElementById('phoneNumber').value;
 
     dates.forEach((dateTime) => {     
       const startTime = new Date(dateTime.date + 'T' + dateTime.startTime);
@@ -42,6 +44,7 @@ function FormPage() {
         customer,
         status: 'New',
         email,
+        phone_number: phone_number,
         po_number: poNumber,
         wo_number: woNumber,
         setup: location,
@@ -61,11 +64,15 @@ function FormPage() {
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="customerName">Name</label>
-          <input type="text" className="form-control" id="customerName" placeholder="Enter name" required/>
+          <input type="text" className="form-control" id="customerName" placeholder="Enter Name" required/>
         </div>
         <div className="mb-3">
           <label htmlFor="email">Email address</label>
-          <input type="text" className="form-control" id="email" placeholder="Enter email" required/>
+          <input type="text" className="form-control" id="email" placeholder="Enter Email" required/>
+        </div>
+        <div className="mb-3">
+          <label htmlFor="phoneNumber">Phone Number</label>
+          <input type="text" className="form-control" id="phoneNumber" placeholder="Enter Phone Number" required/>
         </div>
         <div className="mb-3">
           <label htmlFor="poNumber">PO Number</label>
