@@ -28,6 +28,7 @@ function FormPage() {
     setDates(updatedDates);
   };
 
+
   const handleSubmit = (e) => {
     e.preventDefault(); 
     const customer = document.getElementById('customerName').value;
@@ -142,20 +143,6 @@ function FormPage() {
               deleteDate={deleteDate}
             />
           ))}
-          <div class="btn-group" id="jobType" data-toggle="buttons">
-            <input class="form-check-input" type="radio" name="exampleRadios" id="longJob" value="option1"/>
-            <label class="form-check-label" for="longJob">
-              Long Job
-            </label>
-            <input class="form-check-input" type="radio" name="exampleRadios" id="longJobWeekend" value="option2"/>
-            <label class="form-check-label" for="longJobWeekend">
-              Long Job Exclude Weekends
-            </label>
-            <input class="form-check-input" type="radio" name="exampleRadios" id="longJob24" value="option3"/>
-            <label class="form-check-label" for="longJob24">
-              Long Job 24/7
-            </label>
-          </div>
           <button type="button" className="btn btn-primary my-2" onClick={addDate}>Add Date and Time</button>
 
           <FileUpload type="photo"></FileUpload> 
