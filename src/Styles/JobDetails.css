@@ -1,0 +1,39 @@
+@media screen and (max-width: 600px) {
+    
+    #edit_button {
+        text-align: center !important;
+        border-radius: 5% !important;
+        color: white !important;
+        padding: 0.2rem 0.5rem !important;
+        width: 100% !important;
+        margin: auto !important;
+        margin-top: 5% !important;
+    }
+    
+    #main-container {
+        width: 90% !important;
+    }
+
+    #date-container {
+        flex-direction: column !important;
+    }
+
+    #id-fieldset {
+        margin-right: 0 !important;
+    }
+
+    #status-card {
+        width: 8rem !important;
+        margin: auto !important;
+        margin-bottom: 1rem !important;
+    }
+
+    #info-container {
+        width: 70% !important;
+    }
+
+
+    #files-container {
+        width: 90% !important;
+    }
+}

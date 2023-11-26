@@ -116,9 +116,11 @@ function FormPage() {
             />
           ))}
           <button type="button" className="btn btn-primary my-2" onClick={addDate}>Add Date and Time</button>
-
-          <input type="file" id="fileUpload" className='form-control' onChange={handleFileChange}/>
-          <p1 className = "text-danger">Currently not functional but this would be the image upload</p1>
+          
+          <div className="mb-3">
+            <label htmlFor="fileUpload">Photo</label>
+            <input type="file" id="fileUpload" className='form-control' onChange={handleFileChange}/>
+          </div>
 
         <div className="text-center">
           <button type="submit" className="btn btn-primary">Submit</button>
