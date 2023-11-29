@@ -6,6 +6,24 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { ReadableStreamDefaultController } = require('stream/web');
+const path = require('path');
+
+const _dirname = path.dirname("");
+const buildPath = path.join(_dirname, "/build");
+
+app.use(express.static(buildPath));
+
+app.get("/*", function(req, res) {
+  console.log(_dirname);
+  res.sendFile(
+    path.join(_dirname, "/build/index.html"),
+    function(err) {
+      if(err) {
+        res.status(500).send(err);
+      }
+    }
+  )
+})
 
 app.use(bodyParser.json());
 app.use(cors({
