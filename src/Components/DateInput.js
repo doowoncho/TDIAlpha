@@ -66,7 +66,7 @@ export default function DateInput({ date, index, handleDateChange, deleteDate })
       <label className="form-check-label" for="flexCheckDefault"> NPAT</label>
 
         {index === 0 ? null : (
-          <button type="button" className="btn btn-primary my-2" onClick={() => deleteDate(index)}>
+          <button type="button" className="btn btn-primary my-2 mx-2" onClick={() => deleteDate(index)}>
             X
           </button>
         )}

@@ -83,9 +83,11 @@ function FormPage() {
   }
   
   return (
-    <div className="container" style={{ maxWidth: '900px' }}>
+    <div className="container">
       <h1 className="my-4 text-center">Request a job </h1>
       <form onSubmit={handleSubmit}>
+
+      <div className="container" style={{ maxWidth: '800px' }}>
         <div className="mb-3">
           <label htmlFor="customerName">Name</label>
           <input type="text" className="form-control" id="customerName" placeholder="Enter name" required/>
@@ -106,26 +108,32 @@ function FormPage() {
           <label htmlFor="location">Location</label>
           <input type="text" className="form-control" id="location" placeholder="Enter Location" required/>
         </div>
-            {dates.map((date, index) => (
-            <DateInput
-              key={index}
-              date={date}
-              index={index}
-              handleDateChange={handleDateChange}
-              deleteDate={deleteDate}
-            />
-          ))}
-          <button type="button" className="btn btn-primary my-2" onClick={addDate}>Add Date and Time</button>
-          
-          <div className="mb-3">
-            <label htmlFor="fileUpload">Photo</label>
-            <input type="file" id="fileUpload" className='form-control' onChange={handleFileChange}/>
-          </div>
+        <div className="mb-3">
+          <label htmlFor="fileUpload">Photo</label>
+          <input type="file" id="fileUpload" className='form-control' onChange={handleFileChange}/>
+        </div>
+      </div>
 
-        <div className="text-center">
-          <button type="submit" className="btn btn-primary">Submit</button>
+      <div className='container justify-content-center d-flex'>
+          <div className="flex-column">
+            {dates.map((date, index) => (
+              <DateInput
+                key={index}
+                date={date}
+                index={index}
+                handleDateChange={handleDateChange}
+                deleteDate={deleteDate}
+              />
+            ))}
+          <button type="button" className="btn btn-primary my-2" onClick={addDate}>
+            Add Date and Time
+          </button>
+          </div>
         </div>
 
+      <div className="text-center">
+        <button type="submit" className="btn btn-primary">Submit</button>
+      </div>
       </form>
     </div>
   );
