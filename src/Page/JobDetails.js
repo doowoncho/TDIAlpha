@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { getJobById, getFilesById } from "../Components/APICalls";
 import { useParams } from 'react-router-dom';
 import FileUpload from "../Components/FileUpload";
+import "../Styles/JobDetails.css"
 
 export default function Orders() {
 
@@ -42,7 +43,7 @@ export default function Orders() {
 
 
   const Card = ({info, bg, tc, width, background, type, height}) => (
-    <div className={`card bg-${bg} mb-3 `} style={{width:`${width}`, backgroundColor:`${background}`, height:`${height}`, backgroundColor:"#FF6969"}}>
+    <div id="status-card" className={`card bg-${bg} mb-3 `} style={{width:`${width}`, backgroundColor:`${background}`, height:`${height}`, backgroundColor:"#FF6969"}}>
       <div className="card-body">
         <h6 className={`card-header text-${tc}`} style={{textAlign:"center", fontSize:"0.8rem", marginTop:"1%", color:"#582525"}}>{type}</h6>
         <h4 className={`card-title text-center text-${tc}`} style={{marginTop:"2%", textAlign:"center", color:"#582525"}}>{info}</h4>
@@ -79,8 +80,8 @@ function readableTime(time){
 
   return (
     <div>
-      <div className="card border shadow-lg container mt-4 mb-5" style={{width:"50%", border: "none"}}>
-        <div className="card-body bg-primary mt-3" style={{width:"10%", textAlign:"center", borderRadius:"5%", color:"white", marginLeft:"85%", padding:"0.5rem", paddingBottom:"0.2rem", paddingTop:"0.2rem"}}>
+      <div id="main-container" className="card border shadow-lg container mt-4 mb-5" style={{width:"50%", border: "none"}}>
+        <div id="edit_button" className="card-body bg-primary mt-3" style={{width:"10%", textAlign:"center", borderRadius:"5%", color:"white", marginLeft:"85%", padding:"0.5rem", paddingBottom:"0.2rem", paddingTop:"0.2rem"}}>
           <a href={`/jobedit/${job.id}`} style={{textDecoration:"None", textAlign:"center", color:"white"}}>Edit</a>
         </div>
         <div style={{display:"flex", alignItems:"center", justifyContent:"center", flexDirection:"row", gap:"5%"}}>
@@ -88,8 +89,8 @@ function readableTime(time){
             <div className="card-title" style={{fontSize:"2rem", marginRight:"auto", marginLeft:"5%", marginTop:"2%"}}>{job.customer}</div>
             <div className="card-body" style={{display:"flex", alignItems:"center", justifyContent:"space-around", gap:"5%", width:"90%"}}>
             <div style={{display: "flex"}}>
-            <div style={{display: "flex"}}>
-              <fieldset disabled style={{marginRight: "20px"}}>
+            <div id="date-container" style={{display: "flex"}}>
+              <fieldset id="id-fieldset" disabled style={{marginRight: "20px"}}>
                 <label for="exampleInputEmail1">ID</label>
                 <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={job.id}/>
               </fieldset>
@@ -106,7 +107,7 @@ function readableTime(time){
           </div>
         </div>
         <div style={{display:"flex", alignItems:"center", justifyContent:"center", flexDirection:"row", gap:"3%", marginLeft:"3%", marginRight:"2%"}}>
-          <div className="card border" style={{display:"flex", alignItems:"center", justifyContent:"center", width:"50%", marginBottom:"2rem", border: "none"}}>
+          <div id="info-container" className="card border" style={{display:"flex", alignItems:"center", justifyContent:"center", width:"50%", marginBottom:"2rem", border: "none"}}>
             <div className="card-title" style={{fontSize:"1.5rem", marginRight:"auto", marginLeft:"5%", marginTop:"2%"}}>{job.setup}</div>
             <fieldset className="mt-3" disabled>
                 <label for="exampleInputDate" style={{marginRight: "5px"}}>Permit/Request#:</label>
@@ -136,7 +137,7 @@ function readableTime(time){
           </div>
         </div>
         <div style={{marginBottom:"3rem"}}>
-          <div className="card " style={{width:"83%", margin:"auto"}}>
+          <div id="files-container" className="card " style={{width:"83%", margin:"auto"}}>
             <div className="card-title" style={{fontSize:"1.5rem", marginRight:"auto", marginLeft:"5%", marginTop:"2%"}}>Files</div>
             <div style={{display:"flex", alignItems:"center", justifyContent:"center", flexDirection:"column"}}>
               <div class="mb-3 mx-auto" style={{width:"16rem"}}>
