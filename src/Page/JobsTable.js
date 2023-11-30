@@ -79,12 +79,13 @@ export default function JobsTable() {
         // jobs filtered by search
         const filteredDataWithSearchFilters = filteredData.filter((job) => {
           const isIdMatch = filterSettings.id === "" || job.id.toString().indexOf(filterSettings.id) !== -1;
-          const isAssignedMatch = filterSettings.assigned === "" || job.assigned === filterSettings.assigned;
+          // const isAssignedMatch = filterSettings.assigned === "" || job.assigned.toString().toLowerCase == filterSettings.assigned;
           const isCustomerMatch = filterSettings.customer === "" || job.customer.toLowerCase().indexOf(filterSettings.customer.toLowerCase()) !== -1;
           const isStartDateMatch = filterSettings.startDate === "" || new Date(job.starttime) >= new Date(filterSettings.startDate);
           const isEndDateMatch = filterSettings.endDate === "" || new Date(job.endtime) <= new Date(filterSettings.endDate);
-
-          return isIdMatch && isAssignedMatch && isCustomerMatch && isStartDateMatch && isEndDateMatch;
+          return isIdMatch 
+          // && isAssignedMatch 
+          && isCustomerMatch && isStartDateMatch && isEndDateMatch;
         });
 
         setJobList(filteredDataWithSearchFilters);
@@ -144,8 +145,9 @@ export default function JobsTable() {
       <div className="my-4 container text-center">
         <h1>{tableType}</h1>
         <div className=" d-flex justify-content-center my-3">
+
           <FilterInput label="ID" value={filterSettings.id} onChange={(value) => handleFilterChange('id', value)} />
-          <FilterInput label="Assigned" value={filterSettings.assigned} onChange={(value) => handleFilterChange('assigned', value)} />
+          {/* <FilterInput label="Assigned" value={filterSettings.assigned} onChange={(value) => handleFilterChange('assigned', value)} /> */}
           <FilterInput label="Customer" value={filterSettings.customer} onChange={(value) => handleFilterChange('customer', value)} />
 
           <div className="mx-2">
@@ -155,6 +157,7 @@ export default function JobsTable() {
               className="form-control"
               value={filterSettings.startDate} onChange={(e) => handleFilterChange('startDate', e.target.value)} />
           </div>
+
           <div className="mx-2">
             <label className="form-label">End Date</label>
             <input
@@ -162,11 +165,11 @@ export default function JobsTable() {
               className="form-control"
               value={filterSettings.startDate} onChange={(e) => handleFilterChange('endDate', e.target.value)} />
           </div>
+
         </div>
 
         <div>
-          <Table
-            data={jobList}
+          <Table data={jobList}
             displayColumns={[
               "ID", "StartTime", "EndTime", "Status", "Setup", "Customer",
               "Permit_number", "Notes", "WO_number", "PO_number", "Assigned"

@@ -28,6 +28,12 @@ export default function DateInput({ date, index, handleDateChange, deleteDate, e
           onChange={(e) => handleDateChange(index, 'endTime', e.target.value)}
           required
         />
+       
+      <input className="form-check-input mx-2" type="checkbox" value=""/>
+      <label className="form-check-label" for="flexCheckDefault"> 24/7 Job</label>    
+      <input className="form-check-input mx-2" type="checkbox" value=""/>
+      <label className="form-check-label" for="flexCheckDefault"> Exclude Weekends</label>
+
         {index === 0 ? null : (
           <button type="button" className="btn btn-primary my-2" onClick={() => deleteDate(index)}>
             X
