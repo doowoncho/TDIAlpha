@@ -45,15 +45,17 @@ function FormPage() {
     dates.forEach(async (dateTime) => {  
       
       if(dateTime.twentyFour == true){
-
+        //two jobs, one for putting down and one for picking stuff up
+        
       }
 
       if(dateTime.exWeekend == true){
-
+        //put a job every weekend to remove the sign
+        //and a job at the beginning of the week to put in the sign
       }
 
       if(dateTime.NPAT == true){
-
+        //extra job the day before
       }
       
       const startTime = new Date(dateTime.date + 'T' + dateTime.startTime);
