@@ -8,7 +8,7 @@ import DateInput from '../Components/DateInput';
 import { useNavigate } from "react-router-dom";
 
 function FormPage() {
-  const [dates, setDates] = useState([{ date: '', startTime: '', endTime: '' }]);
+  const [dates, setDates] = useState([{ startDate: '', startTime: '', endDate: '', endTime: '', NPAT: false, exWeekend: false, twentyFour: false }]);
   const [job, setJob] = useState();
   const [file, setFile] = useState(null);
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ function FormPage() {
   };
 
   const addDate = () => {
-    setDates([...dates, { date: '', startTime: '', endTime: '' }]);
+    setDates([...dates, { startDate: '', startTime: '', endDate: '', endTime: '', NPAT: false, exWeekend: false, twentyFour: false }]);
   };
 
   const deleteDate = (index) => {
@@ -42,7 +42,20 @@ function FormPage() {
     const woNumber = document.getElementById('woNumber').value;
     const location = document.getElementById('location').value;
 
-    dates.forEach(async (dateTime) => {     
+    dates.forEach(async (dateTime) => {  
+      
+      if(dateTime.twentyFour == true){
+
+      }
+
+      if(dateTime.exWeekend == true){
+
+      }
+
+      if(dateTime.NPAT == true){
+
+      }
+      
       const startTime = new Date(dateTime.date + 'T' + dateTime.startTime);
       const endTime = new Date(dateTime.date + 'T' + dateTime.endTime);
       const newJob = {
