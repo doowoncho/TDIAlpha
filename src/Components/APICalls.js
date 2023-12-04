@@ -1,5 +1,5 @@
 // const server = "http://18.117.181.144:3001"
-const server = ""
+const server = "http://localhost:3001"
 
 // Gets a list of all the jobs
 export async function getAllJobs() {

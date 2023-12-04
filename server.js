@@ -6,27 +6,13 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { ReadableStreamDefaultController } = require('stream/web');
-const path = require('path');
-
-const buildPath = path.join(__dirname, "build");
-
-app.use(express.static(buildPath));
-
-app.get("/", function(req, res) {
-  res.sendFile(path.join(buildPath, 'index.html'),
-    function(err) {
-      if(err) {
-        res.status(500).send(err);
-      }
-    }
-  )
-})
 
 app.use(bodyParser.json());
 app.use(cors({
-    // // origin: 'https://main.d3uj1gkliipo6a.amplifyapp.com',
-    //    origin: 'http://localhost:3001',
+    // origin: 'https://main.d3uj1gkliipo6a.amplifyapp.com',
+       origin: 'http://localhost:3000',
   }));
+
 
 //api endpoints to be called in the code to make calls in the database
 
