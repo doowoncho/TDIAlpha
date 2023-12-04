@@ -57,14 +57,17 @@ export default function JobsTable() {
     const fetchData = async () => {
       try {
         //just gets the list once per load
-        if (!originalDataRef.current) {
-          const data = await getAllJobs();
-          if (data == null) return;
+        // if (!originalDataRef.current) {
+        //   const data = await getAllJobs();
+        //   if (data == null) return;
 
-          originalDataRef.current = data;
-        }
+        //   originalDataRef.current = data;
+        // }
 
-        const data = originalDataRef.current;
+        // const data = originalDataRef.current;
+
+
+        const data = await getAllJobs();
 
         //different counts for the jobs filters
         const newCount = data.filter((job) => job.status === "New").length;
@@ -95,7 +98,7 @@ export default function JobsTable() {
     };
 
     fetchData();
-  }, [tableType, filterSettings]);
+  }, [tableType, filterSettings, jobList]);
 
   const handleTableTypeChange = (newTableType) => {
     if (tableType !== newTableType) {
@@ -172,7 +175,7 @@ export default function JobsTable() {
           <Table data={jobList}
             displayColumns={[
               "ID", "StartTime", "EndTime", "Status", "Setup", "Customer",
-              "Permit_number", "Notes", "WO_number", "PO_number", "Assigned"
+              "Permit_number", "Notes", "WO_number", "NPAT", "Assigned"
             ]}
             handleJobUpdate={handleJobUpdate}
             handleJobDelete={handleJobDelete}

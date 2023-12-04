@@ -11,7 +11,7 @@ export async function getAllJobs() {
       console.error('Error fetching data:', error);
     }
   }
-  
+
 // Gets all the jobs params from options
 export async function getSpecificJobs(params) {
     try {
@@ -118,7 +118,7 @@ export async function createJob(params) {
         },
         body: JSON.stringify(params), 
         });
-
+        console.log(params)
         const createdJob = await response.json();
         console.log('Created Job:', createdJob);
         return createdJob
