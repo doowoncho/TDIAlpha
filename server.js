@@ -24,8 +24,8 @@ app.get("/", function(req, res) {
 
 app.use(bodyParser.json());
 app.use(cors({
-    // origin: 'https://main.d3uj1gkliipo6a.amplifyapp.com',
-       origin: 'http://localhost:3000',
+    // // origin: 'https://main.d3uj1gkliipo6a.amplifyapp.com',
+    //    origin: 'http://localhost:3001',
   }));
 
 
