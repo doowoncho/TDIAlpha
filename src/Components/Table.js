@@ -43,8 +43,10 @@ function renderTableCell({ property, column, handleJobUpdate}) {
     return  users.filter(x => x.id == property[name])[0].name;
   }
   else if(name == 'starttime' || name == 'endtime'){
-    const readableTime = new Date(property[name]).toLocaleString();
-    return readableTime
+    if(property[name]){
+      const readableTime = new Date(property[name]).toLocaleString();
+      return readableTime
+    }
   }
   else if(name == 'status'){
     return <Dropdown>
@@ -95,8 +97,13 @@ function renderTableCell({ property, column, handleJobUpdate}) {
     </Dropdown.Menu>
   </Dropdown>
   }
+  else if(name == 'npat'){
+    return <>
+      <input className="form-check-input mx-2" type="checkbox" value={property[name]} disabled/>
+    </>
+  }
   else {
-    return property[name];
+    return property[name]
   }
 }
 

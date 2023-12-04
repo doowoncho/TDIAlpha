@@ -1,4 +1,3 @@
-//got too tired but basically need to change this so that on submit we upload the photo file but difficult because that is in a child 
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
@@ -8,8 +7,8 @@ import DateInput from '../Components/DateInput';
 import { useNavigate } from "react-router-dom";
 
 function FormPage() {
-  const [dates, setDates] = useState([{ date: '', startTime: '', endTime: '' }]);
-  const [job, setJob] = useState();
+  const [dates, setDates] = useState([{ startDate: '', startTime: '', endDate: '', endTime: '', NPAT: false, exWeekend: false, twentyFour: false }]);
+  // const [job, setJob] = useState();
   const [file, setFile] = useState(null);
   const navigate = useNavigate();
 
@@ -19,8 +18,15 @@ function FormPage() {
     setDates(updatedDates);
   };
 
+  const handleCheckboxChanges = (index, field, value) => {
+    console.log(index,field,value)
+    const updatedDates = [...dates];
+    updatedDates[index][field] = value;
+    setDates(updatedDates);
+  };
+
   const addDate = () => {
-    setDates([...dates, { date: '', startTime: '', endTime: '' }]);
+    setDates([...dates, { startDate: '', startTime: '', endDate: '', endTime: '', NPAT: false, exWeekend: false, twentyFour: false }]);
   };
 
   const deleteDate = (index) => {
@@ -34,30 +40,8 @@ function FormPage() {
     setFile(selectedFile);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault(); 
-    const customer = document.getElementById('customerName').value;
-    const email = document.getElementById('email').value;
-    const poNumber = document.getElementById('poNumber').value;
-    const woNumber = document.getElementById('woNumber').value;
-    const location = document.getElementById('location').value;
-
-    dates.forEach(async (dateTime) => {     
-      const startTime = new Date(dateTime.date + 'T' + dateTime.startTime);
-      const endTime = new Date(dateTime.date + 'T' + dateTime.endTime);
-      const newJob = {
-        customer,
-        status: 'New',
-        email,
-        po_number: poNumber,
-        wo_number: woNumber,
-        setup: location,
-        starttime: startTime,
-        endtime: endTime
-      };
-      const createdJob = await createJob(newJob);
-      setJob(createdJob);
-
+   async function fileUploading (createdJob) {
+    if(file){
       const fileRef = ref(storage, `${file.name}`);
       let fileBlob;
       const id = createdJob.id;
@@ -74,21 +58,149 @@ function FormPage() {
 
       let update = {photo_file: fileBlob, photo_name: file.name};   
       await files(id, update);
-      
-      navigate("/jobstable/");
-      window.location.reload()
-
-    });
-
+    }
   }
-  
+
+  const handleSubmit = (e) => {
+    e.preventDefault(); 
+    const customer = document.getElementById('customerName').value;
+    const email = document.getElementById('email').value;
+    const poNumber = document.getElementById('poNumber').value;
+    const woNumber = document.getElementById('woNumber').value;
+    const location = document.getElementById('location').value;
+    
+    //fix this when im actually awake
+    dates.forEach(async (dateTime) => {  
+      if(dateTime.twentyFour == true){
+        if(dateTime.exWeekend == true){
+
+          //create start job
+          let beginDate = new Date(dateTime.startDate + 'T' + dateTime.startTime);
+          const newJob = {
+            customer: customer,
+            status: 'New',
+            email: email,
+            po_number: poNumber,
+            wo_number: woNumber,
+            setup: location,
+            starttime: beginDate,
+            npat: dateTime.NPAT
+          };
+          const createdJob = await createJob(newJob);
+          fileUploading(createdJob)
+
+          let currentDate = new Date(dateTime.startDate);
+          currentDate.setDate(currentDate.getDate() + 2);
+          while (currentDate <= new Date(dateTime.endDate)){
+            if(currentDate.getDay() == 5){
+              //add job to pick up the sign
+              const newJob = {
+                customer: customer,
+                status: 'New',
+                email: email,
+                po_number: poNumber,
+                wo_number: woNumber,
+                setup: location,
+                endtime: currentDate,
+                npat: dateTime.NPAT
+              };
+              const createdJob = await createJob(newJob);
+              fileUploading(createdJob)
+            }
+            else if(currentDate.getDay() == 1){
+              //add job to place the sign
+              const newJob = {
+                customer: customer,
+                status: 'New',
+                email: email,
+                po_number: poNumber,
+                wo_number: woNumber,
+                setup: location,
+                starttime: currentDate,
+                npat: dateTime.NPAT
+              };
+              const createdJob = await createJob(newJob);
+              fileUploading(createdJob)
+            }
+            currentDate.setDate(currentDate.getDate() + 1);
+          }
+          const newJob1 = {
+            customer: customer,
+            status: 'New',
+            email: email,
+            po_number: poNumber,
+            wo_number: woNumber,
+            setup: location,
+            endtime: dateTime.endDate,
+            npat: dateTime.NPAT
+          };
+          const createdJob1 = await createJob(newJob1);
+          fileUploading(createdJob1)
+        }
+        else{
+            //two jobs, one for putting down and one for picking stuff up
+            let beginDate = new Date(dateTime.startDate + 'T' + dateTime.startTime);
+            let endDate = new Date(dateTime.endDate + 'T' + dateTime.endTime);
+            const newJob = {
+              customer: customer,
+              status: 'New',
+              email: email,
+              po_number: poNumber,
+              wo_number: woNumber,
+              setup: location,
+              starttime: beginDate,
+              npat: dateTime.NPAT
+            };
+            const createdJob = await createJob(newJob);
+            fileUploading(createdJob)
+            const newJob1 = {
+              customer: customer,
+              status: 'New',
+              email: email,
+              po_number: poNumber,
+              wo_number: woNumber,
+              setup: location,
+              endtime: endDate,
+              npat: dateTime.NPAT
+            };
+            const createdJob1 = await createJob(newJob1);
+            fileUploading(createdJob1)
+          }
+        }
+        else{
+          const startTime = new Date(dateTime.startDate + 'T' + dateTime.startTime);
+        const endTime = new Date(dateTime.startDate + 'T' + dateTime.endTime);
+        const newJob = {
+          customer: customer,
+          status: 'New',
+          email: email,
+          po_number: poNumber,
+          wo_number: woNumber,
+          setup: location,
+          starttime: startTime,
+          endtime: endTime,
+          npat: dateTime.NPAT
+        };
+        const createdJob = await createJob(newJob);
+        fileUploading(createdJob)
+      }
+      navigate("/jobstable/");
+    });
+  }
+
   return (
-    <div className="container" style={{ maxWidth: '900px' }}>
+    <div className="container">
       <h1 className="my-4 text-center">Request a job </h1>
       <form onSubmit={handleSubmit}>
+
+      <div className="container" style={{ maxWidth: '800px' }}>
         <div className="mb-3">
-          <label htmlFor="customerName">Name</label>
+          <label htmlFor="customerName">Contact Name</label>
           <input type="text" className="form-control" id="customerName" placeholder="Enter name" required/>
+        </div>
+        <div className="mb-3">
+          <label htmlFor="phoneNumber">Phone Number</label>
+          <input type="text" className="form-control" id="phoneNumber" placeholder="Enter Number" required/>
         </div>
         <div className="mb-3">
           <label htmlFor="email">Email address</label>
@@ -106,26 +218,33 @@ function FormPage() {
           <label htmlFor="location">Location</label>
           <input type="text" className="form-control" id="location" placeholder="Enter Location" required/>
         </div>
-            {dates.map((date, index) => (
-            <DateInput
-              key={index}
-              date={date}
-              index={index}
-              handleDateChange={handleDateChange}
-              deleteDate={deleteDate}
-            />
-          ))}
-          <button type="button" className="btn btn-primary my-2" onClick={addDate}>Add Date and Time</button>
-          
-          <div className="mb-3">
-            <label htmlFor="fileUpload">Photo</label>
-            <input type="file" id="fileUpload" className='form-control' onChange={handleFileChange}/>
-          </div>
+        <div className="mb-3">
+          <label htmlFor="fileUpload">Photo</label>
+          <input type="file" id="fileUpload" className='form-control' onChange={handleFileChange}/>
+        </div>
+      </div>
 
-        <div className="text-center">
-          <button type="submit" className="btn btn-primary">Submit</button>
+      <div className='container justify-content-center d-flex'>
+          <div className="flex-column">
+            {dates.map((date, index) => (
+              <DateInput
+                key={index}
+                date={date}
+                index={index}
+                handleDateChange={handleDateChange}
+                handleCheckboxChanges={handleCheckboxChanges}
+                deleteDate={deleteDate}
+              />
+            ))}
+          <button type="button" className="btn btn-primary my-2" onClick={addDate}>
+            Add Date and Time
+          </button>
+          </div>
         </div>
 
+      <div className="text-center">
+        <button type="submit" className="btn btn-primary">Submit</button>
+      </div>
       </form>
     </div>
   );

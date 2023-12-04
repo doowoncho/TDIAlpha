@@ -1,4 +1,4 @@
-// const server = "http://18.117.181.144:3001"
+// const server = "http://localhost:3001"
 const server = ""
 
 // Gets a list of all the jobs
@@ -11,7 +11,7 @@ export async function getAllJobs() {
       console.error('Error fetching data:', error);
     }
   }
-  
+
 // Gets all the jobs params from options
 export async function getSpecificJobs(params) {
     try {
@@ -110,6 +110,12 @@ export async function deleteJob(id) {
 }
 // Creates job with params from options
 export async function createJob(params) {
+    if(params.npat){
+        //create npat row
+        //also need this whenever npat is updated
+        //also whenever something is assigned we need to have npat updated as well
+        //npat npat npat
+    }
     try {
         const response = await fetch(`${server}/api/createJob`, {
         method: 'POST',
@@ -118,7 +124,7 @@ export async function createJob(params) {
         },
         body: JSON.stringify(params), 
         });
-
+        console.log(params)
         const createdJob = await response.json();
         console.log('Created Job:', createdJob);
         return createdJob

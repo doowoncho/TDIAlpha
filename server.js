@@ -1,3 +1,18 @@
+// const express = require('express');
+// const { PrismaClient } = require('@prisma/client');
+
+// const prisma = new PrismaClient();
+// const app = express();
+// const bodyParser = require('body-parser');
+// const cors = require('cors');
+// const { ReadableStreamDefaultController } = require('stream/web');
+
+// app.use(bodyParser.json());
+// app.use(cors({
+//     // origin: 'https://main.d3uj1gkliipo6a.amplifyapp.com',
+//        origin: 'http://localhost:3000',
+//   }));
+
 const express = require('express');
 const { PrismaClient } = require('@prisma/client');
 
@@ -44,7 +59,7 @@ app.get('/api/jobs', async (req, res) => {
 //gets all jobs with specific criteria... takes in an object with the properties
 app.get('/api/specificJobs', async (req, res) => {
   try {
-    const { id, customer, starttime, endtime, status, setup, permit_number, notes, wo_number, po_number, assigned} = req.query
+    const { id, customer, starttime, endtime, status, setup, permit_number, notes, wo_number, po_number, assigned, npat} = req.query
     const posts = await prisma.jobs.findMany({
       where: {
         customer: customer,
@@ -56,8 +71,9 @@ app.get('/api/specificJobs', async (req, res) => {
         wo_number: wo_number, 
         po_number: po_number,
         assigned : assigned,
-        starttime: starttime,
-        endtime: endtime
+        starttime: starttime ?? null,
+        endtime: endtime ?? null,
+        npat: npat
       },
     });
     res.json(posts);
@@ -71,7 +87,7 @@ app.get('/api/specificJobs', async (req, res) => {
 app.put('/api/updateJob/:id', async (req, res) => {
   try {
     const jobId = parseInt(req.params.id) //id of job we are changing
-    const { id, customer, starttime, endtime, status, setup, permit_number, notes, wo_number, po_number, assigned, p_confirm, permit, map, photo } = req.body
+    const { id, customer, starttime, endtime, status, setup, permit_number, notes, wo_number, po_number, assigned, p_confirm, permit, map, photo, npat } = req.body
     const posts = await prisma.jobs.update({
       where: {
         id: jobId
@@ -91,7 +107,8 @@ app.put('/api/updateJob/:id', async (req, res) => {
         map: map,
         starttime: starttime,
         endtime: endtime,
-        photo: photo
+        photo: photo,
+        npat: npat
       }
     });
     res.json(posts);
@@ -122,8 +139,7 @@ app.delete('/api/deleteJob/:id', async (req, res) => {
 //creates job with provided properties
 app.post('/api/createJob', async (req, res) => {
   try {
-    const { customer, starttime, endtime, status, setup, permit_number, notes, wo_number, po_number, email } = req.body;
-
+    const { customer, starttime, endtime, status, setup, permit_number, notes, wo_number, po_number, email, npat } = req.body;
     const newJob = await prisma.jobs.create({
       data: {
         customer: customer,
@@ -135,7 +151,8 @@ app.post('/api/createJob', async (req, res) => {
         wo_number: wo_number, 
         po_number: po_number,
         starttime: starttime,
-        endtime: endtime
+        endtime: endtime,
+        npat: npat
       },
     });
     res.json(newJob);

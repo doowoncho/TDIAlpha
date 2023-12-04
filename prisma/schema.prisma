@@ -25,6 +25,7 @@ model jobs {
   endtime       DateTime? @db.Timestamp(6)
   starttime     DateTime? @db.Timestamp(6)
   phone_number  String?   @db.VarChar(50)
+  npat          Boolean?  @db.Boolean()
 }
 
 model users {
