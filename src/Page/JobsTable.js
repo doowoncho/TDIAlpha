@@ -9,17 +9,15 @@ let users = await getAllUsers()
 
 const TableCards = ({ bg, header, icon, color, num }) => (
   <div className={`card ${bg} mx-2 border p-2 bg-white rounded`}>
-    <div className="card-content">
-      <div className="card-body">
-        <div className="media d-flex">
-          <div className="align-self-center">
-            <i className={`${icon} mx-3 ${color}`} style={{ fontSize: "2rem" }}></i>
-          </div>
-          <div className='mx-3'></div>
-          <div>
-            <h3 className={`text-center ${color}`}>{num}</h3>
-            <span className={color}>{header}</span>
-          </div>
+    <div className={`card-body ${window.innerWidth < 768 ? 'p-0 text-center' : 'p-2'}`}>
+      <div className="media d-flex">
+        <div className={`align-self-center ${window.innerWidth < 768 ? 'd-none' : ''}`}>
+          <i className={`${icon} mx-3 ${color} text-xxl`} style={{ fontSize: "2rem" }}></i>
+        </div>
+        <div className='mx-3'></div>
+        <div>
+          <h3 className={`text-xxl ${color} ${window.innerWidth < 768 ? 'd-none' : ''}`}>{num}</h3>
+          <span className={`text-xxl ${color}`}>{header}</span>
         </div>
       </div>
     </div>
@@ -137,7 +135,7 @@ export default function JobsTable() {
   return (
     <div>
       <div className='border border-1 bg-light'>
-        <div className="container d-flex justify-content-center my-3">
+        <div className="container d-flex justify-content-center my-3 flex-wrap">
           <button className="btn btn-link" onClick={() => handleTableTypeChange("New")} style={{ textDecoration: "none" }}>
             <TableCards header="New Requests" num={counts.New} icon="bi bi-bell-fill" color="text-primary" />
           </button>
@@ -154,35 +152,33 @@ export default function JobsTable() {
       </div>
       <div className="my-4 container text-center">
         <h1>{tableType}</h1>
-        <div className=" d-flex justify-content-center my-3">
+        <div className="d-flex justify-content-center flex-wrap my-3">
 
-          <FilterInput label="ID" value={filterSettings.id} onChange={(value) => handleFilterChange('id', value)} />
-          {/* <FilterInput label="Assigned" value={filterSettings.assigned} onChange={(value) => handleFilterChange('assigned', value)} /> */}
-          <FilterInput label="Customer" value={filterSettings.customer} onChange={(value) => handleFilterChange('customer', value)} />
+            <FilterInput label="ID" value={filterSettings.id} onChange={(value) => handleFilterChange('id', value)} />
+            {/* <FilterInput label="Assigned" value={filterSettings.assigned} onChange={(value) => handleFilterChange('assigned', value)} /> */}
+            <FilterInput label="Customer" value={filterSettings.customer} onChange={(value) => handleFilterChange('customer', value)} />
 
-          <div className="mx-2">
-            <label className="form-label">Start Date</label>
-            <input
-              type="date"
-              className="form-control"
-              value={filterSettings.startDate} onChange={(e) => handleFilterChange('startDate', e.target.value)} />
-          </div>
+            <div className="mx-2">
+              <label className="form-label">Start Date</label>
+              <input
+                type="date"
+                className="form-control"
+                value={filterSettings.startDate} onChange={(e) => handleFilterChange('startDate', e.target.value)} />
+            </div>
 
-          <div className="mx-2">
-            <label className="form-label">End Date</label>
-            <input
-              type="date"
-              className="form-control"
-              value={filterSettings.startDate} onChange={(e) => handleFilterChange('endDate', e.target.value)} />
-          </div>
-
+            <div className="mx-2">
+              <label className="form-label">End Date</label>
+              <input
+                type="date"
+                className="form-control"
+                value={filterSettings.startDate} onChange={(e) => handleFilterChange('endDate', e.target.value)} />
+            </div> 
         </div>
-
         <div>
           <Table data={jobList}
             displayColumns={[
               "ID", "StartTime", "EndTime", "Status", "Setup", "Customer",
-              "Permit_number", "Notes", "WO_number", "NPAT", "Assigned"
+              "Permit_number", "WO_number", "NPAT", "Assigned"
             ]}
             handleJobUpdate={handleJobUpdate}
             handleJobDelete={handleJobDelete}
