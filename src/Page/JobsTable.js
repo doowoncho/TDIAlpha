@@ -78,9 +78,16 @@ export default function JobsTable() {
 
         //jobs filtered by table
         const filteredData = tableType !== "All" ? data.filter((job) => job.status === tableType) : data.filter((job) => job.status !== "Invoice");
-
+        
+        //sort by newest
+        const sortedData = filteredData.sort((jobA, jobB) => {
+          const timeA = jobA.endtime ? new Date(jobA.endtime) : new Date(jobA.starttime);
+          const timeB = jobB.endtime ? new Date(jobB.endtime) : new Date(jobB.starttime);
+        
+          return timeA - timeB;
+        });
         // jobs filtered by search
-        const filteredDataWithSearchFilters = filteredData.filter((job) => {
+        const filteredDataWithSearchFilters = sortedData.filter((job) => {
           const isIdMatch = filterSettings.id === "" || job.id.toString().indexOf(filterSettings.id) !== -1;
           // const isAssignedMatch = filterSettings.assigned === "" || job.assigned.toString().toLowerCase == filterSettings.assigned;
           const isCustomerMatch = filterSettings.customer === "" || job.customer.toLowerCase().indexOf(filterSettings.customer.toLowerCase()) !== -1;

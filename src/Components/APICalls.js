@@ -110,6 +110,12 @@ export async function deleteJob(id) {
 }
 // Creates job with params from options
 export async function createJob(params) {
+    if(params.npat){
+        //create npat row
+        //also need this whenever npat is updated
+        //also whenever something is assigned we need to have npat updated as well
+        //npat npat npat
+    }
     try {
         const response = await fetch(`${server}/api/createJob`, {
         method: 'POST',

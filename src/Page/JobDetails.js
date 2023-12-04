@@ -97,9 +97,9 @@ function readableTime(time){
 
               <fieldset disabled>
                 <label for="exampleInputDate" style={{marginRight: "5px"}}>StartTime:</label>
-                <input type="email" class="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={readableTime(job.starttime)}/>
+                <input type="email" class="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={job.starttime && readableTime(job.starttime)}/>
                 <label for="exampleInputDate" style={{marginRight: "5px"}}>End Time:</label>
-                <input type="email" class="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={readableTime(job.endtime)}/>
+                <input type="email" class="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={job.endtime && readableTime(job.endtime)}/>
               </fieldset>
             </div>
             </div>

@@ -98,7 +98,9 @@ function renderTableCell({ property, column, handleJobUpdate}) {
   </Dropdown>
   }
   else if(name == 'npat'){
-    return property[name].toString()
+    return <>
+      <input className="form-check-input mx-2" type="checkbox" value={property[name]} disabled/>
+    </>
   }
   else {
     return property[name]

@@ -43,8 +43,8 @@ export default function ToDoPage() {
         let event = {
           title: job.customer,
           id: job.id,
-          start: new Date(job.starttime),
-          end: new Date(job.endtime),
+          start: job.starttime ? new Date(job.starttime) : new Date(job.endtime),
+          end: job.endtime ? new Date(job.endtime) : new Date(job.starttime),
         };
         tempEvents.push(event);
       }
