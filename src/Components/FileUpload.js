@@ -6,7 +6,7 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { files, getFilesById } from './APICalls';
 import { useParams } from 'react-router-dom';
 
-function FileUpload({type, job, name}) {
+function FileUpload({type, task, name}) {
   const [file, setFile] = useState(null);
   const { id } = useParams();
   const [uploaded, setUploaded] = useState({
@@ -72,12 +72,12 @@ function FileUpload({type, job, name}) {
 
   return (
     <>
-      {job ? (
+      {task ? (
           <div className={`card border border-success  bg-light mb-2 `} style={{width:"16rem"}}>
             <div className="card-body">
               <p className='text-center'>{name}</p>
               <div style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
-                <a href={job} target="_blank"><i className={`${fileType[type]}`} style={{ fontSize: "2rem" }}></i></a>
+                <a href={task} target="_blank"><i className={`${fileType[type]}`} style={{ fontSize: "2rem" }}></i></a>
               </div>
                   <input type="file" onChange={handleFileChange}/>
                   <button onClick={handleUpload} style={{width:"100%"}}>Replace File</button>

@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
-import { getAllJobs, updateJob, deleteJob, getUserById, getAllUsers } from "../Components/APICalls";
+import { getAlltasks, updatetask, deletetask, getUserById, getAllUsers } from "../Components/APICalls";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Table from "../Components/Table";
-import { Dropdown } from 'react-bootstrap';
  
 let user = await getUserById(window.sessionStorage.getItem("user"))
 let users = await getAllUsers()
@@ -36,10 +35,10 @@ const FilterInput = ({ label, value, onChange }) => (
   </div>
 );
 
-export default function JobsTable() {
+export default function TasksTable() {
   const [tableType, setTableType] = useState("All");
-  const [jobList, setJobList] = useState([]);
-  const [counts, setCounts] = useState({ New: 0, Declined: 0, Completed: 0 });
+  const [taskList, settaskList] = useState([]);
+  const [counts, setCounts] = useState({ New: 0, Declined: 0, Submitted: 0 });
   const [filterSettings, setFilterSettings] = useState({
     id: "",
     assigned: "",
@@ -48,7 +47,7 @@ export default function JobsTable() {
     endDate: ""
   });
 
-  //entire list of jobs
+  //entire list of tasks
   const originalDataRef = useRef(null);
 
   useEffect(() => {
@@ -56,7 +55,7 @@ export default function JobsTable() {
       try {
         //just gets the list once per load
         // if (!originalDataRef.current) {
-        //   const data = await getAllJobs();
+        //   const data = await getAlltasks();
         //   if (data == null) return;
 
         //   originalDataRef.current = data;
@@ -64,46 +63,45 @@ export default function JobsTable() {
 
         // const data = originalDataRef.current;
 
+        const data = await getAlltasks();
 
-        const data = await getAllJobs();
+        //different counts for the tasks filters
+        const newCount = data.filter((task) => task.status === "New").length;
+        const declinedCount = data.filter((task) => task.status === "Declined").length;
+        const submittedCount = data.filter((task) => task.status === "Submitted").length;
 
-        //different counts for the jobs filters
-        const newCount = data.filter((job) => job.status === "New").length;
-        const declinedCount = data.filter((job) => job.status === "Declined").length;
-        const completedCount = data.filter((job) => job.status === "Completed").length;
+        setCounts({ New: newCount, Declined: declinedCount, Submitted: submittedCount });
 
-        setCounts({ New: newCount, Declined: declinedCount, Completed: completedCount });
-
-        //jobs filtered by table
-        const filteredData = tableType !== "All" ? data.filter((job) => job.status === tableType) : data.filter((job) => job.status !== "Invoice");
+        //tasks filtered by table.. gonna have to change this to if or maybe a method
+        const filteredData = tableType !== "All" ? data.filter((task) => task.status === tableType) : data.filter((task) => task.status !== "Invoice" && task.status !== 'Completed');
         
         //sort by newest
-        const sortedData = filteredData.sort((jobA, jobB) => {
-          const timeA = jobA.endtime ? new Date(jobA.endtime) : new Date(jobA.starttime);
-          const timeB = jobB.endtime ? new Date(jobB.endtime) : new Date(jobB.starttime);
+        const sortedData = filteredData.sort((taskA, taskB) => {
+          const timeA = taskA.endtime ? new Date(taskA.endtime) : new Date(taskA.starttime);
+          const timeB = taskB.endtime ? new Date(taskB.endtime) : new Date(taskB.starttime);
         
           return timeA - timeB;
         });
-        // jobs filtered by search
-        const filteredDataWithSearchFilters = sortedData.filter((job) => {
-          const isIdMatch = filterSettings.id === "" || job.id.toString().indexOf(filterSettings.id) !== -1;
-          // const isAssignedMatch = filterSettings.assigned === "" || job.assigned.toString().toLowerCase == filterSettings.assigned;
-          const isCustomerMatch = filterSettings.customer === "" || job.customer.toLowerCase().indexOf(filterSettings.customer.toLowerCase()) !== -1;
-          const isStartDateMatch = filterSettings.startDate === "" || new Date(job.starttime) >= new Date(filterSettings.startDate);
-          const isEndDateMatch = filterSettings.endDate === "" || new Date(job.endtime) <= new Date(filterSettings.endDate);
+        // tasks filtered by search
+        const filteredDataWithSearchFilters = sortedData.filter((task) => {
+          const isIdMatch = filterSettings.id === "" || task.id.toString().indexOf(filterSettings.id) !== -1;
+          // const isAssignedMatch = filterSettings.assigned === "" || task.assigned.toString().toLowerCase == filterSettings.assigned;
+          const isCustomerMatch = filterSettings.customer === "" || task.customer.toLowerCase().indexOf(filterSettings.customer.toLowerCase()) !== -1;
+          const isStartDateMatch = filterSettings.startDate === "" || new Date(task.starttime) >= new Date(filterSettings.startDate);
+          const isEndDateMatch = filterSettings.endDate === "" || new Date(task.endtime) <= new Date(filterSettings.endDate);
           return isIdMatch 
           // && isAssignedMatch 
           && isCustomerMatch && isStartDateMatch && isEndDateMatch;
         });
 
-        setJobList(filteredDataWithSearchFilters);
+        settaskList(filteredDataWithSearchFilters);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
-  }, [tableType, filterSettings, jobList]);
+  }, [tableType, filterSettings, taskList]);
 
   const handleTableTypeChange = (newTableType) => {
     if (tableType !== newTableType) {
@@ -111,18 +109,18 @@ export default function JobsTable() {
     }
   };
 
-  const handleJobUpdate = async (id, params) => {
-    await updateJob(id, params);
+  const handletaskUpdate = async (id, params) => {
+    await updatetask(id, params);
     // No need to refetch data, just update the local state
-    setJobList((prevJobs) =>
-      prevJobs.map((job) => (job.id === id ? { ...job, ...params } : job))
+    settaskList((prevtasks) =>
+      prevtasks.map((task) => (task.id === id ? { ...task, ...params } : task))
     );
   };
-
-  const handleJobDelete = async (id) => {
-    await deleteJob(id);
+  
+  const handletaskDelete = async (id) => {
+    await deletetask(id);
     // No need to refetch data, just update the local state
-    setJobList((prevJobs) => prevJobs.filter((job) => job.id !== id));
+    settaskList((prevtasks) => prevtasks.filter((task) => task.id !== id));
   };
 
   const handleFilterChange = (param, value) => {
@@ -140,13 +138,13 @@ export default function JobsTable() {
             <TableCards header="New Requests" num={counts.New} icon="bi bi-bell-fill" color="text-primary" />
           </button>
           <button className="btn btn-link" onClick={() => handleTableTypeChange("Declined")} style={{ textDecoration: "none" }}>
-            <TableCards header="Declined Jobs" num={counts.Declined} icon="bi bi-exclamation-lg" color="text-danger" />
+            <TableCards header="Declined tasks" num={counts.Declined} icon="bi bi-exclamation-lg" color="text-danger" />
           </button>
-          <button className="btn btn-link" onClick={() => handleTableTypeChange("Completed")} style={{ textDecoration: "none" }}>
-            <TableCards header="Completed" num={counts.Completed} icon="bi bi-check-lg" color="text-success" />
+          <button className="btn btn-link" onClick={() => handleTableTypeChange("Submitted")} style={{ textDecoration: "none" }}>
+            <TableCards header="Submitted" num={counts.Submitted} icon="bi bi-check-lg" color="text-success" />
           </button>
           <button className="btn btn-link" onClick={() => handleTableTypeChange("All")} style={{ textDecoration: "none" }}>
-            <TableCards header="All Jobs" num={counts.New + counts.Declined + counts.Completed} icon="bi bi-list" color="text-info" />
+            <TableCards header="All tasks" num={counts.New + counts.Declined + counts.Submitted} icon="bi bi-list" color="text-info" />
           </button>
         </div>
       </div>
@@ -175,13 +173,13 @@ export default function JobsTable() {
             </div> 
         </div>
         <div>
-          <Table data={jobList}
+          <Table data={taskList}
             displayColumns={[
               "ID", "StartTime", "EndTime", "Status", "Setup", "Customer",
               "Permit_number", "WO_number", "NPAT", "Assigned"
             ]}
-            handleJobUpdate={handleJobUpdate}
-            handleJobDelete={handleJobDelete}
+            handletaskUpdate={handletaskUpdate}
+            handletaskDelete={handletaskDelete}
           />
         </div>
       </div>

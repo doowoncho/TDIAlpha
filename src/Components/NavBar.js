@@ -12,8 +12,9 @@ export default function NavBar() {
           {/* <Nav.Link href="/">Home</Nav.Link> */}
           {window.sessionStorage.getItem("user") && (
               <>
-                <Nav.Link href="/jobstable">All Jobs</Nav.Link>
+                <Nav.Link href="/taskstable">All tasks</Nav.Link>
                 <Nav.Link href="/invoices">Invoices</Nav.Link>
+                <Nav.Link href="/completed">Completed</Nav.Link>
                 <Nav.Link href="/todo">ToDo</Nav.Link>
                 <Nav.Link href="/form">Form</Nav.Link>
                 <button className='btn' onClick={()=>{window.sessionStorage.clear();window.location.reload()}}>Logout</button>

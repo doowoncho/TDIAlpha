@@ -1,28 +1,30 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useState, useEffect } from "react";
-import { getJobById, getFilesById } from "../Components/APICalls";
+import { gettaskById, getFilesById } from "../Components/APICalls";
 import { useParams } from 'react-router-dom';
 import FileUpload from "../Components/FileUpload";
-import "../Styles/JobDetails.css"
+import "../Styles/TaskDetails.css"
+
+const moment = require('moment');
 
 export default function Orders() {
 
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [job, setJob] = useState(null);
+  const [task, settask] = useState(null);
   const [files, setFiles] = useState("");
   let status_bg;
 
 
   useEffect(() => {
-    async function fetchJob() {
+    async function fetchtask() {
       try{
-        const fetchedJob = await getJobById(id);
-        setJob(fetchedJob);
+        const fetchedtask = await gettaskById(id);
+        settask(fetchedtask);
         setIsLoading(false);
       } catch (error){
-        setError("Error retriving Job!");
+        setError("Error retriving task!");
         setIsLoading(false);
       }
     }
@@ -37,7 +39,7 @@ export default function Orders() {
       }
     }
 
-    fetchJob();
+    fetchtask();
     fetchFiles();
   }, [id]);
 
@@ -60,13 +62,13 @@ export default function Orders() {
     return <div>Error: {error}</div>;
   }
 
-  if(job.status === "Completed"){
+  if(task.status === "Completed"){
     status_bg = "success";
-  }else if(job.status === "Declined"){
+  }else if(task.status === "Declined"){
     status_bg = "danger";
-  }else if(job.status === "New"){
+  }else if(task.status === "New"){
     status_bg = "primary";
-  }else if(job.status === "InProgress"){
+  }else if(task.status === "InProgress"){
     status_bg = "warning";
   }else{
     status_bg = "secondary";
@@ -74,7 +76,7 @@ export default function Orders() {
 
 
 function readableTime(time){
-  let readable = new Date(time).toLocaleString()
+  let readable = moment(time).format('YYYY-MM-DD h:mmA')
   return readable
 }
 
@@ -82,24 +84,26 @@ function readableTime(time){
     <div>
       <div id="main-container" className="card border shadow-lg container mt-4 mb-5" style={{width:"50%", border: "none"}}>
         <div id="edit_button" className="card-body bg-primary mt-3" style={{width:"10%", textAlign:"center", borderRadius:"5%", color:"white", marginLeft:"85%", padding:"0.5rem", paddingBottom:"0.2rem", paddingTop:"0.2rem"}}>
-          <a href={`/jobedit/${job.id}`} style={{textDecoration:"None", textAlign:"center", color:"white"}}>Edit</a>
+          <a href={`/taskedit/${task.id}`} style={{textDecoration:"None", textAlign:"center", color:"white"}}>Edit</a>
         </div>
         <div style={{display:"flex", alignItems:"center", justifyContent:"center", flexDirection:"row", gap:"5%"}}>
           <div className="card " style={{display:"flex", alignItems:"center", justifyContent:"center", width:"90%", marginTop:"2rem", marginBottom:"2rem"}}>
-            <div className="card-title" style={{fontSize:"2rem", marginRight:"auto", marginLeft:"5%", marginTop:"2%"}}>{job.customer}</div>
+            <div className="card-title" style={{fontSize:"2rem", marginRight:"auto", marginLeft:"5%", marginTop:"2%"}}>{task.customer}</div>
             <div className="card-body" style={{display:"flex", alignItems:"center", justifyContent:"space-around", gap:"5%", width:"90%"}}>
             <div style={{display: "flex"}}>
             <div id="date-container" style={{display: "flex"}}>
               <fieldset id="id-fieldset" disabled style={{marginRight: "20px"}}>
-                <label for="exampleInputEmail1">ID</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={job.id}/>
+                <label>ID</label>
+                <input class="form-control"  value={task.id}/>
+                <label>Phone</label>
+                <input class="form-control"  value={task.phone_number}/>
               </fieldset>
 
               <fieldset disabled>
-                <label for="exampleInputDate" style={{marginRight: "5px"}}>StartTime:</label>
-                <input type="email" class="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={job.starttime && readableTime(job.starttime)}/>
+                <label for="exampleInputDate" style={{marginRight: "5px"}}>Start Time:</label>
+                <input type="email" class="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={task.starttime && readableTime(task.starttime)}/>
                 <label for="exampleInputDate" style={{marginRight: "5px"}}>End Time:</label>
-                <input type="email" class="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={job.endtime && readableTime(job.endtime)}/>
+                <input type="email" class="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={task.endtime && readableTime(task.endtime)}/>
               </fieldset>
             </div>
             </div>
@@ -108,27 +112,27 @@ function readableTime(time){
         </div>
         <div style={{display:"flex", alignItems:"center", justifyContent:"center", flexDirection:"row", gap:"3%", marginLeft:"3%", marginRight:"2%"}}>
           <div id="info-container" className="card border" style={{display:"flex", alignItems:"center", justifyContent:"center", width:"50%", marginBottom:"2rem", border: "none"}}>
-            <div className="card-title" style={{fontSize:"1.5rem", marginRight:"auto", marginLeft:"5%", marginTop:"2%"}}>{job.setup}</div>
+            <div className="card-title" style={{fontSize:"1.5rem", marginRight:"auto", marginLeft:"5%", marginTop:"2%"}}>{task.setup}</div>
             <fieldset className="mt-3" disabled>
                 <label for="exampleInputDate" style={{marginRight: "5px"}}>Permit/Request#:</label>
-                <input type="email" class="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={job.permit_number}/>
+                <input type="email" class="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={task.permit_number}/>
             </fieldset>
             <fieldset className="my-3" disabled>
                 <label for="exampleInputDate" style={{marginRight: "5px"}}>WO#:</label>
-                <input type="email" class="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={job.wo_number}/>
+                <input type="email" class="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={task.wo_number}/>
             </fieldset>
             <fieldset className="mb-5" disabled>
                 <label for="exampleInputDate" style={{marginRight: "5px"}}>PO#:</label>
-                <input type="email" class="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={job.po_number}/>
+                <input type="email" class="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={task.po_number}/>
             </fieldset>
           </div>
           <div style={{marginTop:"1rem", marginBottom:"2rem"}}>
-            <Card info={job.status} type="Status" width="20rem" bg={status_bg} tc="white"></Card>
+            <Card info={task.status} type="Status" width="20rem" bg={status_bg} tc="white"></Card>
             <div class="card">
               <div class="card-header">Notes</div>
               <div class="card-body">
               <fieldset className="mb-5" disabled>
-                  <input type="email" class="form-control text-center" id="exampleInputEmail1" aria-describedby="emailHelp" value={job.notes}/>
+                  <input type="email" class="form-control text-center" id="exampleInputEmail1" aria-describedby="emailHelp" value={task.notes}/>
               </fieldset>
               </div>
             </div>
@@ -142,19 +146,19 @@ function readableTime(time){
             <div style={{display:"flex", alignItems:"center", justifyContent:"center", flexDirection:"column"}}>
               <div class="mb-3 mx-auto" style={{width:"16rem"}}>
                 <label for="formFileDisabled" class="form-label">Permit Confirmation</label>
-                  <FileUpload type="p_confirm" job={files.permit_confirmation_file} name={files.permit_confirmation_name}></FileUpload>
+                  <FileUpload type="p_confirm" task={files.permit_confirmation_file} name={files.permit_confirmation_name}></FileUpload>
               </div>
               <div class="mb-3 mx-auto" style={{width:"16rem"}}>
                 <label for="formFileDisabled" class="form-label">Permit</label>
-                  <FileUpload type="permit" job={files.permit_file} name={files.permit_name}></FileUpload>
+                  <FileUpload type="permit" task={files.permit_file} name={files.permit_name}></FileUpload>
               </div>
               <div class="mb-3 mx-4" style={{width:"16rem"}}>
                 <label for="formFileDisabled" class="form-label">Map Drawing</label>
-                  <FileUpload type="map" job={files.map_file} name={files.map_drawing_name}></FileUpload>
+                  <FileUpload type="map" task={files.map_file} name={files.map_drawing_name}></FileUpload>
               </div>
               <div class="mb-3 mx-4" style={{width:"16rem"}}>
                 <label for="formFileDisabled" class="form-label">Photo</label>
-                  <FileUpload type="photo" job={files.photo_file} name={files.photo_name}></FileUpload>
+                  <FileUpload type="photo" task={files.photo_file} name={files.photo_name}></FileUpload>
               </div>
             </div>
           </div>

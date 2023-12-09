@@ -1,10 +1,10 @@
-// const server = "http://localhost:3001"
-const server = ""
+const server = "http://localhost:3001"
+// const server = ""
 
-// Gets a list of all the jobs
-export async function getAllJobs() {
+// Gets a list of all the tasks
+export async function getAlltasks() {
     try {
-      const response = await fetch(`${server}/api/jobs`);
+      const response = await fetch(`${server}/api/tasks`);
       const data = await response.json();
       return(data)
     } catch (error) {
@@ -12,11 +12,11 @@ export async function getAllJobs() {
     }
   }
 
-// Gets all the jobs params from options
-export async function getSpecificJobs(params) {
+// Gets all the tasks params from options
+export async function getSpecifictasks(params) {
     try {
         const queryString = new URLSearchParams(params).toString();
-        const url = `${server}/api/specificJobs?${queryString}`;
+        const url = `${server}/api/specifictasks?${queryString}`;
 
         const response = await fetch(url, {
         method: 'GET',
@@ -31,10 +31,10 @@ export async function getSpecificJobs(params) {
     }
 }
   
-// Changes specific property of job with the given job id
-export async function updateJob(id, params) {
+// Changes specific property of task with the given task id
+export async function updatetask(id, params) {
     try {
-      const url = `${server}/api/updateJob/${id}`; // Use the id as a URL parameter
+      const url = `${server}/api/updatetask/${id}`; // Use the id as a URL parameter
       console.log(params);
   
       const response = await fetch(url, {
@@ -45,10 +45,10 @@ export async function updateJob(id, params) {
         body: JSON.stringify(params),
       });
   
-      const jobChanged = await response.json();
-      console.log('Job changed:', jobChanged);
+      const taskChanged = await response.json();
+      console.log('task changed:', taskChanged);
     } catch (error) {
-      console.error('Error updating job:', error);
+      console.error('Error updating task:', error);
     }
   }
 
@@ -67,7 +67,7 @@ export async function updateJob(id, params) {
         const fileUpdate = await response.json();
         console.log('File uploaded:', fileUpdate);
     } catch (error) {
-        console.error('Error updating job:', error);
+        console.error('Error updating task:', error);
     }
 }
 
@@ -87,29 +87,29 @@ export async function files(id, params) {
         const fileUpdate = await response.json();
         console.log('File updated:', fileUpdate);
     } catch (error) {
-        console.error('Error updating job:', error);
+        console.error('Error updating task:', error);
     }
 }
   
-// Deletes job with params from options
-export async function deleteJob(id) {
+// Deletes task with params from options
+export async function deletetask(id) {
     try {
-        const response = await fetch(`${server}/api/deleteJob/${id}`, {
+        const response = await fetch(`${server}/api/deletetask/${id}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
             }
         });
 
-        const deletedJob = await response.json();
-        console.log('Deleted Job:', deletedJob);
+        const deletedtask = await response.json();
+        console.log('Deleted task:', deletedtask);
 
     } catch (error) {
-        console.error('Error deleting job:', error);
+        console.error('Error deleting task:', error);
     }
 }
-// Creates job with params from options
-export async function createJob(params) {
+// Creates task with params from options
+export async function createtask(params) {
     if(params.npat){
         //create npat row
         //also need this whenever npat is updated
@@ -117,36 +117,35 @@ export async function createJob(params) {
         //npat npat npat
     }
     try {
-        const response = await fetch(`${server}/api/createJob`, {
+        const response = await fetch(`${server}/api/createtask`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(params), 
         });
-        console.log(params)
-        const createdJob = await response.json();
-        console.log('Created Job:', createdJob);
-        return createdJob
+        const createdtask = await response.json();
+        console.log('Created task:', createdtask);
+        return createdtask
     } catch (error) {
-        console.error('Error creating job:', error);
+        console.error('Error creating task:', error);
     }
 }
 
-// Gets a single job by ID
-export async function getJobById(id) {
+// Gets a single task by ID
+export async function gettaskById(id) {
   try {
-      const response = await fetch(`${server}/api/getJob/${id}`, {
+      const response = await fetch(`${server}/api/gettask/${id}`, {
           method: 'GET',
           headers: {
               'Content-Type': 'application/json',
           },
       });
 
-      const job = await response.json();
-      return job;
+      const task = await response.json();
+      return task;
   } catch (error) {
-      console.error('Error fetching job:', error);
+      console.error('Error fetching task:', error);
   }
 }
 
@@ -159,10 +158,10 @@ export async function getFilesById(id) {
             },
         });
   
-        const job = await response.json();
-        return job;
+        const task = await response.json();
+        return task;
     } catch (error) {
-        console.error('Error fetching job:', error);
+        console.error('Error fetching task:', error);
     }
   }
 
@@ -175,10 +174,10 @@ export async function getUserById(id) {
               'Content-Type': 'application/json',
           },
       });
-      const job = await response.json();
-      return job;
+      const task = await response.json();
+      return task;
   } catch (error) {
-      console.error('Error fetching job:', error);
+      console.error('Error fetching task:', error);
   }
 }
 
@@ -200,10 +199,10 @@ export async function getAllUsers() {
                 'Content-Type': 'application/json',
             },
         });
-        const job = await response.json();
-        return job;
+        const task = await response.json();
+        return task;
     } catch (error) {
-        console.error('Error fetching job:', error);
+        console.error('Error fetching task:', error);
     }
   }
   export async function createUser(params) {
@@ -216,26 +215,26 @@ export async function getAllUsers() {
         body: JSON.stringify(params), 
         });
 
-        const createdJob = await response.json();
-        console.log('Created Job:', createdJob);
+        const createdtask = await response.json();
+        console.log('Created task:', createdtask);
     } catch (error) {
-        console.error('Error creating job:', error);
+        console.error('Error creating task:', error);
     }
 }
   
-// Get assigned jobs by userID
-export async function getJobByUserId(id) {
+// Get assigned tasks by userID
+export async function gettaskByUserId(id) {
   try {
-      const response = await fetch(`${server}/api/getJobByUserId/${id}`, {
+      const response = await fetch(`${server}/api/gettaskByUserId/${id}`, {
           method: 'GET',
           headers: {
               'Content-Type': 'application/json',
           },
       });
-      const job = await response.json();
-      return job;
+      const task = await response.json();
+      return task;
   } catch (error) {
-      console.error('Error fetching job:', error);
+      console.error('Error fetching task:', error);
   }
 }
 

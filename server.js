@@ -1,18 +1,3 @@
-// const express = require('express');
-// const { PrismaClient } = require('@prisma/client');
-
-// const prisma = new PrismaClient();
-// const app = express();
-// const bodyParser = require('body-parser');
-// const cors = require('cors');
-// const { ReadableStreamDefaultController } = require('stream/web');
-
-// app.use(bodyParser.json());
-// app.use(cors({
-//     // origin: 'https://main.d3uj1gkliipo6a.amplifyapp.com',
-//        origin: 'http://localhost:3000',
-//   }));
-
 const express = require('express');
 const { PrismaClient } = require('@prisma/client');
 
@@ -21,34 +6,49 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { ReadableStreamDefaultController } = require('stream/web');
-const path = require('path');
-
-const buildPath = path.join(__dirname, "build");
-
-app.use(express.static(buildPath));
-
-app.get("/", function(req, res) {
-  res.sendFile(path.join(buildPath, 'index.html'),
-    function(err) {
-      if(err) {
-        res.status(500).send(err);
-      }
-    }
-  )
-})
 
 app.use(bodyParser.json());
 app.use(cors({
-    // // origin: 'https://main.d3uj1gkliipo6a.amplifyapp.com',
-    //    origin: 'http://localhost:3001',
+    // origin: 'https://main.d3uj1gkliipo6a.amplifyapp.com',
+       origin: 'http://localhost:3000',
   }));
+
+// const express = require('express');
+// const { PrismaClient } = require('@prisma/client');
+
+// const prisma = new PrismaClient();
+// const app = express();
+// const bodyParser = require('body-parser');
+// const cors = require('cors');
+// const { ReadableStreamDefaultController } = require('stream/web');
+// const path = require('path');
+
+// const buildPath = path.join(__dirname, "build");
+
+// app.use(express.static(buildPath));
+
+// app.get("/", function(req, res) {
+//   res.sendFile(path.join(buildPath, 'index.html'),
+//     function(err) {
+//       if(err) {
+//         res.status(500).send(err);
+//       }
+//     }
+//   )
+// })
+
+// app.use(bodyParser.json());
+// app.use(cors({
+//     // // origin: 'https://main.d3uj1gkliipo6a.amplifyapp.com',
+//     //    origin: 'http://localhost:3001',
+//   }));
 
 
 //api endpoints to be called in the code to make calls in the database
 
-app.get('/api/jobs', async (req, res) => {
+app.get('/api/tasks', async (req, res) => {
   try {
-    const posts = await prisma.jobs.findMany();
+    const posts = await prisma.tasks.findMany();
     res.json(posts);
   } catch (error) {
     console.error(error);
@@ -56,11 +56,11 @@ app.get('/api/jobs', async (req, res) => {
   }
 });
 
-//gets all jobs with specific criteria... takes in an object with the properties
-app.get('/api/specificJobs', async (req, res) => {
+//gets all tasks with specific criteria... takes in an object with the properties
+app.get('/api/specifictasks', async (req, res) => {
   try {
     const { id, customer, starttime, endtime, status, setup, permit_number, notes, wo_number, po_number, assigned, npat} = req.query
-    const posts = await prisma.jobs.findMany({
+    const posts = await prisma.tasks.findMany({
       where: {
         customer: customer,
         id: id, 
@@ -83,14 +83,14 @@ app.get('/api/specificJobs', async (req, res) => {
   }
 });
 
-//updates the job with the id
-app.put('/api/updateJob/:id', async (req, res) => {
+//updates the task with the id
+app.put('/api/updatetask/:id', async (req, res) => {
   try {
-    const jobId = parseInt(req.params.id) //id of job we are changing
-    const { id, customer, starttime, endtime, status, setup, permit_number, notes, wo_number, po_number, assigned, p_confirm, permit, map, photo, npat } = req.body
-    const posts = await prisma.jobs.update({
+    const taskId = parseInt(req.params.id) //id of task we are changing
+    const { id, customer, starttime, endtime, status, setup, permit_number, notes, wo_number, po_number, assigned, p_confirm, permit, map, photo, npat, phone_number } = req.body
+    const posts = await prisma.tasks.update({
       where: {
-        id: jobId
+        id: taskId
       },
       data:{
         customer: customer,
@@ -108,7 +108,8 @@ app.put('/api/updateJob/:id', async (req, res) => {
         starttime: starttime,
         endtime: endtime,
         photo: photo,
-        npat: npat
+        npat: npat,
+        phone_number: phone_number
       }
     });
     res.json(posts);
@@ -120,27 +121,27 @@ app.put('/api/updateJob/:id', async (req, res) => {
 });
 
 
-//Deletes job with particular id
-app.delete('/api/deleteJob/:id', async (req, res) => {
+//Deletes task with particular id
+app.delete('/api/deletetask/:id', async (req, res) => {
   try {
-    const jobId = parseInt(req.params.id) 
-    const deletedJob = await prisma.jobs.delete({
+    const taskId = parseInt(req.params.id) 
+    const deletedtask = await prisma.tasks.delete({
       where: {
-        id: jobId
+        id: taskId
       },
     });
-    res.json(deletedJob);
+    res.json(deletedtask);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
 
-//creates job with provided properties
-app.post('/api/createJob', async (req, res) => {
+//creates task with provided properties
+app.post('/api/createtask', async (req, res) => {
   try {
-    const { customer, starttime, endtime, status, setup, permit_number, notes, wo_number, po_number, email, npat } = req.body;
-    const newJob = await prisma.jobs.create({
+    const { customer, starttime, endtime, status, setup, permit_number, notes, wo_number, po_number, email, npat, phone_number } = req.body;
+    const newtask = await prisma.tasks.create({
       data: {
         customer: customer,
         email: email,
@@ -152,10 +153,11 @@ app.post('/api/createJob', async (req, res) => {
         po_number: po_number,
         starttime: starttime,
         endtime: endtime,
-        npat: npat
+        npat: npat,
+        phone_number: phone_number
       },
     });
-    res.json(newJob);
+    res.json(newtask);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });
@@ -190,18 +192,18 @@ app.post('/api/file/:id', async (req, res) => {
   try {
     const { id, photo_name, photo_file, permit_name, permit_file, permit_confirmation_name, permit_confirmation_file, map_drawing_name, map_file } = req.body;
     
-    const jobId = parseInt(req.params.id);
+    const taskId = parseInt(req.params.id);
     
     const existingID = await prisma.files.findUnique({
       where: {
-        id: jobId
+        id: taskId
       }
     });
 
     if (existingID) {
       const updatedID = await prisma.files.update({
         where: {
-          id: jobId
+          id: taskId
         },
         data: {
           photo_name: photo_name,
@@ -219,7 +221,7 @@ app.post('/api/file/:id', async (req, res) => {
     }else {
       const createID = await prisma.files.create({
         data: {
-          id: jobId,
+          id: taskId,
           photo_name: photo_name,
           photo_file: photo_file,
           permit_name: permit_name,
@@ -241,16 +243,16 @@ app.post('/api/file/:id', async (req, res) => {
 
 app.get('/api/getFiles/:id', async (req, res) => {
   try {
-    const jobId = parseInt(req.params.id);
+    const taskId = parseInt(req.params.id);
     const files = await prisma.files.findUnique({
       where: {
-        id: jobId
+        id: taskId
       }
     });
     if (files) {
       res.json(files);
     } else {
-      res.status(404).json({ error: 'Job not found' });
+      res.status(404).json({ error: 'task not found' });
     }
   } catch (error) {
     console.error(error);
@@ -259,19 +261,19 @@ app.get('/api/getFiles/:id', async (req, res) => {
 });
 
 
-// Add this route to get a job by ID
-app.get('/api/getJob/:id', async (req, res) => {
+// Add this route to get a task by ID
+app.get('/api/gettask/:id', async (req, res) => {
   try {
-    const jobId = parseInt(req.params.id);
-    const job = await prisma.jobs.findUnique({
+    const taskId = parseInt(req.params.id);
+    const task = await prisma.tasks.findUnique({
       where: {
-        id: jobId
+        id: taskId
       }
     });
-    if (job) {
-      res.json(job);
+    if (task) {
+      res.json(task);
     } else {
-      res.status(404).json({ error: 'Job not found' });
+      res.status(404).json({ error: 'task not found' });
     }
   } catch (error) {
     console.error(error);
@@ -279,7 +281,7 @@ app.get('/api/getJob/:id', async (req, res) => {
   }
 });
 
-// Add this route to get a job by ID
+// Add this route to get a task by ID
 app.get('/api/getUser/:id', async (req, res) => {
   try {
     const userId = parseInt(req.params.id);
@@ -322,11 +324,11 @@ app.get('/api/getUserByEmail/:email', async (req, res) => {
   });
 
 
-// get jobs for a user by id
-app.get('/api/getJobByUserId/:id', async (req, res) => {
+// get tasks for a user by id
+app.get('/api/gettaskByUserId/:id', async (req, res) => {
   try {
     const userId = parseInt(req.params.id);
-    const user = await prisma.jobs.findMany({
+    const user = await prisma.tasks.findMany({
       where: {
         assigned: userId
 
@@ -343,7 +345,7 @@ app.post('/api/createUser', async (req, res) => {
   try {
     const { email, name, permission, password } = req.body;
 
-    const newJob = await prisma.jobs.create({
+    const newtask = await prisma.tasks.create({
       data: {
         email: email,
         name: name,
@@ -352,7 +354,7 @@ app.post('/api/createUser', async (req, res) => {
       },
     });
 
-    res.json(newJob);
+    res.json(newtask);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });

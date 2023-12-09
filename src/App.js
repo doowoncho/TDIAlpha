@@ -1,14 +1,15 @@
 
 import { Route, Routes, Navigate } from "react-router-dom";
 import HomePage from "./Page/HomePage";
-import JobsTable from "./Page/JobsTable";
+import TasksTablePage from "./Page/TasksTablePage";
 import FormPage from "./Page/FormPage";
-import JobDetails from "./Page/JobDetails";
+import TaskDetails from "./Page/TaskDetails";
 import LoginPage from "./Page/LoginPage";
 import TimePage from "./Page/TimePage";
 import ToDoPage from "./Page/ToDoPage";
 import InvoicePage from "./Page/InvoicePage";
-import JobEdit from "./Page/JobEdit";
+import TaskEditPage from "./Page/TaskEditPage";
+import CompletedPage from "./Page/CompletedPage";
 
 
 const App = () => {
@@ -18,25 +19,27 @@ const App = () => {
     <Routes>
       {isUserLoggedIn ? (
         <>
-          <Route path="/" element={<JobsTable />} />
-          <Route path="/jobstable" element={<JobsTable />} />
-          <Route path="/jobdetails/:id" element={<JobDetails />} />
-          <Route path="/jobedit/:id" element={<JobEdit />} />
+          <Route path="/" element={<tasksTable />} />
+          <Route path="/taskstable" element={<TasksTablePage />} />
+          <Route path="/taskdetails/:id" element={<TaskDetails />} />
+          <Route path="/taskedit/:id" element={<TaskEditPage />} />
           <Route path="/todo" element={<ToDoPage />} />
           <Route path="/form" element={<FormPage />} />
           <Route path="/time" element={<TimePage />} />
           <Route path="/invoices" element={<InvoicePage />} />
+          <Route path="/completed" element={<CompletedPage />} />
         </>
       ) : (
         <>
         <Route path="/" element={<LoginPage />} />
-        <Route path="/jobstable" element={<LoginPage />} />
-        <Route path="/jobdetails/:id" element={<LoginPage />} />
-        <Route path="/jobedit/:id" element={<LoginPage />} />
+        <Route path="/taskstable" element={<LoginPage />} />
+        <Route path="/taskdetails/:id" element={<LoginPage />} />
+        <Route path="/taskedit/:id" element={<LoginPage />} />
         <Route path="/todo" element={<LoginPage />} />
         <Route path="/form" element={<LoginPage />} />
         <Route path="/time" element={<LoginPage />} /> 
         <Route path="/invoices" element={<LoginPage />} />
+        <Route path="/completed" element={<LoginPage />} />
         </>
       )}
       <Route path="/login" element={<LoginPage />} />

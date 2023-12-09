@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '../Components/Firebase';
-import { createJob, files } from '../Components/APICalls';
+import { createtask, files } from '../Components/APICalls';
 import DateInput from '../Components/DateInput';
 import { useNavigate } from "react-router-dom";
 
 function FormPage() {
   const [dates, setDates] = useState([{ startDate: '', startTime: '', endDate: '', endTime: '', NPAT: false, exWeekend: false, twentyFour: false }]);
-  // const [job, setJob] = useState();
+  // const [task, settask] = useState();
   const [file, setFile] = useState(null);
   const navigate = useNavigate();
 
@@ -40,11 +40,11 @@ function FormPage() {
     setFile(selectedFile);
   };
 
-   async function fileUploading (createdJob) {
+   async function fileUploading (createdtask) {
     if(file){
       const fileRef = ref(storage, `${file.name}`);
       let fileBlob;
-      const id = createdJob.id;
+      const id = createdtask.id;
 
       await uploadBytes(fileRef, file).then((snapshot) => {
           console.log('Uploaded a blob or file!');
@@ -68,15 +68,15 @@ function FormPage() {
     const poNumber = document.getElementById('poNumber').value;
     const woNumber = document.getElementById('woNumber').value;
     const location = document.getElementById('location').value;
+    const phoneNumber = document.getElementById('phoneNumber').value;
     
     //fix this when im actually awake
     dates.forEach(async (dateTime) => {  
       if(dateTime.twentyFour == true){
         if(dateTime.exWeekend == true){
-
-          //create start job
+          //create start task
           let beginDate = new Date(dateTime.startDate + 'T' + dateTime.startTime);
-          const newJob = {
+          const newtask = {
             customer: customer,
             status: 'New',
             email: email,
@@ -84,17 +84,18 @@ function FormPage() {
             wo_number: woNumber,
             setup: location,
             starttime: beginDate,
-            npat: dateTime.NPAT
+            npat: dateTime.NPAT,
+            phone_number: phoneNumber
           };
-          const createdJob = await createJob(newJob);
-          fileUploading(createdJob)
+          const createdtask = await createtask(newtask);
+          fileUploading(createdtask)
 
           let currentDate = new Date(dateTime.startDate);
           currentDate.setDate(currentDate.getDate() + 2);
           while (currentDate <= new Date(dateTime.endDate)){
             if(currentDate.getDay() == 5){
-              //add job to pick up the sign
-              const newJob = {
+              //add task to pick up the sign
+              const newtask = {
                 customer: customer,
                 status: 'New',
                 email: email,
@@ -102,14 +103,16 @@ function FormPage() {
                 wo_number: woNumber,
                 setup: location,
                 endtime: currentDate,
-                npat: dateTime.NPAT
+                npat: dateTime.NPAT,
+                phone_number: phoneNumber
+                
               };
-              const createdJob = await createJob(newJob);
-              fileUploading(createdJob)
+              const createdtask = await createtask(newtask);
+              fileUploading(createdtask)
             }
             else if(currentDate.getDay() == 1){
-              //add job to place the sign
-              const newJob = {
+              //add task to place the sign
+              const newtask = {
                 customer: customer,
                 status: 'New',
                 email: email,
@@ -117,14 +120,15 @@ function FormPage() {
                 wo_number: woNumber,
                 setup: location,
                 starttime: currentDate,
-                npat: dateTime.NPAT
+                npat: dateTime.NPAT,
+                phone_number: phoneNumber
               };
-              const createdJob = await createJob(newJob);
-              fileUploading(createdJob)
+              const createdtask = await createtask(newtask);
+              fileUploading(createdtask)
             }
             currentDate.setDate(currentDate.getDate() + 1);
           }
-          const newJob1 = {
+          const newtask1 = {
             customer: customer,
             status: 'New',
             email: email,
@@ -132,16 +136,17 @@ function FormPage() {
             wo_number: woNumber,
             setup: location,
             endtime: dateTime.endDate,
-            npat: dateTime.NPAT
+            npat: dateTime.NPAT,
+            phone_number: phoneNumber
           };
-          const createdJob1 = await createJob(newJob1);
-          fileUploading(createdJob1)
+          const createdtask1 = await createtask(newtask1);
+          fileUploading(createdtask1)
         }
         else{
-            //two jobs, one for putting down and one for picking stuff up
+            //two tasks, one for putting down and one for picking stuff up
             let beginDate = new Date(dateTime.startDate + 'T' + dateTime.startTime);
             let endDate = new Date(dateTime.endDate + 'T' + dateTime.endTime);
-            const newJob = {
+            const newtask = {
               customer: customer,
               status: 'New',
               email: email,
@@ -149,11 +154,12 @@ function FormPage() {
               wo_number: woNumber,
               setup: location,
               starttime: beginDate,
-              npat: dateTime.NPAT
+              npat: dateTime.NPAT,
+              phone_number: phoneNumber
             };
-            const createdJob = await createJob(newJob);
-            fileUploading(createdJob)
-            const newJob1 = {
+            const createdtask = await createtask(newtask);
+            fileUploading(createdtask)
+            const newtask1 = {
               customer: customer,
               status: 'New',
               email: email,
@@ -161,16 +167,17 @@ function FormPage() {
               wo_number: woNumber,
               setup: location,
               endtime: endDate,
-              npat: dateTime.NPAT
+              npat: dateTime.NPAT,
+              phone_number: phoneNumber
             };
-            const createdJob1 = await createJob(newJob1);
-            fileUploading(createdJob1)
+            const createdtask1 = await createtask(newtask1);
+            fileUploading(createdtask1)
           }
         }
         else{
           const startTime = new Date(dateTime.startDate + 'T' + dateTime.startTime);
         const endTime = new Date(dateTime.startDate + 'T' + dateTime.endTime);
-        const newJob = {
+        const newtask = {
           customer: customer,
           status: 'New',
           email: email,
@@ -179,18 +186,19 @@ function FormPage() {
           setup: location,
           starttime: startTime,
           endtime: endTime,
-          npat: dateTime.NPAT
+          npat: dateTime.NPAT,
+          phone_number: phoneNumber
         };
-        const createdJob = await createJob(newJob);
-        fileUploading(createdJob)
+        const createdtask = await createtask(newtask);
+        fileUploading(createdtask)
       }
-      navigate("/jobstable/");
+      navigate("/taskstable/");
     });
   }
 
   return (
     <div className="container">
-      <h1 className="my-4 text-center">Request a job </h1>
+      <h1 className="my-4 text-center">Request a task </h1>
       <form onSubmit={handleSubmit}>
 
       <div className="container" style={{ maxWidth: '800px' }}>
