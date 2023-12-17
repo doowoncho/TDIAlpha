@@ -12,6 +12,17 @@ export async function getAlltasks() {
     }
   }
 
+  // Gets a list of all the jobs
+export async function getAllJobs() {
+    try {
+      const response = await fetch(`${server}/api/jobs`);
+      const data = await response.json();
+      return(data)
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+
 // Gets all the tasks params from options
 export async function getSpecifictasks(params) {
     try {
@@ -49,6 +60,25 @@ export async function updatetask(id, params) {
       console.log('task changed:', taskChanged);
     } catch (error) {
       console.error('Error updating task:', error);
+    }
+  }
+
+  // Changes specific property of task with the given task id
+export async function updateJob(id, params) {
+    try {
+      const url = `${server}/api/updatejob/${id}`; // Use the id as a URL parameter
+      const response = await fetch(url, {
+        method: 'PUT', 
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(params),
+      });
+  
+      const jobChanged = await response.json();
+      console.log('job changed:', jobChanged);
+    } catch (error) {
+      console.error('Error updating job:', error);
     }
   }
 
@@ -108,14 +138,26 @@ export async function deletetask(id) {
         console.error('Error deleting task:', error);
     }
 }
+
+// Deletes task with params from options
+export async function deleteJob(id) {
+    try {
+        const response = await fetch(`${server}/api/deletejob/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            }
+        });
+
+        const deletedtask = await response.json();
+        console.log('Deleted job:', deletedtask);
+
+    } catch (error) {
+        console.error('Error deleting job:', error);
+    }
+}
 // Creates task with params from options
 export async function createtask(params) {
-    if(params.npat){
-        //create npat row
-        //also need this whenever npat is updated
-        //also whenever something is assigned we need to have npat updated as well
-        //npat npat npat
-    }
     try {
         const response = await fetch(`${server}/api/createtask`, {
         method: 'POST',
@@ -131,6 +173,41 @@ export async function createtask(params) {
         console.error('Error creating task:', error);
     }
 }
+
+// Creates Job
+export async function createJob() {
+    try {
+        const response = await fetch(`${server}/api/createJob`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(), 
+        });
+        const createdjob = await response.json();
+        console.log('Created Job:', createdjob);
+        return createdjob
+    } catch (error) {
+        console.error('Error creating job:', error);
+    }
+}
+
+// Gets a single task by ID
+export async function getJobById(id) {
+    try {
+        const response = await fetch(`${server}/api/getjob/${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+  
+        const task = await response.json();
+        return task;
+    } catch (error) {
+        console.error('Error fetching task:', error);
+    }
+  }
 
 // Gets a single task by ID
 export async function gettaskById(id) {
@@ -148,6 +225,23 @@ export async function gettaskById(id) {
       console.error('Error fetching task:', error);
   }
 }
+
+// Gets a single task by ID
+export async function getTasksByJobId(id) {
+    try {
+        const response = await fetch(`${server}/api/gettasksbyjobid/${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+  
+        const task = await response.json();
+        return task;
+    } catch (error) {
+        console.error('Error fetching task:', error);
+    }
+  }
 
 export async function getFilesById(id) {
     try {

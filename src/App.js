@@ -10,6 +10,7 @@ import ToDoPage from "./Page/ToDoPage";
 import InvoicePage from "./Page/InvoicePage";
 import TaskEditPage from "./Page/TaskEditPage";
 import CompletedPage from "./Page/CompletedPage";
+import JobsTable from "./Page/JobsTablePage";
 
 
 const App = () => {
@@ -19,8 +20,8 @@ const App = () => {
     <Routes>
       {isUserLoggedIn ? (
         <>
-          <Route path="/" element={<tasksTable />} />
-          <Route path="/taskstable" element={<TasksTablePage />} />
+          <Route path="/" element={<JobsTable />} />
+          <Route path="/taskspage/:id" element={<TasksTablePage />} />
           <Route path="/taskdetails/:id" element={<TaskDetails />} />
           <Route path="/taskedit/:id" element={<TaskEditPage />} />
           <Route path="/todo" element={<ToDoPage />} />
@@ -28,11 +29,12 @@ const App = () => {
           <Route path="/time" element={<TimePage />} />
           <Route path="/invoices" element={<InvoicePage />} />
           <Route path="/completed" element={<CompletedPage />} />
+          <Route path="/jobstable" element={<JobsTable />} />
         </>
       ) : (
         <>
         <Route path="/" element={<LoginPage />} />
-        <Route path="/taskstable" element={<LoginPage />} />
+        <Route path="/taskspage/:id" element={<LoginPage />} />
         <Route path="/taskdetails/:id" element={<LoginPage />} />
         <Route path="/taskedit/:id" element={<LoginPage />} />
         <Route path="/todo" element={<LoginPage />} />
@@ -40,6 +42,7 @@ const App = () => {
         <Route path="/time" element={<LoginPage />} /> 
         <Route path="/invoices" element={<LoginPage />} />
         <Route path="/completed" element={<LoginPage />} />
+        <Route path="/jobstable" element={<LoginPage />} />
         </>
       )}
       <Route path="/login" element={<LoginPage />} />

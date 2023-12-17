@@ -65,7 +65,7 @@ export default function ToDoPage() {
   return (
     <div>
       <div className="form-check form-switch my-3 mx-5">
-        <label className="form-check-label" htmlFor="flexSwitchCheckDefault">Show All tasks</label>
+        <label className="form-check-label" for="flexSwitchCheckDefault">Show All tasks</label>
         <input className="form-check-input" type="checkbox" id="flexSwitchCheckDefault" onChange={handleToggle}/>
       </div>
       <Calendar

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { storage } from '../Components/Firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { files, getFilesById } from './APICalls';
+import { files, getFilesById, updateFiles, uploadFile } from './APICalls';
 import { useParams } from 'react-router-dom';
 
 function FileUpload({type, task, name}) {
@@ -21,7 +21,6 @@ function FileUpload({type, task, name}) {
     "photo": ""
   })
   let fileBlob;
-  let newFileBlob;
   const fileType = {
     "p_confirm": "bi bi-file-check",
     "permit": "bi bi-file-text",
@@ -33,6 +32,21 @@ function FileUpload({type, task, name}) {
     const selectedFile = event.target.files[0];
     setFile(selectedFile);
   };
+
+  async function handleDelete(id, type){
+    let deleteFile
+    if(type === "p_confirm"){
+      deleteFile = {permit_confirmation_file: "", permit_confirmation_name: ""};
+    }else if(type === "permit"){
+      deleteFile = {permit_file: "", permit_name: ""};
+    }else if(type === "map"){
+      deleteFile = {map_file: "", map_drawing_name: ""};
+    }else{
+      deleteFile = {photo_file: "", photo_name: ""};
+    }   
+    files(id, deleteFile)
+    window.location.reload()
+  }
   
   async function handleUpload(){
     const fileRef = ref(storage, `${file.name}`);
@@ -62,7 +76,6 @@ function FileUpload({type, task, name}) {
       
       const updatedUploaded = { ...uploaded, [type]: true };
       const updatedFileName = { ...fileName };
-
       
       setUploaded(updatedUploaded);
       setFileName(updatedFileName)
@@ -73,21 +86,24 @@ function FileUpload({type, task, name}) {
   return (
     <>
       {task ? (
-          <div className={`card border border-success  bg-light mb-2 `} style={{width:"16rem"}}>
+          <div className={`card border border-success bg-light mx-2`} style={{width:'200px'}}>
             <div className="card-body">
-              <p className='text-center'>{name}</p>
+              {/* <p className='text-center'>{name}</p> */}
               <div style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
                 <a href={task} target="_blank"><i className={`${fileType[type]}`} style={{ fontSize: "2rem" }}></i></a>
               </div>
-                  <input type="file" onChange={handleFileChange}/>
+                  <input type="file" onChange={handleFileChange} style={{width:"100%"}}/>
                   <button onClick={handleUpload} style={{width:"100%"}}>Replace File</button>
+                  <button className='btn btn-outline-danger my-2' onClick={()=>handleDelete(id, type)}>Delete File</button>
             </div>
           </div>
       ) : (
-        <div className='card' style={{margin:"0"}}>
-          <input type="file" onChange={handleFileChange}/>
-          <button onClick={handleUpload}>Upload File</button>
-        </div>
+          <div className='card mx-2' style={{width:'200px'}}>
+            <div className="card-body">
+              <input type="file" onChange={handleFileChange}/>
+              <button onClick={handleUpload}>Upload File</button>
+            </div>
+          </div>
       )}
     </>
   );

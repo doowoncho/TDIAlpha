@@ -49,55 +49,55 @@ function TaskEditPage() {
 
       { user.permission == 1 && (
         <div className="mb-3">
-          <label htmlFor="customerName">Name</label>
+          <label for="customerName">Name</label>
           <input type="text" className="form-control" id="customerName" value={task ? task.customer : ""} onChange={(e) => handleFieldChange('customer', e)}/>
         </div>
       )}
 
       { user.permission == 1 && (
         <div className="mb-3">
-          <label htmlFor="phoneNumber">Phone Number</label>
+          <label for="phoneNumber">Phone Number</label>
           <input type="text" className="form-control" id="phoneNumber" value={task ? task.phone_number : ""} onChange={(e) => handleFieldChange('phone_number', e)}/>
         </div>
       )}
 
       { user.permission == 1 && (
         <div className="mb-3">
-          <label htmlFor="setup">Setup</label>
+          <label for="setup">Setup</label>
           <input type="text" className="form-control" id="setup" value={task ? task.setup : ""} onChange={(e) => handleFieldChange('setup', e)}/>
         </div>
       )}
 
       { user.permission == 1 && (
         <div className="mb-3">
-          <label htmlFor="email">Email address</label>
+          <label for="email">Email address</label>
           <input type="text" className="form-control" id="email" value={task ? task.email : ""} onChange={(e) => handleFieldChange('email', e)}/>
         </div>
       )}
 
       { user.permission == 1 && (
         <div className="mb-3">
-          <label htmlFor="permit_number">Permit Number</label>
+          <label for="permit_number">Permit Number</label>
           <input type="text" className="form-control" id="permit_number" value={task ? task.permit_number : ""} onChange={(e) => handleFieldChange('permit_number', e)}/>
         </div>
       )}
       
       { user.permission == 1 && (
         <div className="mb-3">
-          <label htmlFor="poNumber">PO Number</label>
+          <label for="poNumber">PO Number</label>
           <input type="text" className="form-control" id="poNumber" value={task ? task.po_number : ""} onChange={(e) => handleFieldChange('po_number', e)}/>
         </div>
       )}
 
       { user.permission == 1 && (
         <div className="mb-3">
-          <label htmlFor="woNumber">WO Number</label>
+          <label for="woNumber">WO Number</label>
           <input type="text" className="form-control" id="woNumber" value={task ? task.wo_number : ""} onChange={(e) => handleFieldChange('wo_number', e)}/>
         </div>
       )}
 
         <div className="mb-3">
-          <label htmlFor="notes">Notes</label>
+          <label for="notes">Notes</label>
           < input type="text" className="form-control" id="notes" value={task ? task.notes : ""} onChange={(e) => handleFieldChange('notes', e)}/>
         </div>
         

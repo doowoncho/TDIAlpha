@@ -94,16 +94,16 @@ function readableTime(time){
             <div id="date-container" style={{display: "flex"}}>
               <fieldset id="id-fieldset" disabled style={{marginRight: "20px"}}>
                 <label>ID</label>
-                <input class="form-control"  value={task.id}/>
+                <input className="form-control"  value={task.id}/>
                 <label>Phone</label>
-                <input class="form-control"  value={task.phone_number}/>
+                <input className="form-control"  value={task.phone_number}/>
               </fieldset>
 
               <fieldset disabled>
                 <label for="exampleInputDate" style={{marginRight: "5px"}}>Start Time:</label>
-                <input type="email" class="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={task.starttime && readableTime(task.starttime)}/>
+                <input type="email" className="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={task.starttime && readableTime(task.starttime)}/>
                 <label for="exampleInputDate" style={{marginRight: "5px"}}>End Time:</label>
-                <input type="email" class="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={task.endtime && readableTime(task.endtime)}/>
+                <input type="email" className="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={task.endtime && readableTime(task.endtime)}/>
               </fieldset>
             </div>
             </div>
@@ -115,51 +115,28 @@ function readableTime(time){
             <div className="card-title" style={{fontSize:"1.5rem", marginRight:"auto", marginLeft:"5%", marginTop:"2%"}}>{task.setup}</div>
             <fieldset className="mt-3" disabled>
                 <label for="exampleInputDate" style={{marginRight: "5px"}}>Permit/Request#:</label>
-                <input type="email" class="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={task.permit_number}/>
+                <input type="email" className="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={task.permit_number}/>
             </fieldset>
             <fieldset className="my-3" disabled>
                 <label for="exampleInputDate" style={{marginRight: "5px"}}>WO#:</label>
-                <input type="email" class="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={task.wo_number}/>
+                <input type="email" className="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={task.wo_number}/>
             </fieldset>
             <fieldset className="mb-5" disabled>
                 <label for="exampleInputDate" style={{marginRight: "5px"}}>PO#:</label>
-                <input type="email" class="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={task.po_number}/>
+                <input type="email" className="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={task.po_number}/>
             </fieldset>
           </div>
           <div style={{marginTop:"1rem", marginBottom:"2rem"}}>
             <Card info={task.status} type="Status" width="20rem" bg={status_bg} tc="white"></Card>
-            <div class="card">
-              <div class="card-header">Notes</div>
-              <div class="card-body">
+            <div className="card">
+              <div className="card-header">Notes</div>
+              <div className="card-body">
               <fieldset className="mb-5" disabled>
-                  <input type="email" class="form-control text-center" id="exampleInputEmail1" aria-describedby="emailHelp" value={task.notes}/>
+                  <input type="email" className="form-control text-center" id="exampleInputEmail1" aria-describedby="emailHelp" value={task.notes}/>
               </fieldset>
               </div>
             </div>
             <div className="card text-center" width="20rem" height="19rem">
-            </div>
-          </div>
-        </div>
-        <div style={{marginBottom:"3rem"}}>
-          <div id="files-container" className="card " style={{width:"83%", margin:"auto"}}>
-            <div className="card-title" style={{fontSize:"1.5rem", marginRight:"auto", marginLeft:"5%", marginTop:"2%"}}>Files</div>
-            <div style={{display:"flex", alignItems:"center", justifyContent:"center", flexDirection:"column"}}>
-              <div class="mb-3 mx-auto" style={{width:"16rem"}}>
-                <label for="formFileDisabled" class="form-label">Permit Confirmation</label>
-                  <FileUpload type="p_confirm" task={files.permit_confirmation_file} name={files.permit_confirmation_name}></FileUpload>
-              </div>
-              <div class="mb-3 mx-auto" style={{width:"16rem"}}>
-                <label for="formFileDisabled" class="form-label">Permit</label>
-                  <FileUpload type="permit" task={files.permit_file} name={files.permit_name}></FileUpload>
-              </div>
-              <div class="mb-3 mx-4" style={{width:"16rem"}}>
-                <label for="formFileDisabled" class="form-label">Map Drawing</label>
-                  <FileUpload type="map" task={files.map_file} name={files.map_drawing_name}></FileUpload>
-              </div>
-              <div class="mb-3 mx-4" style={{width:"16rem"}}>
-                <label for="formFileDisabled" class="form-label">Photo</label>
-                  <FileUpload type="photo" task={files.photo_file} name={files.photo_name}></FileUpload>
-              </div>
             </div>
           </div>
         </div>

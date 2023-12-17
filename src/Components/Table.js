@@ -1,6 +1,7 @@
 import { Dropdown } from 'react-bootstrap';
 import { getUserById, getAllUsers, updatetask } from './APICalls';
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const moment = require('moment');
 
@@ -29,11 +30,11 @@ function RenderAssignedDropdown({ property, handletaskUpdate }) {
   );
 }
 
-function renderTableCell({ property, column, handletaskUpdate }) {
+function renderTableCell({ property, column, handletaskUpdate, currentPath }) {
   const name = column.toLowerCase();
 
   if (name === 'id') {
-    return <a href={`/taskdetails/${property.id}`}>{property.id}</a>;
+    return  currentPath.includes('/taskspage') ? <a href={`/taskdetails/${property.id}`}>{property.id}</a> : <a href={`/taskspage/${property.id}`}>{property.id}</a>;
   } else if (name === 'assigned' && user.permission === 1) {
     return <RenderAssignedDropdown property={property} handletaskUpdate={handletaskUpdate} />;
   } else if (name === 'assigned') {
@@ -115,6 +116,10 @@ function renderTableCell({ property, column, handletaskUpdate }) {
 }
 
 export default function Table({ data, displayColumns, handletaskUpdate, handletaskDelete }) {
+ const location = useLocation();
+ // Access the current pathname to determine the current page
+ const currentPath = location.pathname;
+
   if (!data) {
     return (
       <div>
@@ -129,31 +134,6 @@ export default function Table({ data, displayColumns, handletaskUpdate, handleta
 
   return (
     <div className='container my-3'>
-      {/* Show card layout on small screens */}
-      <div className='d-md-none'>
-        <div className='row row-cols-1'>
-          {data.map((property) => (
-            <div key={property.id} className='col'>
-              <div className='card mb-3'>
-                <div className='card-body'>
-                  {displayColumns.map((column) => (
-                    <p key={`${property.id}-${column}`} className='card-text'>
-                      <strong>{column}:</strong> {renderTableCell({ property, column, handletaskUpdate })}
-                    </p>
-                  ))}
-                </div>
-                <div className='card-footer'>
-                  <button className='btn btn-outline-danger' onClick={() => { handletaskDelete(property.id) }}>
-                    <i className="bi bi-trash"></i> Delete
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-      {/* Show original table on medium screens and larger */}
-      <div className='d-none d-md-block'>
         <table className='table table-hover'>
           <thead>
             <tr>
@@ -169,7 +149,7 @@ export default function Table({ data, displayColumns, handletaskUpdate, handleta
               <tr key={property.id}>
                 {displayColumns.map((column) => (
                   <td key={`${property.id}-${column}`}>
-                    {renderTableCell({ property, column, handletaskUpdate })}
+                    {renderTableCell({ property, column, handletaskUpdate, currentPath })}
                   </td>
                 ))}
                 <td>
@@ -182,6 +162,5 @@ export default function Table({ data, displayColumns, handletaskUpdate, handleta
           </tbody>
         </table>
       </div>
-    </div>
   );
 }

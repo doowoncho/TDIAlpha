@@ -1,13 +1,13 @@
 import Table from "../Components/Table";
 import { useEffect, useState  } from "react";
-import { getAlltasks, updatetask, deletetask} from "../Components/APICalls";
+import { getAlltasks, updatetask, deletetask, getAllJobs, deleteJob, updateJob} from "../Components/APICalls";
 
 export default function CompletedPage() {
   const [taskList, settaskList] = useState([]);
 
   async function fetchData() {
     try {
-      const data = await getAlltasks();
+      const data = await getAllJobs();
       if (data == null) return;
       
       settaskList(data.filter(task => task.status === "Completed"));
@@ -18,12 +18,12 @@ export default function CompletedPage() {
   }
 
   const handletaskUpdate = async (id, params) => {
-    await updatetask(id, params);
+    await updateJob(id, params);
     fetchData()
   };
 
   const handletaskDelete = async id => {
-    await deletetask(id);
+    await deleteJob(id);
     fetchData()
   };
 

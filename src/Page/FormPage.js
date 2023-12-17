@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '../Components/Firebase';
-import { createtask, files } from '../Components/APICalls';
+import { createJob, createtask, files, getTasksByJobId, updateJob } from '../Components/APICalls';
 import DateInput from '../Components/DateInput';
 import { useNavigate } from "react-router-dom";
+import moment from 'moment';
 
 function FormPage() {
-  const [dates, setDates] = useState([{ startDate: '', startTime: '', endDate: '', endTime: '', NPAT: false, exWeekend: false, twentyFour: false }]);
-  // const [task, settask] = useState();
+  const [dates, setDates] = useState([{ startDate: '', startTime: '', endDate: '', endTime: '', NPAT: false, exWeekend: false, twentyFour: false, repeat: false }]);
   const [file, setFile] = useState(null);
   const navigate = useNavigate();
 
@@ -26,7 +26,7 @@ function FormPage() {
   };
 
   const addDate = () => {
-    setDates([...dates, { startDate: '', startTime: '', endDate: '', endTime: '', NPAT: false, exWeekend: false, twentyFour: false }]);
+    setDates([...dates, { startDate: '', startTime: '', endDate: '', endTime: '', NPAT: false, exWeekend: false, twentyFour: false, repeat: false }]);
   };
 
   const deleteDate = (index) => {
@@ -40,11 +40,11 @@ function FormPage() {
     setFile(selectedFile);
   };
 
-   async function fileUploading (createdtask) {
+   async function fileUploading (createdJob) {
     if(file){
       const fileRef = ref(storage, `${file.name}`);
       let fileBlob;
-      const id = createdtask.id;
+      const id = createdJob.id;
 
       await uploadBytes(fileRef, file).then((snapshot) => {
           console.log('Uploaded a blob or file!');
@@ -55,13 +55,50 @@ function FormPage() {
           // `url` is the download URL for 'images/stars.jpg'
           fileBlob = url
         });
-
-      let update = {photo_file: fileBlob, photo_name: file.name};   
-      await files(id, update);
+        
+        let update = {photo_file: fileBlob, photo_name: file.name};   
+        await files(id, update);
+      }
     }
-  }
+    
+    //DATE LOGIC
+    const createTaskForDate = async (startDate, startTime, endDate, endTime, job, customer) => {
+      const startDateTime = new Date(startDate + 'T' + startTime);
+      const endDateTime = new Date(endDate + 'T' + endTime);
+    const newtask = {
+      customer: customer,
+      starttime: startDateTime,
+      endtime: endDateTime,
+      job_id: job.id
+    };
+    await createtask(newtask);
+  };
+  
+  const createTasksForWeek = async (startDate, startTime, endDate, endTime, job) => {
+    let currentDate = new Date(startDate);
+    currentDate.setDate(currentDate.getDate() + 2);
+    
+    while (currentDate < new Date(endDate)) {
+      if (currentDate.getDay() === 5) {
+        // Task to pick up the sign on Fridays
+        await createTaskForDate(null, null, currentDate, endTime, job);
+      } else if (currentDate.getDay() === 1) {
+        // Task to place the sign on Mondays
+        await createTaskForDate(currentDate, startTime, null, null, job);
+      }
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+  };
 
-  const handleSubmit = (e) => {
+  const createTasksForRepeat = async (startDate, startTime, endDate, endTime, job) => {
+    let currentDate = new Date(startDate);
+    while (currentDate < new Date(endDate)) {
+      await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, moment(currentDate).format('YYYY-MM-DD'), endTime, job);
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+  };
+  
+  const handleSubmit = async (e) => {
     e.preventDefault(); 
     const customer = document.getElementById('customerName').value;
     const email = document.getElementById('email').value;
@@ -70,164 +107,96 @@ function FormPage() {
     const location = document.getElementById('location').value;
     const phoneNumber = document.getElementById('phoneNumber').value;
     
+    let job = await createJob()
+    let earliestStartDate = null;
+    let latestEndDate = null;
+    
     //fix this when im actually awake
-    dates.forEach(async (dateTime) => {  
-      if(dateTime.twentyFour == true){
-        if(dateTime.exWeekend == true){
-          //create start task
-          let beginDate = new Date(dateTime.startDate + 'T' + dateTime.startTime);
-          const newtask = {
-            customer: customer,
-            status: 'New',
-            email: email,
-            po_number: poNumber,
-            wo_number: woNumber,
-            setup: location,
-            starttime: beginDate,
-            npat: dateTime.NPAT,
-            phone_number: phoneNumber
-          };
-          const createdtask = await createtask(newtask);
-          fileUploading(createdtask)
-
-          let currentDate = new Date(dateTime.startDate);
-          currentDate.setDate(currentDate.getDate() + 2);
-          while (currentDate <= new Date(dateTime.endDate)){
-            if(currentDate.getDay() == 5){
-              //add task to pick up the sign
-              const newtask = {
-                customer: customer,
-                status: 'New',
-                email: email,
-                po_number: poNumber,
-                wo_number: woNumber,
-                setup: location,
-                endtime: currentDate,
-                npat: dateTime.NPAT,
-                phone_number: phoneNumber
-                
-              };
-              const createdtask = await createtask(newtask);
-              fileUploading(createdtask)
-            }
-            else if(currentDate.getDay() == 1){
-              //add task to place the sign
-              const newtask = {
-                customer: customer,
-                status: 'New',
-                email: email,
-                po_number: poNumber,
-                wo_number: woNumber,
-                setup: location,
-                starttime: currentDate,
-                npat: dateTime.NPAT,
-                phone_number: phoneNumber
-              };
-              const createdtask = await createtask(newtask);
-              fileUploading(createdtask)
-            }
-            currentDate.setDate(currentDate.getDate() + 1);
-          }
-          const newtask1 = {
-            customer: customer,
-            status: 'New',
-            email: email,
-            po_number: poNumber,
-            wo_number: woNumber,
-            setup: location,
-            endtime: dateTime.endDate,
-            npat: dateTime.NPAT,
-            phone_number: phoneNumber
-          };
-          const createdtask1 = await createtask(newtask1);
-          fileUploading(createdtask1)
-        }
-        else{
-            //two tasks, one for putting down and one for picking stuff up
-            let beginDate = new Date(dateTime.startDate + 'T' + dateTime.startTime);
-            let endDate = new Date(dateTime.endDate + 'T' + dateTime.endTime);
-            const newtask = {
-              customer: customer,
-              status: 'New',
-              email: email,
-              po_number: poNumber,
-              wo_number: woNumber,
-              setup: location,
-              starttime: beginDate,
-              npat: dateTime.NPAT,
-              phone_number: phoneNumber
-            };
-            const createdtask = await createtask(newtask);
-            fileUploading(createdtask)
-            const newtask1 = {
-              customer: customer,
-              status: 'New',
-              email: email,
-              po_number: poNumber,
-              wo_number: woNumber,
-              setup: location,
-              endtime: endDate,
-              npat: dateTime.NPAT,
-              phone_number: phoneNumber
-            };
-            const createdtask1 = await createtask(newtask1);
-            fileUploading(createdtask1)
-          }
-        }
-        else{
-          const startTime = new Date(dateTime.startDate + 'T' + dateTime.startTime);
-        const endTime = new Date(dateTime.startDate + 'T' + dateTime.endTime);
-        const newtask = {
-          customer: customer,
-          status: 'New',
-          email: email,
-          po_number: poNumber,
-          wo_number: woNumber,
-          setup: location,
-          starttime: startTime,
-          endtime: endTime,
-          npat: dateTime.NPAT,
-          phone_number: phoneNumber
-        };
-        const createdtask = await createtask(newtask);
-        fileUploading(createdtask)
+    dates.forEach(async (dateTime) => {
+      if (!earliestStartDate || new Date(dateTime.startDate) < earliestStartDate) {
+        earliestStartDate = new Date(dateTime.startDate + 'T' + dateTime.startTime);
       }
-      navigate("/taskstable/");
+      
+      if ((!dateTime.endDate && (!latestEndDate || new Date(dateTime.startDate) > latestEndDate)) ||
+      (dateTime.endDate && (!latestEndDate || new Date(dateTime.endDate) > latestEndDate))) {
+        latestEndDate = dateTime.endDate ? new Date(dateTime.endDate + 'T' + dateTime.endTime) : new Date(dateTime.startDate + 'T' + dateTime.endTime);
+      }
+      
+      if (dateTime.twentyFour) {
+        if (dateTime.exWeekend) {
+          // Creating start task
+          await createTaskForDate(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.endTime, job);
+          
+          // Creating tasks for the inbetween
+          await createTasksForWeek(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.startTime, null, null, job);
+          
+          // Creating end task
+          await createTaskForDate(dateTime.endDate, dateTime.endTime, null, null, job);
+        } else {
+          // Two tasks, one for putting down and one for picking stuff up
+          await createTaskForDate(dateTime.startDate, dateTime.startTime, null, null, job);
+          await createTaskForDate(dateTime.endDate, null, dateTime.endDate, dateTime.endTime, job);
+        }
+      } 
+      else if(dateTime.repeat){
+          await createTasksForRepeat(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.endTime, job)
+      }
+      else {
+        // Non-twentyFour task
+        await createTaskForDate(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.endTime, job);
+      }
     });
-  }
-
-  return (
-    <div className="container">
+    
+    updateJob(job.id, 
+      {
+        customer:customer, 
+        status: "New",
+        starttime: earliestStartDate,
+        endtime: latestEndDate, 
+        wo_number: woNumber,
+        po_number: poNumber,
+        email: email,
+        location: location,
+        phone_number: phoneNumber
+      }) 
+      await fileUploading(job);
+      
+      // at the end of function set everything in the job
+      navigate("/jobstable/");
+    }
+    
+    return (
+      <div className="container">
       <h1 className="my-4 text-center">Request a task </h1>
       <form onSubmit={handleSubmit}>
 
       <div className="container" style={{ maxWidth: '800px' }}>
         <div className="mb-3">
-          <label htmlFor="customerName">Contact Name</label>
+          <label for="customerName">Contact Name</label>
           <input type="text" className="form-control" id="customerName" placeholder="Enter name" required/>
         </div>
         <div className="mb-3">
-          <label htmlFor="phoneNumber">Phone Number</label>
+          <label for="phoneNumber">Phone Number</label>
           <input type="text" className="form-control" id="phoneNumber" placeholder="Enter Number" required/>
         </div>
         <div className="mb-3">
-          <label htmlFor="email">Email address</label>
+          <label for="email">Email address</label>
           <input type="text" className="form-control" id="email" placeholder="Enter email" required/>
         </div>
         <div className="mb-3">
-          <label htmlFor="poNumber">PO Number</label>
+          <label for="poNumber">PO Number</label>
           <input type="text" className="form-control" id="poNumber" placeholder="Enter PO Number (Optional)" />
         </div>
         <div className="mb-3">
-          <label htmlFor="woNumber">WO Number</label>
+          <label for="woNumber">WO Number</label>
           <input type="text" className="form-control" id="woNumber" placeholder="Enter WO Number (Optional)" />
         </div>
         <div className="mb-3">
-          <label htmlFor="location">Location</label>
+          <label for="location">Location</label>
           <input type="text" className="form-control" id="location" placeholder="Enter Location" required/>
         </div>
         <div className="mb-3">
-          <label htmlFor="fileUpload">Photo</label>
+          <label for="fileUpload">Photo</label>
           <input type="file" id="fileUpload" className='form-control' onChange={handleFileChange}/>
         </div>
       </div>

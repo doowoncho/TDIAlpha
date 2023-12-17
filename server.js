@@ -56,6 +56,16 @@ app.get('/api/tasks', async (req, res) => {
   }
 });
 
+app.get('/api/jobs', async (req, res) => {
+  try {
+    const posts = await prisma.jobs.findMany();
+    res.json(posts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 //gets all tasks with specific criteria... takes in an object with the properties
 app.get('/api/specifictasks', async (req, res) => {
   try {
@@ -87,29 +97,18 @@ app.get('/api/specifictasks', async (req, res) => {
 app.put('/api/updatetask/:id', async (req, res) => {
   try {
     const taskId = parseInt(req.params.id) //id of task we are changing
-    const { id, customer, starttime, endtime, status, setup, permit_number, notes, wo_number, po_number, assigned, p_confirm, permit, map, photo, npat, phone_number } = req.body
+    const { starttime, endtime, setup, notes, assigned, jobId } = req.body
     const posts = await prisma.tasks.update({
       where: {
         id: taskId
       },
       data:{
-        customer: customer,
-        id: id, 
-        status: status,
         setup: setup,
-        permit_number: permit_number, 
         notes: notes, 
-        wo_number: wo_number, 
-        po_number: po_number,
-        assigned: assigned,
-        p_confirm: p_confirm,
-        permit: permit,
-        map: map,
         starttime: starttime,
         endtime: endtime,
-        photo: photo,
-        npat: npat,
-        phone_number: phone_number
+        job_id: jobId,
+        assigned: assigned
       }
     });
     res.json(posts);
@@ -120,6 +119,41 @@ app.put('/api/updatetask/:id', async (req, res) => {
   }
 });
 
+//updates the task with the id
+app.put('/api/updatejob/:id', async (req, res) => {
+  try {
+    const jobId = parseInt(req.params.id) //id of task we are changing
+    const { id, customer, starttime, endtime, status, wo_number, po_number, email, phone_number, permit_number, map, photo, p_confirm, npat, permit} = req.body
+    const posts = await prisma.jobs.update({
+      where: {
+        id: jobId
+      },
+      data:{
+        customer: customer,
+        id: id, 
+        status: status,
+        starttime: starttime,
+        endtime: endtime,
+        customer:customer,  
+        wo_number: wo_number,
+        po_number: po_number,
+        email: email,
+        phone_number: phone_number,
+        permit_number: permit_number,
+        map: map,
+        photo: photo,       
+        p_confirm: p_confirm,    
+        npat: npat,
+        permit: permit
+      }
+    });
+    res.json(posts);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 //Deletes task with particular id
 app.delete('/api/deletetask/:id', async (req, res) => {
@@ -137,27 +171,54 @@ app.delete('/api/deletetask/:id', async (req, res) => {
   }
 });
 
+//Deletes task with particular id
+app.delete('/api/deletejob/:id', async (req, res) => {
+  try {
+    const jobId = parseInt(req.params.id) 
+    const deletedjob = await prisma.jobs.delete({
+      where: {
+        id: jobId
+      },
+    });
+
+    const deletedTasks = await prisma.tasks.deleteMany({
+      where: {
+        job_id: jobId
+      },
+    });
+    res.json(deletedjob, deletedTasks);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 //creates task with provided properties
 app.post('/api/createtask', async (req, res) => {
+  const { starttime, endtime, job_id, notes, setup } = req.body
   try {
-    const { customer, starttime, endtime, status, setup, permit_number, notes, wo_number, po_number, email, npat, phone_number } = req.body;
     const newtask = await prisma.tasks.create({
       data: {
-        customer: customer,
-        email: email,
-        status: status,
         setup: setup,
-        permit_number: permit_number, 
         notes: notes, 
-        wo_number: wo_number, 
-        po_number: po_number,
         starttime: starttime,
         endtime: endtime,
-        npat: npat,
-        phone_number: phone_number
+        job_id: job_id
       },
     });
     res.json(newtask);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+//creates job with provided taskid
+app.post('/api/createjob', async (req, res) => {
+  try {
+    const newJob = await prisma.jobs.create({
+    });
+    res.json(newJob);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });
@@ -260,6 +321,25 @@ app.get('/api/getFiles/:id', async (req, res) => {
   }
 });
 
+// Add this route to get a task by ID
+app.get('/api/getjob/:id', async (req, res) => {
+  try {
+    const jobId = parseInt(req.params.id);
+    const job = await prisma.jobs.findUnique({
+      where: {
+        id: jobId
+      }
+    });
+    if (job) {
+      res.json(job);
+    } else {
+      res.status(404).json({ error: 'job not found' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 // Add this route to get a task by ID
 app.get('/api/gettask/:id', async (req, res) => {
@@ -335,6 +415,22 @@ app.get('/api/gettaskByUserId/:id', async (req, res) => {
       }
     });
     res.json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// get tasks for a user by id
+app.get('/api/gettasksbyjobid/:id', async (req, res) => {
+  try {
+    const jobId = parseInt(req.params.id);
+    const tasks = await prisma.tasks.findMany({
+      where: {
+        job_id: jobId
+      }
+    });
+    res.json(tasks);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });

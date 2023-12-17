@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function DateInput({ date, index ,deleteDate, handleDateChange,  handleCheckboxChanges }) {
+export default function DateInput({ date, index ,deleteDate, handleDateChange, handleCheckboxChanges }) {
   const [showAdditionalInput, setShowAdditionalInput] = useState(false);
 
   const handleCheckboxChange = () => {
@@ -52,18 +52,22 @@ export default function DateInput({ date, index ,deleteDate, handleDateChange,  
           onChange={(e) => handleDateChange(index, 'endTime', e.target.value)}
           required
         />
+
+      <input className="form-check-input mx-2" type="checkbox" value="" onChange={(e) => {handleCheckboxChanges(index, 'repeat', e.target.checked); handleCheckboxChange()}}/>
+      <label className="form-check-label" for="flexCheckDefault"> Repeat Jobs</label>  
+
       <input className="form-check-input mx-2" type="checkbox" value="" onChange={(e) => {handleCheckboxChanges(index, 'twentyFour', e.target.checked); handleCheckboxChange()}}/>
-      <label className="form-check-label" htmlFor="flexCheckDefault"> 24/7</label>  
+      <label className="form-check-label" for="flexCheckDefault"> 24/7</label>  
       
       {showAdditionalInput && (
         <>
       <input className="form-check-input mx-2" type="checkbox" value=""onChange={(e) => {handleCheckboxChanges(index, 'exWeekend', e.target.checked)}}/>
-      <label className="form-check-label" htmlFor="flexCheckDefault" > Exclude Weekends</label>
+      <label className="form-check-label" for="flexCheckDefault" > Exclude Weekends</label>
       </>
       )}
 
       <input className="form-check-input mx-2" type="checkbox" value="" onChange={(e) => {handleCheckboxChanges(index, 'NPAT', e.target.checked);}}/>
-      <label className="form-check-label" htmlFor="flexCheckDefault"> NPAT</label>
+      <label className="form-check-label" for="flexCheckDefault"> NPAT</label>
 
         {index === 0 ? null : (
           <button type="button" className="btn btn-primary my-2 mx-2" onClick={() => deleteDate(index)}>

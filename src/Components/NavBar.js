@@ -12,7 +12,7 @@ export default function NavBar() {
           {/* <Nav.Link href="/">Home</Nav.Link> */}
           {window.sessionStorage.getItem("user") && (
               <>
-                <Nav.Link href="/taskstable">All tasks</Nav.Link>
+                <Nav.Link href="/jobstable">All Jobs</Nav.Link>
                 <Nav.Link href="/invoices">Invoices</Nav.Link>
                 <Nav.Link href="/completed">Completed</Nav.Link>
                 <Nav.Link href="/todo">ToDo</Nav.Link>
