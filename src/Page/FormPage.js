@@ -63,8 +63,22 @@ function FormPage() {
     
     //DATE LOGIC
     const createTaskForDate = async (startDate, startTime, endDate, endTime, job, customer) => {
-      const startDateTime = new Date(startDate + 'T' + startTime);
-      const endDateTime = new Date(endDate + 'T' + endTime);
+      let startDateTime 
+      let endDateTime 
+      if(startDate && endDate){
+        startDateTime= new Date(startDate + 'T' + startTime);
+        endDateTime= new Date(endDate + 'T' + endTime);
+      }
+      else if (startDate && endTime){
+        startDateTime = new Date(startDate + 'T' + startTime);
+        endDateTime = new Date(startDate + 'T' + endTime);
+      }
+      else if (startDate && startTime){
+        startDateTime = new Date(startDate + 'T' + startTime);
+      }
+      else{
+        endDateTime = new Date(endDate + 'T' + endTime);
+      }
     const newtask = {
       customer: customer,
       starttime: startDateTime,
@@ -74,27 +88,32 @@ function FormPage() {
     await createtask(newtask);
   };
   
-  const createTasksForWeek = async (startDate, startTime, endDate, endTime, job) => {
+  const createTasksForExWeekend = async (startDate, startTime, endDate, endTime, job) => {
     let currentDate = new Date(startDate);
-    currentDate.setDate(currentDate.getDate() + 2);
-    
+
+    //creates first task
+    currentDate.setDate(currentDate.getDate() + 1)
+    await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, null, null, job);
+
     while (currentDate < new Date(endDate)) {
       if (currentDate.getDay() === 5) {
         // Task to pick up the sign on Fridays
-        await createTaskForDate(null, null, currentDate, endTime, job);
+        await createTaskForDate(null, null, moment(currentDate).format('YYYY-MM-DD'), endTime, job);
       } else if (currentDate.getDay() === 1) {
         // Task to place the sign on Mondays
-        await createTaskForDate(currentDate, startTime, null, null, job);
+        await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, null, null, job);
       }
       currentDate.setDate(currentDate.getDate() + 1);
     }
+    //creates last task
+    createTaskForDate(null, null, endDate, endTime, job)
   };
-
+  
   const createTasksForRepeat = async (startDate, startTime, endDate, endTime, job) => {
     let currentDate = new Date(startDate);
-    while (currentDate < new Date(endDate)) {
-      await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, moment(currentDate).format('YYYY-MM-DD'), endTime, job);
+    while (currentDate <= new Date(endDate)) {
       currentDate.setDate(currentDate.getDate() + 1);
+      await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, moment(currentDate).format('YYYY-MM-DD'), endTime, job);
     }
   };
   
@@ -123,19 +142,14 @@ function FormPage() {
       }
       
       if (dateTime.twentyFour) {
-        if (dateTime.exWeekend) {
-          // Creating start task
-          await createTaskForDate(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.endTime, job);
-          
+        if (dateTime.exWeekend) {          
           // Creating tasks for the inbetween
-          await createTasksForWeek(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.startTime, null, null, job);
-          
-          // Creating end task
-          await createTaskForDate(dateTime.endDate, dateTime.endTime, null, null, job);
+          await createTasksForExWeekend(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.startTime, job);
+
         } else {
           // Two tasks, one for putting down and one for picking stuff up
           await createTaskForDate(dateTime.startDate, dateTime.startTime, null, null, job);
-          await createTaskForDate(dateTime.endDate, null, dateTime.endDate, dateTime.endTime, job);
+          await createTaskForDate(null, null, dateTime.endDate, dateTime.endTime, job);
         }
       } 
       else if(dateTime.repeat){
@@ -213,9 +227,7 @@ function FormPage() {
                 deleteDate={deleteDate}
               />
             ))}
-          <button type="button" className="btn btn-primary my-2" onClick={addDate}>
-            Add Date and Time
-          </button>
+          <button type="button" className="btn btn-primary my-2" onClick={addDate}> Add Date and Time </button>
           </div>
         </div>
 
