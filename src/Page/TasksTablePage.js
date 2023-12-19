@@ -1,6 +1,6 @@
 import FileUpload from "../Components/FileUpload";
 import React, { useEffect, useState, useRef } from "react";
-import { getAlltasks, updatetask, deletetask, getUserById, getAllUsers, getTasksByJobId, getJobById, getFilesById } from "../Components/APICalls";
+import { getAlltasks, updatetask, deletetask, getUserById, getAllUsers, getTasksByJobId, getJobById, getFilesById, createtask } from "../Components/APICalls";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Table from "../Components/Table";
 import e from "cors";
@@ -8,6 +8,7 @@ import { useParams } from "react-router-dom";
  
 let user = await getUserById(window.sessionStorage.getItem("user"))
 let users = await getAllUsers()
+
 
 export default function TasksTable() {
   const [files, setFiles] = useState("");
@@ -49,7 +50,6 @@ export default function TasksTable() {
 
 
   const handletaskUpdate = async (id, params) => {
-    console.log(id)
     await updatetask(id, params);
     // No need to refetch data, just update the local state
     settaskList((prevtasks) =>
@@ -57,6 +57,14 @@ export default function TasksTable() {
     );
   };
   
+  async function addTask() {
+    // Assuming createtask returns the newly created task, adjust accordingly
+    const newTask = await createtask({ job_id: parseInt(id) });
+  
+    // Update the taskList with the new task
+    settaskList((prevtasks) => [...prevtasks, newTask]);
+  }
+
   const handletaskDelete = async (id) => {
     await deletetask(id);
     // No need to refetch data, just update the local state
@@ -140,7 +148,7 @@ export default function TasksTable() {
           displayColumns={["ID", "StartTime", "EndTime", "Setup", "Assigned"]}
           handletaskUpdate={handletaskUpdate} handletaskDelete={handletaskDelete} 
         />
-      <button className='my-1 btn btn-outline-primary'>
+      <button className='my-1 btn btn-outline-primary' onClick={()=>addTask()}> 
         Add Task
       </button>
     </header>
