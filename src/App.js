@@ -15,7 +15,7 @@ import { withAuthenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import config from './amplifyconfiguration.json';
 import { useState } from "react";
-import MyNavBar from "../Components/MyNavBar";
+import MyNavBar from "./components/MyNavBar";
 Amplify.configure(config);
 
 const App = () => {
