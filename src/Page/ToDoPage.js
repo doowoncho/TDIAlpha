@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getAllJobs, getJobByUserId } from '../Components/APICalls';
+import { getAlltasks, gettaskByUserId } from '../Components/APICalls';
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import format from 'date-fns/format';
 import parse from 'date-fns/parse';
@@ -28,34 +28,33 @@ export default function ToDoPage() {
 
   useEffect(() => {
     async function fetchData() {
-      await getJobsForPage();
+      await gettasksForPage();
     }
 
     fetchData();
   }, [toggle]); // Run this effect whenever the toggle state changes
 
-  async function getJobsForPage() {
+  async function gettasksForPage() {
     try {
-      let jobs = toggle ? await getJobByUserId(window.sessionStorage.getItem("user")) : await getAllJobs()
+      let tasks = toggle ? await gettaskByUserId(window.sessionStorage.getItem("user")) : await getAlltasks()
       let tempEvents = [];
-      console.log(jobs)
-      for (let job of jobs) {
+      for (let task of tasks) {
         let event = {
-          title: job.customer,
-          id: job.id,
-          start: job.starttime ? new Date(job.starttime) : new Date(job.endtime),
-          end: job.endtime ? new Date(job.endtime) : new Date(job.starttime),
+          title: task.customer,
+          id: task.id,
+          start: task.starttime ? new Date(task.starttime) : new Date(task.endtime),
+          end: task.endtime ? new Date(task.endtime) : new Date(task.starttime),
         };
         tempEvents.push(event);
       }
       setEvents(tempEvents);
     } catch (error) {
-      console.error("Error fetching job data:", error);
+      console.error("Error fetching task data:", error);
     }
   }
 
   const handleEventClick = (event) => {
-    navigate(`/jobdetails/${event.id}`);
+    navigate(`/taskdetails/${event.id}`);
   };
 
   const handleToggle = () => {
@@ -65,7 +64,7 @@ export default function ToDoPage() {
   return (
     <div>
       <div className="form-check form-switch my-3 mx-5">
-        <label className="form-check-label" htmlFor="flexSwitchCheckDefault">Show All Jobs</label>
+        <label className="form-check-label" for="flexSwitchCheckDefault">Show All tasks</label>
         <input className="form-check-input" type="checkbox" id="flexSwitchCheckDefault" onChange={handleToggle}/>
       </div>
       <Calendar

@@ -1,11 +1,14 @@
 import { Dropdown } from 'react-bootstrap';
-import { getUserById, getAllUsers, updateJob } from './APICalls';
+import { getUserById, getAllUsers, updatetask } from './APICalls';
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+
+const moment = require('moment');
 
 let user = await getUserById(window.sessionStorage.getItem("user"));
 let users = await getAllUsers();
 
-function RenderAssignedDropdown({ property, handleJobUpdate }) {
+function RenderAssignedDropdown({ property, handleUpdate }) {
   return (
     <Dropdown>
       <Dropdown.Toggle variant='white' id='dropdownMenuButton'>
@@ -16,7 +19,7 @@ function RenderAssignedDropdown({ property, handleJobUpdate }) {
           <Dropdown.Item
             key={user.id}
             onClick={() =>
-              handleJobUpdate(property.id, { assigned: user.id })
+              handleUpdate(property.id, { assigned: user.id })
             }
           >
             {user.name}
@@ -27,13 +30,13 @@ function RenderAssignedDropdown({ property, handleJobUpdate }) {
   );
 }
 
-function renderTableCell({ property, column, handleJobUpdate }) {
+function renderTableCell({ property, column, handleUpdate, currentPath }) {
   const name = column.toLowerCase();
 
   if (name === 'id') {
-    return <a href={`/jobdetails/${property.id}`}>{property.id}</a>;
+    return  currentPath.includes('/taskspage') ? <a href={`/taskdetails/${property.id}`}>{property.id}</a> : <a href={`/taskspage/${property.id}`}>{property.id}</a>;
   } else if (name === 'assigned' && user.permission === 1) {
-    return <RenderAssignedDropdown property={property} handleJobUpdate={handleJobUpdate} />;
+    return <RenderAssignedDropdown property={property} handleUpdate={handleUpdate} />;
   } else if (name === 'assigned') {
     if (property[name] == null) {
       return 'Not Assigned';
@@ -41,8 +44,7 @@ function renderTableCell({ property, column, handleJobUpdate }) {
     return users.filter(x => x.id == property[name])[0].name;
   } else if (name === 'starttime' || name === 'endtime') {
     if (property[name]) {
-      const readableTime = new Date(property[name]).toLocaleString();
-      return readableTime;
+      return moment(property[name]).format('MMMM DD YYYY h:mmA');
     }
   } else if (name === 'status') {
     return (
@@ -54,42 +56,50 @@ function renderTableCell({ property, column, handleJobUpdate }) {
         <Dropdown.Item
           onClick={() => {
             const params = { status: 'New' };
-            handleJobUpdate(property.id, params);
+            handleUpdate(property.id, params);
           }}
         >
           New Request
         </Dropdown.Item>
         <Dropdown.Item
           onClick={() => {
-            const params = { status: 'Declined' };
-            handleJobUpdate(property.id, params);
-          }}
-        >
-          Declined
-        </Dropdown.Item>
-        <Dropdown.Item
-          onClick={() => {
-            const params = { status: 'Completed' };
-            handleJobUpdate(property.id, params);
-          }}
-        >
-          Completed
-        </Dropdown.Item>
-        <Dropdown.Item
-          onClick={() => {
             const params = { status: 'Waiting' };
-            handleJobUpdate(property.id, params);
+            handleUpdate(property.id, params);
           }}
         >
           Waiting For Stamp
         </Dropdown.Item>
         <Dropdown.Item
           onClick={() => {
+            const params = { status: 'Declined' };
+            handleUpdate(property.id, params);
+          }}
+        >
+          Declined
+        </Dropdown.Item>
+        <Dropdown.Item
+          onClick={() => {
+            const params = { status: 'Submitted' };
+            handleUpdate(property.id, params);
+          }}
+        >
+          Submitted
+        </Dropdown.Item>
+        <Dropdown.Item
+          onClick={() => {
             const params = { status: 'Invoice' };
-            handleJobUpdate(property.id, params);
+            handleUpdate(property.id, params);
           }}
         >
           Invoice
+        </Dropdown.Item>
+        <Dropdown.Item
+          onClick={() => {
+            const params = { status: 'Completed' };
+            handleUpdate(property.id, params);
+          }}
+        >
+          Completed
         </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
@@ -105,13 +115,17 @@ function renderTableCell({ property, column, handleJobUpdate }) {
   }
 }
 
-export default function Table({ data, displayColumns, handleJobUpdate, handleJobDelete }) {
+export default function Table({ data, displayColumns, handleUpdate, handleDelete }) {
+ const location = useLocation();
+ // Access the current pathname to determine the current page
+ const currentPath = location.pathname;
+
   if (!data) {
     return (
       <div>
         <div className='container my-4'>
-          <div className='alert alert-danger' role='alert'>
-            Can't Connect to Database
+          <div className='alert' role='alert'>
+            ...Loading
           </div>
         </div>
       </div>
@@ -119,60 +133,37 @@ export default function Table({ data, displayColumns, handleJobUpdate, handleJob
   }
 
   return (
-    <div className='container my-3'>
-      {/* Show card layout on small screens */}
-      <div className='d-md-none'>
-        <div className='row row-cols-1'>
-          {data.map((property) => (
-            <div key={property.id} className='col'>
-              <div className='card mb-3'>
-                <div className='card-body'>
-                  {displayColumns.map((column) => (
-                    <p key={`${property.id}-${column}`} className='card-text'>
-                      <strong>{column}:</strong> {renderTableCell({ property, column, handleJobUpdate })}
-                    </p>
-                  ))}
-                </div>
-                <div className='card-footer'>
-                  <button className='btn btn-outline-danger' onClick={() => { handleJobDelete(property.id) }}>
-                    <i className="bi bi-trash"></i> Delete
-                  </button>
-                </div>
-              </div>
-            </div>
+  <div className='container my-3'>
+  <div className='table-responsive-sm'>
+    <table className='table table-hover'>
+      <thead>
+        <tr>
+          {displayColumns.map((column) => (
+            <th key={column}>
+              {column}
+            </th>
           ))}
-        </div>
-      </div>
-      {/* Show original table on medium screens and larger */}
-      <div className='d-none d-md-block'>
-        <table className='table table-hover'>
-          <thead>
-            <tr>
-              {displayColumns.map((column) => (
-                <th key={column}>
-                  {column}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((property) => (
-              <tr key={property.id}>
-                {displayColumns.map((column) => (
-                  <td key={`${property.id}-${column}`}>
-                    {renderTableCell({ property, column, handleJobUpdate })}
-                  </td>
-                ))}
-                <td>
-                  <button className='my-1 btn btn-outline-danger' onClick={() => { handleJobDelete(property.id) }}>
-                    <i className="bi bi-trash"></i> Delete
-                  </button>
-                </td>
-              </tr>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {data.map((property) => (
+          <tr key={property.id}>
+            {displayColumns.map((column) => (
+              <td key={`${property.id}-${column}`}>
+                {renderTableCell({ property, column, handleUpdate, currentPath })}
+              </td>
             ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+            <td>
+              <button className='my-1 btn btn-outline-danger' onClick={() => { handleDelete(property.id) }}>
+                <i className="bi bi-trash"></i> Delete
+              </button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
   );
 }

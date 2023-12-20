@@ -3,7 +3,7 @@ import { storage } from './Firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { uploadFile } from './APICalls';
 
-function FileUpload({type, job, name}) {
+function FileUpload({type, task, name}) {
   const [file, setFile] = useState(null);
   let fileBlob;
 
