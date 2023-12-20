@@ -1,146 +1,181 @@
-import "bootstrap-icons/font/bootstrap-icons.css";
-import { useState, useEffect } from "react";
-import { gettaskById, getFilesById } from "../Components/APICalls";
+import React, { useEffect, useState } from 'react';
+import moment from 'moment';
 import { useParams } from 'react-router-dom';
-import FileUpload from "../Components/FileUpload";
-import "../Styles/TaskDetails.css"
+import { getUserById, gettaskById, updatetask } from '../Components/APICalls';
+import '../Styles/TaskDetails.css';
 
-const moment = require('moment');
+let user = await getUserById(window.sessionStorage.getItem("user"))
 
 export default function Orders() {
-
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [task, settask] = useState(null);
-  const [files, setFiles] = useState("");
-  let status_bg;
-
+  const [task, setTask] = useState({
+    starttime: null,
+    endtime: null,
+    notes: null,
+    job_id: null,
+    setup: null
+  });
+  const [isEditing, setIsEditing] = useState(false); // State to track edit mode
 
   useEffect(() => {
-    async function fetchtask() {
-      try{
-        const fetchedtask = await gettaskById(id);
-        settask(fetchedtask);
-        setIsLoading(false);
-      } catch (error){
-        setError("Error retriving task!");
-        setIsLoading(false);
-      }
-    }
-
-    async function fetchFiles() {
+    async function fetchTask() {
       try {
-        const fetchedFiles = await getFilesById(id);
-        setFiles(fetchedFiles);
-        console.log(fetchedFiles);
+        const fetchedTask = await gettaskById(id);
+        await setTask(fetchedTask);
+        setIsLoading(false);
       } catch (error) {
-        console.error(error);
+        setError('Error retrieving task!');
+        setIsLoading(false);
       }
     }
 
-    fetchtask();
-    fetchFiles();
+    fetchTask();
   }, [id]);
 
+  const handleEditClick = () => {
+    setIsEditing(true); // Enable edit mode
+  };
 
-  const Card = ({info, bg, tc, width, background, type, height}) => (
-    <div id="status-card" className={`card bg-${bg} mb-3 `} style={{width:`${width}`, backgroundColor:`${background}`, height:`${height}`, backgroundColor:"#FF6969"}}>
-      <div className="card-body">
-        <h6 className={`card-header text-${tc}`} style={{textAlign:"center", fontSize:"0.8rem", marginTop:"1%", color:"#582525"}}>{type}</h6>
-        <h4 className={`card-title text-center text-${tc}`} style={{marginTop:"2%", textAlign:"center", color:"#582525"}}>{info}</h4>
-      </div>
-    </div>
-  )
+  const handleCancelClick = () => {
+    setIsEditing(false); // Enable edit mode
+    window.location.reload()
+  };
 
-  
+  const saveChanges = async () => {
+    var newStartTime = task.starttime ? new Date(task.starttime) : null
+    var newEndTime = task.endtime ? new Date(task.endtime) : null
+
+    await updatetask(task.id, 
+    {
+      starttime: newStartTime,
+      endtime: newEndTime, 
+      notes: task.notes,
+      setup: task.setup
+    }) 
+
+    setIsEditing(false); // Disable edit mode after saving changes
+  };
+
+  const handleInputChange = async (e, taskProp) => {
+    const newVal = e.target.value;
+    await setTask((prevTask) => ({
+      ...prevTask,
+      [taskProp]: newVal,
+    }));
+  };
+
   if (isLoading) {
-    return <div></div>;
+    return <div>Loading...</div>;
   }
 
   if (error) {
     return <div>Error: {error}</div>;
   }
-
-  if(task.status === "Completed"){
-    status_bg = "success";
-  }else if(task.status === "Declined"){
-    status_bg = "danger";
-  }else if(task.status === "New"){
-    status_bg = "primary";
-  }else if(task.status === "InProgress"){
-    status_bg = "warning";
-  }else{
-    status_bg = "secondary";
-  }
-
-
-function readableTime(time){
-  let readable = moment(time).format('YYYY-MM-DD h:mmA')
-  return readable
-}
+  
 
   return (
     <div>
-      <div id="main-container" className="card border shadow-lg container mt-4 mb-5" style={{width:"50%", border: "none"}}>
-        <div id="edit_button" className="card-body bg-primary mt-3" style={{width:"10%", textAlign:"center", borderRadius:"5%", color:"white", marginLeft:"85%", padding:"0.5rem", paddingBottom:"0.2rem", paddingTop:"0.2rem"}}>
-          <a href={`/taskedit/${task.id}`} style={{textDecoration:"None", textAlign:"center", color:"white"}}>Edit</a>
-        </div>
-        <div style={{display:"flex", alignItems:"center", justifyContent:"center", flexDirection:"row", gap:"5%"}}>
-          <div className="card " style={{display:"flex", alignItems:"center", justifyContent:"center", width:"90%", marginTop:"2rem", marginBottom:"2rem"}}>
-            <div className="card-title" style={{fontSize:"2rem", marginRight:"auto", marginLeft:"5%", marginTop:"2%"}}>{task.customer}</div>
-            <div className="card-body" style={{display:"flex", alignItems:"center", justifyContent:"space-around", gap:"5%", width:"90%"}}>
-            <div style={{display: "flex"}}>
-            <div id="date-container" style={{display: "flex"}}>
-              <fieldset id="id-fieldset" disabled style={{marginRight: "20px"}}>
-                <label>ID</label>
-                <input className="form-control"  value={task.id}/>
-                <label>Phone</label>
-                <input className="form-control"  value={task.phone_number}/>
-              </fieldset>
 
-              <fieldset disabled>
-                <label for="exampleInputDate" style={{marginRight: "5px"}}>Start Time:</label>
-                <input type="email" className="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={task.starttime && readableTime(task.starttime)}/>
-                <label for="exampleInputDate" style={{marginRight: "5px"}}>End Time:</label>
-                <input type="email" className="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={task.endtime && readableTime(task.endtime)}/>
-              </fieldset>
-            </div>
-            </div>
-            </div>
-          </div>
+      <div className='container d-flex justify-content-between mt-3'>
+        <div className="d-flex">
+          <a href={`/taskspage/${task.job_id}`}>Back</a>
         </div>
-        <div style={{display:"flex", alignItems:"center", justifyContent:"center", flexDirection:"row", gap:"3%", marginLeft:"3%", marginRight:"2%"}}>
-          <div id="info-container" className="card border" style={{display:"flex", alignItems:"center", justifyContent:"center", width:"50%", marginBottom:"2rem", border: "none"}}>
-            <div className="card-title" style={{fontSize:"1.5rem", marginRight:"auto", marginLeft:"5%", marginTop:"2%"}}>{task.setup}</div>
-            <fieldset className="mt-3" disabled>
-                <label for="exampleInputDate" style={{marginRight: "5px"}}>Permit/Request#:</label>
-                <input type="email" className="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={task.permit_number}/>
+
+        {user.permission == 1 &&
+        <div className="d-flex">
+          {isEditing
+            ? <>
+                <button className="btn btn-primary px-4" onClick={handleCancelClick}>Cancel</button>
+                <button className="btn btn-warning mx-2 px-4" onClick={saveChanges}>Save Changes</button>
+              </>
+            : <button className="btn btn-primary px-4" onClick={handleEditClick}>Edit</button> 
+          }
+        </div>}
+
+      </div>
+
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div className="card">
+          <div className="card-body">
+
+              <label>ID</label>
+              <input type="number" className="form-control" value={task.id} disabled/>
+
+            <fieldset disabled={!isEditing}>
+                  {isEditing 
+                  ? <>
+                    <label htmlFor="exampleInputStartDate">Start Time:</label>
+                    <input type="datetime-local" className="form-control" id="startDate" value={moment(task.starttime).format('YYYY-MM-DDTHH:mm')}
+                    onChange={(e) => handleInputChange(e, 'starttime')}/>
+                    
+                    <label htmlFor="exampleInputEndDate">End Time:</label>
+                    <input
+                    type="datetime-local"
+                    className="form-control"
+                    id="enddate"
+                    value={moment(task.endtime).format('YYYY-MM-DDTHH:mm')}
+                    onChange={(e) => handleInputChange(e, 'endtime')}/>
+                  </>             
+                 : <>
+                    {task.starttime &&
+                    <>
+                      <label htmlFor="exampleInputStartDate">Drop Off Time:</label>
+                      <input type="datetime-local" className="form-control" id="startDate" value={moment(task.starttime).format('YYYY-MM-DDTHH:mm')}
+                      onChange={(e) => handleInputChange(e, 'starttime')}/>
+                    </>}
+                    {task.endtime &&
+                    <>
+                    <label htmlFor="exampleInputEndDate">Pick Up Time:</label>
+                    <input
+                    type="datetime-local"
+                    className="form-control"
+                    id="enddate"
+                    value={moment(task.endtime).format('YYYY-MM-DDTHH:mm')}
+                    onChange={(e) => handleInputChange(e, 'endtime')}/>
+                    </>}
+                  </>
+                }
             </fieldset>
-            <fieldset className="my-3" disabled>
-                <label for="exampleInputDate" style={{marginRight: "5px"}}>WO#:</label>
-                <input type="email" className="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={task.wo_number}/>
-            </fieldset>
-            <fieldset className="mb-5" disabled>
-                <label for="exampleInputDate" style={{marginRight: "5px"}}>PO#:</label>
-                <input type="email" className="form-control" id="exampleInputDate" aria-describedby="emailHelp" value={task.po_number}/>
-            </fieldset>
-          </div>
-          <div style={{marginTop:"1rem", marginBottom:"2rem"}}>
-            <Card info={task.status} type="Status" width="20rem" bg={status_bg} tc="white"></Card>
-            <div className="card">
-              <div className="card-header">Notes</div>
-              <div className="card-body">
-              <fieldset className="mb-5" disabled>
-                  <input type="email" className="form-control text-center" id="exampleInputEmail1" aria-describedby="emailHelp" value={task.notes}/>
-              </fieldset>
-              </div>
-            </div>
-            <div className="card text-center" width="20rem" height="19rem">
-            </div>
+
           </div>
         </div>
       </div>
+      <div className="container">
+        <div className="card my-3 mx-4">
+          <div className="card-header">Setup</div>
+          <div className="card-body">
+            <fieldset disabled={!isEditing}>
+              <input
+                type="text"
+                className="form-control text-center my-4"
+                id="notes"
+                aria-describedby="emailHelp"
+                value={task.setup ? task.notes : ""}
+                onChange={(e) => handleInputChange(e, 'setup')}/>
+            </fieldset>
+          </div>
+        </div>
+      </div>
+
+      <div className="container">
+        <div className="card my-3 mx-4">
+          <div className="card-header">Notes</div>
+          <div className="card-body">
+            <fieldset disabled={!isEditing}>
+              <input
+                type="text"
+                className="form-control text-center my-4"
+                id="notes"
+                aria-describedby="emailHelp"
+                value={task.notes ? task.notes : ""}
+                onChange={(e) => handleInputChange(e, 'notes')}/>
+            </fieldset>
+          </div>
+        </div>
+      </div>
+
     </div>
-  )
+  );
 }

@@ -46,7 +46,6 @@ export async function getSpecifictasks(params) {
 export async function updatetask(id, params) {
     try {
       const url = `${server}/api/updatetask/${id}`; // Use the id as a URL parameter
-      console.log(params);
   
       const response = await fetch(url, {
         method: 'PUT', 

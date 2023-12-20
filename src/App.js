@@ -8,7 +8,6 @@ import LoginPage from "./Page/LoginPage";
 import TimePage from "./Page/TimePage";
 import ToDoPage from "./Page/ToDoPage";
 import InvoicePage from "./Page/InvoicePage";
-import TaskEditPage from "./Page/TaskEditPage";
 import CompletedPage from "./Page/CompletedPage";
 import JobsTable from "./Page/JobsTablePage";
 
@@ -23,7 +22,6 @@ const App = () => {
           <Route path="/" element={<JobsTable />} />
           <Route path="/taskspage/:id" element={<TasksTablePage />} />
           <Route path="/taskdetails/:id" element={<TaskDetails />} />
-          <Route path="/taskedit/:id" element={<TaskEditPage />} />
           <Route path="/todo" element={<ToDoPage />} />
           <Route path="/form" element={<FormPage />} />
           <Route path="/time" element={<TimePage />} />
@@ -36,7 +34,6 @@ const App = () => {
         <Route path="/" element={<LoginPage />} />
         <Route path="/taskspage/:id" element={<LoginPage />} />
         <Route path="/taskdetails/:id" element={<LoginPage />} />
-        <Route path="/taskedit/:id" element={<LoginPage />} />
         <Route path="/todo" element={<LoginPage />} />
         <Route path="/form" element={<LoginPage />} />
         <Route path="/time" element={<LoginPage />} /> 

@@ -1,11 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
-import { getAlltasks, updatetask, deletetask, getUserById, getAllUsers, getAllJobs, deleteJob, updateJob } from "../Components/APICalls";
+import { getUserById, getAllUsers, getAllJobs, deleteJob, updateJob } from "../Components/APICalls";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Table from "../Components/Table";
-import e from "cors";
  
 let user = await getUserById(window.sessionStorage.getItem("user"))
-let users = await getAllUsers()
 
 const TableCards = ({ bg, header, icon, color, num }) => (
   <div className={`card ${bg} mx-2 border p-2 bg-white rounded`}>
@@ -38,17 +36,18 @@ const FilterInput = ({ label, value, onChange }) => (
 
 export default function JobsTable() {
   const [tableType, setTableType] = useState("All");
-  const [taskList, settaskList] = useState([]);
+  const [jobList, setjobList] = useState([]);
   const [counts, setCounts] = useState({ New: 0, Declined: 0, Submitted: 0 });
   const [filterSettings, setFilterSettings] = useState({
     id: "",
     assigned: "",
     customer: "",
     startDate: "",
-    endDate: ""
+    endDate: "",
+    woNumber: ""
   });
 
-  //entire list of tasks
+  //entire list of jobs
   const originalDataRef = useRef(null);
 
   useEffect(() => {
@@ -56,7 +55,7 @@ export default function JobsTable() {
       try {
         //just gets the list once per load
         // if (!originalDataRef.current) {
-        //   const data = await getAlltasks();
+        //   const data = await getAlljobs();
         //   if (data == null) return;
 
         //   originalDataRef.current = data;
@@ -65,49 +64,48 @@ export default function JobsTable() {
         // const data = originalDataRef.current;
         const data = await getAllJobs();
 
-        //different counts for the tasks filters
-        const newCount = data.filter((task) => task.status === "New" || task.status ==='Waiting').length;
-        const declinedCount = data.filter((task) => task.status === "Declined").length;
-        const submittedCount = data.filter((task) => task.status === "Submitted").length;
+        //different counts for the jobs filters
+        const newCount = data.filter((job) => job.status === "New" || job.status ==='Waiting').length;
+        const declinedCount = data.filter((job) => job.status === "Declined").length;
+        const submittedCount = data.filter((job) => job.status === "Submitted").length;
 
         setCounts({ New: newCount, Declined: declinedCount, Submitted: submittedCount });
 
-        //tasks filtered by table unless it is a waiting task, in which case it is shown with the new requests
+        //jobs filtered by table unless it is a waiting job, in which case it is shown with the new requests
         let filteredData;
         if(tableType == 'New'){
-         filteredData = data.filter((task) => task.status === tableType || task.status === 'Waiting')
+         filteredData = data.filter((job) => job.status === tableType || job.status === 'Waiting')
         }
         else{
-          filteredData = tableType !== "All" ? data.filter((task) => task.status === tableType) : data.filter((task) => task.status !== "Invoice" && task.status !== 'Completed');
+          filteredData = tableType !== "All" ? data.filter((job) => job.status === tableType) : data.filter((job) => job.status !== "Invoice" && job.status !== 'Completed');
         }
-        
+
         //sort by newest
-        const sortedData = filteredData.sort((taskA, taskB) => {
-          const timeA = taskA.endtime ? new Date(taskA.endtime) : new Date(taskA.starttime);
-          const timeB = taskB.endtime ? new Date(taskB.endtime) : new Date(taskB.starttime);
+        const sortedData = filteredData.sort((jobA, jobB) => {
+          const timeA = jobA.endtime ? new Date(jobA.endtime) : new Date(jobA.starttime);
+          const timeB = jobB.endtime ? new Date(jobB.endtime) : new Date(jobB.starttime);
         
           return timeA - timeB;
         });
-        // tasks filtered by search
-        const filteredDataWithSearchFilters = sortedData.filter((task) => {
-          const isIdMatch = filterSettings.id === "" || task.id.toString().indexOf(filterSettings.id) !== -1;
-          // const isAssignedMatch = filterSettings.assigned === "" || task.assigned.toString().toLowerCase == filterSettings.assigned;
-          const isCustomerMatch = filterSettings.customer === "" || task.customer.toLowerCase().indexOf(filterSettings.customer.toLowerCase()) !== -1;
-          const isStartDateMatch = filterSettings.startDate === "" || new Date(task.starttime) >= new Date(filterSettings.startDate);
-          const isEndDateMatch = filterSettings.endDate === "" || new Date(task.endtime) <= new Date(filterSettings.endDate);
-          return isIdMatch 
-          // && isAssignedMatch 
-          && isCustomerMatch && isStartDateMatch && isEndDateMatch;
+        // jobs filtered by search
+        const filteredDataWithSearchFilters = sortedData.filter((job) => {
+          const isIdMatch = filterSettings.id === "" || job.id.toString().indexOf(filterSettings.id) !== -1;
+          // const isAssignedMatch = filterSettings.assigned === "" || job.assigned.toString().toLowerCase == filterSettings.assigned;
+          const isCustomerMatch = filterSettings.customer === "" || job.customer.toLowerCase().indexOf(filterSettings.customer.toLowerCase()) !== -1;
+          const isStartDateMatch = filterSettings.startDate === "" || new Date(job.starttime) >= new Date(filterSettings.startDate);
+          const isEndDateMatch = filterSettings.endDate === "" || new Date(job.endtime) <= new Date(filterSettings.endDate);
+          const isWoMatch = filterSettings.woNumber === "" || job.wo_number.toString().indexOf(filterSettings.woNumber) !== -1;
+          return isIdMatch && isCustomerMatch && isStartDateMatch && isEndDateMatch && isWoMatch;
         });
 
-        settaskList(filteredDataWithSearchFilters);
+        setjobList(filteredDataWithSearchFilters);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
-  }, [tableType, filterSettings, taskList]);
+  }, [tableType, filterSettings, jobList]);
 
   const handleTableTypeChange = (newTableType) => {
     if (tableType !== newTableType) {
@@ -118,15 +116,15 @@ export default function JobsTable() {
   const handleJobUpdate = async (id, params) => {
     await updateJob(id, params);
     // No need to refetch data, just update the local state
-    settaskList((prevtasks) =>
-      prevtasks.map((task) => (task.id === id ? { ...task, ...params } : task))
+    setjobList((prevjobs) =>
+      prevjobs.map((job) => (job.id === id ? { ...job, ...params } : job))
     );
   };
   
   const handleJobDelete = async (id) => {
     await deleteJob(id);
     // No need to refetch data, just update the local state
-    settaskList((prevtasks) => prevtasks.filter((task) => task.id !== id));
+    setjobList((prevjobs) => prevjobs.filter((job) => job.id !== id));
   };
 
   const handleFilterChange = (param, value) => {
@@ -144,13 +142,13 @@ export default function JobsTable() {
             <TableCards header="New Requests" num={counts.New} icon="bi bi-bell-fill" color="text-primary" />
           </button>
           <button className="btn btn-link" onClick={() => handleTableTypeChange("Declined")} style={{ textDecoration: "none" }}>
-            <TableCards header="Declined tasks" num={counts.Declined} icon="bi bi-exclamation-lg" color="text-danger" />
+            <TableCards header="Declined jobs" num={counts.Declined} icon="bi bi-exclamation-lg" color="text-danger" />
           </button>
           <button className="btn btn-link" onClick={() => handleTableTypeChange("Submitted")} style={{ textDecoration: "none" }}>
             <TableCards header="Submitted" num={counts.Submitted} icon="bi bi-check-lg" color="text-success" />
           </button>
           <button className="btn btn-link" onClick={() => handleTableTypeChange("All")} style={{ textDecoration: "none" }}>
-            <TableCards header="All tasks" num={counts.New + counts.Declined + counts.Submitted} icon="bi bi-list" color="text-info" />
+            <TableCards header="All jobs" num={counts.New + counts.Declined + counts.Submitted} icon="bi bi-list" color="text-info" />
           </button>
         </div>
       </div>
@@ -159,7 +157,7 @@ export default function JobsTable() {
         <div className="d-flex justify-content-center flex-wrap my-3">
 
             <FilterInput label="ID" value={filterSettings.id} onChange={(value) => handleFilterChange('id', value)} />
-            {/* <FilterInput label="Assigned" value={filterSettings.assigned} onChange={(value) => handleFilterChange('assigned', value)} /> */}
+            <FilterInput label="WO#" value={filterSettings.woNumber} onChange={(value) => handleFilterChange('woNumber', value)} />
             <FilterInput label="Customer" value={filterSettings.customer} onChange={(value) => handleFilterChange('customer', value)} />
 
             <div className="mx-2">
@@ -179,12 +177,12 @@ export default function JobsTable() {
             </div> 
         </div>
         <div>
-          <Table data={taskList}
+          <Table data={jobList}
             displayColumns={[
               "ID", "StartTime", "EndTime", "Status", "Customer", "WO_Number"
             ]}
-            handletaskUpdate={handleJobUpdate}
-            handletaskDelete={handleJobDelete}
+            handleUpdate={handleJobUpdate}
+            handleDelete={handleJobDelete}
           />
         </div>
       </div>

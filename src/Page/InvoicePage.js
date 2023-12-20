@@ -17,7 +17,7 @@ export default function InvoicePage() {
     }
   }
 
-  const handletaskUpdate = async (id, params) => {
+  const handleJobUpdate = async (id, params) => {
     await updateJob(id, params);
     fetchData()
   };
@@ -37,7 +37,7 @@ export default function InvoicePage() {
         <Table
             data={taskList}
             displayColumns={["ID", "StartTime", "EndTime", "Status", "Setup", "Customer", "Permit_number", "Notes", "WO_number", "PO_number"]}
-            handletaskUpdate={handletaskUpdate} handletaskDelete={handletaskDelete} 
+            handleUpdate={handleJobUpdate} handletaskDelete={handletaskDelete} 
           />
       </header>
     </div>

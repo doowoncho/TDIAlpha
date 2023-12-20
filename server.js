@@ -98,7 +98,7 @@ app.put('/api/updatetask/:id', async (req, res) => {
   try {
     const taskId = parseInt(req.params.id) //id of task we are changing
     const { starttime, endtime, setup, notes, assigned, jobId } = req.body
-    const posts = await prisma.tasks.update({
+    const task = await prisma.tasks.update({
       where: {
         id: taskId
       },
@@ -111,7 +111,33 @@ app.put('/api/updatetask/:id', async (req, res) => {
         assigned: assigned
       }
     });
-    res.json(posts);
+    res.json(task);
+
+    //complicated shit to make the job dates match the task earliest and latest dates
+    const job = await prisma.jobs.findFirst({ where: { id: jobId } });
+    if (job) {
+      const earliestTask = await prisma.tasks.findFirst({
+        where: { job_id: job.id, starttime: { not: null }  },
+        orderBy: { starttime: 'asc' },
+      });
+    
+      const latestTask = await prisma.tasks.findFirst({
+        where: { job_id: job.id, endtime: { not: null } },
+        orderBy: { endtime: 'desc' },
+      });
+    
+      if (earliestTask || latestTask) {
+        await prisma.jobs.update({
+          where: {
+            id: job.id,
+          },
+          data: {
+            starttime: earliestTask.starttime,
+            endtime: latestTask.endtime,
+          },
+        });
+      }
+    }
 
   } catch (error) {
     console.error(error);
@@ -123,14 +149,13 @@ app.put('/api/updatetask/:id', async (req, res) => {
 app.put('/api/updatejob/:id', async (req, res) => {
   try {
     const jobId = parseInt(req.params.id) //id of task we are changing
-    const { id, customer, starttime, endtime, status, wo_number, po_number, email, phone_number, permit_number, map, photo, p_confirm, npat, permit} = req.body
+    const { customer, starttime, endtime, status, wo_number, po_number, email, phone_number, permit_number, map, photo, p_confirm, npat, permit} = req.body
     const posts = await prisma.jobs.update({
       where: {
         id: jobId
       },
       data:{
         customer: customer,
-        id: id, 
         status: status,
         starttime: starttime,
         endtime: endtime,

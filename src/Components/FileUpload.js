@@ -86,22 +86,23 @@ function FileUpload({type, task, name}) {
   return (
     <>
       {task ? (
-          <div className={`card border border-success bg-light mx-2`} style={{width:'200px'}}>
+          <div className={`card border border-success bg-light mx-2`} style={{maxWidth:'300px'}}>
             <div className="card-body">
-              {/* <p className='text-center'>{name}</p> */}
               <div style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
                 <a href={task} target="_blank"><i className={`${fileType[type]}`} style={{ fontSize: "2rem" }}></i></a>
               </div>
-                  <input type="file" onChange={handleFileChange} style={{width:"100%"}}/>
-                  <button onClick={handleUpload} style={{width:"100%"}}>Replace File</button>
-                  <button className='btn btn-outline-danger my-2' onClick={()=>handleDelete(id, type)}>Delete File</button>
+              <div style={{display:"flex", flexDirection:"column"}}>
+                  <input type="file" onChange={handleFileChange}/>
+                  <button onClick={handleUpload}>Replace File</button>
+                  <button className='btn btn-outline-danger mt-3' onClick={()=>handleDelete(id, type)}>Delete File</button>
+              </div>
             </div>
           </div>
       ) : (
-          <div className='card mx-2' style={{width:'200px'}}>
+          <div className='card mx-2' style={{maxWidth:'300px'}}>
             <div className="card-body">
               <input type="file" onChange={handleFileChange}/>
-              <button onClick={handleUpload}>Upload File</button>
+              <button className='my-2' onClick={handleUpload}>Upload File</button>
             </div>
           </div>
       )}

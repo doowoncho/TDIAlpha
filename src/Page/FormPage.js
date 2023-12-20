@@ -125,6 +125,7 @@ function FormPage() {
     const woNumber = document.getElementById('woNumber').value;
     const location = document.getElementById('location').value;
     const phoneNumber = document.getElementById('phoneNumber').value;
+    const npat = document.getElementById('npat').value == "on" ? true : false;
     
     let job = await createJob()
     let earliestStartDate = null;
@@ -140,7 +141,7 @@ function FormPage() {
       (dateTime.endDate && (!latestEndDate || new Date(dateTime.endDate) > latestEndDate))) {
         latestEndDate = dateTime.endDate ? new Date(dateTime.endDate + 'T' + dateTime.endTime) : new Date(dateTime.startDate + 'T' + dateTime.endTime);
       }
-      
+
       if (dateTime.twentyFour) {
         if (dateTime.exWeekend) {          
           // Creating tasks for the inbetween
@@ -171,7 +172,8 @@ function FormPage() {
         po_number: poNumber,
         email: email,
         location: location,
-        phone_number: phoneNumber
+        phone_number: phoneNumber,
+        npat: npat
       }) 
       await fileUploading(job);
       
@@ -213,6 +215,12 @@ function FormPage() {
           <label for="fileUpload">Photo</label>
           <input type="file" id="fileUpload" className='form-control' onChange={handleFileChange}/>
         </div>
+        {/* <div class="form-check mb-3">
+          <label class="form-check-label" for="flexCheckDefault">
+            NPAT
+          </label>
+          <input class="form-check-input" type="checkbox" id="npat"/>
+        </div> */}
       </div>
 
       <div className='container justify-content-center d-flex'>

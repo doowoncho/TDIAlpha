@@ -38,7 +38,6 @@ export default function ToDoPage() {
     try {
       let tasks = toggle ? await gettaskByUserId(window.sessionStorage.getItem("user")) : await getAlltasks()
       let tempEvents = [];
-      console.log(tasks)
       for (let task of tasks) {
         let event = {
           title: task.customer,
