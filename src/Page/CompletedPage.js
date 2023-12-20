@@ -1,5 +1,5 @@
 import { deleteJob, getAllJobs, updateJob } from "../Components/APICalls";
-import Table from "../components/Table";
+import Table from "../Components/Table";
 import { useEffect, useState  } from "react";
 
 export default function CompletedPage() {
