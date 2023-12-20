@@ -10,13 +10,13 @@ import InvoicePage from "./Page/InvoicePage";
 import CompletedPage from "./Page/CompletedPage";
 import JobsTable from "./Page/JobsTablePage";
 
-import { Amplify } from 'aws-amplify';
-import { withAuthenticator } from '@aws-amplify/ui-react';
-import '@aws-amplify/ui-react/styles.css';
-import config from './amplifyconfiguration.json';
 import { useState } from "react";
 import MyNavBar from "./components/MyNavBar";
-Amplify.configure(config);
+// import { Amplify } from 'aws-amplify';
+// import { withAuthenticator } from '@aws-amplify/ui-react';
+// import '@aws-amplify/ui-react/styles.css';
+// import config from './amplifyconfiguration.json';
+// Amplify.configure(config);
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -55,4 +55,4 @@ const App = () => {
   );
 }
 
-export default withAuthenticator(App);
+export default App;
