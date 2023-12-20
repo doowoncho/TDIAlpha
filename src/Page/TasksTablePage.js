@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import Table from "../Components/Table";
+import Table from "../components/Table";
 import { useParams } from "react-router-dom";
-import FileUpload from "../Components/FileUpload";
-import { getUserById, getTasksByJobId, getJobById, getFilesById, updatetask, createtask, deletetask, updateJob } from "../Components/APICalls";
+import FileUpload from "../components/FileUpload";
+import { getUserById, getTasksByJobId, getJobById, getFilesById, updatetask, createtask, deletetask, updateJob } from "../components/APICalls";
  
 let user = await getUserById(window.sessionStorage.getItem("user"))
 

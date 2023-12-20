@@ -23,7 +23,6 @@ const App = () => {
 
   return (
     <>
-    <MyNavBar/>
     <Routes>
       {isAuthenticated ? (
         <>

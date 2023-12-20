@@ -1,5 +1,5 @@
-import { deleteJob, getAllJobs, updateJob } from "../Components/APICalls";
-import Table from "../Components/Table";
+import { deleteJob, getAllJobs, updateJob } from "../components/APICalls";
+import Table from "../components/Table";
 import { useEffect, useState  } from "react";
 
 export default function InvoicePage() {
