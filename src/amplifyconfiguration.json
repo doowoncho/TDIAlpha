@@ -1,0 +1,35 @@
+{
+  "aws_project_region": "us-east-2",
+  "aws_appsync_graphqlEndpoint": "https://ktl2sei4q5cnnpctfiitcojvdu.appsync-api.us-east-2.amazonaws.com/graphql",
+  "aws_appsync_region": "us-east-2",
+  "aws_appsync_authenticationType": "API_KEY",
+  "aws_appsync_apiKey": "da2-xivoini7grappehklko65efajm",
+  "aws_cloud_logic_custom": [
+    {
+      "name": "jarvis",
+      "endpoint": "https://iula3zpl2i.execute-api.us-east-2.amazonaws.com/staging",
+      "region": "us-east-2"
+    }
+  ],
+  "aws_cognito_identity_pool_id": "us-east-2:add1dd24-02b1-4627-ac77-21c2d2c2e1a8",
+  "aws_cognito_region": "us-east-2",
+  "aws_user_pools_id": "us-east-2_5xlRIo2eb",
+  "aws_user_pools_web_client_id": "5g78dajisu3grqbtope317solf",
+  "oauth": {},
+  "aws_cognito_username_attributes": [],
+  "aws_cognito_social_providers": [],
+  "aws_cognito_signup_attributes": [
+    "EMAIL"
+  ],
+  "aws_cognito_mfa_configuration": "OFF",
+  "aws_cognito_mfa_types": [
+    "SMS"
+  ],
+  "aws_cognito_password_protection_settings": {
+    "passwordPolicyMinLength": 8,
+    "passwordPolicyCharacters": []
+  },
+  "aws_cognito_verification_mechanisms": [
+    "EMAIL"
+  ]
+}
