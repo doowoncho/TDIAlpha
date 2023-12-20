@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { storage } from '../components/Firebase';
+import { storage } from './Firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useParams } from 'react-router-dom';
 import { files } from './APICalls';

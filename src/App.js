@@ -9,23 +9,12 @@ import ToDoPage from "./Page/ToDoPage";
 import InvoicePage from "./Page/InvoicePage";
 import CompletedPage from "./Page/CompletedPage";
 import JobsTable from "./Page/JobsTablePage";
-
-import { useState } from "react";
-import MyNavBar from "./components/MyNavBar";
-// import { Amplify } from 'aws-amplify';
-// import { withAuthenticator } from '@aws-amplify/ui-react';
-// import '@aws-amplify/ui-react/styles.css';
-// import config from './amplifyconfiguration.json';
-// Amplify.configure(config);
+import { withAuthenticator } from '@aws-amplify/ui-react';
 
 const App = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-
   return (
     <>
     <Routes>
-      {isAuthenticated ? (
-        <>
           <Route path="/" element={<JobsTable />} />
           <Route path="/taskspage/:id" element={<TasksTablePage />} />
           <Route path="/taskdetails/:id" element={<TaskDetails />} />
@@ -35,24 +24,10 @@ const App = () => {
           <Route path="/invoices" element={<InvoicePage />} />
           <Route path="/completed" element={<CompletedPage />} />
           <Route path="/jobstable" element={<JobsTable />} />
-        </>
-      ) : (
-        <>
-        <Route path="/" element={<LoginPage />} />
-        <Route path="/taskspage/:id" element={<LoginPage />} />
-        <Route path="/taskdetails/:id" element={<LoginPage />} />
-        <Route path="/todo" element={<LoginPage />} />
-        <Route path="/form" element={<LoginPage />} />
-        <Route path="/time" element={<LoginPage />} /> 
-        <Route path="/invoices" element={<LoginPage />} />
-        <Route path="/completed" element={<LoginPage />} />
-        <Route path="/jobstable" element={<LoginPage />} />
-        </>
-      )}
-      <Route path="/login" element={<LoginPage />} />
+      {/* <Route path="/login" element={<LoginPage />} /> */}
     </Routes>
   </>
   );
 }
 
-export default App;
+export default withAuthenticator(App);;
