@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { getUserById, getAllUsers, getAllJobs, deleteJob, updateJob } from "./components/APICalls";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Table from "../components/Table";
+import { getJobs } from "../components/APICalls";
  
 let user = await getUserById(window.sessionStorage.getItem("user"))
 
@@ -62,7 +63,7 @@ export default function JobsTable() {
         // }
 
         // const data = originalDataRef.current;
-        const data = await getAllJobs();
+        const data = await getJobs();
 
         //different counts for the jobs filters
         const newCount = data.filter((job) => job.status === "New" || job.status ==='Waiting').length;

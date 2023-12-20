@@ -1,5 +1,19 @@
 // const server = "http://localhost:3001"
 const server = ""
+import { get } from 'aws-amplify/api';
+
+export async function getJobs() {
+    try {
+      const restOperation = get({ 
+        apiName: 'TDIAlpha',
+        path: '/jobs' 
+      });
+      const response = await restOperation.response;
+      console.log('GET call succeeded: ', response);
+    } catch (error) {
+      console.log('GET call failed: ', error);
+    }
+  }
 
 // Gets a list of all the tasks
 export async function getAlltasks() {
