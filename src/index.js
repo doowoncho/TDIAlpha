@@ -6,6 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import MyNavBar from './components/MyNavBar';
 import { Amplify } from 'aws-amplify';
+import '@aws-amplify/ui-react/styles.css';
 import config from './amplifyconfiguration.json';
 
 Amplify.configure(config);
