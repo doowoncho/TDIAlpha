@@ -1,5 +1,5 @@
 // import React from "react";
-// import {  getUserByEmail } from "./components/APICalls";
+// import {  getUserByEmail } from "../Components/APICalls";
 
 // // minsu@gmail.com  doowon@gmail.com jungsu@gmail.com PW: 123, Doowon permission 1, jungsu 2, minsu 3
 
