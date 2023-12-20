@@ -3,7 +3,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { useState, useEffect } from 'react';
 
-export default function NavBar() {
+export default function MyNavBar() {
     return (
       <Navbar bg="primary" data-bs-theme="dark">
       <Container>
