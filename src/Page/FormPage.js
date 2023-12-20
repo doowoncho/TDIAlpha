@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { storage } from '../Components/Firebase';
-import { createJob, createtask, files, getTasksByJobId, updateJob } from '../Components/APICalls';
-import DateInput from '../Components/DateInput';
+import { storage } from '../components/Firebase';
+import { createJob, createtask, files, getTasksByJobId, updateJob } from './components/APICalls';
+import DateInput from '../components/DateInput';
 import { useNavigate } from "react-router-dom";
 import moment from 'moment';
 

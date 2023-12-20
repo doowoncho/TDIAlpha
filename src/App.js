@@ -10,9 +10,7 @@
 // import InvoicePage from "./Page/InvoicePage";
 // import CompletedPage from "./Page/CompletedPage";
 // import JobsTable from "./Page/JobsTablePage";
-// import { Amplify } from 'aws-amplify';
-// import config from './amplifyconfiguration.json';
-// Amplify.configure(config);
+
 
 // const App = () => {
 //   const isUserLoggedIn = window.sessionStorage.getItem("user");

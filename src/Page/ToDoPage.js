@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getAlltasks, gettaskByUserId } from '../Components/APICalls';
+import { getAlltasks, gettaskByUserId } from './components/APICalls';
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import format from 'date-fns/format';
 import parse from 'date-fns/parse';

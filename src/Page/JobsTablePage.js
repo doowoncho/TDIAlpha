@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
-import { getUserById, getAllUsers, getAllJobs, deleteJob, updateJob } from "../Components/APICalls";
+import { getUserById, getAllUsers, getAllJobs, deleteJob, updateJob } from "./components/APICalls";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import Table from "../Components/Table";
+import Table from "../components/Table";
  
 let user = await getUserById(window.sessionStorage.getItem("user"))
 

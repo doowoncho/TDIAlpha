@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { storage } from './Firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { uploadFile } from './APICalls';
+import { uploadFile } from '/APICalls';
 
 function FileUpload({type, task, name}) {
   const [file, setFile] = useState(null);

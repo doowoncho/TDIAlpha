@@ -1,6 +1,6 @@
-import Table from "../Components/Table";
+import Table from "../components/Table";
 import { useEffect, useState  } from "react";
-import { getAllJobs, deleteJob, updateJob} from "../Components/APICalls";
+import { getAllJobs, deleteJob, updateJob} from "./components/APICalls";
 
 export default function CompletedPage() {
   const [taskList, settaskList] = useState([]);

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import { useParams } from 'react-router-dom';
-import { getUserById, gettaskById, updatetask } from '../Components/APICalls';
+import { getUserById, gettaskById, updatetask } from './components/APICalls';
 import '../Styles/TaskDetails.css';
 
 let user = await getUserById(window.sessionStorage.getItem("user"))
