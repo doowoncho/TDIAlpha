@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@aws-amplify/datastore": "^5.0.8",
     "@aws-amplify/ui-react": "^6.0.7",
     "@prisma/client": "^5.1.1",
     "@testing-library/jest-dom": "^5.17.0",

@@ -1,19 +1,53 @@
-import { get } from 'aws-amplify/api';
-// const server = "http://localhost:3001"
+import { get, put, del, post } from 'aws-amplify/api';
+import { DataStore } from '@aws-amplify/datastore';
+import { Jobs } from '../models'
+
 const server = ""
 
 export async function getJobs() {
+  try {
+    const posts = await DataStore.query(Jobs);
+    console.log('Jobs retrieved successfully!', posts);
+  } catch (error) {
+    console.log('Error retrieving posts', error);
+  }
+}
+
+
+export async function jobCreate() {
     try {
-      const restOperation = get({ 
-        apiName: 'TDIAlpha',
-        path: '/jobs' 
+      const restOperation = post({
+        apiName: 'jarvis',
+        path: '/jobs',
+        options: {
+          body: {
+            customer: 'Telus'
+          }
+        }
       });
       const response = await restOperation.response;
-      console.log('GET call succeeded: ', response);
-    } catch (error) {
-      console.log('GET call failed: ', error);
+      console.log('POST call succeeded');
+      console.log(response);
+    } catch (e) {
+      console.log('POST call failed: ', e);
     }
   }
+
+
+  // export async function getJobs() {
+  //   try {
+  //     // Use the API.get method instead of the get function
+  //     const response = await get({apiName: 'jarvis', path: '/jobs'});
+      
+  //     // Assuming the response is expected to be JSON
+  //     console.log('GET call succeeded: ', response.data);
+      
+  //     return response.data; // You might want to return the data for further processing
+  //   } catch (error) {
+  //     console.log('GET call failed: ', error);
+  //     throw error; // Propagate the error for additional handling if needed
+  //   }
+  // }
 
 // Gets a list of all the tasks
 export async function getAlltasks() {
@@ -336,4 +370,3 @@ export async function gettaskByUserId(id) {
       console.error('Error fetching task:', error);
   }
 }
-

@@ -1,9 +1,7 @@
 import { Route, Routes, Navigate } from "react-router-dom";
-import HomePage from "./Page/HomePage";
 import TasksTablePage from "./Page/TasksTablePage";
 import FormPage from "./Page/FormPage";
 import TaskDetails from "./Page/TaskDetails";
-import LoginPage from "./Page/LoginPage";
 import TimePage from "./Page/TimePage";
 import ToDoPage from "./Page/ToDoPage";
 import InvoicePage from "./Page/InvoicePage";

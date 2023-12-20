@@ -16,7 +16,7 @@
       "function": {
         "tdialphac2fb05d5": {
           "deploymentBucketName": "amplify-amplify4c26ede616644-staging-80640-deployment",
-          "s3Key": "amplify-builds/tdialphac2fb05d5-68686d4b7732365a7961-build.zip"
+          "s3Key": "amplify-builds/tdialphac2fb05d5-586e6d68315933343469-build.zip"
         },
         "tdialpha66a26c8e": {
           "deploymentBucketName": "amplify-amplify4c26ede616644-staging-80640-deployment",

@@ -29,7 +29,7 @@
             "Arn"
           ],
           "category": "function",
-          "resourceName": "tdialphac2fb05d5"
+          "resourceName": "tdialpha66a26c8e"
         },
         {
           "attributes": [
@@ -37,7 +37,7 @@
             "Arn"
           ],
           "category": "function",
-          "resourceName": "tdialpha66a26c8e"
+          "resourceName": "tdialphac2fb05d5"
         }
       ],
       "providerPlugin": "awscloudformation",
