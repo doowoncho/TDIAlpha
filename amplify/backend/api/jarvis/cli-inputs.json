@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "paths": {
+    "/jobs": {
+      "name": "/jobs",
+      "lambdaFunction": "tdialphac2fb05d5",
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ]
+      }
+    },
+    "/tasks": {
+      "name": "/tasks",
+      "lambdaFunction": "tdialpha66a26c8e",
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ]
+      }
+    }
+  }
+}

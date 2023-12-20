@@ -1,0 +1,27 @@
+type Tasks @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  job_id: Int
+  setup: AWSDateTime
+  notes: String
+  assigned: String
+  endtime: String
+  starttime: String
+}
+
+type Jobs @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  email: String
+  status: String
+  customer: String
+  endtime: AWSDateTime
+  starttime: AWSDateTime
+  wo_number: String
+  permit_number: String
+  permit: String
+  po_number: String
+  map: String
+  photo: String
+  p_confirm: String
+  phone_number: String
+  npat: Boolean
+}
