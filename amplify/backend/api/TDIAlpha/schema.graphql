@@ -1,3 +1,15 @@
+type Files @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  photo_name: String
+  photo_file: String
+  permit_name: String
+  permit_file: String
+  permit_confirmation_name: String
+  permit_confirmation_file: String
+  map_drawing_name: String
+  map_file: String
+}
+
 type Tasks @model @auth(rules: [{allow: public}]) {
   id: ID!
   job_id: Int
@@ -25,3 +37,4 @@ type Jobs @model @auth(rules: [{allow: public}]) {
   phone_number: String
   npat: Boolean
 }
+ 
