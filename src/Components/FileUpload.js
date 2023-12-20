@@ -1,10 +1,8 @@
-// FileUpload.js
-
 import React, { useState } from 'react';
 import { storage } from '../components/Firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { files, getFilesById, updateFiles, uploadFile } from './APICalls';
 import { useParams } from 'react-router-dom';
+import { files } from './APICalls';
 
 function FileUpload({type, task, name}) {
   const [file, setFile] = useState(null);

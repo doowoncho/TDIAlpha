@@ -1,6 +1,6 @@
+import { deleteJob, getAllJobs, updateJob } from "../Components/APICalls";
 import Table from "../components/Table";
 import { useEffect, useState  } from "react";
-import { getAlltasks, getSpecifictasks, updatetask, deletetask, getAllJobs, deleteJob, updateJob} from "./components/APICalls";
 
 export default function InvoicePage() {
   const [taskList, settaskList] = useState([]);

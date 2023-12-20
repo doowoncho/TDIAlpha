@@ -1,6 +1,6 @@
+import { get } from 'aws-amplify/api';
 // const server = "http://localhost:3001"
 const server = ""
-import { get } from 'aws-amplify/api';
 
 export async function getJobs() {
     try {

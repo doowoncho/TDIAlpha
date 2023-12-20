@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { getAlltasks, gettaskByUserId } from './components/APICalls';
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import format from 'date-fns/format';
 import parse from 'date-fns/parse';
@@ -8,6 +7,7 @@ import getDay from 'date-fns/getDay';
 import { enCA } from 'date-fns/locale';
 import { useNavigate } from 'react-router-dom';
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import { gettaskByUserId, getAlltasks } from '../Components/APICalls';
 
 const locales = {
   "en-CA": enCA
