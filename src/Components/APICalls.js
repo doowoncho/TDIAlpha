@@ -129,10 +129,6 @@ export async function deletetask(id) {
             'Content-Type': 'application/json',
             }
         });
-
-        const deletedtask = await response.json();
-        console.log('Deleted task:', deletedtask);
-
     } catch (error) {
         console.error('Error deleting task:', error);
     }
@@ -147,10 +143,6 @@ export async function deleteJob(id) {
             'Content-Type': 'application/json',
             }
         });
-
-        const deletedtask = await response.json();
-        console.log('Deleted job:', deletedtask);
-
     } catch (error) {
         console.error('Error deleting job:', error);
     }
