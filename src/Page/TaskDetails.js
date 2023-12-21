@@ -26,8 +26,14 @@ export default function Orders() {
     async function fetchTask() {
       try {
         const fetchedTask = await gettaskById(id);
-        setJob(getJobById(task.job_id));
-        await setTask(fetchedTask);
+        setTask(fetchedTask);
+  
+        const fetchedJob = await getJobById(fetchedTask.job_id);
+        setJob(fetchedJob);
+  
+        const fetchedFiles = await getFilesById(fetchedJob.id);
+        setFiles(fetchedFiles);
+  
         setIsLoading(false);
       } catch (error) {
         setError('Error retrieving task!');
@@ -36,16 +42,6 @@ export default function Orders() {
     }
 
     fetchTask();
-    async function fetchFiles() {
-      try {
-        const fetchedFiles = await getFilesById(job.id);
-        setFiles(fetchedFiles);
-        console.log(fetchedFiles);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    fetchFiles();
   }, [id]);
 
   const handleEditClick = () => {
@@ -157,7 +153,8 @@ export default function Orders() {
         </div>
       </div>
 
-      <div className="card d-none d-sm-flex">
+    <div className='container my-2'>
+      <div className="card">
         <div className="card-header">
           Files
         </div>
@@ -180,6 +177,7 @@ export default function Orders() {
           </div>
         </div>
       </div>
+    </div>
 
       <div className="container">
         <div className="card my-3 mx-4">
