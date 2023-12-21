@@ -9,30 +9,30 @@ datasource db {
 
 model jobs {
   id            Int       @id @default(autoincrement())
-  email         String?   @db.VarChar(255)  
-  status        String?   @db.VarChar(255)
   customer      String?   @db.VarChar(255)
   endtime       DateTime? @db.Timestamp(6)
   starttime     DateTime? @db.Timestamp(6)
-  wo_number     String?   @db.VarChar(255)
-  permit_number String?   @db.VarChar(255)
-  permit        String?   @db.VarChar(255)
-  po_number     String?   @db.VarChar(255)
+  status        String?   @db.VarChar(255)
   map           String?   @db.VarChar(255)
-  photo         String?   @db.VarChar(255)
+  npat          Boolean?
   p_confirm     String?   @db.VarChar(255)
+  permit_number String?   @db.VarChar(255)
   phone_number  String?   @db.VarChar(50)
-  npat          Boolean?  @db.Boolean()
+  photo         String?   @db.VarChar(255)
+  po_number     String?   @db.VarChar(255)
+  wo_number     String?   @db.VarChar(255)
+  email         String?   @db.VarChar(255)
+  permit        String?   @db.VarChar(255)
 }
 
 model tasks {
-  id            Int       @id @default(autoincrement())
-  job_id        Int       
-  setup         String?   @db.VarChar(255)
-  notes         String?   @db.VarChar(255)
-  assigned      Int?
-  endtime       DateTime? @db.Timestamp(6)
-  starttime     DateTime? @db.Timestamp(6)
+  id        Int       @id @default(autoincrement())
+  job_id    Int
+  setup     String?   @db.VarChar(255)
+  notes     String?   @db.VarChar(255)
+  assigned  Int?
+  endtime   DateTime? @db.Timestamp(6)
+  starttime DateTime? @db.Timestamp(6)
 }
 
 model users {
