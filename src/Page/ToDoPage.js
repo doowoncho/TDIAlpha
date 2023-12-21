@@ -7,7 +7,7 @@ import getDay from 'date-fns/getDay';
 import { enCA } from 'date-fns/locale';
 import { useNavigate } from 'react-router-dom';
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { gettaskByUserId, getAlltasks } from '../components/APICalls';
+import { gettaskByUserId, getAllTasks } from '../components/APICalls';
 
 const locales = {
   "en-CA": enCA
@@ -36,7 +36,7 @@ export default function ToDoPage() {
 
   async function gettasksForPage() {
     try {
-      let tasks = toggle ? await gettaskByUserId(window.sessionStorage.getItem("user")) : await getAlltasks()
+      let tasks = toggle ? await gettaskByUserId(window.sessionStorage.getItem("user")) : await getAllTasks()
       let tempEvents = [];
       for (let task of tasks) {
         let event = {

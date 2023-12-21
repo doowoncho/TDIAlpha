@@ -37,6 +37,26 @@
     "resourceName": "tdialpha",
     "sharedId": "3ed21440",
     "serviceName": "Cognito",
-    "useDefault": "manual"
+    "useDefault": "manual",
+    "authRoleArn": {
+      "Fn::GetAtt": [
+        "AuthRole",
+        "Arn"
+      ]
+    },
+    "unauthRoleArn": {
+      "Fn::GetAtt": [
+        "UnauthRole",
+        "Arn"
+      ]
+    },
+    "breakCircularDependency": true,
+    "useEnabledMfas": true,
+    "dependsOn": [],
+    "userPoolGroupList": [
+      "DeskWorkers",
+      "FieldWorkers"
+    ],
+    "adminQueryGroup": "DeskWorkers"
   }
 }

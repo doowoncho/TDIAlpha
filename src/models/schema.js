@@ -121,14 +121,14 @@ export const schema = {
                 "job_id": {
                     "name": "job_id",
                     "isArray": false,
-                    "type": "Int",
+                    "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
                 "setup": {
                     "name": "setup",
                     "isArray": false,
-                    "type": "AWSDateTime",
+                    "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -149,12 +149,19 @@ export const schema = {
                 "endtime": {
                     "name": "endtime",
                     "isArray": false,
-                    "type": "String",
+                    "type": "AWSDateTime",
                     "isRequired": false,
                     "attributes": []
                 },
                 "starttime": {
                     "name": "starttime",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "customer": {
+                    "name": "customer",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -310,6 +317,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "setup": {
+                    "name": "setup",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -356,5 +370,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "b84e3b64b73ec8ea43da1fccab6240e3"
+    "version": "5e248004d5d8174a660bd2cd7160f80e"
 };

@@ -12,12 +12,13 @@ type Files @model @auth(rules: [{allow: public}]) {
 
 type Tasks @model @auth(rules: [{allow: public}]) {
   id: ID!
-  job_id: Int
-  setup: AWSDateTime
+  job_id: String
+  setup: String
   notes: String
   assigned: String
-  endtime: String
-  starttime: String
+  endtime: AWSDateTime
+  starttime: AWSDateTime
+  customer: String
 }
 
 type Jobs @model @auth(rules: [{allow: public}]) {
@@ -36,5 +37,6 @@ type Jobs @model @auth(rules: [{allow: public}]) {
   p_confirm: String
   phone_number: String
   npat: Boolean
+  setup: String
 }
  

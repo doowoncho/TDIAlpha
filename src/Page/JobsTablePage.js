@@ -1,9 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Table from "../components/Table";
-import { deleteJob, getJobs, getUserById, updateJob } from "../components/APICalls";
- 
-let user = await getUserById(window.sessionStorage.getItem("user"))
+import { addToGroup, createJob, deleteJob, getAllJobs, getUserById, updateJob } from "../components/APICalls";
+import { listJobs } from "../graphql/queries";
 
 const TableCards = ({ bg, header, icon, color, num }) => (
   <div className={`card ${bg} mx-2 border p-2 bg-white rounded`}>
@@ -62,7 +61,7 @@ export default function JobsTable() {
         // }
 
         // const data = originalDataRef.current;
-        const data = await getJobs();
+        const data = await getAllJobs();
 
         //different counts for the jobs filters
         const newCount = data.filter((job) => job.status === "New" || job.status ==='Waiting').length;
@@ -105,7 +104,7 @@ export default function JobsTable() {
     };
 
     fetchData();
-  }, [tableType, filterSettings, jobList]);
+  }, [tableType, filterSettings]);
 
   const handleTableTypeChange = (newTableType) => {
     if (tableType !== newTableType) {

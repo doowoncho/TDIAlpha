@@ -16,19 +16,24 @@
       "function": {
         "tdialphac2fb05d5": {
           "deploymentBucketName": "amplify-amplify4c26ede616644-staging-80640-deployment",
-          "s3Key": "amplify-builds/tdialphac2fb05d5-586e6d68315933343469-build.zip"
+          "s3Key": "amplify-builds/tdialphac2fb05d5-706c44447567796f5441-build.zip"
         },
         "tdialpha66a26c8e": {
           "deploymentBucketName": "amplify-amplify4c26ede616644-staging-80640-deployment",
           "s3Key": "amplify-builds/tdialpha66a26c8e-4b3734384a6e41665a36-build.zip"
+        },
+        "AdminQueries836e0611": {
+          "deploymentBucketName": "amplify-amplify4c26ede616644-staging-80640-deployment",
+          "s3Key": "amplify-builds/AdminQueries836e0611-78753064675a522f6274-build.zip"
         }
       },
       "auth": {
-        "tdialpha": {}
+        "tdialpha": {},
+        "userPoolGroups": {}
       },
       "api": {
         "TDIAlpha": {},
-        "jarvis": {}
+        "AdminQueries": {}
       }
     }
   }

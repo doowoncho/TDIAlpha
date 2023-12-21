@@ -29,6 +29,7 @@ export default function TasksCreateForm(props) {
     assigned: "",
     endtime: "",
     starttime: "",
+    customer: "",
   };
   const [job_id, setJob_id] = React.useState(initialValues.job_id);
   const [setup, setSetup] = React.useState(initialValues.setup);
@@ -36,6 +37,7 @@ export default function TasksCreateForm(props) {
   const [assigned, setAssigned] = React.useState(initialValues.assigned);
   const [endtime, setEndtime] = React.useState(initialValues.endtime);
   const [starttime, setStarttime] = React.useState(initialValues.starttime);
+  const [customer, setCustomer] = React.useState(initialValues.customer);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setJob_id(initialValues.job_id);
@@ -44,6 +46,7 @@ export default function TasksCreateForm(props) {
     setAssigned(initialValues.assigned);
     setEndtime(initialValues.endtime);
     setStarttime(initialValues.starttime);
+    setCustomer(initialValues.customer);
     setErrors({});
   };
   const validations = {
@@ -53,6 +56,7 @@ export default function TasksCreateForm(props) {
     assigned: [],
     endtime: [],
     starttime: [],
+    customer: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -103,6 +107,7 @@ export default function TasksCreateForm(props) {
           assigned,
           endtime,
           starttime,
+          customer,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -160,13 +165,9 @@ export default function TasksCreateForm(props) {
         label="Job id"
         isRequired={false}
         isReadOnly={false}
-        type="number"
-        step="any"
         value={job_id}
         onChange={(e) => {
-          let value = isNaN(parseInt(e.target.value))
-            ? e.target.value
-            : parseInt(e.target.value);
+          let { value } = e.target;
           if (onChange) {
             const modelFields = {
               job_id: value,
@@ -175,6 +176,7 @@ export default function TasksCreateForm(props) {
               assigned,
               endtime,
               starttime,
+              customer,
             };
             const result = onChange(modelFields);
             value = result?.job_id ?? value;
@@ -193,11 +195,9 @@ export default function TasksCreateForm(props) {
         label="Setup"
         isRequired={false}
         isReadOnly={false}
-        type="datetime-local"
-        value={setup && convertToLocal(new Date(setup))}
+        value={setup}
         onChange={(e) => {
-          let value =
-            e.target.value === "" ? "" : new Date(e.target.value).toISOString();
+          let { value } = e.target;
           if (onChange) {
             const modelFields = {
               job_id,
@@ -206,6 +206,7 @@ export default function TasksCreateForm(props) {
               assigned,
               endtime,
               starttime,
+              customer,
             };
             const result = onChange(modelFields);
             value = result?.setup ?? value;
@@ -235,6 +236,7 @@ export default function TasksCreateForm(props) {
               assigned,
               endtime,
               starttime,
+              customer,
             };
             const result = onChange(modelFields);
             value = result?.notes ?? value;
@@ -264,6 +266,7 @@ export default function TasksCreateForm(props) {
               assigned: value,
               endtime,
               starttime,
+              customer,
             };
             const result = onChange(modelFields);
             value = result?.assigned ?? value;
@@ -282,9 +285,11 @@ export default function TasksCreateForm(props) {
         label="Endtime"
         isRequired={false}
         isReadOnly={false}
-        value={endtime}
+        type="datetime-local"
+        value={endtime && convertToLocal(new Date(endtime))}
         onChange={(e) => {
-          let { value } = e.target;
+          let value =
+            e.target.value === "" ? "" : new Date(e.target.value).toISOString();
           if (onChange) {
             const modelFields = {
               job_id,
@@ -293,6 +298,7 @@ export default function TasksCreateForm(props) {
               assigned,
               endtime: value,
               starttime,
+              customer,
             };
             const result = onChange(modelFields);
             value = result?.endtime ?? value;
@@ -311,9 +317,11 @@ export default function TasksCreateForm(props) {
         label="Starttime"
         isRequired={false}
         isReadOnly={false}
-        value={starttime}
+        type="datetime-local"
+        value={starttime && convertToLocal(new Date(starttime))}
         onChange={(e) => {
-          let { value } = e.target;
+          let value =
+            e.target.value === "" ? "" : new Date(e.target.value).toISOString();
           if (onChange) {
             const modelFields = {
               job_id,
@@ -322,6 +330,7 @@ export default function TasksCreateForm(props) {
               assigned,
               endtime,
               starttime: value,
+              customer,
             };
             const result = onChange(modelFields);
             value = result?.starttime ?? value;
@@ -335,6 +344,36 @@ export default function TasksCreateForm(props) {
         errorMessage={errors.starttime?.errorMessage}
         hasError={errors.starttime?.hasError}
         {...getOverrideProps(overrides, "starttime")}
+      ></TextField>
+      <TextField
+        label="Customer"
+        isRequired={false}
+        isReadOnly={false}
+        value={customer}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              job_id,
+              setup,
+              notes,
+              assigned,
+              endtime,
+              starttime,
+              customer: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.customer ?? value;
+          }
+          if (errors.customer?.hasError) {
+            runValidationTasks("customer", value);
+          }
+          setCustomer(value);
+        }}
+        onBlur={() => runValidationTasks("customer", customer)}
+        errorMessage={errors.customer?.errorMessage}
+        hasError={errors.customer?.hasError}
+        {...getOverrideProps(overrides, "customer")}
       ></TextField>
       <Flex
         justifyContent="space-between"

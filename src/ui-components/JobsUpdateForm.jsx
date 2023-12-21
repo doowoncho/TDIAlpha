@@ -45,6 +45,7 @@ export default function JobsUpdateForm(props) {
     p_confirm: "",
     phone_number: "",
     npat: false,
+    setup: "",
   };
   const [email, setEmail] = React.useState(initialValues.email);
   const [status, setStatus] = React.useState(initialValues.status);
@@ -64,6 +65,7 @@ export default function JobsUpdateForm(props) {
     initialValues.phone_number
   );
   const [npat, setNpat] = React.useState(initialValues.npat);
+  const [setup, setSetup] = React.useState(initialValues.setup);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = jobsRecord
@@ -83,6 +85,7 @@ export default function JobsUpdateForm(props) {
     setP_confirm(cleanValues.p_confirm);
     setPhone_number(cleanValues.phone_number);
     setNpat(cleanValues.npat);
+    setSetup(cleanValues.setup);
     setErrors({});
   };
   const [jobsRecord, setJobsRecord] = React.useState(jobsModelProp);
@@ -116,6 +119,7 @@ export default function JobsUpdateForm(props) {
     p_confirm: [],
     phone_number: [],
     npat: [],
+    setup: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -174,6 +178,7 @@ export default function JobsUpdateForm(props) {
           p_confirm: p_confirm ?? null,
           phone_number: phone_number ?? null,
           npat: npat ?? null,
+          setup: setup ?? null,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -248,6 +253,7 @@ export default function JobsUpdateForm(props) {
               p_confirm,
               phone_number,
               npat,
+              setup,
             };
             const result = onChange(modelFields);
             value = result?.email ?? value;
@@ -285,6 +291,7 @@ export default function JobsUpdateForm(props) {
               p_confirm,
               phone_number,
               npat,
+              setup,
             };
             const result = onChange(modelFields);
             value = result?.status ?? value;
@@ -322,6 +329,7 @@ export default function JobsUpdateForm(props) {
               p_confirm,
               phone_number,
               npat,
+              setup,
             };
             const result = onChange(modelFields);
             value = result?.customer ?? value;
@@ -361,6 +369,7 @@ export default function JobsUpdateForm(props) {
               p_confirm,
               phone_number,
               npat,
+              setup,
             };
             const result = onChange(modelFields);
             value = result?.endtime ?? value;
@@ -400,6 +409,7 @@ export default function JobsUpdateForm(props) {
               p_confirm,
               phone_number,
               npat,
+              setup,
             };
             const result = onChange(modelFields);
             value = result?.starttime ?? value;
@@ -437,6 +447,7 @@ export default function JobsUpdateForm(props) {
               p_confirm,
               phone_number,
               npat,
+              setup,
             };
             const result = onChange(modelFields);
             value = result?.wo_number ?? value;
@@ -474,6 +485,7 @@ export default function JobsUpdateForm(props) {
               p_confirm,
               phone_number,
               npat,
+              setup,
             };
             const result = onChange(modelFields);
             value = result?.permit_number ?? value;
@@ -511,6 +523,7 @@ export default function JobsUpdateForm(props) {
               p_confirm,
               phone_number,
               npat,
+              setup,
             };
             const result = onChange(modelFields);
             value = result?.permit ?? value;
@@ -548,6 +561,7 @@ export default function JobsUpdateForm(props) {
               p_confirm,
               phone_number,
               npat,
+              setup,
             };
             const result = onChange(modelFields);
             value = result?.po_number ?? value;
@@ -585,6 +599,7 @@ export default function JobsUpdateForm(props) {
               p_confirm,
               phone_number,
               npat,
+              setup,
             };
             const result = onChange(modelFields);
             value = result?.map ?? value;
@@ -622,6 +637,7 @@ export default function JobsUpdateForm(props) {
               p_confirm,
               phone_number,
               npat,
+              setup,
             };
             const result = onChange(modelFields);
             value = result?.photo ?? value;
@@ -659,6 +675,7 @@ export default function JobsUpdateForm(props) {
               p_confirm: value,
               phone_number,
               npat,
+              setup,
             };
             const result = onChange(modelFields);
             value = result?.p_confirm ?? value;
@@ -696,6 +713,7 @@ export default function JobsUpdateForm(props) {
               p_confirm,
               phone_number: value,
               npat,
+              setup,
             };
             const result = onChange(modelFields);
             value = result?.phone_number ?? value;
@@ -733,6 +751,7 @@ export default function JobsUpdateForm(props) {
               p_confirm,
               phone_number,
               npat: value,
+              setup,
             };
             const result = onChange(modelFields);
             value = result?.npat ?? value;
@@ -747,6 +766,44 @@ export default function JobsUpdateForm(props) {
         hasError={errors.npat?.hasError}
         {...getOverrideProps(overrides, "npat")}
       ></SwitchField>
+      <TextField
+        label="Setup"
+        isRequired={false}
+        isReadOnly={false}
+        value={setup}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              email,
+              status,
+              customer,
+              endtime,
+              starttime,
+              wo_number,
+              permit_number,
+              permit,
+              po_number,
+              map,
+              photo,
+              p_confirm,
+              phone_number,
+              npat,
+              setup: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.setup ?? value;
+          }
+          if (errors.setup?.hasError) {
+            runValidationTasks("setup", value);
+          }
+          setSetup(value);
+        }}
+        onBlur={() => runValidationTasks("setup", setup)}
+        errorMessage={errors.setup?.errorMessage}
+        hasError={errors.setup?.hasError}
+        {...getOverrideProps(overrides, "setup")}
+      ></TextField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}

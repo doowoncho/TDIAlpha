@@ -1,6 +1,69 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createFiles = /* GraphQL */ `
+  mutation CreateFiles(
+    $input: CreateFilesInput!
+    $condition: ModelFilesConditionInput
+  ) {
+    createFiles(input: $input, condition: $condition) {
+      id
+      photo_name
+      photo_file
+      permit_name
+      permit_file
+      permit_confirmation_name
+      permit_confirmation_file
+      map_drawing_name
+      map_file
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const updateFiles = /* GraphQL */ `
+  mutation UpdateFiles(
+    $input: UpdateFilesInput!
+    $condition: ModelFilesConditionInput
+  ) {
+    updateFiles(input: $input, condition: $condition) {
+      id
+      photo_name
+      photo_file
+      permit_name
+      permit_file
+      permit_confirmation_name
+      permit_confirmation_file
+      map_drawing_name
+      map_file
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const deleteFiles = /* GraphQL */ `
+  mutation DeleteFiles(
+    $input: DeleteFilesInput!
+    $condition: ModelFilesConditionInput
+  ) {
+    deleteFiles(input: $input, condition: $condition) {
+      id
+      photo_name
+      photo_file
+      permit_name
+      permit_file
+      permit_confirmation_name
+      permit_confirmation_file
+      map_drawing_name
+      map_file
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
 export const createTasks = /* GraphQL */ `
   mutation CreateTasks(
     $input: CreateTasksInput!
@@ -14,6 +77,7 @@ export const createTasks = /* GraphQL */ `
       assigned
       endtime
       starttime
+      customer
       createdAt
       updatedAt
       __typename
@@ -33,6 +97,7 @@ export const updateTasks = /* GraphQL */ `
       assigned
       endtime
       starttime
+      customer
       createdAt
       updatedAt
       __typename
@@ -52,6 +117,7 @@ export const deleteTasks = /* GraphQL */ `
       assigned
       endtime
       starttime
+      customer
       createdAt
       updatedAt
       __typename
@@ -79,6 +145,7 @@ export const createJobs = /* GraphQL */ `
       p_confirm
       phone_number
       npat
+      setup
       createdAt
       updatedAt
       __typename
@@ -106,6 +173,7 @@ export const updateJobs = /* GraphQL */ `
       p_confirm
       phone_number
       npat
+      setup
       createdAt
       updatedAt
       __typename
@@ -133,6 +201,7 @@ export const deleteJobs = /* GraphQL */ `
       p_confirm
       phone_number
       npat
+      setup
       createdAt
       updatedAt
       __typename

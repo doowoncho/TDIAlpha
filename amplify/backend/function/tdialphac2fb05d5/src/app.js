@@ -26,8 +26,14 @@ app.use(function(req, res, next) {
  * Example get method *
  **********************/
 
-app.get('/api/jobs', async (req, res) => {
-  res.json({success: 'get call succeed!', url: req.url});
+app.get('/jobs', function(req, res) {
+  const query = req.query;
+  // or
+  // const query = req.apiGateway.event.queryStringParameters
+  res.json({
+    event: req.apiGateway.event, // to view all event data
+    query: query
+  });
 });
 
 app.get('/jobs/*', function(req, res) {

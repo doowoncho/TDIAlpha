@@ -1,60 +1,16 @@
-import { get, put, del, post } from 'aws-amplify/api';
-import { DataStore } from '@aws-amplify/datastore';
-import { Jobs } from '../models'
+import { generateClient } from 'aws-amplify/api';
+import * as queries from '../graphql/queries';
+import * as mutations from '../graphql/mutations';
 
+const client = generateClient();
 const server = ""
 
-export async function getJobs() {
-  try {
-    const posts = await DataStore.query(Jobs);
-    console.log('Jobs retrieved successfully!', posts);
-  } catch (error) {
-    console.log('Error retrieving posts', error);
-  }
-}
-
-
-export async function jobCreate() {
+  // Gets a list of all the jobs
+  export async function getAllTasks() {
     try {
-      const restOperation = post({
-        apiName: 'jarvis',
-        path: '/jobs',
-        options: {
-          body: {
-            customer: 'Telus'
-          }
-        }
-      });
-      const response = await restOperation.response;
-      console.log('POST call succeeded');
-      console.log(response);
-    } catch (e) {
-      console.log('POST call failed: ', e);
-    }
-  }
-
-
-  // export async function getJobs() {
-  //   try {
-  //     // Use the API.get method instead of the get function
-  //     const response = await get({apiName: 'jarvis', path: '/jobs'});
-      
-  //     // Assuming the response is expected to be JSON
-  //     console.log('GET call succeeded: ', response.data);
-      
-  //     return response.data; // You might want to return the data for further processing
-  //   } catch (error) {
-  //     console.log('GET call failed: ', error);
-  //     throw error; // Propagate the error for additional handling if needed
-  //   }
-  // }
-
-// Gets a list of all the tasks
-export async function getAlltasks() {
-    try {
-      const response = await fetch(`${server}/api/tasks`);
-      const data = await response.json();
-      return(data)
+      const response = await client.graphql({ query: queries.listTasks});
+      const data = await response.data;
+      return(data.listTasks.items)
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -63,69 +19,64 @@ export async function getAlltasks() {
   // Gets a list of all the jobs
 export async function getAllJobs() {
     try {
-      const response = await fetch(`${server}/api/jobs`);
-      const data = await response.json();
-      return(data)
+      const response = await client.graphql({ query: queries.listJobs});
+      const data = await response.data;
+      return(data.listJobs.items)
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   }
 
-// Gets all the tasks params from options
-export async function getSpecifictasks(params) {
-    try {
-        const queryString = new URLSearchParams(params).toString();
-        const url = `${server}/api/specifictasks?${queryString}`;
-
-        const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        });
-        const data = await response.json();
-        return(data)
-    } catch (error) {
-        console.error('Error fetching data:', error);
-    }
-}
   
 // Changes specific property of task with the given task id
 export async function updatetask(id, params) {
-    try {
-      const url = `${server}/api/updatetask/${id}`; // Use the id as a URL parameter
-  
-      const response = await fetch(url, {
-        method: 'PUT', 
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(params),
-      });
-  
-      const taskChanged = await response.json();
-      console.log('task changed:', taskChanged);
-    } catch (error) {
-      console.error('Error updating task:', error);
+    const taskVals = { ...params, id: id };
+    const newTask = await client.graphql({
+      query: mutations.updateTasks,
+      variables: { input: taskVals }
+    }); 
+
+    const job = await client.graphql({ 
+      query: queries.getTasks,
+      variables: {input: { id: taskVals.job_id } }
+    });
+
+    if (job) {
+      const response = await client.graphql({ query: queries.listTasks});
+      const data = await response.data;
+      let tasks = data.listTasks.items
+
+      const earliestTask = [...tasks].filter(task => task.starttime !== null).sort((a, b) => new Date(a.starttime) - new Date(b.starttime))[0];
+      const latestTask = [...tasks].filter(task => task.endtime !== null).sort((a, b) => new Date(a.endtime) - new Date(b.endtime))[-1];
+    
+      if (earliestTask < job.starttime || latestTask > job.endtime) {
+        await client.graphql({
+          query: mutations.updateJobs,
+          variables: {input: {
+            starttime: earliestTask.starttime,
+            endtime: latestTask.endtime,
+            id: taskVals.job_id
+          }},
+        });
+      }
     }
+
   }
 
   // Changes specific property of task with the given task id
 export async function updateJob(id, params) {
-    try {
-      const url = `${server}/api/updatejob/${id}`; // Use the id as a URL parameter
-      const response = await fetch(url, {
-        method: 'PUT', 
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(params),
-      });
-  
-      const jobChanged = await response.json();
-      console.log('job changed:', jobChanged);
-    } catch (error) {
-      console.error('Error updating job:', error);
+  const jobVals = { ...params, id: id };
+  try{
+
+    const newJob = await client.graphql({
+      query: mutations.updateJobs,
+      variables: { 
+        input: jobVals
+      }
+    });
+  }
+    catch (error){
+      console.error("error updating Job", error)
     }
   }
 
@@ -170,115 +121,85 @@ export async function files(id, params) {
   
 // Deletes task with params from options
 export async function deletetask(id) {
-    try {
-        const response = await fetch(`${server}/api/deletetask/${id}`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-            }
-        });
-    } catch (error) {
-        console.error('Error deleting task:', error);
-    }
+  const deleteTask = await client.graphql({
+    query: mutations.deleteTasks,
+    variables: { input: {id:id} }
+  });
 }
 
 // Deletes task with params from options
 export async function deleteJob(id) {
-    try {
-        const response = await fetch(`${server}/api/deletejob/${id}`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-            }
-        });
-    } catch (error) {
-        console.error('Error deleting job:', error);
-    }
+  const deleteJob = await client.graphql({
+    query: mutations.deleteJobs,
+    variables: { input: {id:id} }
+  });
 }
 // Creates task with params from options
 export async function createtask(params) {
-    try {
-        const response = await fetch(`${server}/api/createtask`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(params), 
-        });
-        const createdtask = await response.json();
-        console.log('Created task:', createdtask);
-        return createdtask
-    } catch (error) {
-        console.error('Error creating task:', error);
-    }
+  console.log(params)
+  try{
+    const newTask = await client.graphql({
+      query: mutations.createTasks,
+      variables: {input: params}
+    });
+  }catch (error){
+    console.error('Error creating task:', error);
+  }
+  
 }
 
 // Creates Job
 export async function createJob() {
-    try {
-        const response = await fetch(`${server}/api/createJob`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(), 
-        });
-        const createdjob = await response.json();
-        console.log('Created Job:', createdjob);
-        return createdjob
-    } catch (error) {
-        console.error('Error creating job:', error);
-    }
+  try{
+  const newJob = await client.graphql({
+    query: mutations.createJobs,
+    variables: {input: {email: ''}}
+  });
+  return newJob
+  }catch (error){
+    console.error('Error creating job:', error);
+  }
+  
 }
 
 // Gets a single task by ID
 export async function getJobById(id) {
-    try {
-        const response = await fetch(`${server}/api/getjob/${id}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
   
-        const task = await response.json();
-        return task;
-    } catch (error) {
-        console.error('Error fetching task:', error);
-    }
+  try{
+    const response = await client.graphql({ 
+      query: queries.listJobs,
+      variables: {input:{id: id}}
+    });
+    
+    return response.data.listJobs.items[0]
   }
+  catch (error){
+    console.error("getjobbyid", error)
+  }
+  
+}
 
 // Gets a single task by ID
 export async function gettaskById(id) {
-  try {
-      const response = await fetch(`${server}/api/gettask/${id}`, {
-          method: 'GET',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-      });
 
-      const task = await response.json();
-      return task;
-  } catch (error) {
-      console.error('Error fetching task:', error);
-  }
+  const response = await client.graphql({ 
+    query: queries.listTasks,
+    variables: {input:{id: id}}
+  });
+
+  return response.data.listTasks.items[0]
 }
 
 // Gets a single task by ID
 export async function getTasksByJobId(id) {
     try {
-        const response = await fetch(`${server}/api/gettasksbyjobid/${id}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+        const response = await client.graphql({ 
+          query: queries.listTasks,
+          variables: {input:{job_id: id}}
         });
-  
-        const task = await response.json();
-        return task;
+        return response.data.listTasks.items
     } catch (error) {
-        console.error('Error fetching task:', error);
+        console.error('Error fetching tasks by job id:', error);
     }
   }
 

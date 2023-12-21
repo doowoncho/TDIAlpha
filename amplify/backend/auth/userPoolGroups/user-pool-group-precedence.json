@@ -1,0 +1,10 @@
+[
+  {
+    "groupName": "DeskWorkers",
+    "precedence": 1
+  },
+  {
+    "groupName": "FieldWorkers",
+    "precedence": 2
+  }
+]

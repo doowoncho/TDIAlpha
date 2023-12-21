@@ -1,6 +1,60 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreateFiles = /* GraphQL */ `
+  subscription OnCreateFiles($filter: ModelSubscriptionFilesFilterInput) {
+    onCreateFiles(filter: $filter) {
+      id
+      photo_name
+      photo_file
+      permit_name
+      permit_file
+      permit_confirmation_name
+      permit_confirmation_file
+      map_drawing_name
+      map_file
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const onUpdateFiles = /* GraphQL */ `
+  subscription OnUpdateFiles($filter: ModelSubscriptionFilesFilterInput) {
+    onUpdateFiles(filter: $filter) {
+      id
+      photo_name
+      photo_file
+      permit_name
+      permit_file
+      permit_confirmation_name
+      permit_confirmation_file
+      map_drawing_name
+      map_file
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteFiles = /* GraphQL */ `
+  subscription OnDeleteFiles($filter: ModelSubscriptionFilesFilterInput) {
+    onDeleteFiles(filter: $filter) {
+      id
+      photo_name
+      photo_file
+      permit_name
+      permit_file
+      permit_confirmation_name
+      permit_confirmation_file
+      map_drawing_name
+      map_file
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
 export const onCreateTasks = /* GraphQL */ `
   subscription OnCreateTasks($filter: ModelSubscriptionTasksFilterInput) {
     onCreateTasks(filter: $filter) {
@@ -11,6 +65,7 @@ export const onCreateTasks = /* GraphQL */ `
       assigned
       endtime
       starttime
+      customer
       createdAt
       updatedAt
       __typename
@@ -27,6 +82,7 @@ export const onUpdateTasks = /* GraphQL */ `
       assigned
       endtime
       starttime
+      customer
       createdAt
       updatedAt
       __typename
@@ -43,6 +99,7 @@ export const onDeleteTasks = /* GraphQL */ `
       assigned
       endtime
       starttime
+      customer
       createdAt
       updatedAt
       __typename
@@ -67,6 +124,7 @@ export const onCreateJobs = /* GraphQL */ `
       p_confirm
       phone_number
       npat
+      setup
       createdAt
       updatedAt
       __typename
@@ -91,6 +149,7 @@ export const onUpdateJobs = /* GraphQL */ `
       p_confirm
       phone_number
       npat
+      setup
       createdAt
       updatedAt
       __typename
@@ -115,6 +174,7 @@ export const onDeleteJobs = /* GraphQL */ `
       p_confirm
       phone_number
       npat
+      setup
       createdAt
       updatedAt
       __typename

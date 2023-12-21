@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useNavigate } from "react-router-dom";
 import moment from 'moment';
-import { createJob, createtask, files, updateJob, jobCreate, getJobs } from '../components/APICalls';
+import { createJob, createtask, files, updateJob } from '../components/APICalls';
 import DateInput from '../components/DateInput';
 import { storage } from '../components/Firebase';
 
@@ -79,29 +79,29 @@ function FormPage() {
       else{
         endDateTime = new Date(endDate + 'T' + endTime);
       }
-    const newtask = {
-      customer: customer,
-      starttime: startDateTime,
-      endtime: endDateTime,
-      job_id: job.id
-    };
+      const newtask = {
+        customer: customer,
+        starttime: startDateTime,
+        endtime: endDateTime,
+        job_id: job.id
+      };
     await createtask(newtask);
   };
   
-  const createTasksForExWeekend = async (startDate, startTime, endDate, endTime, job) => {
+  const createTasksForExWeekend = async (startDate, startTime, endDate, endTime, job, customer) => {
     let currentDate = new Date(startDate);
 
     //creates first task
     currentDate.setDate(currentDate.getDate() + 1)
-    await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, null, null, job);
+    await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, null, null, job, customer);
 
     while (currentDate < new Date(endDate)) {
       if (currentDate.getDay() === 5) {
         // Task to pick up the sign on Fridays
-        await createTaskForDate(null, null, moment(currentDate).format('YYYY-MM-DD'), endTime, job);
+        await createTaskForDate(null, null, moment(currentDate).format('YYYY-MM-DD'), endTime, job, customer);
       } else if (currentDate.getDay() === 1) {
         // Task to place the sign on Mondays
-        await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, null, null, job);
+        await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, null, null, job, customer);
       }
       currentDate.setDate(currentDate.getDate() + 1);
     }
@@ -109,7 +109,7 @@ function FormPage() {
     createTaskForDate(null, null, endDate, endTime, job)
   };
   
-  const createTasksForRepeat = async (startDate, startTime, endDate, endTime, job) => {
+  const createTasksForRepeat = async (startDate, startTime, endDate, endTime, job, customer) => {
     let currentDate = new Date(startDate);
     while (currentDate <= new Date(endDate)) {
       currentDate.setDate(currentDate.getDate() + 1);
@@ -127,6 +127,8 @@ function FormPage() {
     const phoneNumber = document.getElementById('phoneNumber').value;
     
     let job = await createJob()
+    job = job.data.createJobs
+
     let earliestStartDate = null;
     let latestEndDate = null;
     
@@ -144,20 +146,20 @@ function FormPage() {
       if (dateTime.twentyFour) {
         if (dateTime.exWeekend) {          
           // Creating tasks for the inbetween
-          await createTasksForExWeekend(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.startTime, job);
+          await createTasksForExWeekend(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.startTime, job, customer);
 
         } else {
           // Two tasks, one for putting down and one for picking stuff up
-          await createTaskForDate(dateTime.startDate, dateTime.startTime, null, null, job);
-          await createTaskForDate(null, null, dateTime.endDate, dateTime.endTime, job);
+          await createTaskForDate(dateTime.startDate, dateTime.startTime, null, null, job, customer);
+          await createTaskForDate(null, null, dateTime.endDate, dateTime.endTime, job, customer);
         }
       } 
       else if(dateTime.repeat){
-          await createTasksForRepeat(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.endTime, job)
+          await createTasksForRepeat(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.endTime, job, customer)
       }
       else {
         // Non-twentyFour task
-        await createTaskForDate(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.endTime, job);
+        await createTaskForDate(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.endTime, job, customer);
       }
     });
     
@@ -170,7 +172,7 @@ function FormPage() {
         wo_number: woNumber,
         po_number: poNumber,
         email: email,
-        location: location,
+        setup: location,
         phone_number: phoneNumber,
       }) 
       await fileUploading(job);
@@ -181,8 +183,7 @@ function FormPage() {
     
     return (
       <div className="container">
-        <button onClick={jobCreate}>create job</button>
-        <button onClick={getJobs}>get jobs</button>
+        {/* <button onClick={jobCreate}>create job</button> */}
       <h1 className="my-4 text-center">Request a task </h1>
       <form onSubmit={handleSubmit}>
 

@@ -6,8 +6,8 @@
   "aws_appsync_apiKey": "da2-xivoini7grappehklko65efajm",
   "aws_cloud_logic_custom": [
     {
-      "name": "jarvis",
-      "endpoint": "https://iula3zpl2i.execute-api.us-east-2.amazonaws.com/staging",
+      "name": "AdminQueries",
+      "endpoint": "https://00z9awwpk4.execute-api.us-east-2.amazonaws.com/staging",
       "region": "us-east-2"
     }
   ],

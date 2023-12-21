@@ -54,12 +54,13 @@ type EagerTasks = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly job_id?: number | null;
+  readonly job_id?: string | null;
   readonly setup?: string | null;
   readonly notes?: string | null;
   readonly assigned?: string | null;
   readonly endtime?: string | null;
   readonly starttime?: string | null;
+  readonly customer?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -70,12 +71,13 @@ type LazyTasks = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly job_id?: number | null;
+  readonly job_id?: string | null;
   readonly setup?: string | null;
   readonly notes?: string | null;
   readonly assigned?: string | null;
   readonly endtime?: string | null;
   readonly starttime?: string | null;
+  readonly customer?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -106,6 +108,7 @@ type EagerJobs = {
   readonly p_confirm?: string | null;
   readonly phone_number?: string | null;
   readonly npat?: boolean | null;
+  readonly setup?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -130,6 +133,7 @@ type LazyJobs = {
   readonly p_confirm?: string | null;
   readonly phone_number?: string | null;
   readonly npat?: boolean | null;
+  readonly setup?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

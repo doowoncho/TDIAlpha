@@ -7,9 +7,10 @@ import App from './App';
 import MyNavBar from './components/MyNavBar';
 import { Amplify } from 'aws-amplify';
 import '@aws-amplify/ui-react/styles.css';
-import config from './amplifyconfiguration.json';
-
-Amplify.configure(config);
+import { generateClient } from 'aws-amplify/api';
+import amplifyconfig from './amplifyconfiguration.json';
+Amplify.configure(amplifyconfig);
+const client = generateClient();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

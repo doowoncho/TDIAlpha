@@ -3,9 +3,16 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import Table from "../components/Table";
 import { useParams } from "react-router-dom";
 import FileUpload from "../components/FileUpload";
-import { getUserById, getTasksByJobId, getJobById, getFilesById, updatetask, createtask, deletetask, updateJob } from "../components/APICalls";
- 
-let user = await getUserById(window.sessionStorage.getItem("user"))
+import { getTasksByJobId, getJobById, getFilesById, updatetask, createtask, deletetask, updateJob, listEditors } from "../components/APICalls";
+import { fetchAuthSession } from "aws-amplify/auth";
+
+// import { getCurrentUser } from 'aws-amplify/auth';
+// const groups = getCurrentUser().signInUserSession.accessToken.payload["cognito:groups"];
+// let user = {permission: groups.includes('admin') ? 1 : 0}
+// console.log(groups.includes('admin')); // true
+
+// let test = await listEditors()
+let user = {permission: 1}
 
 export default function TasksTable() {
   const [files, setFiles] = useState("");
@@ -31,6 +38,7 @@ export default function TasksTable() {
       try {
         const data = await getTasksByJobId(id);
         const jobData = await getJobById(id);
+        console.log(jobData)
         setJob(jobData)
         //sort by newest
         const sortedData = data.sort((taskA, taskB) => {
@@ -40,16 +48,15 @@ export default function TasksTable() {
         })
         settaskList(sortedData);
 
-        async function fetchFiles() {
-          try {
-            const fetchedFiles = await getFilesById(id);
-            setFiles(fetchedFiles);
-            console.log(fetchedFiles);
-          } catch (error) {
-            console.error(error);
-          }
-        }
-        fetchFiles();
+        // async function fetchFiles() {
+        //   try {
+        //     const fetchedFiles = await getFilesById(id);
+        //     setFiles(fetchedFiles);
+        //   } catch (error) {
+        //     console.error(error);
+        //   }
+        // }
+        // fetchFiles();
       } catch (error) {
         console.error("Error fetching data:", error);
       }

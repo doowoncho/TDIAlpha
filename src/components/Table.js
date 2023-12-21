@@ -1,17 +1,21 @@
 import { Dropdown } from 'react-bootstrap';
-import { getUserById, getAllUsers, updatetask } from './APICalls';
+import { getUserById, getAllUsers, updatetask, listEditors } from './APICalls';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { getCurrentUser } from 'aws-amplify/auth';
+
 
 const moment = require('moment');
 
 let user = await getUserById(window.sessionStorage.getItem("user"));
-let users = await getAllUsers();
+user = {permission: 1}
+// let users = await listEditors();
+// user = await getCurrentUser();
 
 function RenderAssignedDropdown({ property, handleUpdate }) {
   return (
     <Dropdown>
-      <Dropdown.Toggle variant='white' id='dropdownMenuButton'>
+      {/* <Dropdown.Toggle variant='white' id='dropdownMenuButton'>
         {users.find(user => user.id === property.assigned)?.name || "No User Assigned"}
       </Dropdown.Toggle>
       <Dropdown.Menu>
@@ -25,7 +29,7 @@ function RenderAssignedDropdown({ property, handleUpdate }) {
             {user.name}
           </Dropdown.Item>
         ))}
-      </Dropdown.Menu>
+      </Dropdown.Menu> */}
     </Dropdown>
   );
 }
@@ -41,7 +45,7 @@ function renderTableCell({ property, column, handleUpdate, currentPath }) {
     if (property[name] == null) {
       return 'Not Assigned';
     }
-    return users.filter(x => x.id == property[name])[0].name;
+    // return users.filter(x => x.id == property[name])[0].name;
   } else if (name === 'starttime' || name === 'endtime') {
     if (property[name]) {
       return moment(property[name]).format('MMMM DD YYYY h:mmA');

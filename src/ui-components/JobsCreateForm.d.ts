@@ -36,6 +36,7 @@ export declare type JobsCreateFormInputValues = {
     p_confirm?: string;
     phone_number?: string;
     npat?: boolean;
+    setup?: string;
 };
 export declare type JobsCreateFormValidationValues = {
     email?: ValidationFunction<string>;
@@ -52,6 +53,7 @@ export declare type JobsCreateFormValidationValues = {
     p_confirm?: ValidationFunction<string>;
     phone_number?: ValidationFunction<string>;
     npat?: ValidationFunction<boolean>;
+    setup?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type JobsCreateFormOverridesProps = {
@@ -70,6 +72,7 @@ export declare type JobsCreateFormOverridesProps = {
     p_confirm?: PrimitiveOverrideProps<TextFieldProps>;
     phone_number?: PrimitiveOverrideProps<TextFieldProps>;
     npat?: PrimitiveOverrideProps<SwitchFieldProps>;
+    setup?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type JobsCreateFormProps = React.PropsWithChildren<{
     overrides?: JobsCreateFormOverridesProps | undefined | null;

@@ -22,20 +22,22 @@ export declare type ValidationResponse = {
 };
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
 export declare type TasksUpdateFormInputValues = {
-    job_id?: number;
+    job_id?: string;
     setup?: string;
     notes?: string;
     assigned?: string;
     endtime?: string;
     starttime?: string;
+    customer?: string;
 };
 export declare type TasksUpdateFormValidationValues = {
-    job_id?: ValidationFunction<number>;
+    job_id?: ValidationFunction<string>;
     setup?: ValidationFunction<string>;
     notes?: ValidationFunction<string>;
     assigned?: ValidationFunction<string>;
     endtime?: ValidationFunction<string>;
     starttime?: ValidationFunction<string>;
+    customer?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type TasksUpdateFormOverridesProps = {
@@ -46,6 +48,7 @@ export declare type TasksUpdateFormOverridesProps = {
     assigned?: PrimitiveOverrideProps<TextFieldProps>;
     endtime?: PrimitiveOverrideProps<TextFieldProps>;
     starttime?: PrimitiveOverrideProps<TextFieldProps>;
+    customer?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type TasksUpdateFormProps = React.PropsWithChildren<{
     overrides?: TasksUpdateFormOverridesProps | undefined | null;
