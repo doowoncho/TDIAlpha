@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import { useParams } from 'react-router-dom';
-import { getUserById, gettaskById, updatetask } from '../Components/APICalls';
+import { getUserById, gettaskById, updatetask, getJobById, getFilesById } from '../Components/APICalls';
 import '../Styles/TaskDetails.css';
+import FileUpload from '../Components/FileUpload';
 
 let user = await getUserById(window.sessionStorage.getItem("user"))
 
@@ -18,12 +19,21 @@ export default function Orders() {
     setup: null
   });
   const [isEditing, setIsEditing] = useState(false); // State to track edit mode
+  const [job, setJob] = useState()
+  const [files, setFiles] = useState("");
 
   useEffect(() => {
     async function fetchTask() {
       try {
         const fetchedTask = await gettaskById(id);
-        await setTask(fetchedTask);
+        setTask(fetchedTask);
+  
+        const fetchedJob = await getJobById(fetchedTask.job_id);
+        setJob(fetchedJob);
+  
+        const fetchedFiles = await getFilesById(fetchedJob.id);
+        setFiles(fetchedFiles);
+  
         setIsLoading(false);
       } catch (error) {
         setError('Error retrieving task!');
@@ -142,6 +152,33 @@ export default function Orders() {
           </div>
         </div>
       </div>
+
+    <div className='container my-2'>
+      <div className="card">
+        <div className="card-header">
+          Files
+        </div>
+        <div className="d-flex flex-wrap justify-content-center">
+          <div className="mx-2 my-2">
+            <label htmlFor="formFileDisabled" className="form-label my-1">Permit Confirmation</label>
+            <FileUpload type="p_confirm" task={files.permit_confirmation_file} name={files.permit_confirmation_name}></FileUpload>
+          </div>
+          <div className="mx-2 my-2">
+            <label htmlFor="formFileDisabled" className="form-label my-1">Permit</label>
+            <FileUpload type="permit" task={files.permit_file} name={files.permit_name}></FileUpload>
+          </div>
+          <div className="mx-2 my-2">
+            <label htmlFor="formFileDisabled" className="form-label my-1">Map Drawing</label>
+            <FileUpload type="map" task={files.map_file} name={files.map_drawing_name}></FileUpload>
+          </div>
+          <div className="mx-2 my-2">
+            <label htmlFor="formFileDisabled" className="form-label my-1">Photo</label>
+            <FileUpload type="photo" task={files.photo_file} name={files.photo_name}></FileUpload>
+          </div>
+        </div>
+      </div>
+    </div>
+
       <div className="container">
         <div className="card my-3 mx-4">
           <div className="card-header">Setup</div>
