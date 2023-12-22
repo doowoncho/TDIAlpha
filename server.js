@@ -43,7 +43,6 @@ app.use(cors({
     //    origin: 'http://localhost:3001',
   }));
 
-
 //api endpoints to be called in the code to make calls in the database
 
 app.get('/api/tasks', async (req, res) => {

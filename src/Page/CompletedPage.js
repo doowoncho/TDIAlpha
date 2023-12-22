@@ -34,7 +34,7 @@ export default function CompletedPage() {
   }
 
 
-  useEffect(() => {fetchData()});
+  useEffect(() => {fetchData()}, []);
 
   return (
       <div>

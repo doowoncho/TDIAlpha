@@ -50,75 +50,64 @@ export default function JobsTable() {
   //entire list of jobs
   const originalDataRef = useRef(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        //just gets the list once per load
-        // if (!originalDataRef.current) {
-        //   const data = await getAlljobs();
-        //   if (data == null) return;
+  const fetchData = async () => {
+    try {
+      const data = await getAllJobs();
 
-        //   originalDataRef.current = data;
-        // }
+      //different counts for the jobs filters
+      const newCount = data.filter((job) => job.status === "New" || job.status ==='Waiting').length;
+      const declinedCount = data.filter((job) => job.status === "Declined").length;
+      const submittedCount = data.filter((job) => job.status === "Submitted").length;
 
-        // const data = originalDataRef.current;
-        const data = await getAllJobs();
+      setCounts({ New: newCount, Declined: declinedCount, Submitted: submittedCount });
 
-        //different counts for the jobs filters
-        const newCount = data.filter((job) => job.status === "New" || job.status ==='Waiting').length;
-        const declinedCount = data.filter((job) => job.status === "Declined").length;
-        const submittedCount = data.filter((job) => job.status === "Submitted").length;
-
-        setCounts({ New: newCount, Declined: declinedCount, Submitted: submittedCount });
-
-        //jobs filtered by table unless it is a waiting job, in which case it is shown with the new requests
-        let filteredData;
-        if(tableType == 'New'){
-         filteredData = data.filter((job) => job.status === tableType || job.status === 'Waiting')
-        }
-        else{
-          filteredData = tableType !== "All" ? data.filter((job) => job.status === tableType) : data.filter((job) => job.status !== "Invoice" && job.status !== 'Completed');
-        }
-
-        //sort by newest
-        const sortedData = filteredData.sort((jobA, jobB) => {
-          const timeA = jobA.endtime ? new Date(jobA.endtime) : new Date(jobA.starttime);
-          const timeB = jobB.endtime ? new Date(jobB.endtime) : new Date(jobB.starttime);
-        
-          return timeA - timeB;
-        });
-        // jobs filtered by search
-        const filteredDataWithSearchFilters = sortedData.filter((job) => {
-          const isIdMatch = filterSettings.id === "" || job.id.toString().indexOf(filterSettings.id) !== -1;
-          // const isAssignedMatch = filterSettings.assigned === "" || job.assigned.toString().toLowerCase == filterSettings.assigned;
-          const isCustomerMatch = filterSettings.customer === "" || job.customer.toLowerCase().indexOf(filterSettings.customer.toLowerCase()) !== -1;
-          const isStartDateMatch = filterSettings.startDate === "" || new Date(job.starttime) >= new Date(filterSettings.startDate);
-          const isEndDateMatch = filterSettings.endDate === "" || new Date(job.endtime) <= new Date(filterSettings.endDate);
-          const isWoMatch = filterSettings.woNumber === "" || job.wo_number.toString().indexOf(filterSettings.woNumber) !== -1;
-          return isIdMatch && isCustomerMatch && isStartDateMatch && isEndDateMatch && isWoMatch;
-        });
-
-        setjobList(filteredDataWithSearchFilters);
-      } catch (error) {
-        console.error("Error fetching data:", error);
+      //jobs filtered by table unless it is a waiting job, in which case it is shown with the new requests
+      let filteredData;
+      if(tableType == 'New'){
+       filteredData = data.filter((job) => job.status === tableType || job.status === 'Waiting')
       }
-    };
+      else{
+        filteredData = tableType !== "All" ? data.filter((job) => job.status === tableType) : data.filter((job) => job.status !== "Invoice" && job.status !== 'Completed');
+      }
+
+      //sort by newest
+      const sortedData = filteredData.sort((jobA, jobB) => {
+        const timeA = jobA.endtime ? new Date(jobA.endtime) : new Date(jobA.starttime);
+        const timeB = jobB.endtime ? new Date(jobB.endtime) : new Date(jobB.starttime);
+      
+        return timeA - timeB;
+      });
+      // jobs filtered by search
+      const filteredDataWithSearchFilters = sortedData.filter((job) => {
+        const isIdMatch = filterSettings.id === "" || job.id.toString().indexOf(filterSettings.id) !== -1;
+        // const isAssignedMatch = filterSettings.assigned === "" || job.assigned.toString().toLowerCase == filterSettings.assigned;
+        const isCustomerMatch = filterSettings.customer === "" || job.customer.toLowerCase().indexOf(filterSettings.customer.toLowerCase()) !== -1;
+        const isStartDateMatch = filterSettings.startDate === "" || new Date(job.starttime) >= new Date(filterSettings.startDate);
+        const isEndDateMatch = filterSettings.endDate === "" || new Date(job.endtime) <= new Date(filterSettings.endDate);
+        const isWoMatch = filterSettings.woNumber === "" || job.wo_number.toString().indexOf(filterSettings.woNumber) !== -1;
+        return isIdMatch && isCustomerMatch && isStartDateMatch && isEndDateMatch && isWoMatch;
+      });
+
+      setjobList(filteredDataWithSearchFilters);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
 
     fetchData();
-  }, [tableType, filterSettings, jobList]);
+  }, [tableType, filterSettings]);
 
   const handleTableTypeChange = (newTableType) => {
     if (tableType !== newTableType) {
       setTableType(newTableType);
     }
   };
-
+  
   const handleJobUpdate = async (id, params) => {
     await updateJob(id, params);
-    // No need to refetch data, just update the local state
-    setjobList((prevjobs) =>
-      prevjobs.map((job) => (job.id === id ? { ...job, ...params } : job))
-    );
+    fetchData()
   };
   
   const handleJobDelete = async (id) => {

@@ -7,6 +7,7 @@ export default function InvoicePage() {
 
   async function fetchData() {
     try {
+      console.log('fetch')
       const data = await getAllJobs();
       if (data == null) return;
       
@@ -28,7 +29,7 @@ export default function InvoicePage() {
   };
 
 
-  useEffect(() => {fetchData()});
+  useEffect(() => {fetchData()}, []);
 
   return (
       <div>
