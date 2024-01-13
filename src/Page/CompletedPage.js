@@ -39,7 +39,7 @@ export default function CompletedPage() {
   return (
       <div>
       <header className='container text-center my-4'>
-        <h1>Completed Page</h1>
+        <h1>Complete Jobs - To Be Invoiced</h1>
         {/* <label>Year: </label>
         <input type="number" min="1900" max="2100" step="1" value={year} className="mx-3" onChange={handleOnChange}/> */}
         <Table
