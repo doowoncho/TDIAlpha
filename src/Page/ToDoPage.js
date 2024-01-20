@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getAlltasks, gettaskByUserId } from '../Components/APICalls';
+import { getAllUsers, getAlltasks, getJobById, gettaskByUserId } from '../Components/APICalls';
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import format from 'date-fns/format';
 import parse from 'date-fns/parse';
@@ -8,6 +8,8 @@ import getDay from 'date-fns/getDay';
 import { enCA } from 'date-fns/locale';
 import { useNavigate } from 'react-router-dom';
 import "react-big-calendar/lib/css/react-big-calendar.css";
+
+let users = await getAllUsers();
 
 const locales = {
   "en-CA": enCA
@@ -40,7 +42,7 @@ export default function ToDoPage() {
       let tempEvents = [];
       for (let task of tasks) {
         let event = {
-          title: task.customer,
+          title: task.assigned ? users.find(user => user.id === task.assigned).name : 'Unassigned',
           id: task.id,
           start: task.starttime ? new Date(task.starttime) : new Date(task.endtime),
           end: task.endtime ? new Date(task.endtime) : new Date(task.starttime),
@@ -75,10 +77,10 @@ export default function ToDoPage() {
         events={events}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: 500, margin: "50px" }}
+        style={{ height: "600px", margin: "50px" }}
         onSelectEvent={(event) => handleEventClick(event)}
-      >
-      </Calendar>
+        views={['month', 'day', 'work_week']}
+      />
     </div>
   );
 }

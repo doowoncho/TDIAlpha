@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { getUserById, getAllUsers, getAllJobs, deleteJob, updateJob } from "../Components/APICalls";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Table from "../Components/Table";
+import FilterInput from "../Components/FilterInput";
  
 let user = await getUserById(window.sessionStorage.getItem("user"))
 
@@ -22,18 +23,6 @@ const TableCards = ({ bg, header, icon, color, num }) => (
   </div>
 );
 
-const FilterInput = ({ label, value, onChange }) => (
-  <div className="mx-2">
-    <label className="form-label">{label}</label>
-    <input
-      type="text"
-      className="form-control"
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-    />
-  </div>
-);
-
 export default function JobsTable() {
   const [tableType, setTableType] = useState("All");
   const [jobList, setjobList] = useState([]);
@@ -44,49 +33,44 @@ export default function JobsTable() {
     customer: "",
     startDate: "",
     endDate: "",
-    woNumber: ""
+    woNumber: "",
+    poNumber: "",
+    permitNumber: "",
   });
 
-  //entire list of jobs
+  // Entire list of jobs
   const originalDataRef = useRef(null);
 
   const fetchData = async () => {
     try {
       const data = await getAllJobs();
-
-      //different counts for the jobs filters
-      const newCount = data.filter((job) => job.status === "New" || job.status ==='Waiting').length;
+      // Different counts for the jobs filters
+      const newCount = data.filter((job) => job.status === "New" || job.status === 'Waiting').length;
       const declinedCount = data.filter((job) => job.status === "Declined").length;
       const submittedCount = data.filter((job) => job.status === "Submitted").length;
 
       setCounts({ New: newCount, Declined: declinedCount, Submitted: submittedCount });
 
-      //jobs filtered by table unless it is a waiting job, in which case it is shown with the new requests
+      // Jobs filtered by table unless it is a waiting job, in which case it is shown with the new requests
       let filteredData;
-      if(tableType == 'New'){
-       filteredData = data.filter((job) => job.status === tableType || job.status === 'Waiting')
-      }
-      else{
-        filteredData = tableType !== "All" ? data.filter((job) => job.status === tableType) : data.filter((job) => job.status !== "Invoice" && job.status !== 'Completed');
+      if (tableType === 'New') {
+        filteredData = data.filter((job) => job.status === tableType || job.status === 'Waiting');
+      } else {
+        filteredData = tableType !== "All"
+          ? data.filter((job) => job.status === tableType)
+          : data.filter((job) => job.status !== "Invoice" && job.status !== 'Completed');
       }
 
-      //sort by newest
+      // Sort by newest
       const sortedData = filteredData.sort((jobA, jobB) => {
         const timeA = jobA.endtime ? new Date(jobA.endtime) : new Date(jobA.starttime);
         const timeB = jobB.endtime ? new Date(jobB.endtime) : new Date(jobB.starttime);
-      
+
         return timeA - timeB;
       });
-      // jobs filtered by search
-      const filteredDataWithSearchFilters = sortedData.filter((job) => {
-        const isIdMatch = filterSettings.id === "" || job.id.toString().indexOf(filterSettings.id) !== -1;
-        // const isAssignedMatch = filterSettings.assigned === "" || job.assigned.toString().toLowerCase == filterSettings.assigned;
-        const isCustomerMatch = filterSettings.customer === "" || job.customer.toLowerCase().indexOf(filterSettings.customer.toLowerCase()) !== -1;
-        const isStartDateMatch = filterSettings.startDate === "" || new Date(job.starttime) >= new Date(filterSettings.startDate);
-        const isEndDateMatch = filterSettings.endDate === "" || new Date(job.endtime) <= new Date(filterSettings.endDate);
-        const isWoMatch = filterSettings.woNumber === "" || job.wo_number.toString().indexOf(filterSettings.woNumber) !== -1;
-        return isIdMatch && isCustomerMatch && isStartDateMatch && isEndDateMatch && isWoMatch;
-      });
+
+      // Jobs filtered by search
+      const filteredDataWithSearchFilters = applySearchFilters(sortedData, filterSettings);
 
       setjobList(filteredDataWithSearchFilters);
     } catch (error) {
@@ -95,9 +79,22 @@ export default function JobsTable() {
   };
 
   useEffect(() => {
-
     fetchData();
   }, [tableType, filterSettings]);
+
+  const applySearchFilters = (data, filters) => {
+    return data.filter((job) => {
+      const isIdMatch = filters.id === "" || job.id.toString().indexOf(filters.id) !== -1;
+      const isCustomerMatch = filters.customer === "" || job.customer.toLowerCase().indexOf(filters.customer.toLowerCase()) !== -1;
+      const isStartDateMatch = filters.startDate === "" || new Date(job.starttime) >= new Date(filters.startDate);
+      const isEndDateMatch = filters.endDate === "" || new Date(job.endtime) <= new Date(filters.endDate);
+      const isWoMatch = filters.woNumber === "" || job.wo_number.toString().indexOf(filters.woNumber) !== -1;
+      const isPoMatch = filters.poNumber === "" || job.po_number.toString().indexOf(filters.poNumber) !== -1;
+      const isPermitNumberMatch = filters.permitNumber === "" || job.permit_number.toString().indexOf(filters.permitNumber) !== -1;
+
+      return isIdMatch && isCustomerMatch && isStartDateMatch && isEndDateMatch && isWoMatch && isPoMatch && isPermitNumberMatch;
+    });
+  };
 
   const handleTableTypeChange = (newTableType) => {
     if (tableType !== newTableType) {
@@ -112,8 +109,7 @@ export default function JobsTable() {
   
   const handleJobDelete = async (id) => {
     await deleteJob(id);
-    // No need to refetch data, just update the local state
-    setjobList((prevjobs) => prevjobs.filter((job) => job.id !== id));
+    fetchData()
   };
 
   const handleFilterChange = (param, value) => {
@@ -148,6 +144,8 @@ export default function JobsTable() {
             <FilterInput label="ID" value={filterSettings.id} onChange={(value) => handleFilterChange('id', value)} />
             <FilterInput label="WO#" value={filterSettings.woNumber} onChange={(value) => handleFilterChange('woNumber', value)} />
             <FilterInput label="Customer" value={filterSettings.customer} onChange={(value) => handleFilterChange('customer', value)} />
+            <FilterInput label="Permit Number" value={filterSettings.permitNumber} onChange={(value) => handleFilterChange('permitNumber', value)} />
+            <FilterInput label="PO number" value={filterSettings.poNumber} onChange={(value) => handleFilterChange('poNumber', value)} />
 
             <div className="mx-2">
               <label className="form-label">Start Date</label>

@@ -20,7 +20,8 @@ export default function TasksTable() {
       location: null,
       phone_number: null,
       starttime: null,
-      endtime: null
+      endtime: null,
+      permit_number: null
   });
   const [isEditing, setIsEditing] = useState(false); // State to track edit mode
   //entire list of tasks
@@ -99,6 +100,7 @@ export default function TasksTable() {
       email: job.email,
       location: job.location,
       phone_number: job.phone_number,
+      permit_number: job.permit_number
     }) 
 
     setIsEditing(false); // Disable edit mode after saving changes
@@ -157,6 +159,12 @@ export default function TasksTable() {
                 <span className="input-group-text" id="">Permit Number</span>
               </div>
               <input type="text" value={job.permit_number} onChange={(e)=>handleInputChange(e, 'permit_number')} className="form-control"/>
+            </div>
+            <div className="input-group d-none d-sm-flex">
+              <div className="input-group-prepend">
+                <span className="input-group-text" id="">PO Number</span>
+              </div>
+              <input type="text" value={job.po_number} onChange={(e)=>handleInputChange(e, 'po_number')} className="form-control"/>
             </div>
           </fieldset>
       </div>
