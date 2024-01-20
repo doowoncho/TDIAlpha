@@ -16,6 +16,7 @@ function FormPage() {
     const updatedDates = [...dates];
     updatedDates[index][field] = value;
     setDates(updatedDates);
+    console.log(dates)
   };
 
   const handleCheckboxChanges = (index, field, value) => {
@@ -180,11 +181,13 @@ function FormPage() {
     }
     
     return (
+      <>
       <div className="container">
       <h1 className="my-4 text-center">Request a task </h1>
       <form onSubmit={handleSubmit}>
 
       <div className="container" style={{ maxWidth: '800px' }}>
+
         <div className="mb-3">
           <label for="customerName">Contact Name</label>
           <input type="text" className="form-control" id="customerName" placeholder="Enter name" required/>
@@ -219,14 +222,14 @@ function FormPage() {
           <div className="flex-column">
             {dates.map((date, index) => (
               <DateInput
-                key={index}
-                date={date}
-                index={index}
-                handleDateChange={handleDateChange}
-                handleCheckboxChanges={handleCheckboxChanges}
-                deleteDate={deleteDate}
+              key={index}
+              date={date}
+              index={index}
+              handleDateChange={handleDateChange}
+              handleCheckboxChanges={handleCheckboxChanges}
+              deleteDate={deleteDate}
               />
-            ))}
+              ))}
           <button type="button" className="btn btn-primary my-2" onClick={addDate}> Add Date and Time </button>
           </div>
         </div>
@@ -236,6 +239,7 @@ function FormPage() {
       </div>
       </form>
     </div>
+              </>
   );
 }
 

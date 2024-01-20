@@ -1,4 +1,5 @@
 import { useState } from "react";
+import CustomTimePicker from "./CustomTimePicker";
 
 export default function DateInput({ date, index ,deleteDate, handleDateChange, handleCheckboxChanges }) {
   const [showAdditionalInput, setShowAdditionalInput] = useState(false);
@@ -25,15 +26,8 @@ export default function DateInput({ date, index ,deleteDate, handleDateChange, h
           required
           />
 
-        <label>Start Time</label>
-        <input
-          type="time"
-          className="form-control"
-          style={{ width: '150px' }}
-          onChange={(e) => handleDateChange(index, 'startTime', e.target.value)}
-          required
-        />
-
+        <label className="mx-2">Start Time</label>
+        <CustomTimePicker onChange={(selectedTime) => handleDateChange(index, 'startTime', selectedTime)} required/>
       {showAdditionalInput && (
         <>
         <label>End Date</label>
@@ -47,15 +41,9 @@ export default function DateInput({ date, index ,deleteDate, handleDateChange, h
         </>
       )}
 
-        <label>End Time</label>
-        <input
-          type="time"
-          className="form-control"
-          style={{ width: '150px' }}
-          onChange={(e) => handleDateChange(index, 'endTime', e.target.value)}
-          required
-        />
-
+        <label className="mx-2">End Time</label>
+        <CustomTimePicker onChange={(selectedTime) => handleDateChange(index, 'endTime', selectedTime)} />
+      
       <input className="form-check-input mx-2" type="radio" name="repeatOptions" value="repeat" onChange={(e) => {
         handleOneDaySelected();}} defaultChecked/>
       <label className="form-check-label" htmlFor="twentyFourOption">One Day</label>
