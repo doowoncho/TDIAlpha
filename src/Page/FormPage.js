@@ -126,6 +126,7 @@ function FormPage() {
     const woNumber = document.getElementById('woNumber').value;
     const location = document.getElementById('location').value;
     const phoneNumber = document.getElementById('phoneNumber').value;
+    const requestID = document.getElementById('requestID').value;
     
     let job = await createJob()
     let earliestStartDate = null;
@@ -173,6 +174,7 @@ function FormPage() {
         email: email,
         location: location,
         phone_number: phoneNumber,
+        request_id: requestID
       }) 
       await fileUploading(job);
       
@@ -183,7 +185,7 @@ function FormPage() {
     return (
       <>
       <div className="container">
-      <h1 className="my-4 text-center">Request a task </h1>
+      <h1 className="my-4 text-center">Request a Job </h1>
       <form onSubmit={handleSubmit}>
 
       <div className="container" style={{ maxWidth: '800px' }}>
@@ -207,6 +209,10 @@ function FormPage() {
         <div className="mb-3">
           <label for="woNumber">WO Number</label>
           <input type="text" className="form-control" id="woNumber" placeholder="Enter WO Number (Optional)" />
+        </div>
+        <div className="mb-3">
+          <label for="requestID">Request ID</label>
+          <input type="text" className="form-control" id="requestID" placeholder="Enter Request ID (Optional)" />
         </div>
         <div className="mb-3">
           <label for="location">Location</label>
