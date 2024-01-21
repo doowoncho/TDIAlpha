@@ -1,5 +1,5 @@
-// const server = "http://localhost:3001"
-const server = ""
+const server = "http://localhost:3001"
+// const server = ""
 
 // Gets a list of all the tasks
 export async function getAlltasks() {
@@ -62,7 +62,7 @@ export async function updatetask(id, params) {
     }
   }
 
-  // Changes specific property of task with the given task id
+  // Changes specific property of job with the given task id
 export async function updateJob(id, params) {
     try {
       const url = `${server}/api/updatejob/${id}`; // Use the id as a URL parameter
@@ -134,7 +134,7 @@ export async function deletetask(id) {
     }
 }
 
-// Deletes task with params from options
+// Deletes job with params from options
 export async function deleteJob(id) {
     try {
         const response = await fetch(`${server}/api/deletejob/${id}`, {
@@ -183,7 +183,7 @@ export async function createJob() {
     }
 }
 
-// Gets a single task by ID
+// Gets a single job by ID
 export async function getJobById(id) {
     try {
         const response = await fetch(`${server}/api/getjob/${id}`, {

@@ -32,7 +32,7 @@ export default function TasksTable() {
       try {
         const data = await getTasksByJobId(id);
         const jobData = await getJobById(id);
-        setJob(jobData)
+        setJob(jobData);
         //sort by newest
         const sortedData = data.sort((taskA, taskB) => {
           const timeA = taskA.endtime ? new Date(taskA.endtime) : new Date(taskA.starttime);
@@ -46,6 +46,7 @@ export default function TasksTable() {
             const fetchedFiles = await getFilesById(id);
             setFiles(fetchedFiles);
             console.log(fetchedFiles);
+            console.log(files);
           } catch (error) {
             console.error(error);
           }
@@ -69,7 +70,8 @@ export default function TasksTable() {
   
   async function addTask() {
     // Assuming createtask returns the newly created task, adjust accordingly
-    const newTask = await createtask({ job_id: parseInt(id) });
+    let completed = false
+    const newTask = await createtask({ job_id: parseInt(id), completed: completed });
   
     // Update the taskList with the new task
     settaskList((prevtasks) => [...prevtasks, newTask]);
@@ -188,19 +190,19 @@ export default function TasksTable() {
         <div className="d-flex flex-wrap justify-content-center">
           <div className="mx-2 my-2">
             <label htmlFor="formFileDisabled" className="form-label my-1">Permit Confirmation</label>
-            <FileUpload type="p_confirm" task={files.permit_confirmation_file} name={files.permit_confirmation_name}></FileUpload>
+            <FileUpload type="p_confirm" task={files.permit_confirmation_file} name={files.permit_confirmation_name} giveID={id}></FileUpload>
           </div>
           <div className="mx-2 my-2">
             <label htmlFor="formFileDisabled" className="form-label my-1">Permit</label>
-            <FileUpload type="permit" task={files.permit_file} name={files.permit_name}></FileUpload>
+            <FileUpload type="permit" task={files.permit_file} name={files.permit_name} giveID={id}></FileUpload>
           </div>
           <div className="mx-2 my-2">
             <label htmlFor="formFileDisabled" className="form-label my-1">Map Drawing</label>
-            <FileUpload type="map" task={files.map_file} name={files.map_drawing_name}></FileUpload>
+            <FileUpload type="map" task={files.map_file} name={files.map_drawing_name} giveID={id}></FileUpload>
           </div>
           <div className="mx-2 my-2">
             <label htmlFor="formFileDisabled" className="form-label my-1">Photo</label>
-            <FileUpload type="photo" task={files.photo_file} name={files.photo_name}></FileUpload>
+            <FileUpload type="photo" task={files.photo_file} name={files.photo_name} giveID={id}></FileUpload>
           </div>
         </div>
       </div>

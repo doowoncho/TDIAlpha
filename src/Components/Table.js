@@ -150,11 +150,11 @@ export default function Table({ data, displayColumns, handleUpdate, handleDelete
         {data.map((property) => (
           <tr key={property.id}>
             {displayColumns.map((column) => (
-              <td key={`${property.id}-${column}`}>
+              <td key={`${property.id}-${column}`} className={property.completed ? 'bg-info' : ''}>
                 {renderTableCell({ property, column, handleUpdate, currentPath })}
               </td>
             ))}
-            <td>
+            <td className={property.completed ? 'bg-info' : ''}>
               <button className='my-1 btn btn-outline-danger' onClick={() => { handleDelete(property.id) }}>
                 <i className="bi bi-trash"></i> Delete
               </button>

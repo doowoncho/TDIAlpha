@@ -6,9 +6,10 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { files, getFilesById, updateFiles, uploadFile } from './APICalls';
 import { useParams } from 'react-router-dom';
 
-function FileUpload({type, task, name}) {
+function FileUpload({type, task, name, giveID}) {
   const [file, setFile] = useState(null);
-  const { id } = useParams();
+  // const { id } = useParams();
+  const id = giveID;
   const [uploaded, setUploaded] = useState({
     "p_confirm": false,
     "permit": false,
@@ -71,7 +72,10 @@ function FileUpload({type, task, name}) {
       }else{
         update = {photo_file: fileBlob, photo_name: file.name};
       }
-      
+
+      console.log(id);
+      console.log(giveID);
+
       await files(id, update);
       
       const updatedUploaded = { ...uploaded, [type]: true };
@@ -80,7 +84,7 @@ function FileUpload({type, task, name}) {
       setUploaded(updatedUploaded);
       setFileName(updatedFileName)
 
-      window.location.reload()
+      window.location.reload();
   }
 
   return (
