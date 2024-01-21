@@ -84,7 +84,8 @@ function FormPage() {
       customer: customer,
       starttime: startDateTime,
       endtime: endDateTime,
-      job_id: job.id
+      job_id: job.id,
+      completed: false
     };
     await createtask(newtask);
   };

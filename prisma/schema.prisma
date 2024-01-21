@@ -23,7 +23,7 @@ model jobs {
   wo_number     String?   @db.VarChar(255)
   email         String?   @db.VarChar(255)
   permit        String?   @db.VarChar(255)
-  request_id       String?   @db.VarChar(255)
+  request_id    String?   @db.VarChar(255)
 }
 
 model tasks {
