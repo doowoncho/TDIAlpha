@@ -21,12 +21,14 @@ export default function Orders() {
   const [isEditing, setIsEditing] = useState(false); // State to track edit mode
   const [job, setJob] = useState()
   const [files, setFiles] = useState("");
+  const [isCompleted, setIsCompleted] = useState(task.completed || false);
 
   useEffect(() => {
     async function fetchTask() {
       try {
         const fetchedTask = await gettaskById(id);
         setTask(fetchedTask);
+        setIsCompleted(fetchedTask.completed || false);
   
         const fetchedJob = await getJobById(fetchedTask.job_id);
         setJob(fetchedJob);
@@ -39,6 +41,7 @@ export default function Orders() {
         setError('Error retrieving task!');
         setIsLoading(false);
       }
+      console.log(isCompleted);
     }
 
     fetchTask();
@@ -83,6 +86,15 @@ export default function Orders() {
   if (error) {
     return <div>Error: {error}</div>;
   }
+
+  const handleCheckboxChange = async () => {
+    const newCompletedStatus = !isCompleted;
+    setIsCompleted(newCompletedStatus);
+    console.log(newCompletedStatus);
+
+    // Update the completion status in the database
+    await updatetask(task.id, { completed: newCompletedStatus });
+  };
   
 
   return (
@@ -100,7 +112,14 @@ export default function Orders() {
                 <button className="btn btn-primary px-4" onClick={handleCancelClick}>Cancel</button>
                 <button className="btn btn-warning mx-2 px-4" onClick={saveChanges}>Save Changes</button>
               </>
-            : <button className="btn btn-primary px-4" onClick={handleEditClick}>Edit</button> 
+            : 
+            <>
+            <button className="btn btn-primary px-4" onClick={handleEditClick}>Edit</button> 
+            <div class="form-check">
+              <input class="form-check-input m-1 h-50" type="checkbox" value="" id="flexCheckDefault" checked={isCompleted} onChange={handleCheckboxChange}></input>
+                <label class="form-check-label h5" for="flexCheckDefault">Mark As Complete</label>
+            </div>
+            </>
           }
         </div>}
 

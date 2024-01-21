@@ -23,6 +23,7 @@ model jobs {
   wo_number     String?   @db.VarChar(255)
   email         String?   @db.VarChar(255)
   permit        String?   @db.VarChar(255)
+  request       String?   @db.VarChar(255)
 }
 
 model tasks {
@@ -33,6 +34,7 @@ model tasks {
   assigned  Int?
   endtime   DateTime? @db.Timestamp(6)
   starttime DateTime? @db.Timestamp(6)
+  completed Boolean?
 }
 
 model users {
