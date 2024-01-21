@@ -36,6 +36,7 @@ export default function JobsTable() {
     woNumber: "",
     poNumber: "",
     permitNumber: "",
+    requestID: ""
   });
 
   // Entire list of jobs
@@ -91,8 +92,9 @@ export default function JobsTable() {
       const isWoMatch = filters.woNumber === "" || job.wo_number.toString().indexOf(filters.woNumber) !== -1;
       const isPoMatch = filters.poNumber === "" || job.po_number.toString().indexOf(filters.poNumber) !== -1;
       const isPermitNumberMatch = filters.permitNumber === "" || job.permit_number.toString().indexOf(filters.permitNumber) !== -1;
+      const isRequestIDMatch = filters.requestID === "" || job.request_id.toString().indexOf(filters.requestID) !== -1;
 
-      return isIdMatch && isCustomerMatch && isStartDateMatch && isEndDateMatch && isWoMatch && isPoMatch && isPermitNumberMatch;
+      return isIdMatch && isCustomerMatch && isStartDateMatch && isEndDateMatch && isWoMatch && isPoMatch && isPermitNumberMatch && isRequestIDMatch;
     });
   };
 
@@ -146,6 +148,7 @@ export default function JobsTable() {
             <FilterInput label="Customer" value={filterSettings.customer} onChange={(value) => handleFilterChange('customer', value)} />
             <FilterInput label="Permit Number" value={filterSettings.permitNumber} onChange={(value) => handleFilterChange('permitNumber', value)} />
             <FilterInput label="PO number" value={filterSettings.poNumber} onChange={(value) => handleFilterChange('poNumber', value)} />
+            <FilterInput label="Request ID" value={filterSettings.requestID} onChange={(value) => handleFilterChange('requestID', value)} />
 
             <div className="mx-2">
               <label className="form-label">Start Date</label>
