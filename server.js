@@ -96,7 +96,7 @@ app.get('/api/specifictasks', async (req, res) => {
 app.put('/api/updatetask/:id', async (req, res) => {
   try {
     const taskId = parseInt(req.params.id) //id of task we are changing
-    const { starttime, endtime, setup, notes, assigned, jobId } = req.body
+    const { starttime, endtime, setup, notes, assigned, jobId, completed } = req.body
     const task = await prisma.tasks.update({
       where: {
         id: taskId
@@ -107,7 +107,8 @@ app.put('/api/updatetask/:id', async (req, res) => {
         starttime: starttime,
         endtime: endtime,
         job_id: jobId,
-        assigned: assigned
+        assigned: assigned,
+        completed: completed
       }
     });
     res.json(task);
@@ -148,7 +149,7 @@ app.put('/api/updatetask/:id', async (req, res) => {
 app.put('/api/updatejob/:id', async (req, res) => {
   try {
     const jobId = parseInt(req.params.id) //id of task we are changing
-    const { customer, starttime, endtime, status, wo_number, po_number, email, phone_number, permit_number, map, photo, p_confirm, npat, permit, request_id} = req.body
+    const { customer, starttime, endtime, status, wo_number, po_number, email, phone_number, permit_number, map, photo, p_confirm, permit, request_id} = req.body
     const posts = await prisma.jobs.update({
       where: {
         id: jobId
@@ -167,7 +168,6 @@ app.put('/api/updatejob/:id', async (req, res) => {
         map: map,
         photo: photo,       
         p_confirm: p_confirm,    
-        npat: npat,
         permit: permit,
         request_id: request_id ?? ""
       }

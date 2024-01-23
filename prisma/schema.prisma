@@ -14,7 +14,6 @@ model jobs {
   starttime     DateTime? @db.Timestamp(6)
   status        String?   @db.VarChar(255)
   map           String?   @db.VarChar(255)
-  npat          Boolean?
   p_confirm     String?   @db.VarChar(255)
   permit_number String?   @db.VarChar(255)
   phone_number  String?   @db.VarChar(50)
@@ -35,6 +34,7 @@ model tasks {
   endtime   DateTime? @db.Timestamp(6)
   starttime DateTime? @db.Timestamp(6)
   completed Boolean?
+  npat      Boolean?
 }
 
 model users {
