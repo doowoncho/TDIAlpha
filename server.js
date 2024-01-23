@@ -37,12 +37,6 @@ app.get("/", function(req, res) {
   )
 })
 
-app.use(bodyParser.json());
-app.use(cors({
-    // // origin: 'https://main.d3uj1gkliipo6a.amplifyapp.com',
-    //    origin: 'http://localhost:3001',
-  }));
-
 //api endpoints to be called in the code to make calls in the database
 
 app.get('/api/tasks', async (req, res) => {
