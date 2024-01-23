@@ -128,12 +128,12 @@ function FormPage() {
     const location = document.getElementById('location').value;
     const phoneNumber = document.getElementById('phoneNumber').value;
     const requestID = document.getElementById('requestID').value;
+    const NPAT = document.getElementById('npat').value ? true : false
     
     let job = await createJob()
     let earliestStartDate = null;
     let latestEndDate = null;
     
-    //fix this when im actually awake
     dates.forEach(async (dateTime) => {
       if (!earliestStartDate || new Date(dateTime.startDate) < earliestStartDate) {
         earliestStartDate = new Date(dateTime.startDate + 'T' + dateTime.startTime);
@@ -164,6 +164,11 @@ function FormPage() {
       }
     });
     
+    //NPAT task
+    if(NPAT){
+      await createTaskForDate(null, null, null, null, job);
+    }
+    
     updateJob(job.id, 
       {
         customer:customer, 
@@ -175,7 +180,7 @@ function FormPage() {
         email: email,
         location: location,
         phone_number: phoneNumber,
-        request_id: requestID
+        request_id: requestID,
       }) 
       await fileUploading(job);
       
@@ -223,7 +228,12 @@ function FormPage() {
           <label for="fileUpload">Photo</label>
           <input type="file" id="fileUpload" className='form-control' onChange={handleFileChange}/>
         </div>
+        <div className="mb-3">
+          <input className="form-check-input mx-2" type="checkbox" id="npat"/>
+          <label className="form-check-label">NPAT Job</label>
+        </div>
       </div>
+     
 
       <div className='container justify-content-center d-flex'>
           <div className="flex-column">
