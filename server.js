@@ -1,18 +1,3 @@
-// const express = require('express');
-// const { PrismaClient } = require('@prisma/client');
-
-// const prisma = new PrismaClient();
-// const app = express();
-// const bodyParser = require('body-parser');
-// const cors = require('cors');
-// const { ReadableStreamDefaultController } = require('stream/web');
-
-// app.use(bodyParser.json());
-// app.use(cors({
-//     // origin: 'https://main.d3uj1gkliipo6a.amplifyapp.com',
-//        origin: 'http://localhost:3000',
-//   }));
-
 const express = require('express');
 const { PrismaClient } = require('@prisma/client');
 
@@ -21,27 +6,42 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { ReadableStreamDefaultController } = require('stream/web');
-const path = require('path');
-
-const buildPath = path.join(__dirname, "build");
-
-app.use(express.static(buildPath));
-
-app.get("/", function(req, res) {
-  res.sendFile(path.join(buildPath, 'index.html'),
-    function(err) {
-      if(err) {
-        res.status(500).send(err);
-      }
-    }
-  )
-})
 
 app.use(bodyParser.json());
 app.use(cors({
-    // // origin: 'https://main.d3uj1gkliipo6a.amplifyapp.com',
-    //    origin: 'http://localhost:3001',
+    // origin: 'https://main.d3uj1gkliipo6a.amplifyapp.com',
+       origin: 'http://localhost:3000',
   }));
+
+// const express = require('express');
+// const { PrismaClient } = require('@prisma/client');
+
+// const prisma = new PrismaClient();
+// const app = express();
+// const bodyParser = require('body-parser');
+// const cors = require('cors');
+// const { ReadableStreamDefaultController } = require('stream/web');
+// const path = require('path');
+
+// const buildPath = path.join(__dirname, "build");
+
+// app.use(express.static(buildPath));
+
+// app.get("/", function(req, res) {
+//   res.sendFile(path.join(buildPath, 'index.html'),
+//     function(err) {
+//       if(err) {
+//         res.status(500).send(err);
+//       }
+//     }
+//   )
+// })
+
+// app.use(bodyParser.json());
+// app.use(cors({
+//     // // origin: 'https://main.d3uj1gkliipo6a.amplifyapp.com',
+//     //    origin: 'http://localhost:3001',
+//   }));
 
 //api endpoints to be called in the code to make calls in the database
 
@@ -149,7 +149,7 @@ app.put('/api/updatetask/:id', async (req, res) => {
 app.put('/api/updatejob/:id', async (req, res) => {
   try {
     const jobId = parseInt(req.params.id) //id of task we are changing
-    const { customer, starttime, endtime, status, wo_number, po_number, email, phone_number, permit_number, map, photo, p_confirm, permit, request_id} = req.body
+    const { customer, starttime, endtime, status, wo_number, po_number, email, phone_number, permit_number, map, photo, p_confirm, permit, request_id, company} = req.body
     const posts = await prisma.jobs.update({
       where: {
         id: jobId
@@ -169,7 +169,8 @@ app.put('/api/updatejob/:id', async (req, res) => {
         photo: photo,       
         p_confirm: p_confirm,    
         permit: permit,
-        request_id: request_id ?? ""
+        request_id: request_id ?? "",
+        company: company
       }
     });
     res.json(posts);
