@@ -63,7 +63,7 @@ function FormPage() {
     }
     
     //DATE LOGIC
-    const createTaskForDate = async (startDate, startTime, endDate, endTime, job, customer) => {
+    const createTaskForDate = async (startDate, startTime, endDate, endTime, job) => {
       let startDateTime 
       let endDateTime 
       if(startDate && endDate){
@@ -81,10 +81,10 @@ function FormPage() {
         endDateTime = new Date(endDate + 'T' + endTime);
       }
     const newtask = {
-      customer: customer,
       starttime: startDateTime,
       endtime: endDateTime,
       job_id: job.id,
+      setup: document.getElementById('location').value,
       completed: false
     };
     await createtask(newtask);
@@ -125,9 +125,9 @@ function FormPage() {
     const email = document.getElementById('email').value;
     const poNumber = document.getElementById('poNumber').value;
     const woNumber = document.getElementById('woNumber').value;
-    const location = document.getElementById('location').value;
     const phoneNumber = document.getElementById('phoneNumber').value;
     const requestID = document.getElementById('requestID').value;
+    const company = document.getElementById('companyName').value;
     const NPAT = document.getElementById('npat').checked
   
 
@@ -179,9 +179,9 @@ function FormPage() {
         wo_number: woNumber,
         po_number: poNumber,
         email: email,
-        location: location,
         phone_number: phoneNumber,
         request_id: requestID,
+        company: company,
       }) 
       await fileUploading(job);
       
@@ -196,7 +196,10 @@ function FormPage() {
       <form onSubmit={handleSubmit}>
 
       <div className="container" style={{ maxWidth: '800px' }}>
-
+        <div className="mb-3">
+          <label for="customerName">Company Name</label>
+          <input type="text" className="form-control" id="companyName" placeholder="Enter name" required/>
+        </div>
         <div className="mb-3">
           <label for="customerName">Contact Name</label>
           <input type="text" className="form-control" id="customerName" placeholder="Enter name" required/>
