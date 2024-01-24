@@ -118,7 +118,7 @@ function FormPage() {
       await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, moment(currentDate).format('YYYY-MM-DD'), endTime, job);
     }
   };
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault(); 
     const customer = document.getElementById('customerName').value;
@@ -128,8 +128,9 @@ function FormPage() {
     const location = document.getElementById('location').value;
     const phoneNumber = document.getElementById('phoneNumber').value;
     const requestID = document.getElementById('requestID').value;
-    const NPAT = document.getElementById('npat').value == 'on' ? true : false
-    
+    const NPAT = document.getElementById('npat').checked
+  
+
     let job = await createJob()
     let earliestStartDate = null;
     let latestEndDate = null;
