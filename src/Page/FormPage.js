@@ -27,7 +27,7 @@ function FormPage() {
   };
 
   const addDate = () => {
-    setDates([...dates, { startDate: '', startTime: '', endDate: '', endTime: '', NPAT: false, exWeekend: false, twentyFour: false, repeat: false }]);
+    setDates([...dates, { startDate: '', startTime: '', endDate: '', endTime: '', exWeekend: false, twentyFour: false, repeat: false }]);
   };
 
   const deleteDate = (index) => {
@@ -128,7 +128,7 @@ function FormPage() {
     const location = document.getElementById('location').value;
     const phoneNumber = document.getElementById('phoneNumber').value;
     const requestID = document.getElementById('requestID').value;
-    const NPAT = document.getElementById('npat').value ? true : false
+    const NPAT = document.getElementById('npat').value == 'on' ? true : false
     
     let job = await createJob()
     let earliestStartDate = null;
