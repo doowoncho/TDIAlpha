@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import moment from 'moment';
 
 function FormPage() {
-  const [dates, setDates] = useState([{ startDate: '', startTime: '', endDate: '', endTime: '', NPAT: false, exWeekend: false, twentyFour: false, repeat: false }]);
+  const [dates, setDates] = useState([{ startDate: '', startTime: '', endDate: '', endTime: '', exWeekend: false, twentyFour: false, repeat: false }]);
   const [file, setFile] = useState(null);
   const navigate = useNavigate();
 

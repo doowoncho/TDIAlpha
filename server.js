@@ -25,7 +25,7 @@ const path = require('path');
 
 const buildPath = path.join(__dirname, "build");
 
-app.use(express.static(buildPath));
+// app.use(express.static(buildPath));
 
 app.get("/", function(req, res) {
   res.sendFile(path.join(buildPath, 'index.html'),
@@ -37,11 +37,14 @@ app.get("/", function(req, res) {
   )
 })
 
-app.use(bodyParser.json());
-app.use(cors({
-    // // origin: 'https://main.d3uj1gkliipo6a.amplifyapp.com',
-    //    origin: 'http://localhost:3001',
-  }));
+app.use(cors());
+app.use(express.json());
+
+// app.use(bodyParser.json());
+// app.use(cors({
+//     // // origin: 'https://main.d3uj1gkliipo6a.amplifyapp.com',
+//     //    origin: 'http://localhost:3001',
+//   }));
 
 //api endpoints to be called in the code to make calls in the database
 
