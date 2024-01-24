@@ -11,6 +11,7 @@ import InvoicePage from "./Page/InvoicePage";
 import CompletedPage from "./Page/CompletedPage";
 import JobsTable from "./Page/JobsTablePage";
 import Receipts from "./Page/ReceiptsPage";
+import LegendPage from "./Page/LegendPage";
 
 
 const App = () => {
@@ -30,6 +31,7 @@ const App = () => {
           <Route path="/completed" element={<CompletedPage />} />
           <Route path="/jobstable" element={<JobsTable />} />
           <Route path="/receipts" element={<Receipts />} />
+          <Route path="/legends" element={<LegendPage/>} />
         </>
       ) : (
         <>
