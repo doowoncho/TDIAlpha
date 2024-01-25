@@ -101,6 +101,14 @@ function renderTableCell({ property, column, handleUpdate, currentPath }) {
         >
           Completed
         </Dropdown.Item>
+        <Dropdown.Item
+          onClick={() => {
+            const params = { status: 'Approved' };
+            handleUpdate(property.id, params);
+          }}
+        >
+          Approved
+        </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
     );
