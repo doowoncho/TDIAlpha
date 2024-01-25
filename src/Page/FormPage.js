@@ -129,7 +129,6 @@ function FormPage() {
     const requestID = document.getElementById('requestID').value;
     const company = document.getElementById('companyName').value;
     const NPAT = document.getElementById('npat').checked
-  
 
     let job = await createJob()
     let earliestStartDate = null;
@@ -148,7 +147,7 @@ function FormPage() {
       if (dateTime.twentyFour) {
         if (dateTime.exWeekend) {          
           // Creating tasks for the inbetween
-          await createTasksForExWeekend(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.startTime, job);
+          await createTasksForExWeekend(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.endTime, job);
 
         } else {
           // Two tasks, one for putting down and one for picking stuff up
