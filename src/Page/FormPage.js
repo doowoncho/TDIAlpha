@@ -63,7 +63,7 @@ function FormPage() {
     }
     
     //DATE LOGIC
-    const createTaskForDate = async (startDate, startTime, endDate, endTime, job) => {
+    const createTaskForDate = async (startDate, startTime, endDate, endTime, job, location) => {
       let startDateTime 
       let endDateTime 
       if(startDate && endDate){
@@ -84,38 +84,38 @@ function FormPage() {
       starttime: startDateTime,
       endtime: endDateTime,
       job_id: job.id,
-      setup: document.getElementById('location').value,
+      setup: location,
       completed: false
     };
     await createtask(newtask);
   };
   
-  const createTasksForExWeekend = async (startDate, startTime, endDate, endTime, job) => {
+  const createTasksForExWeekend = async (startDate, startTime, endDate, endTime, job, location) => {
     let currentDate = new Date(startDate);
 
     //creates first task
     currentDate.setDate(currentDate.getDate() + 1)
-    await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, null, null, job);
+    await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, null, null, job, location);
 
     while (currentDate < new Date(endDate)) {
       if (currentDate.getDay() === 5) {
         // Task to pick up the sign on Fridays
-        await createTaskForDate(null, null, moment(currentDate).format('YYYY-MM-DD'), endTime, job);
+        await createTaskForDate(null, null, moment(currentDate).format('YYYY-MM-DD'), endTime, job, location);
       } else if (currentDate.getDay() === 1) {
         // Task to place the sign on Mondays
-        await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, null, null, job);
+        await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, null, null, job, location);
       }
       currentDate.setDate(currentDate.getDate() + 1);
     }
     //creates last task
-    createTaskForDate(null, null, endDate, endTime, job)
+    createTaskForDate(null, null, endDate, endTime, job, location)
   };
   
-  const createTasksForRepeat = async (startDate, startTime, endDate, endTime, job) => {
+  const createTasksForRepeat = async (startDate, startTime, endDate, endTime, job, location) => {
     let currentDate = new Date(startDate);
     while (currentDate <= new Date(endDate)) {
       currentDate.setDate(currentDate.getDate() + 1);
-      await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, moment(currentDate).format('YYYY-MM-DD'), endTime, job);
+      await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, moment(currentDate).format('YYYY-MM-DD'), endTime, job, location);
     }
   };
 
@@ -128,7 +128,8 @@ function FormPage() {
     const phoneNumber = document.getElementById('phoneNumber').value;
     const requestID = document.getElementById('requestID').value;
     const company = document.getElementById('companyName').value;
-    const NPAT = document.getElementById('npat').checked
+    const NPAT = document.getElementById('npat').checked;
+    const location = document.getElementById('location').value;
 
     let job = await createJob()
     let earliestStartDate = null;
@@ -147,26 +148,26 @@ function FormPage() {
       if (dateTime.twentyFour) {
         if (dateTime.exWeekend) {          
           // Creating tasks for the inbetween
-          await createTasksForExWeekend(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.endTime, job);
+          await createTasksForExWeekend(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.endTime, job, location);
 
         } else {
           // Two tasks, one for putting down and one for picking stuff up
           await createTaskForDate(dateTime.startDate, dateTime.startTime, null, null, job);
-          await createTaskForDate(null, null, dateTime.endDate, dateTime.endTime, job);
+          await createTaskForDate(null, null, dateTime.endDate, dateTime.endTime, job, location);
         }
       } 
       else if(dateTime.repeat){
-          await createTasksForRepeat(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.endTime, job)
+          await createTasksForRepeat(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.endTime, job, location)
       }
       else {
         // Non-twentyFour task
-        await createTaskForDate(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.endTime, job);
+        await createTaskForDate(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.endTime, job, location);
       }
     });
     
     //NPAT task
     if(NPAT){
-      await createTaskForDate(null, null, null, null, job);
+      await createTaskForDate(null, null, null, null, job, location);
     }
     
     updateJob(job.id, 
