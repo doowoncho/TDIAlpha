@@ -1,17 +1,17 @@
-// const express = require('express');
-// const { PrismaClient } = require('@prisma/client');
+  // const express = require('express');
+  // const { PrismaClient } = require('@prisma/client');
 
-// const prisma = new PrismaClient();
-// const app = express();
-// const bodyParser = require('body-parser');
-// const cors = require('cors');
-// const { ReadableStreamDefaultController } = require('stream/web');
+  // const prisma = new PrismaClient();
+  // const app = express();
+  // const bodyParser = require('body-parser');
+  // const cors = require('cors');
+  // const { ReadableStreamDefaultController } = require('stream/web');
 
-// app.use(bodyParser.json());
-// app.use(cors({
-//     // origin: 'https://main.d3uj1gkliipo6a.amplifyapp.com',
-//        origin: 'http://localhost:3000',
-//   }));
+  // app.use(bodyParser.json());
+  // app.use(cors({
+  //     // origin: 'https://main.d3uj1gkliipo6a.amplifyapp.com',
+  //        origin: 'http://localhost:3000',
+  //   }));
 
 const express = require('express');
 const { PrismaClient } = require('@prisma/client');
@@ -68,10 +68,10 @@ app.get('/api/jobs', async (req, res) => {
 //gets all tasks with specific criteria... takes in an object with the properties
 app.get('/api/specifictasks', async (req, res) => {
   try {
-    const { id, customer, starttime, endtime, status, setup, permit_number, notes, wo_number, po_number, assigned, npat} = req.query
+    const { id, contact, starttime, endtime, status, setup, permit_number, notes, wo_number, po_number, assigned, npat} = req.query
     const posts = await prisma.tasks.findMany({
       where: {
-        customer: customer,
+        contact: contact,
         id: id, 
         status: status,
         setup: setup,
@@ -149,17 +149,17 @@ app.put('/api/updatetask/:id', async (req, res) => {
 app.put('/api/updatejob/:id', async (req, res) => {
   try {
     const jobId = parseInt(req.params.id) //id of task we are changing
-    const { customer, starttime, endtime, status, wo_number, po_number, email, phone_number, permit_number, map, photo, p_confirm, permit, request_id, company} = req.body
+    const { contact, starttime, endtime, status, wo_number, po_number, email, phone_number, permit_number, map, photo, p_confirm, permit, request_id, company} = req.body
     const posts = await prisma.jobs.update({
       where: {
         id: jobId
       },
       data:{
-        customer: customer,
+        contact: contact,
         status: status,
         starttime: starttime,
         endtime: endtime,
-        customer:customer,  
+        contact:contact,  
         wo_number: wo_number ?? "",
         po_number: po_number ?? "",
         email: email,

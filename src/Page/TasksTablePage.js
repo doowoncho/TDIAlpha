@@ -12,7 +12,7 @@ export default function TasksTable() {
   const { id } = useParams();
   const [taskList, settaskList] = useState();
   const [job, setJob] = useState({
-      customer:null, 
+      contact:null, 
       status: null,
       wo_number: null,
       po_number: null,
@@ -97,7 +97,7 @@ export default function TasksTable() {
   const saveChanges = async () => {
     await updateJob(job.id, 
     {
-      customer:job.customer, 
+      contact:job.contact, 
       status: job.status,
       wo_number: job.wo_number,
       po_number: job.po_number,
@@ -132,9 +132,9 @@ export default function TasksTable() {
           <fieldset disabled={!isEditing}>
             <div className="input-group">
               <div className="input-group-prepend">
-                <span className="input-group-text" id="">Customer</span>
+                <span className="input-group-text" id="">Contact</span>
               </div>
-              <input type="text" value={job.customer} className="form-control" onChange={(e)=>handleInputChange(e, 'customer')}/>
+              <input type="text" value={job.contact} className="form-control" onChange={(e)=>handleInputChange(e, 'contact')}/>
             </div>
             <div className="input-group">
               <div className="input-group-prepend">

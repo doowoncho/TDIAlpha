@@ -25,6 +25,7 @@ export default function NavBar() {
                 <Nav.Link href="/completed">Completed</Nav.Link>
                 <Nav.Link href="/todo">ToDo</Nav.Link>
                 <Nav.Link href="/form">Form</Nav.Link>
+                <Nav.Link href="/legends">Legend</Nav.Link>
                 <Nav.Link href="/receipts">Receipts</Nav.Link>
                 <Button variant="blue" style={{color:"white"}} onClick={() => { window.sessionStorage.clear(); window.location.reload() }}>Logout</Button>
               </>
