@@ -121,7 +121,7 @@ function FormPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault(); 
-    const customer = document.getElementById('customerName').value;
+    const contact = document.getElementById('contactName').value;
     const email = document.getElementById('email').value;
     const poNumber = document.getElementById('poNumber').value;
     const woNumber = document.getElementById('woNumber').value;
@@ -132,6 +132,7 @@ function FormPage() {
     const location = document.getElementById('location').value;
 
     let job = await createJob()
+    console.log(job);
     let earliestStartDate = null;
     let latestEndDate = null;
     
@@ -172,7 +173,7 @@ function FormPage() {
     
     updateJob(job.id, 
       {
-        customer:customer, 
+        contact:contact, 
         status: "New",
         starttime: earliestStartDate,
         endtime: latestEndDate, 
@@ -197,12 +198,12 @@ function FormPage() {
 
       <div className="container" style={{ maxWidth: '800px' }}>
         <div className="mb-3">
-          <label for="customerName">Company Name</label>
+          <label for="contactName">Company Name</label>
           <input type="text" className="form-control" id="companyName" placeholder="Enter name" required/>
         </div>
         <div className="mb-3">
-          <label for="customerName">Contact Name</label>
-          <input type="text" className="form-control" id="customerName" placeholder="Enter name" required/>
+          <label for="contactName">Contact Name</label>
+          <input type="text" className="form-control" id="contactName" placeholder="Enter name" required/>
         </div>
         <div className="mb-3">
           <label for="email">Email address</label>

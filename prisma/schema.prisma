@@ -9,7 +9,6 @@ datasource db {
 
 model jobs {
   id            Int       @id @default(autoincrement())
-  customer      String?   @db.VarChar(255)
   endtime       DateTime? @db.Timestamp(6)
   starttime     DateTime? @db.Timestamp(6)
   status        String?   @db.VarChar(255)
@@ -24,6 +23,7 @@ model jobs {
   permit        String?   @db.VarChar(255)
   request_id    String?   @db.VarChar(255)
   company       String?   @db.VarChar(255)
+  contact       String?   @db.VarChar(255)
 }
 
 model tasks {
