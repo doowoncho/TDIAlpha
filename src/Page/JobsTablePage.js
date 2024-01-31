@@ -88,7 +88,7 @@ export default function JobsTable() {
   const applySearchFilters = (data, filters) => {
     return data.filter((job) => {
       const isIdMatch = filters.id === "" || filters.id === null || job.id.toString().indexOf(filters.id) !== -1;
-      const isCustomerMatch = filters.contact === "" || filters.contact === null || job.contact.toLowerCase().indexOf(filters.contact.toLowerCase()) !== -1;
+      const isContactMatch = filters.contact === "" || filters.contact === null || job.contact.toLowerCase().indexOf(filters.contact.toLowerCase()) !== -1;
       const isStartDateMatch = filters.startDate === "" || filters.startDate === null || new Date(job.starttime) >= new Date(filters.startDate);
       const isEndDateMatch = filters.endDate === "" || filters.endDate === null|| new Date(job.endtime) <= new Date(filters.endDate);
       const isWoMatch = filters.woNumber === "" || filters.woNumber === null || job.wo_number.toString().indexOf(filters.woNumber) !== -1;
