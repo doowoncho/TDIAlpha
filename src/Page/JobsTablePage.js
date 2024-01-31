@@ -96,7 +96,7 @@ export default function JobsTable() {
       const isPermitNumberMatch = filters.permitNumber === "" || filters.permitNumber === null || job.permit_number.toString().indexOf(filters.permitNumber) !== -1;
       const isRequestIDMatch = filters.requestID === "" || filters.requestID === null || job.request_id.toString().indexOf(filters.requestID) !== -1;
 
-      return isIdMatch && isCustomerMatch && isStartDateMatch && isEndDateMatch && isWoMatch && isPoMatch && isPermitNumberMatch && isRequestIDMatch;
+      return isIdMatch && isContactMatch && isStartDateMatch && isEndDateMatch && isWoMatch && isPoMatch && isPermitNumberMatch && isRequestIDMatch;
     });
   };
 
@@ -147,7 +147,7 @@ export default function JobsTable() {
 
             <FilterInput label="ID" value={filterSettings.id} onChange={(value) => handleFilterChange('id', value)} />
             <FilterInput label="WO#" value={filterSettings.woNumber} onChange={(value) => handleFilterChange('woNumber', value)} />
-            <FilterInput label="Customer" value={filterSettings.customer} onChange={(value) => handleFilterChange('customer', value)} />
+            <FilterInput label="Contact" value={filterSettings.contact} onChange={(value) => handleFilterChange('contact', value)} />
             <FilterInput label="Permit Number" value={filterSettings.permitNumber} onChange={(value) => handleFilterChange('permitNumber', value)} />
             <FilterInput label="PO number" value={filterSettings.poNumber} onChange={(value) => handleFilterChange('poNumber', value)} />
             <FilterInput label="Request ID" value={filterSettings.requestID} onChange={(value) => handleFilterChange('requestID', value)} />
@@ -171,7 +171,7 @@ export default function JobsTable() {
         <div>
           <Table data={jobList}
             displayColumns={[
-              "ID", "StartTime", "EndTime", "Status", "Customer", "WO_Number"
+              "ID", "StartTime", "EndTime", "Status", "Contact", "WO_Number"
             ]}
             handleUpdate={handleJobUpdate}
             handleDelete={handleJobDelete}

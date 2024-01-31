@@ -1,17 +1,17 @@
-// const express = require('express');
-// const { PrismaClient } = require('@prisma/client');
+  // const express = require('express');
+  // const { PrismaClient } = require('@prisma/client');
 
-// const prisma = new PrismaClient();
-// const app = express();
-// const bodyParser = require('body-parser');
-// const cors = require('cors');
-// const { ReadableStreamDefaultController } = require('stream/web');
+  // const prisma = new PrismaClient();
+  // const app = express();
+  // const bodyParser = require('body-parser');
+  // const cors = require('cors');
+  // const { ReadableStreamDefaultController } = require('stream/web');
 
-// app.use(bodyParser.json());
-// app.use(cors({
-//     // origin: 'https://main.d3uj1gkliipo6a.amplifyapp.com',
-//        origin: 'http://localhost:3000',
-//   }));
+  // app.use(bodyParser.json());
+  // app.use(cors({
+  //     // origin: 'https://main.d3uj1gkliipo6a.amplifyapp.com',
+  //        origin: 'http://localhost:3000',
+  //   }));
 
 const express = require('express');
 const { PrismaClient } = require('@prisma/client');
@@ -68,10 +68,10 @@ app.get('/api/jobs', async (req, res) => {
 //gets all tasks with specific criteria... takes in an object with the properties
 app.get('/api/specifictasks', async (req, res) => {
   try {
-    const { id, customer, starttime, endtime, status, setup, permit_number, notes, wo_number, po_number, assigned, npat} = req.query
+    const { id, contact, starttime, endtime, status, setup, permit_number, notes, wo_number, po_number, assigned, npat} = req.query
     const posts = await prisma.tasks.findMany({
       where: {
-        customer: customer,
+        contact: contact,
         id: id, 
         status: status,
         setup: setup,
@@ -159,6 +159,7 @@ app.put('/api/updatejob/:id', async (req, res) => {
         status: status,
         starttime: starttime,
         endtime: endtime,
+        contact:contact,
         wo_number: wo_number,
         po_number: po_number,
         email: email,

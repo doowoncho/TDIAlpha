@@ -36,4 +36,10 @@
     #files-container {
         width: 90% !important;
     }
+
+    #tableHeader {
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+    }
 }
