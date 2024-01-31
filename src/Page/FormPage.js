@@ -201,20 +201,20 @@ function FormPage() {
           <input type="text" className="form-control" id="customerName" placeholder="Enter name" required/>
         </div>
         <div className="mb-3">
-          <label for="phoneNumber">Phone Number</label>
-          <input type="text" className="form-control" id="phoneNumber" placeholder="Enter Number" required/>
-        </div>
-        <div className="mb-3">
           <label for="email">Email address</label>
           <input type="text" className="form-control" id="email" placeholder="Enter email" required/>
         </div>
         <div className="mb-3">
-          <label for="poNumber">PO Number</label>
-          <input type="text" className="form-control" id="poNumber" placeholder="Enter PO Number (Optional)" />
+          <label for="phoneNumber">Phone Number</label>
+          <input type="text" className="form-control" id="phoneNumber" placeholder="Enter Number" required/>
         </div>
         <div className="mb-3">
           <label for="woNumber">WO Number</label>
           <input type="text" className="form-control" id="woNumber" placeholder="Enter WO Number (Optional)" />
+        </div>
+        <div className="mb-3">
+          <label for="poNumber">PO Number</label>
+          <input type="text" className="form-control" id="poNumber" placeholder="Enter PO Number (Optional)" />
         </div>
         <div className="mb-3">
           <label for="requestID">Request ID</label>

@@ -2,9 +2,12 @@ import Table from "../Components/Table";
 import { useEffect, useState  } from "react";
 import { getAlltasks, getSpecifictasks, updatetask, deletetask, getAllJobs, deleteJob, updateJob} from "../Components/APICalls";
 import FilterInput from "../Components/FilterInput";
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 
 export default function InvoicePage() {
   const [jobList, setJobList] = useState([]);
+  const [services, setServices] = useState([]);
   const [filterSettings, setFilterSettings] = useState({
     id: "",
     assigned: "",
@@ -39,6 +42,25 @@ export default function InvoicePage() {
       console.error("Error fetching data:", error);
     }
   }
+
+  useEffect(() => {
+    // Fetch your data from an API or perform any async operation
+    const fetchData = async () => {
+      // Simulating API response
+      const data = [
+        { id: 1, name: 'Service 1' },
+        { id: 2, name: 'Service 2' },
+        { id: 3, name: 'Service 3' },
+        { id: 4, name: 'More Services' },
+      ];
+
+      // Set the fetched data to the state
+      setServices(data);
+    };
+
+    // Call the fetchData function
+    fetchData();
+  }, []);
 
   const handleJobUpdate = async (id, params) => {
     await updateJob(id, params);
@@ -89,6 +111,11 @@ export default function InvoicePage() {
           <FilterInput label="PO number" value={filterSettings.poNumber} onChange={(value) => handleFilterChange('poNumber', value)} />
           <FilterInput label="Request ID" value={filterSettings.requestID} onChange={(value) => handleFilterChange('requestID', value)} />
         </div>
+        <DropdownButton id="dropdown-basic-button" title="Dropdown button">
+        <Dropdown.Item key={services.id} href={`#action/${services.id}`}>
+                {services.name}
+              </Dropdown.Item>
+        </DropdownButton>
         <Table
             data={jobList}
             displayColumns={["ID", "StartTime", "EndTime", "Status", "Setup", "Customer", "Permit_number", "Notes", "WO_number", "PO_number", "Request_ID"]}
