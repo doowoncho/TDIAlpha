@@ -87,14 +87,14 @@ export default function JobsTable() {
 
   const applySearchFilters = (data, filters) => {
     return data.filter((job) => {
-      const isIdMatch = filters.id === "" || filters.id === null || job.id.toString().indexOf(filters.id) !== -1;
-      const isContactMatch = filters.contact === "" || filters.contact === null || job.contact.toLowerCase().indexOf(filters.contact.toLowerCase()) !== -1;
-      const isStartDateMatch = filters.startDate === "" || filters.startDate === null || new Date(job.starttime) >= new Date(filters.startDate);
-      const isEndDateMatch = filters.endDate === "" || filters.endDate === null|| new Date(job.endtime) <= new Date(filters.endDate);
-      const isWoMatch = filters.woNumber === "" || filters.woNumber === null || job.wo_number.toString().indexOf(filters.woNumber) !== -1;
-      const isPoMatch = filters.poNumber === "" || filters.poNumber === null || job.po_number.toString().indexOf(filters.poNumber) !== -1;
-      const isPermitNumberMatch = filters.permitNumber === "" || filters.permitNumber === null || job.permit_number.toString().indexOf(filters.permitNumber) !== -1;
-      const isRequestIDMatch = filters.requestID === "" || filters.requestID === null || job.request_id.toString().indexOf(filters.requestID) !== -1;
+      const isIdMatch =  filters.id === null || job.id.toString().indexOf(filters.id) !== -1;
+      const isContactMatch = filters.contact === null || job.contact.toLowerCase().indexOf(filters.contact.toLowerCase()) !== -1;
+      const isStartDateMatch = filters.startDate === null || new Date(job.starttime) >= new Date(filters.startDate);
+      const isEndDateMatch = filters.endDate === null|| new Date(job.endtime) <= new Date(filters.endDate);
+      const isWoMatch = filters.woNumber === null || job.wo_number.toString().indexOf(filters.woNumber) !== -1;
+      const isPoMatch = filters.poNumber === null || job.po_number.toString().indexOf(filters.poNumber) !== -1;
+      const isPermitNumberMatch = filters.permitNumber === null || job.permit_number.toString().indexOf(filters.permitNumber) !== -1;
+      const isRequestIDMatch = filters.requestID === null || job.request_id.toString().indexOf(filters.requestID) !== -1;
 
       return isIdMatch && isContactMatch && isStartDateMatch && isEndDateMatch && isWoMatch && isPoMatch && isPermitNumberMatch && isRequestIDMatch;
     });
