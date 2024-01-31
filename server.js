@@ -159,17 +159,17 @@ app.put('/api/updatejob/:id', async (req, res) => {
         status: status,
         starttime: starttime,
         endtime: endtime,
-        contact:contact,  
-        wo_number: wo_number ?? "",
-        po_number: po_number ?? "",
+        contact:contact,
+        wo_number: wo_number,
+        po_number: po_number,
         email: email,
         phone_number: phone_number,
-        permit_number: permit_number ?? "",
+        permit_number: permit_number,
         map: map,
         photo: photo,       
         p_confirm: p_confirm,    
         permit: permit,
-        request_id: request_id ?? "",
+        request_id: request_id,
         company: company
       }
     });

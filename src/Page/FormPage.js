@@ -182,7 +182,7 @@ function FormPage() {
         email: email,
         phone_number: phoneNumber,
         request_id: requestID,
-        company: company,
+        company: company
       }) 
       await fileUploading(job);
       
