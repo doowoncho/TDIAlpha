@@ -149,7 +149,7 @@ app.put('/api/updatetask/:id', async (req, res) => {
 app.put('/api/updatejob/:id', async (req, res) => {
   try {
     const jobId = parseInt(req.params.id) //id of task we are changing
-    const { customer, starttime, endtime, status, wo_number, po_number, email, phone_number, permit_number, map, photo, p_confirm, permit, request_id} = req.body
+    const { customer, starttime, endtime, status, wo_number, po_number, email, phone_number, permit_number, map, photo, p_confirm, permit, request_id, company} = req.body
     const posts = await prisma.jobs.update({
       where: {
         id: jobId
@@ -169,7 +169,8 @@ app.put('/api/updatejob/:id', async (req, res) => {
         photo: photo,       
         p_confirm: p_confirm,    
         permit: permit,
-        request_id: request_id ?? ""
+        request_id: request_id ?? "",
+        company: company
       }
     });
     res.json(posts);

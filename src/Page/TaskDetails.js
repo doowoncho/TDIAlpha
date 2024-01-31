@@ -212,7 +212,7 @@ export default function Orders() {
                 className="form-control text-center my-4"
                 id="notes"
                 aria-describedby="emailHelp"
-                value={task.setup ? task.notes : ""}
+                value={task.setup ? task.setup : ""}
                 onChange={(e) => handleInputChange(e, 'setup')}/>
             </fieldset>
           </div>

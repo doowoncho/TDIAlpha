@@ -26,7 +26,7 @@ export default function LoginPage() {
   
   return (
     <div>
-      <div className='container text-center my-4' style={{width:"600px"}}>
+      <div className='container text-center my-4'>
         <h1>Login</h1>
         <div className="mb-3">
           <label for="email">Email</label>
