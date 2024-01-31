@@ -121,7 +121,7 @@ function FormPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault(); 
-    const customer = document.getElementById('customerName').value;
+    const contact = document.getElementById('customerName').value;
     const email = document.getElementById('email').value;
     const poNumber = document.getElementById('poNumber').value;
     const woNumber = document.getElementById('woNumber').value;
@@ -172,7 +172,7 @@ function FormPage() {
     
     updateJob(job.id, 
       {
-        customer:customer, 
+        contact: contact, 
         status: "New",
         starttime: earliestStartDate,
         endtime: latestEndDate, 
@@ -181,7 +181,7 @@ function FormPage() {
         email: email,
         phone_number: phoneNumber,
         request_id: requestID,
-        company: company,
+        company: company
       }) 
       await fileUploading(job);
       

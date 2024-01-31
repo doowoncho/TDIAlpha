@@ -28,15 +28,15 @@ export default function JobsTable() {
   const [jobList, setjobList] = useState([]);
   const [counts, setCounts] = useState({ New: 0, Declined: 0, Submitted: 0 });
   const [filterSettings, setFilterSettings] = useState({
-    id: "",
-    assigned: "",
-    customer: "",
-    startDate: "",
-    endDate: "",
-    woNumber: "",
-    poNumber: "",
-    permitNumber: "",
-    requestID: ""
+    id: null,
+    assigned: null,
+    contact: null,
+    startDate: null,
+    endDate: null,
+    woNumber: null,
+    poNumber: null,
+    permitNumber: null,
+    requestID: null,
   });
 
   // Entire list of jobs
@@ -45,6 +45,8 @@ export default function JobsTable() {
   const fetchData = async () => {
     try {
       const data = await getAllJobs();
+
+      console.log(data)
       // Different counts for the jobs filters
       const newCount = data.filter((job) => job.status === "New" || job.status === 'Waiting').length;
       const declinedCount = data.filter((job) => job.status === "Declined").length;
@@ -85,14 +87,14 @@ export default function JobsTable() {
 
   const applySearchFilters = (data, filters) => {
     return data.filter((job) => {
-      const isIdMatch = filters.id === "" || job.id.toString().indexOf(filters.id) !== -1;
-      const isCustomerMatch = filters.customer === "" || job.customer.toLowerCase().indexOf(filters.customer.toLowerCase()) !== -1;
-      const isStartDateMatch = filters.startDate === "" || new Date(job.starttime) >= new Date(filters.startDate);
-      const isEndDateMatch = filters.endDate === "" || new Date(job.endtime) <= new Date(filters.endDate);
-      const isWoMatch = filters.woNumber === "" || job.wo_number.toString().indexOf(filters.woNumber) !== -1;
-      const isPoMatch = filters.poNumber === "" || job.po_number.toString().indexOf(filters.poNumber) !== -1;
-      const isPermitNumberMatch = filters.permitNumber === "" || job.permit_number.toString().indexOf(filters.permitNumber) !== -1;
-      const isRequestIDMatch = filters.requestID === "" || job.request_id.toString().indexOf(filters.requestID) !== -1;
+      const isIdMatch = filters.id === "" || filters.id === null || job.id.toString().indexOf(filters.id) !== -1;
+      const isCustomerMatch = filters.contact === "" || filters.contact === null || job.contact.toLowerCase().indexOf(filters.contact.toLowerCase()) !== -1;
+      const isStartDateMatch = filters.startDate === "" || filters.startDate === null || new Date(job.starttime) >= new Date(filters.startDate);
+      const isEndDateMatch = filters.endDate === "" || filters.endDate === null|| new Date(job.endtime) <= new Date(filters.endDate);
+      const isWoMatch = filters.woNumber === "" || filters.woNumber === null || job.wo_number.toString().indexOf(filters.woNumber) !== -1;
+      const isPoMatch = filters.poNumber === "" || filters.poNumber === null || job.po_number.toString().indexOf(filters.poNumber) !== -1;
+      const isPermitNumberMatch = filters.permitNumber === "" || filters.permitNumber === null || job.permit_number.toString().indexOf(filters.permitNumber) !== -1;
+      const isRequestIDMatch = filters.requestID === "" || filters.requestID === null || job.request_id.toString().indexOf(filters.requestID) !== -1;
 
       return isIdMatch && isCustomerMatch && isStartDateMatch && isEndDateMatch && isWoMatch && isPoMatch && isPermitNumberMatch && isRequestIDMatch;
     });
