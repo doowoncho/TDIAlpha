@@ -1,5 +1,5 @@
-const server = "http://localhost:3001"
-// const server = ""
+// const server = "http://localhost:3001"
+const server = ""
 
 // Gets a list of all the tasks
 export async function getAlltasks() {
