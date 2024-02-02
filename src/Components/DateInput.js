@@ -27,7 +27,7 @@ export default function DateInput({ date, index ,deleteDate, handleDateChange, h
           />
 
         <label className="mx-2">Start Time</label>
-        <CustomTimePicker onChange={(selectedTime) => handleDateChange(index, 'startTime', selectedTime)} required/>
+        <CustomTimePicker onChange={(selectedTime) => handleDateChange(index, 'startTime', selectedTime)} defaultTime={9} defaultPM={false}/>
       {showAdditionalInput && (
         <>
         <label>End Date</label>
@@ -42,7 +42,7 @@ export default function DateInput({ date, index ,deleteDate, handleDateChange, h
       )}
 
         <label className="mx-2">End Time</label>
-        <CustomTimePicker onChange={(selectedTime) => handleDateChange(index, 'endTime', selectedTime)} />
+        <CustomTimePicker onChange={(selectedTime) => handleDateChange(index, 'endTime', selectedTime)} defaultTime={3} defaultPM={true}/>
       
       <input className="form-check-input mx-2" type="radio" name="repeatOptions" value="repeat" onChange={(e) => {
         handleOneDaySelected();}} defaultChecked/>

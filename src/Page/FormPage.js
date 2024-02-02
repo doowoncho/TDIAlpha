@@ -66,17 +66,26 @@ function FormPage() {
     const createTaskForDate = async (startDate, startTime, endDate, endTime, job, location) => {
       let startDateTime 
       let endDateTime 
+      
+      //different pick up and place days
       if(startDate && endDate){
         startDateTime= new Date(startDate + 'T' + startTime);
         endDateTime= new Date(endDate + 'T' + endTime);
       }
+      // same day pickup and place
       else if (startDate && endTime){
         startDateTime = new Date(startDate + 'T' + startTime);
         endDateTime = new Date(startDate + 'T' + endTime);
       }
+      // just place
       else if (startDate && startTime){
         startDateTime = new Date(startDate + 'T' + startTime);
       }
+      //npat 
+      else if(startDate){
+        startDateTime = startDate
+      }
+      //just pickup
       else{
         endDateTime = new Date(endDate + 'T' + endTime);
       }
@@ -132,7 +141,6 @@ function FormPage() {
     const location = document.getElementById('location').value;
 
     let job = await createJob()
-    console.log(job);
     let earliestStartDate = null;
     let latestEndDate = null;
     
@@ -168,7 +176,9 @@ function FormPage() {
     
     //NPAT task
     if(NPAT){
-      await createTaskForDate(null, null, null, null, job, location);
+      let npatStartDate = new Date(earliestStartDate);
+      npatStartDate.setDate(npatStartDate.getDate() - 1)
+      await createTaskForDate(npatStartDate, null, null, null, job, location);
     }
     
     updateJob(job.id, 
@@ -180,6 +190,7 @@ function FormPage() {
         wo_number: woNumber,
         po_number: poNumber,
         email: email,
+        setup: location,
         phone_number: phoneNumber,
         request_id: requestID,
         company: company
