@@ -2,6 +2,7 @@ import React from "react";
 
 export default function LegendPage() {
   return (
+    <div className='container my-3'>
   <table class="table table-striped">
   <thead>
     <tr id="tableHeader">
@@ -141,5 +142,6 @@ export default function LegendPage() {
     </tr>
   </tbody>
 </table>
+    </div>
   );
 }
