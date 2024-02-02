@@ -171,7 +171,7 @@ export default function JobsTable() {
         <div>
           <Table data={jobList}
             displayColumns={[
-              "ID", "StartTime", "EndTime", "Status", "Contact", "WO_Number"
+              "ID", "StartTime", "EndTime", "Status", "Company", "Setup", "WO_Number"
             ]}
             handleUpdate={handleJobUpdate}
             handleDelete={handleJobDelete}

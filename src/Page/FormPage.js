@@ -226,7 +226,7 @@ function FormPage() {
           <input type="text" className="form-control" id="requestID" placeholder="Enter Request ID (Optional)" />
         </div>
         <div className="mb-3">
-          <label for="location">Location</label>
+          <label for="location">Setup</label>
           <input type="text" className="form-control" id="location" placeholder="Enter Location" required/>
         </div>
         <div className="mb-3">

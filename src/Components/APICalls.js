@@ -1,5 +1,6 @@
-// const server = "http://localhost:3001"
-const server = ""
+const server = process.env.NODE_ENV === 'production'
+  ? process.env.REACT_APP_PROD_SERVER
+  : process.env.REACT_APP_LOCAL_SERVER;
 
 // Gets a list of all the tasks
 export async function getAlltasks() {
