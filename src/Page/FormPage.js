@@ -16,7 +16,6 @@ function FormPage() {
     const updatedDates = [...dates];
     updatedDates[index][field] = value;
     setDates(updatedDates);
-    console.log(dates)
   };
 
   const handleCheckboxChanges = (index, field, value) => {
@@ -209,39 +208,39 @@ function FormPage() {
 
       <div className="container" style={{ maxWidth: '800px' }}>
         <div className="mb-3">
-          <label for="contactName">Company Name</label>
+          <label>Company Name</label>
           <input type="text" className="form-control" id="companyName" placeholder="Enter name" required/>
         </div>
         <div className="mb-3">
-          <label for="contactName">Contact Name</label>
+          <label>Contact Name</label>
           <input type="text" className="form-control" id="contactName" placeholder="Enter name" required/>
         </div>
         <div className="mb-3">
-          <label for="email">Email address</label>
+          <label>Email address</label>
           <input type="text" className="form-control" id="email" placeholder="Enter email" required/>
         </div>
         <div className="mb-3">
-          <label for="phoneNumber">Phone Number</label>
+          <label>Phone Number</label>
           <input type="text" className="form-control" id="phoneNumber" placeholder="Enter Number" required/>
         </div>
         <div className="mb-3">
-          <label for="woNumber">WO Number</label>
+          <label>WO Number</label>
           <input type="text" className="form-control" id="woNumber" placeholder="Enter WO Number (Optional)" />
         </div>
         <div className="mb-3">
-          <label for="poNumber">PO Number</label>
+          <label >PO Number</label>
           <input type="text" className="form-control" id="poNumber" placeholder="Enter PO Number (Optional)" />
         </div>
         <div className="mb-3">
-          <label for="requestID">Request ID</label>
+          <label>Request ID</label>
           <input type="text" className="form-control" id="requestID" placeholder="Enter Request ID (Optional)" />
         </div>
         <div className="mb-3">
-          <label for="location">Setup</label>
+          <label>Setup</label>
           <input type="text" className="form-control" id="location" placeholder="Enter Location" required/>
         </div>
         <div className="mb-3">
-          <label for="fileUpload">Photo</label>
+          <label>Photo</label>
           <input type="file" id="fileUpload" className='form-control' onChange={handleFileChange}/>
         </div>
         <div className="mb-3">
