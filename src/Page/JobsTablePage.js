@@ -26,7 +26,7 @@ const TableCards = ({ bg, header, icon, color, num }) => (
 export default function JobsTable() {
   const [tableType, setTableType] = useState("All");
   const [jobList, setjobList] = useState([]);
-  const [counts, setCounts] = useState({ New: 0, Declined: 0, Submitted: 0 });
+  const [counts, setCounts] = useState({ New: 0, Declined: 0, Submitted: 0, Approved: 0 });
   const [filterSettings, setFilterSettings] = useState({
     id: null,
     assigned: null,
@@ -51,8 +51,9 @@ export default function JobsTable() {
       const newCount = data.filter((job) => job.status === "New" || job.status === 'Waiting').length;
       const declinedCount = data.filter((job) => job.status === "Declined").length;
       const submittedCount = data.filter((job) => job.status === "Submitted").length;
+      const approvedCount = data.filter((job) => job.status === "Approved").length;
 
-      setCounts({ New: newCount, Declined: declinedCount, Submitted: submittedCount });
+      setCounts({ New: newCount, Declined: declinedCount, Submitted: submittedCount, Approved: approvedCount });
 
       // Jobs filtered by table unless it is a waiting job, in which case it is shown with the new requests
       let filteredData;
@@ -137,7 +138,7 @@ export default function JobsTable() {
             <TableCards header="Submitted" num={counts.Submitted} icon="bi bi-check-lg" color="text-success" />
           </button>
           <button className="btn btn-link" onClick={() => handleTableTypeChange("All")} style={{ textDecoration: "none" }}>
-            <TableCards header="All jobs" num={counts.New + counts.Declined + counts.Submitted} icon="bi bi-list" color="text-info" />
+            <TableCards header="All jobs" num={counts.New + counts.Declined + counts.Submitted + counts.Approved} icon="bi bi-list" color="text-info" />
           </button>
         </div>
       </div>

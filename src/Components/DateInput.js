@@ -50,17 +50,18 @@ export default function DateInput({ date, index ,deleteDate, handleDateChange, h
 
       <input className="form-check-input mx-2" type="radio" name="repeatOptions" value="repeat" onChange={(e) => {
         handleCheckboxChanges(index, 'repeat', e.target.checked);
-        handleCheckboxChange(false);}}/>
+        handleCheckboxChange(true);}}/>
       <label className="form-check-label" htmlFor="repeatOption">Repeat Jobs</label>
 
       <input className="form-check-input mx-2" type="radio" name="repeatOptions" value="repeat" onChange={(e) => {
         handleCheckboxChanges(index, 'twentyFour', e.target.checked);
-        handleCheckboxChange(true);}}/>
+        handleCheckboxChange(false);}}/>
       <label className="form-check-label" htmlFor="twentyFourOption">24/7</label>
       
       {showExWeekend && (
         <>
-          <input className="form-check-input mx-2" type="checkbox" value=""onChange={(e) => {handleCheckboxChanges(index, 'exWeekend', e.target.checked)}}/>
+          <input className="form-check-input mx-2" type="checkbox" value=""onChange={(e) => {
+            handleCheckboxChanges(index, 'exWeekend', e.target.checked);}}/>
           <label className="form-check-label" for="flexCheckDefault" > Exclude Weekends</label>
         </>
       )}

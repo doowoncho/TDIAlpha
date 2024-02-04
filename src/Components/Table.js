@@ -112,12 +112,6 @@ function renderTableCell({ property, column, handleUpdate, currentPath }) {
       </Dropdown.Menu>
     </Dropdown>
     );
-  } else if (name === 'npat') {
-    return (
-      <>
-        <input className="form-check-input mx-2" type="checkbox" value={property[name]} disabled />
-      </>
-    );
   } else {
     return property[name];
   }
