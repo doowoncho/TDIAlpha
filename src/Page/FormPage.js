@@ -102,23 +102,23 @@ function FormPage() {
   
   const createTasksForExWeekend = async (startDate, startTime, endDate, endTime, job, location) => {
     let currentDate = new Date(startDate);
-
     //creates first task
     currentDate.setDate(currentDate.getDate() + 1)
-    await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, null, null, job, location, "place");
+    await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, moment(currentDate).format('YYYY-MM-DD'), endTime, job, location);
 
-    while (currentDate < new Date(endDate)) {
+    while (currentDate <= new Date(endDate)) {
       if (currentDate.getDay() === 5) {
         // Task to pick up the sign on Fridays
         await createTaskForDate(null, null, moment(currentDate).format('YYYY-MM-DD'), endTime, job, location, "pickup");
-      } else if (currentDate.getDay() === 1) {
-        // Task to place the sign on Mondays
-        await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, null, null, job, location, "place");
+      }
+      else if(currentDate.getDay() != 6 && currentDate.getDay() != 7){
+        //Task to keep repeating
+        await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, moment(currentDate).format('YYYY-MM-DD'), endTime, job, location);
       }
       currentDate.setDate(currentDate.getDate() + 1);
     }
-    //creates last task
-    createTaskForDate(null, null, endDate, endTime, job, location, "pickup")
+      //creates last task
+      await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, moment(currentDate).format('YYYY-MM-DD'), endTime, job, location);
   };
   
   const createTasksForRepeat = async (startDate, startTime, endDate, endTime, job, location) => {
@@ -156,18 +156,17 @@ function FormPage() {
       }
 
       if (dateTime.twentyFour) {
-        if (dateTime.exWeekend) {          
-          // Creating tasks for the inbetween
-          await createTasksForExWeekend(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.endTime, job, location);
-
-        } else {
           // Two tasks, one for putting down and one for picking stuff up
-          await createTaskForDate(dateTime.startDate, dateTime.startTime, null, null, job);
-          await createTaskForDate(null, null, dateTime.endDate, dateTime.endTime, job, location);
-        }
+          await createTaskForDate(dateTime.startDate, dateTime.startTime, null, null, job, 'place');
+          await createTaskForDate(null, null, dateTime.endDate, dateTime.endTime, job, location, 'pickup');
       } 
       else if(dateTime.repeat){
-          await createTasksForRepeat(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.endTime, job, location)
+          if (dateTime.exWeekend) {          
+            // Creating tasks for the inbetween
+            await createTasksForExWeekend(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.endTime, job, location);
+          } else {
+            await createTasksForRepeat(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.endTime, job, location)
+          }
       }
       else {
         // Non-twentyFour task
