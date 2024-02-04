@@ -10,7 +10,9 @@ import moment from 'moment';
 function FormPage() {
   const [dates, setDates] = useState([{ startDate: '', startTime: '', endDate: '', endTime: '', exWeekend: false, twentyFour: false, repeat: false }]);
   const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false); // New loading state
   const navigate = useNavigate();
+
 
   const handleDateChange = (index, field, value) => {
     const updatedDates = [...dates];
@@ -144,7 +146,10 @@ function FormPage() {
     let earliestStartDate = null;
     let latestEndDate = null;
     
-    dates.forEach(async (dateTime) => {
+    setLoading(true); // Set loading state to true
+
+    await Promise.all(
+      dates.map(async (dateTime) => {
       if (!earliestStartDate || new Date(dateTime.startDate) < earliestStartDate) {
         earliestStartDate = new Date(dateTime.startDate + 'T' + dateTime.startTime);
       }
@@ -171,7 +176,8 @@ function FormPage() {
         // Non-twentyFour task
         await createTaskForDate(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.endTime, job, location);
       }
-    });
+    })
+    );
     
     //NPAT task
     if(NPAT){
@@ -194,84 +200,98 @@ function FormPage() {
         request_id: requestID,
         company: company
       }) 
+
       await fileUploading(job);
-      
-      // at the end of function set everything in the job
+
+      setLoading(false); // Set loading state to false after all tasks are created
+  
       navigate("/jobstable/");
     }
     
     return (
       <>
-      <div className="container">
-      <h1 className="my-4 text-center">Request a Job </h1>
-      <form onSubmit={handleSubmit}>
+       {loading 
+       ?  (
+            // Loading page with a spinner or message
+            <div className="text-center">
+              <h2>Loading...</h2>
+            </div>
+          ) 
 
-      <div className="container" style={{ maxWidth: '800px' }}>
-        <div className="mb-3">
-          <label>Company Name</label>
-          <input type="text" className="form-control" id="companyName" placeholder="Enter name" required/>
-        </div>
-        <div className="mb-3">
-          <label>Contact Name</label>
-          <input type="text" className="form-control" id="contactName" placeholder="Enter name" required/>
-        </div>
-        <div className="mb-3">
-          <label>Email address</label>
-          <input type="text" className="form-control" id="email" placeholder="Enter email" required/>
-        </div>
-        <div className="mb-3">
-          <label>Phone Number</label>
-          <input type="text" className="form-control" id="phoneNumber" placeholder="Enter Number" required/>
-        </div>
-        <div className="mb-3">
-          <label>WO Number</label>
-          <input type="text" className="form-control" id="woNumber" placeholder="Enter WO Number (Optional)" />
-        </div>
-        <div className="mb-3">
-          <label >PO Number</label>
-          <input type="text" className="form-control" id="poNumber" placeholder="Enter PO Number (Optional)" />
-        </div>
-        <div className="mb-3">
-          <label>Request ID</label>
-          <input type="text" className="form-control" id="requestID" placeholder="Enter Request ID (Optional)" />
-        </div>
-        <div className="mb-3">
-          <label>Setup</label>
-          <input type="text" className="form-control" id="location" placeholder="Enter Location" required/>
-        </div>
-        <div className="mb-3">
-          <label>Photo</label>
-          <input type="file" id="fileUpload" className='form-control' onChange={handleFileChange}/>
-        </div>
-        <div className="mb-3">
-          <input className="form-check-input mx-2" type="checkbox" id="npat"/>
-          <label className="form-check-label">NPAT Job</label>
-        </div>
-      </div>
-     
+        : (
+          // Main form page
+        <div className="container">
+        <h1 className="my-4 text-center">Request a Job </h1>
+        <form onSubmit={handleSubmit}>
 
-      <div className='container justify-content-center d-flex'>
-          <div className="flex-column">
-            {dates.map((date, index) => (
-              <DateInput
-              key={index}
-              date={date}
-              index={index}
-              handleDateChange={handleDateChange}
-              handleCheckboxChanges={handleCheckboxChanges}
-              deleteDate={deleteDate}
-              />
-              ))}
-          <button type="button" className="btn btn-primary my-2" onClick={addDate}> Add Date and Time </button>
+        <div className="container" style={{ maxWidth: '800px' }}>
+          <div className="mb-3">
+            <label>Company Name</label>
+            <input type="text" className="form-control" id="companyName" placeholder="Enter name" required/>
+          </div>
+          <div className="mb-3">
+            <label>Contact Name</label>
+            <input type="text" className="form-control" id="contactName" placeholder="Enter name" required/>
+          </div>
+          <div className="mb-3">
+            <label>Email address</label>
+            <input type="text" className="form-control" id="email" placeholder="Enter email" required/>
+          </div>
+          <div className="mb-3">
+            <label>Phone Number</label>
+            <input type="text" className="form-control" id="phoneNumber" placeholder="Enter Number" required/>
+          </div>
+          <div className="mb-3">
+            <label>WO Number</label>
+            <input type="text" className="form-control" id="woNumber" placeholder="Enter WO Number (Optional)" />
+          </div>
+          <div className="mb-3">
+            <label >PO Number</label>
+            <input type="text" className="form-control" id="poNumber" placeholder="Enter PO Number (Optional)" />
+          </div>
+          <div className="mb-3">
+            <label>Request ID</label>
+            <input type="text" className="form-control" id="requestID" placeholder="Enter Request ID (Optional)" />
+          </div>
+          <div className="mb-3">
+            <label>Setup</label>
+            <input type="text" className="form-control" id="location" placeholder="Enter Location" required/>
+          </div>
+          <div className="mb-3">
+            <label>Photo</label>
+            <input type="file" id="fileUpload" className='form-control' onChange={handleFileChange}/>
+          </div>
+          <div className="mb-3">
+            <input className="form-check-input mx-2" type="checkbox" id="npat"/>
+            <label className="form-check-label">NPAT Job</label>
           </div>
         </div>
+      
 
-      <div className="text-center">
-        <button type="submit" className="btn btn-primary">Submit</button>
+        <div className='container justify-content-center d-flex'>
+            <div className="flex-column">
+              {dates.map((date, index) => (
+                <DateInput
+                key={index}
+                date={date}
+                index={index}
+                handleDateChange={handleDateChange}
+                handleCheckboxChanges={handleCheckboxChanges}
+                deleteDate={deleteDate}
+                />
+                ))}
+            <button type="button" className="btn btn-primary my-2" onClick={addDate}> Add Date and Time </button>
+            </div>
+          </div>
+
+        <div className="text-center">
+          <button type="submit" className="btn btn-primary">Submit</button>
+        </div>
+        </form>
       </div>
-      </form>
-    </div>
-              </>
+          )
+      }
+    </>
   );
 }
 

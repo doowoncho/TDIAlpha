@@ -21,6 +21,7 @@ model jobs {
   company       String?   @db.VarChar(255)
   contact       String?   @db.VarChar(255)
   setup         String?   @db.VarChar(255)
+  stamp         String?   @db.VarChar(255)
 }
 
 model tasks {
