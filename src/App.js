@@ -13,7 +13,6 @@ import JobsTable from "./Page/JobsTablePage";
 import Receipts from "./Page/ReceiptsPage";
 import LegendPage from "./Page/LegendPage";
 
-
 const App = () => {
   const isUserLoggedIn = window.sessionStorage.getItem("user");
 

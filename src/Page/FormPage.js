@@ -63,7 +63,7 @@ function FormPage() {
     }
     
     //DATE LOGIC
-    const createTaskForDate = async (startDate, startTime, endDate, endTime, job, location) => {
+    const createTaskForDate = async (startDate, startTime, endDate, endTime, job, location, taskType = "both") => {
       let startDateTime 
       let endDateTime 
       
@@ -94,7 +94,8 @@ function FormPage() {
       endtime: endDateTime,
       job_id: job.id,
       setup: location,
-      completed: false
+      completed: false,
+      type: taskType
     };
     await createtask(newtask);
   };
@@ -104,20 +105,20 @@ function FormPage() {
 
     //creates first task
     currentDate.setDate(currentDate.getDate() + 1)
-    await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, null, null, job, location);
+    await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, null, null, job, location, "place");
 
     while (currentDate < new Date(endDate)) {
       if (currentDate.getDay() === 5) {
         // Task to pick up the sign on Fridays
-        await createTaskForDate(null, null, moment(currentDate).format('YYYY-MM-DD'), endTime, job, location);
+        await createTaskForDate(null, null, moment(currentDate).format('YYYY-MM-DD'), endTime, job, location, "pickup");
       } else if (currentDate.getDay() === 1) {
         // Task to place the sign on Mondays
-        await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, null, null, job, location);
+        await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, null, null, job, location, "place");
       }
       currentDate.setDate(currentDate.getDate() + 1);
     }
     //creates last task
-    createTaskForDate(null, null, endDate, endTime, job, location)
+    createTaskForDate(null, null, endDate, endTime, job, location, "pickup")
   };
   
   const createTasksForRepeat = async (startDate, startTime, endDate, endTime, job, location) => {
@@ -178,7 +179,7 @@ function FormPage() {
     if(NPAT){
       let npatStartDate = new Date(earliestStartDate);
       npatStartDate.setDate(npatStartDate.getDate() - 1)
-      await createTaskForDate(npatStartDate, null, null, null, job, location);
+      await createTaskForDate(npatStartDate, null, null, null, job, location, "npat");
     }
     
     updateJob(job.id, 

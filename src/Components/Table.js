@@ -11,7 +11,7 @@ let users = await getAllUsers();
 function RenderAssignedDropdown({ property, handleUpdate }) {
   return (
     <Dropdown>
-      <Dropdown.Toggle variant='white' id='dropdownMenuButton'>
+      <Dropdown.Toggle id='dropdownMenuButton'>
         {users.find(user => user.id === property.assigned)?.name || "No User Assigned"}
       </Dropdown.Toggle>
       <Dropdown.Menu>
@@ -34,7 +34,7 @@ function renderTableCell({ property, column, handleUpdate, currentPath }) {
   const name = column.toLowerCase();
 
   if (name === 'id') {
-    return  currentPath.includes('/taskspage') ? <a href={`/taskdetails/${property.id}`}>{property.id}</a> : <a href={`/taskspage/${property.id}`}>{property.id}</a>;
+    return  currentPath.includes('/taskspage') ? <a href={`/taskdetails/${property.id}`} className="no-link-style">{property.id}</a> : <a href={`/taskspage/${property.id}`} className="no-link-style">{property.id}</a>;
   } else if (name === 'assigned' && user.permission === 1) {
     return <RenderAssignedDropdown property={property} handleUpdate={handleUpdate} />;
   } else if (name === 'assigned') {
@@ -117,6 +117,34 @@ function renderTableCell({ property, column, handleUpdate, currentPath }) {
   }
 }
 
+function renderColumn(column) {
+  console.log(column);
+  if (column === "StartTime") {
+    return 'Place';
+  } else if (column === 'EndTime') {
+    return 'Pickup';
+  } else {
+    return column;
+  }
+}
+
+function getColor(property) {
+  if (property.completed) {
+    return 'bg-secondary text-light'; // Apply this class for condition1
+  } 
+  else if (property.type == "place") {
+    return 'bg-success text-light'; // Apply this class for condition2
+  } else if (property.type == "pickup") {
+    return 'bg-warning text-dark'; // Apply this class for condition3
+  }
+  else if (property.type == "npat") {
+    return 'text-primary'; // Apply this class for condition3
+  }
+  else{
+    return ''; // Default class if none of the conditions match
+  }
+}
+
 export default function Table({ data, displayColumns, handleUpdate, handleDelete }) {
  const location = useLocation();
  // Access the current pathname to determine the current page
@@ -142,7 +170,7 @@ export default function Table({ data, displayColumns, handleUpdate, handleDelete
         <tr>
           {displayColumns.map((column) => (
             <th key={column}>
-              {column}
+              {currentPath.includes('/taskspage') ? renderColumn(column) : column}
             </th>
           ))}
           <th>Action</th>
@@ -152,11 +180,11 @@ export default function Table({ data, displayColumns, handleUpdate, handleDelete
         {data.map((property) => (
           <tr key={property.id}>
             {displayColumns.map((column) => (
-              <td key={`${property.id}-${column}`} className={property.completed ? 'bg-info' : ''}>
+              <td key={`${property.id}-${column}`} className={getColor(property)}>
                 {renderTableCell({ property, column, handleUpdate, currentPath })}
               </td>
             ))}
-            <td className={property.completed ? 'bg-info' : ''}>
+            <td>
               <button className='my-1 btn btn-outline-danger' onClick={() => { handleDelete(property.id) }}>
                 <i className="bi bi-trash"></i> Delete
               </button>

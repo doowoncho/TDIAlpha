@@ -200,7 +200,7 @@ app.delete('/api/deletejob/:id', async (req, res) => {
 
 //creates task with provided properties
 app.post('/api/createtask', async (req, res) => {
-  const { starttime, endtime, job_id, notes, setup } = req.body
+  const { starttime, endtime, job_id, notes, setup, type } = req.body
   try {
     const newtask = await prisma.tasks.create({
       data: {
@@ -208,7 +208,8 @@ app.post('/api/createtask', async (req, res) => {
         notes: notes, 
         starttime: starttime,
         endtime: endtime,
-        job_id: job_id
+        job_id: job_id,
+        type: type
       },
     });
     res.json(newtask);
