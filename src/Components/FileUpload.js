@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { storage } from '../Components/Firebase';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
-import { files, getFilesById, updateFiles, uploadFile, uploadPhoto, uploadPermitCon, uploadPermit, uploadPlan, deleteFile } from './APICalls';
+import { files, getFilesById, uploadPhoto, uploadPermitCon, uploadPermit, uploadPlan, deleteFile } from './APICalls';
 
 function FileUpload({type, giveID}) {
   const [file, setFile] = useState(null);
