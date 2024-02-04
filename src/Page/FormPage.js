@@ -111,7 +111,7 @@ function FormPage() {
         // Task to pick up the sign on Fridays
         await createTaskForDate(null, null, moment(currentDate).format('YYYY-MM-DD'), endTime, job, location, "pickup");
       }
-      else if(currentDate.getDay() != 6 && currentDate.getDay() != 7){
+      else if(currentDate.getDay() != 5 && currentDate.getDay() != 6){
         //Task to keep repeating
         await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, moment(currentDate).format('YYYY-MM-DD'), endTime, job, location);
       }
