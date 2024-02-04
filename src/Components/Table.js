@@ -118,7 +118,6 @@ function renderTableCell({ property, column, handleUpdate, currentPath }) {
 }
 
 function renderColumn(column) {
-  console.log(column);
   if (column === "StartTime") {
     return 'Place';
   } else if (column === 'EndTime') {
