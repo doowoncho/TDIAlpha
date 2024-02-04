@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '../Components/Firebase';
-import { createJob, createtask, files, getTasksByJobId, updateJob } from '../Components/APICalls';
+import { createJob, createtask, uploadPhoto, getTasksByJobId, updateJob } from '../Components/APICalls';
 import DateInput from '../Components/DateInput';
 import { useNavigate } from "react-router-dom";
 import moment from 'moment';
@@ -56,9 +56,13 @@ function FormPage() {
           // `url` is the download URL for 'images/stars.jpg'
           fileBlob = url
         });
-        
-        let update = {photo_file: fileBlob, photo_name: file.name};   
-        await files(id, update);
+
+        let update = {
+          job_id: id,
+          name: file.name,
+          file: fileBlob
+        };
+        await uploadPhoto(update);
       }
     }
     

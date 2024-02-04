@@ -32,7 +32,7 @@ model tasks {
   endtime   DateTime? @db.Timestamp(6)
   starttime DateTime? @db.Timestamp(6)
   completed Boolean?
-  npat      Boolean?
+  type      String?   @db.VarChar(15)
 }
 
 model users {

@@ -101,6 +101,97 @@ export async function updateJob(id, params) {
     }
 }
 
+  // Uploads into the photo table
+  export async function uploadPhoto(params) {
+    try {
+        const url =`${server}/api/uploadPhoto/`;
+        const response = await fetch(url, {
+        method: 'POST', 
+        headers: {
+            'Content-Type': 'application/json',
+        },
+            body: JSON.stringify(params),
+        });
+
+        const fileUpdate = await response.json();
+        console.log('Photo uploaded:', fileUpdate);
+    } catch (error) {
+        console.error('Error updating task:', error);
+    }
+}
+
+  // Uploads into the permit confirmations table
+  export async function uploadPermitCon(params) {
+    try {
+        const url =`${server}/api/uploadPermitCon/`;
+        const response = await fetch(url, {
+        method: 'POST', 
+        headers: {
+            'Content-Type': 'application/json',
+        },
+            body: JSON.stringify(params),
+        });
+
+        const fileUpdate = await response.json();
+        console.log('Permit Con uploaded:', fileUpdate);
+    } catch (error) {
+        console.error('Error updating task:', error);
+    }
+}
+
+  // Uploads into the permits table
+  export async function uploadPermit(params) {
+    try {
+        const url =`${server}/api/uploadPermit/`;
+        const response = await fetch(url, {
+        method: 'POST', 
+        headers: {
+            'Content-Type': 'application/json',
+        },
+            body: JSON.stringify(params),
+        });
+
+        const fileUpdate = await response.json();
+        console.log('Permit Con uploaded:', fileUpdate);
+    } catch (error) {
+        console.error('Error updating task:', error);
+    }
+}
+
+  // Uploads into the permits table
+  export async function uploadPlan(params) {
+    try {
+        const url =`${server}/api/uploadPlan/`;
+        const response = await fetch(url, {
+        method: 'POST', 
+        headers: {
+            'Content-Type': 'application/json',
+        },
+            body: JSON.stringify(params),
+        });
+
+        const fileUpdate = await response.json();
+        console.log('Permit Con uploaded:', fileUpdate);
+    } catch (error) {
+        console.error('Error updating task:', error);
+    }
+}
+
+export async function deleteFile(name) {
+    try {
+
+        await fetch(`${server}/api/deleteFile`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+            body: JSON.stringify({ name: name.filename }),
+        });
+    } catch (error) {
+        console.error('Error deleting job:', error);
+    }
+}
+
 export async function files(id, params) {
     try {
         const url = `${server}/api/file/${id}`; // Use the id as a URL parameter
