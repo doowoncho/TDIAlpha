@@ -11,7 +11,7 @@ const FilterInput = ({ label, value, onChange }) => {
       <input
         type="text"
         className="form-control"
-        value={value}
+        value={value || ''}
         onChange={(e) => handleChange(e.target.value)}
       />
     </div>

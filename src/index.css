@@ -15,3 +15,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.no-link-style {
+  color: inherit; /* Inherit the color from the parent element */
+}

@@ -136,7 +136,7 @@ export default function Orders() {
               <label>ID</label>
               <input type="number" className="form-control" value={task.id} disabled/>
 
-            <fieldset disabled={!isEditing}>
+            <fieldset disabled={user.permission == 2 || !isEditing}>
                   {isEditing 
                   ? <>
                     <label htmlFor="exampleInputStartDate">Start Time:</label>
@@ -206,7 +206,7 @@ export default function Orders() {
         <div className="card my-3 mx-4">
           <div className="card-header">Setup</div>
           <div className="card-body">
-            <fieldset disabled={!isEditing}>
+            <fieldset disabled={user.permission == 2 || !isEditing}>
               <input
                 type="text"
                 className="form-control text-center my-4"
@@ -232,6 +232,18 @@ export default function Orders() {
                 value={task.notes ? task.notes : ""}
                 onChange={(e) => handleInputChange(e, 'notes')}/>
             </fieldset>
+            {user.permission == 2 &&
+            <div className="d-flex justify-content-end">
+              {isEditing
+                ? <>
+                    <button className="btn btn-primary px-4" onClick={handleCancelClick}>Cancel</button>
+                    <button className="btn btn-warning mx-2 px-4" onClick={saveChanges}>Save Changes</button>
+                  </>
+                : 
+                <button className="btn btn-primary px-4" onClick={handleEditClick}>Edit</button> 
+              }
+            </div>
+          }
           </div>
         </div>
       </div>

@@ -26,17 +26,17 @@ const TableCards = ({ bg, header, icon, color, num }) => (
 export default function JobsTable() {
   const [tableType, setTableType] = useState("All");
   const [jobList, setjobList] = useState([]);
-  const [counts, setCounts] = useState({ New: 0, Declined: 0, Submitted: 0 });
+  const [counts, setCounts] = useState({ New: 0, Declined: 0, Submitted: 0, Approved: 0 });
   const [filterSettings, setFilterSettings] = useState({
-    id: "",
-    assigned: "",
-    contact: "",
-    startDate: "",
-    endDate: "",
-    woNumber: "",
-    poNumber: "",
-    permitNumber: "",
-    requestID: ""
+    id: null,
+    assigned: null,
+    contact: null,
+    startDate: null,
+    endDate: null,
+    woNumber: null,
+    poNumber: null,
+    permitNumber: null,
+    requestID: null,
   });
 
   // Entire list of jobs
@@ -49,8 +49,9 @@ export default function JobsTable() {
       const newCount = data.filter((job) => job.status === "New" || job.status === 'Waiting').length;
       const declinedCount = data.filter((job) => job.status === "Declined").length;
       const submittedCount = data.filter((job) => job.status === "Submitted").length;
+      const approvedCount = data.filter((job) => job.status === "Approved").length;
 
-      setCounts({ New: newCount, Declined: declinedCount, Submitted: submittedCount });
+      setCounts({ New: newCount, Declined: declinedCount, Submitted: submittedCount, Approved: approvedCount });
 
       // Jobs filtered by table unless it is a waiting job, in which case it is shown with the new requests
       let filteredData;
@@ -85,14 +86,14 @@ export default function JobsTable() {
 
   const applySearchFilters = (data, filters) => {
     return data.filter((job) => {
-      const isIdMatch = filters.id === "" || job.id.toString().indexOf(filters.id) !== -1;
-      const isContactMatch = filters.contact === "" || job.contact.toLowerCase().indexOf(filters.contact.toLowerCase()) !== -1;
-      const isStartDateMatch = filters.startDate === "" || new Date(job.starttime) >= new Date(filters.startDate);
-      const isEndDateMatch = filters.endDate === "" || new Date(job.endtime) <= new Date(filters.endDate);
-      const isWoMatch = filters.woNumber === "" || job.wo_number.toString().indexOf(filters.woNumber) !== -1;
-      const isPoMatch = filters.poNumber === "" || job.po_number.toString().indexOf(filters.poNumber) !== -1;
-      const isPermitNumberMatch = filters.permitNumber === "" || job.permit_number.toString().indexOf(filters.permitNumber) !== -1;
-      const isRequestIDMatch = filters.requestID === "" || job.request_id.toString().indexOf(filters.requestID) !== -1;
+      const isIdMatch =  filters.id === null || job.id.toString().indexOf(filters.id) !== -1;
+      const isContactMatch = filters.contact === null || job.contact.toLowerCase().indexOf(filters.contact.toLowerCase()) !== -1;
+      const isStartDateMatch = filters.startDate === null || new Date(job.starttime) >= new Date(filters.startDate);
+      const isEndDateMatch = filters.endDate === null|| new Date(job.endtime) <= new Date(filters.endDate);
+      const isWoMatch = filters.woNumber === null || job.wo_number.toString().indexOf(filters.woNumber) !== -1;
+      const isPoMatch = filters.poNumber === null || job.po_number.toString().indexOf(filters.poNumber) !== -1;
+      const isPermitNumberMatch = filters.permitNumber === null || job.permit_number?.toString().indexOf(filters.permitNumber) !== -1;
+      const isRequestIDMatch = filters.requestID === null || job.request_id.toString().indexOf(filters.requestID) !== -1;
 
       return isIdMatch && isContactMatch && isStartDateMatch && isEndDateMatch && isWoMatch && isPoMatch && isPermitNumberMatch && isRequestIDMatch;
     });
@@ -135,7 +136,7 @@ export default function JobsTable() {
             <TableCards header="Submitted" num={counts.Submitted} icon="bi bi-check-lg" color="text-success" />
           </button>
           <button className="btn btn-link" onClick={() => handleTableTypeChange("All")} style={{ textDecoration: "none" }}>
-            <TableCards header="All jobs" num={counts.New + counts.Declined + counts.Submitted} icon="bi bi-list" color="text-info" />
+            <TableCards header="All jobs" num={counts.New + counts.Declined + counts.Submitted + counts.Approved} icon="bi bi-list" color="text-info" />
           </button>
         </div>
       </div>
@@ -163,13 +164,13 @@ export default function JobsTable() {
               <input
                 type="date"
                 className="form-control"
-                value={filterSettings.startDate} onChange={(e) => handleFilterChange('endDate', e.target.value)} />
+                value={filterSettings.endDate} onChange={(e) => handleFilterChange('endDate', e.target.value)} />
             </div> 
         </div>
         <div>
           <Table data={jobList}
             displayColumns={[
-              "ID", "StartTime", "EndTime", "Status", "Contact", "WO_Number"
+              "ID", "StartTime", "EndTime", "Status", "Company", "Setup", "WO_Number"
             ]}
             handleUpdate={handleJobUpdate}
             handleDelete={handleJobDelete}
