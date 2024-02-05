@@ -9,8 +9,6 @@ import { enCA } from 'date-fns/locale';
 import { useNavigate } from 'react-router-dom';
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
-let users = await getAllUsers();
-
 const locales = {
   "en-CA": enCA
 }
@@ -26,6 +24,7 @@ const localizer = dateFnsLocalizer({
 export default function ToDoPage() {
   const [events, setEvents] = useState([]);
   const [toggle, setToggle] = useState(true);
+  const [isMobileScreen, setIsMobileScreen] = useState(window.innerWidth <= 768);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,7 +33,25 @@ export default function ToDoPage() {
     }
 
     fetchData();
+
+    // Set up resize event listener
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, [toggle]); // Run this effect whenever the toggle state changes
+
+  useEffect(() => {
+    // Initialize isMobileScreen on component mount
+    setIsMobileScreen(window.innerWidth <= 768);
+  }, []);
+
+  const handleResize = () => {
+    // Update isMobileScreen based on screen size when resized
+    setIsMobileScreen(window.innerWidth <= 768);
+  };
 
   async function gettasksForPage() {
     try {
@@ -42,7 +59,7 @@ export default function ToDoPage() {
       let tempEvents = [];
       for (let task of tasks) {
         let event = {
-          title: task.assigned ? users.find(user => user.id === task.assigned).name : 'Unassigned',
+          title: task.assigned ? getAllUsers().find(user => user.id === task.assigned).name : 'Unassigned',
           id: task.id,
           start: task.starttime ? new Date(task.starttime) : new Date(task.endtime),
           end: task.endtime ? new Date(task.endtime) : new Date(task.starttime),
@@ -66,21 +83,22 @@ export default function ToDoPage() {
   return (
     <div>
       <div className="form-check form-switch my-3 mx-5">
-        <label className="form-check-label" for="flexSwitchCheckDefault">Show All tasks</label>
+        <label className="form-check-label" htmlFor="flexSwitchCheckDefault">Show All tasks</label>
         <input className="form-check-input" type="checkbox" id="flexSwitchCheckDefault" onChange={handleToggle}/>
       </div>
-      <Calendar
-        min={new Date(0, 0, 0, 6, 0, 0)}
-        max={new Date(0, 0, 0, 23, 0, 0)}
-        tooltipAccessor={"start"}
-        localizer={localizer}
-        events={events}
-        startAccessor="start"
-        endAccessor="end"
-        style={{ height: "600px", margin: "50px" }}
-        onSelectEvent={(event) => handleEventClick(event)}
-        views={['month', 'day', 'work_week']}
-      />
+      <div>
+        <Calendar
+          defaultView={isMobileScreen ? 'day' : 'month'}
+          tooltipAccessor="start"
+          localizer={localizer}
+          events={events}
+          startAccessor="start"
+          endAccessor="end"
+          style={{ height: '600px', margin: '50px' }}
+          onSelectEvent={(event) => handleEventClick(event)}
+          views={['month', 'day', 'week']}
+        />
+      </div>
     </div>
   );
 }
