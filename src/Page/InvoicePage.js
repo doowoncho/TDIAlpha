@@ -7,7 +7,6 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 
 export default function InvoicePage() {
   const [jobList, setJobList] = useState([]);
-  const [services, setServices] = useState([]);
   const [filterSettings, setFilterSettings] = useState({
     id: "",
     assigned: "",
@@ -20,12 +19,25 @@ export default function InvoicePage() {
     requestID: ""
   });
 
+  let yearArray = [];
+
   async function fetchData() {
     try {
       const data = await getAllJobs();
       if (data == null) return;
 
       const filteredData = data.filter(job => job.status == 'Invoice')
+
+      filteredData.forEach((element) => {
+        const temp = element.endtime.slice(0, 4)
+        if (yearArray.includes(temp)){
+          console.log("hello")
+        }
+        else{
+          yearArray.push(temp)
+        }
+        console.log(yearArray)
+      })
 
       // Sort by newest
       const sortedData = filteredData.sort((jobA, jobB) => {
@@ -43,24 +55,28 @@ export default function InvoicePage() {
     }
   }
 
-  useEffect(() => {
-    // Fetch your data from an API or perform any async operation
-    const fetchData = async () => {
-      // Simulating API response
-      const data = [
-        { id: 1, name: 'Service 1' },
-        { id: 2, name: 'Service 2' },
-        { id: 3, name: 'Service 3' },
-        { id: 4, name: 'More Services' },
-      ];
+  const sortYears = async () => {
+    try {
+      const data = await getAllJobs();
+      if (data == null) return;
 
-      // Set the fetched data to the state
-      setServices(data);
-    };
+      const filteredData = data.filter(job => job.status == 'Invoice')
 
-    // Call the fetchData function
-    fetchData();
-  }, []);
+      // Sort by newest
+      const sortedData = filteredData.sort((jobA, jobB) => {
+        const timeA = jobA.endtime ? new Date(jobA.endtime) : new Date(jobA.starttime);
+        const timeB = jobB.endtime ? new Date(jobB.endtime) : new Date(jobB.starttime);
+        return timeB - timeA;
+      });
+
+      // Jobs filtered by search
+      const filteredDataWithSearchFilters = applySearchFilters(sortedData, filterSettings);
+      setJobList(filteredDataWithSearchFilters);
+
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
 
   const handleJobUpdate = async (id, params) => {
     await updateJob(id, params);
@@ -111,11 +127,8 @@ export default function InvoicePage() {
           <FilterInput label="PO number" value={filterSettings.poNumber} onChange={(value) => handleFilterChange('poNumber', value)} />
           <FilterInput label="Request ID" value={filterSettings.requestID} onChange={(value) => handleFilterChange('requestID', value)} />
         </div>
-        <DropdownButton id="dropdown-basic-button" title="Dropdown button">
-        <Dropdown.Item key={services.id} href={`#action/${services.id}`}>
-                {services.name}
-              </Dropdown.Item>
-        </DropdownButton>
+        <button onClick={sortYears}>Sort by year</button>
+        <select id='year-dropdown'>Select Year</select>
         <Table
             data={jobList}
             displayColumns={["ID", "StartTime", "EndTime", "Status", "Setup", "Contact", "Permit_number", "Notes", "WO_number", "PO_number", "Request_ID", "Company"]}
