@@ -94,7 +94,7 @@ export default function JobsTable() {
       const isPoMatch = filters.poNumber === null || job.po_number.toString().indexOf(filters.poNumber) !== -1;
       const isPermitNumberMatch = filters.permitNumber === null || job.permit_number?.toString().indexOf(filters.permitNumber) !== -1;
       const isRequestIDMatch = filters.requestID === null || job.request_id.toString().indexOf(filters.requestID) !== -1;
-
+      
       return isIdMatch && isContactMatch && isStartDateMatch && isEndDateMatch && isWoMatch && isPoMatch && isPermitNumberMatch && isRequestIDMatch;
     });
   };
@@ -156,7 +156,7 @@ export default function JobsTable() {
               <input
                 type="date"
                 className="form-control"
-                value={filterSettings.startDate} onChange={(e) => handleFilterChange('startDate', e.target.value)} />
+                value={filterSettings.startDate || ''} onChange={(e) => handleFilterChange('startDate', e.target.value)} />
             </div>
 
             <div className="mx-2">
@@ -164,7 +164,7 @@ export default function JobsTable() {
               <input
                 type="date"
                 className="form-control"
-                value={filterSettings.endDate} onChange={(e) => handleFilterChange('endDate', e.target.value)} />
+                value={filterSettings.endDate || ''} onChange={(e) => handleFilterChange('endDate', e.target.value)} />
             </div> 
         </div>
         <div>

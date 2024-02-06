@@ -23,7 +23,8 @@ export default function TasksTable() {
       endtime: null,
       permit_number: null,
       request_id: null,
-      company: null
+      company: null,
+      stamp: null
   });
   const [isEditing, setIsEditing] = useState(false); // State to track edit mode
   //entire list of tasks
@@ -35,6 +36,7 @@ export default function TasksTable() {
         const data = await getTasksByJobId(id);
         const jobData = await getJobById(id);
         setJob(jobData);
+
         //sort by newest
         const sortedData = data.sort((taskA, taskB) => {
           const timeA = taskA.endtime ? new Date(taskA.endtime) : new Date(taskA.starttime);
@@ -47,8 +49,6 @@ export default function TasksTable() {
           try {
             const fetchedFiles = await getFilesById(id);
             setFiles(fetchedFiles);
-            console.log(fetchedFiles);
-            console.log(files);
           } catch (error) {
             console.error(error);
           }
@@ -60,7 +60,6 @@ export default function TasksTable() {
   };
     fetchData();
   }, []);
-
 
   const handletaskUpdate = async (id, params) => {
     await updatetask(id, params);
@@ -89,9 +88,10 @@ export default function TasksTable() {
     setIsEditing(true); // Enable edit mode
   };
 
-  const handleCancelClick = () => {
+  const handleCancelClick = async () => {
     setIsEditing(false); // Enable edit mode
-    window.location.reload()
+    const jobData = await getJobById(id);
+    setJob(jobData);
   };
 
   const saveChanges = async () => {
@@ -106,7 +106,8 @@ export default function TasksTable() {
       phone_number: job.phone_number,
       permit_number: job.permit_number,
       request_id: job.request_id,
-      company: job.company
+      company: job.company,
+      stamp: job.stamp
     }) 
 
     setIsEditing(false); // Disable edit mode after saving changes
@@ -134,55 +135,66 @@ export default function TasksTable() {
               <div className="input-group-prepend">
                 <span className="input-group-text" id="">Contact</span>
               </div>
-              <input type="text" value={job.contact} className="form-control" onChange={(e)=>handleInputChange(e, 'contact')}/>
+              <input type="text" value={job.contact || ''} className="form-control" onChange={(e)=>handleInputChange(e, 'contact')}/>
             </div>
             <div className="input-group">
               <div className="input-group-prepend">
                 <span className="input-group-text" id="">Email</span>
               </div>
-              <input type="text" value={job.email} className="form-control" onChange={(e)=>handleInputChange(e, 'email')}/>
+              <input type="text" value={job.email || ''} className="form-control" onChange={(e)=>handleInputChange(e, 'email')}/>
             </div>
             <div className="input-group">
               <div className="input-group-prepend">
                 <span className="input-group-text" id="">Phone Number</span>
               </div>
-              <input type="text" value={job.phone_number} onChange={(e)=>handleInputChange(e, 'phone_number')} className="form-control"/>
+              <input type="text" value={job.phone_number || ''} onChange={(e)=>handleInputChange(e, 'phone_number')} className="form-control"/>
             </div>
             <div className="input-group d-none d-sm-flex">
               <div className="input-group-prepend">
                 <span className="input-group-text" id="">Status</span>
               </div>
-              <input type="text" value={job.status} className="form-control" readOnly/>
+              <input type="text" value={job.status || ''} className="form-control" readOnly/>
             </div>
             <div className="input-group d-none d-sm-flex">
               <div className="input-group-prepend">
                 <span className="input-group-text" id="">WO Number</span>
               </div>
-              <input type="text" value={job.wo_number} onChange={(e)=>handleInputChange(e, 'wo_number')} className="form-control"/>
+              <input type="text" value={job.wo_number || ''} onChange={(e)=>handleInputChange(e, 'wo_number')} className="form-control"/>
             </div>
             <div className="input-group d-none d-sm-flex">
               <div className="input-group-prepend">
                 <span className="input-group-text" id="">Permit Number</span>
               </div>
-              <input type="text" value={job.permit_number} onChange={(e)=>handleInputChange(e, 'permit_number')} className="form-control"/>
+              <input type="text" value={job.permit_number || ''} onChange={(e)=>handleInputChange(e, 'permit_number')} className="form-control"/>
             </div>
             <div className="input-group d-none d-sm-flex">
               <div className="input-group-prepend">
                 <span className="input-group-text" id="">PO Number</span>
               </div>
-              <input type="text" value={job.po_number} onChange={(e)=>handleInputChange(e, 'po_number')} className="form-control"/>
+              <input type="text" value={job.po_number || ''} onChange={(e)=>handleInputChange(e, 'po_number')} className="form-control"/>
             </div>
             <div className="input-group d-none d-sm-flex">
               <div className="input-group-prepend">
                 <span className="input-group-text" id="">Request ID</span>
               </div>
-              <input type="text" value={job.request_id} onChange={(e)=>handleInputChange(e, 'request_id')} className="form-control"/>
+              <input type="text" value={job.request_id || ''} onChange={(e)=>handleInputChange(e, 'request_id')} className="form-control"/>
             </div>
             <div className="input-group d-none d-sm-flex">
               <div className="input-group-prepend">
                 <span className="input-group-text" id="">Company</span>
               </div>
-              <input type="text" value={job.company} onChange={(e)=>handleInputChange(e, 'company')} className="form-control"/>
+              <input type="text" value={job.company || ''} onChange={(e)=>handleInputChange(e, 'company')} className="form-control"/>
+            </div>
+            <div className="input-group d-none d-sm-flex">
+              <div className="input-group-prepend">
+                <span className="input-group-text" id="">Stamp</span>
+              </div>
+              <select value={job.stamp == null ? "none" : job.stamp} onChange={(e) => handleInputChange(e, 'stamp')}>
+                <option value="stamped">Stamped</option>
+                <option value="reStamped">Re-stamped</option>
+                <option value="rushedStamp">Rushed Stamp</option>
+                <option value="none">None</option>
+              </select>
             </div>
           </fieldset>
       </div>
