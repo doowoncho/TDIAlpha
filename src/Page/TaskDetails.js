@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import { useParams } from 'react-router-dom';
-import { getUserById, gettaskById, updatetask, getJobById, getFilesById } from '../Components/APICalls';
+import { getUserById, gettaskById, updatetask, getJobById, getFilesById, getTasksByJobId } from '../Components/APICalls';
 import '../Styles/TaskDetails.css';
 import FileUpload from '../Components/FileUpload';
 
@@ -54,9 +54,10 @@ export default function Orders() {
     setIsEditing(true); // Enable edit mode
   };
 
-  const handleCancelClick = () => {
+  const handleCancelClick = async () => {
     setIsEditing(false); // Enable edit mode
-    window.location.reload()
+    const task = await gettaskById(id);
+    setTask(task);
   };
 
   const saveChanges = async () => {
