@@ -232,20 +232,73 @@ app.post('/api/createjob', async (req, res) => {
   }
 });
 
-app.post('/api/uploadfile/', async (req, res) => {
+app.post('/api/uploadPhoto/', async (req, res) => {
   try {
-    const { photo_name, photo_file, permit_name, permit_file, permit_confirmation_name, permit_confirmation_file, map_drawing_name, map_file } = req.body;
+    const { job_id, name, file } = req.body;
     
-      const createdFile = await prisma.files.create({
+      const createdFile = await prisma.photos.create({
         data: {
-          photo_name: photo_name,
-          photo_file: photo_file,
-          permit_name: permit_name,
-          permit_file: permit_file,
-          permit_confirmation_name: permit_confirmation_name,
-          permit_confirmation_file: permit_confirmation_file,
-          map_drawing_name: map_drawing_name,
-          map_file: map_file 
+          job_id: job_id,
+          name: name,
+          file: file
+        }
+      });
+      res.json(createdFile);
+    }
+    catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Internal server error'})
+  }
+})
+
+app.post('/api/uploadPermitCon/', async (req, res) => {
+  try {
+    const { job_id, name, file } = req.body;
+    
+      const createdFile = await prisma.permitConfirmations.create({
+        data: {
+          job_id: job_id,
+          name: name,
+          file: file,
+        }
+      });
+      res.json(createdFile);
+      console.log(createdFile);
+    }
+    catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Internal server error'})
+  }
+})
+
+app.post('/api/uploadPermit/', async (req, res) => {
+  try {
+    const { job_id, name, file } = req.body;
+    
+      const createdFile = await prisma.permits.create({
+        data: {
+          job_id: job_id,
+          name: name,
+          file: file,
+        }
+      });
+      res.json(createdFile);
+    }
+    catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Internal server error'})
+  }
+})
+
+app.post('/api/uploadPlan/', async (req, res) => {
+  try {
+    const { job_id, name, file } = req.body;
+    
+      const createdFile = await prisma.plans.create({
+        data: {
+          job_id: job_id,
+          name: name,
+          file: file 
         }
       });
       res.json(createdFile);
@@ -309,14 +362,69 @@ app.post('/api/file/:id', async (req, res) => {
   }
 })
 
+app.delete('/api/deleteFile', async (req, res) => {
+  try {
+    const { name } = req.body;
+    
+    const deletedPhoto = await prisma.photos.deleteMany({
+      where: {
+        name: name,
+      },
+    });
+
+    const deletedPermitCon = await prisma.permitConfirmations.deleteMany({
+      where: {
+        name: name,
+      },
+    });
+
+    const deletedPermits = await prisma.permits.deleteMany({
+      where: {
+        name: name,
+      },
+    });
+
+    const deletedPlans = await prisma.plans.deleteMany({
+      where: {
+        name: name,
+      },
+    });
+
+    console.log(deletedPermitCon, deletedPermits, deletedPhoto, deletedPlans);
+
+    if (deletedPhoto || deletedPermitCon || deletedPermits || deletedPlans) {
+      return res.json({ message: 'File deleted successfully' });
+    } else {
+      return res.status(404).json({ error: 'File not found' });
+    }
+
+    }
+    catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Internal server error'})
+  }
+})
+
 app.get('/api/getFiles/:id', async (req, res) => {
   try {
-    const taskId = parseInt(req.params.id);
-    const files = await prisma.files.findUnique({
-      where: {
-        id: taskId
-      }
-    });
+    const jobId = parseInt(req.params.id);
+    // const files = await prisma.files.findUnique({
+    //   where: {
+    //     id: taskId
+    //   }
+    // });
+    // Fetch data from all tables based on the job_id
+    const photo = await prisma.photos.findMany({ where: { job_id: jobId } });
+    const permit = await prisma.permits.findMany({ where: { job_id: jobId } });
+    const permitConfirmation = await prisma.permitConfirmations.findMany({ where: { job_id: jobId } });
+    const plan = await prisma.plans.findMany({ where: { job_id: jobId } });
+    
+    const files = {
+      photo,
+      permit,
+      permitConfirmation,
+      plan
+    }
     if (files) {
       res.json(files);
     } else {

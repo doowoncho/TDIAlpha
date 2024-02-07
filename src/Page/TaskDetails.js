@@ -188,26 +188,26 @@ export default function Orders() {
       </div>
 
     <div className='container my-2'>
-      <div className="card">
+      <div className="card d-none d-sm-flex">
         <div className="card-header">
           Files
         </div>
         <div className="d-flex flex-wrap justify-content-center">
           <div className="mx-2 my-2">
             <label htmlFor="formFileDisabled" className="form-label my-1">Permit Confirmation</label>
-            <FileUpload type="p_confirm" task={files.permit_confirmation_file} name={files.permit_confirmation_name} giveID={jobID.toString()}></FileUpload>
+            <FileUpload type="permitConfirmation" giveID={jobID.toString()}></FileUpload>
           </div>
           <div className="mx-2 my-2">
             <label htmlFor="formFileDisabled" className="form-label my-1">Permit</label>
-            <FileUpload type="permit" task={files.permit_file} name={files.permit_name} giveID={jobID.toString()}></FileUpload>
+            <FileUpload type="permit" giveID={jobID.toString()}></FileUpload>
           </div>
           <div className="mx-2 my-2">
             <label htmlFor="formFileDisabled" className="form-label my-1">Map Drawing</label>
-            <FileUpload type="map" task={files.map_file} name={files.map_drawing_name} giveID={jobID.toString()}></FileUpload>
+            <FileUpload type="plan" giveID={jobID.toString()}></FileUpload>
           </div>
           <div className="mx-2 my-2">
             <label htmlFor="formFileDisabled" className="form-label my-1">Photo</label>
-            <FileUpload type="photo" task={files.photo_file} name={files.photo_name} giveID={jobID.toString()}></FileUpload>
+            <FileUpload type="photo" giveID={jobID.toString()}></FileUpload>
           </div>
         </div>
       </div>

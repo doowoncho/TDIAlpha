@@ -1,15 +1,14 @@
 // FileUpload.js
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { storage } from '../Components/Firebase';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { files, getFilesById, updateFiles, uploadFile } from './APICalls';
-import { useParams } from 'react-router-dom';
+import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
+import { files, getFilesById, uploadPhoto, uploadPermitCon, uploadPermit, uploadPlan, deleteFile } from './APICalls';
 
-function FileUpload({type, task, name, giveID}) {
+function FileUpload({type, giveID}) {
   const [file, setFile] = useState(null);
-  // const { id } = useParams();
   const id = giveID;
+  const [filesData, setFilesData] = useState(null);
   const [uploaded, setUploaded] = useState({
     "p_confirm": false,
     "permit": false,
@@ -22,31 +21,33 @@ function FileUpload({type, task, name, giveID}) {
     "photo": ""
   })
   let fileBlob;
-  const fileType = {
-    "p_confirm": "bi bi-file-check",
-    "permit": "bi bi-file-text",
-    "map": "bi bi-map",
-    "photo": "bi bi-image"
-  }
+
+  const fetchData = async () => {
+    try {
+      const response = await getFilesById(id);
+      setFilesData(response[type] || []);
+    } catch (error) {
+      console.error('Error fetching files:', error);
+    }
+  };
+
+  // Call the fetchData function when the component mounts or when id changes
+  useEffect(() => {
+    fetchData();
+  }, [id, type]);
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     setFile(selectedFile);
   };
 
-  async function handleDelete(id, type){
-    let deleteFile
-    if(type === "p_confirm"){
-      deleteFile = {permit_confirmation_file: "", permit_confirmation_name: ""};
-    }else if(type === "permit"){
-      deleteFile = {permit_file: "", permit_name: ""};
-    }else if(type === "map"){
-      deleteFile = {map_file: "", map_drawing_name: ""};
-    }else{
-      deleteFile = {photo_file: "", photo_name: ""};
-    }   
-    files(id, deleteFile)
-    window.location.reload()
+  async function handleDelete(filename){
+    console.log(filename);
+    await deleteFile({filename});
+    const fileDelete = ref(storage, `${filename}`);
+    await deleteObject(fileDelete);
+    window.location.reload();
+
   }
   
   async function handleUpload(){
@@ -57,60 +58,78 @@ function FileUpload({type, task, name, giveID}) {
       });
     
     await getDownloadURL(ref(storage, `${file.name}`))
-      .then((url) => {
-        // `url` is the download URL for 'images/stars.jpg'
-        fileBlob = url
-      })
-
-      let update = {};
-      if(type === "p_confirm"){
-        update = {permit_confirmation_file: fileBlob, permit_confirmation_name: file.name};
+    .then((url) => {
+      // `url` is the download URL for 'images/stars.jpg'
+      fileBlob = url
+    })
+    
+    let id_int = parseInt(giveID);
+      let update = {
+        job_id: id_int,
+        name: file.name,
+        file: fileBlob
+      };
+      if(type === "permitConfirmation"){
+        console.log(update);
+        await uploadPermitCon(update);
       }else if(type === "permit"){
-        update = {permit_file: fileBlob, permit_name: file.name};
-      }else if(type === "map"){
-        update = {map_file: fileBlob, map_drawing_name: file.name};
+        await uploadPermit(update);
+      }else if(type === "plan"){
+        await uploadPlan(update);
       }else{
-        update = {photo_file: fileBlob, photo_name: file.name};
+        await uploadPhoto(update);
       }
 
       console.log(id);
       console.log(giveID);
 
-      await files(id, update);
+      // await files(id, update);
       
       const updatedUploaded = { ...uploaded, [type]: true };
       const updatedFileName = { ...fileName };
       
       setUploaded(updatedUploaded);
-      setFileName(updatedFileName)
+      setFileName(updatedFileName);
 
       window.location.reload();
   }
 
   return (
     <>
-      {task ? (
-          <div className={`card border border-success bg-light mx-2`} style={{maxWidth:'300px'}}>
-            <div className="card-body">
-              <div style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
-                <a href={task} target="_blank"><i className={`${fileType[type]}`} style={{ fontSize: "2rem" }}></i></a>
+    {filesData && filesData.length > 0 ? (
+      <div className={`card border border-success bg-light mx-2`} style={{ maxWidth: '300px' }}>
+        <div className="card-body">
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {filesData.map((fileItem) => (
+              <div key={fileItem.id}>
+                <p className='mb-1'>
+                  <a href={fileItem.file} target="_blank" rel="noopener noreferrer">
+                    {fileItem.name}
+                  </a>
+                </p>
+                <button className='btn btn-outline-danger mb-2' onClick={() => handleDelete(fileItem.name)}>
+                  Delete File
+                </button>
               </div>
-              <div style={{display:"flex", flexDirection:"column"}}>
-                  <input type="file" onChange={handleFileChange}/>
-                  <button onClick={handleUpload}>Replace File</button>
-                  <button className='btn btn-outline-danger mt-3' onClick={()=>handleDelete(id, type)}>Delete File</button>
-              </div>
-            </div>
+            ))}
+            <input type="file" onChange={handleFileChange} className='mt-3'/>
+            <button className='my-2' onClick={handleUpload}>
+              Upload File
+            </button>
           </div>
-      ) : (
-          <div className='card mx-2' style={{maxWidth:'300px'}}>
-            <div className="card-body">
-              <input type="file" onChange={handleFileChange}/>
-              <button className='my-2' onClick={handleUpload}>Upload File</button>
-            </div>
-          </div>
-      )}
-    </>
+        </div>
+      </div>
+    ) : (
+      <div className='card mx-2' style={{ maxWidth: '300px' }}>
+        <div className="card-body">
+          <input type="file" onChange={handleFileChange} />
+          <button className='my-2 w-100' onClick={handleUpload}>
+            Upload File
+          </button>
+        </div>
+      </div>
+    )}
+  </>
   );
 }
 
