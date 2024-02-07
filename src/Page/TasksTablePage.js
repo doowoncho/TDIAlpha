@@ -4,6 +4,7 @@ import { getAlltasks, updatetask, deletetask, getUserById, getAllUsers, getTasks
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Table from "../Components/Table";
 import { useParams } from "react-router-dom";
+import moment from "moment";
  
 let user = await getUserById(window.sessionStorage.getItem("user"))
 
@@ -24,7 +25,9 @@ export default function TasksTable() {
       permit_number: null,
       request_id: null,
       company: null,
-      stamp: null
+      stamp: null,
+      starttime: null,
+      endtime: null
   });
   const [isEditing, setIsEditing] = useState(false); // State to track edit mode
   //entire list of tasks
@@ -95,6 +98,8 @@ export default function TasksTable() {
   };
 
   const saveChanges = async () => {
+    var newStartTime = job.starttime ? new Date(job.starttime) : null
+    var newEndTime = job.endtime ? new Date(job.endtime) : null
     await updateJob(job.id, 
     {
       contact:job.contact, 
@@ -107,7 +112,9 @@ export default function TasksTable() {
       permit_number: job.permit_number,
       request_id: job.request_id,
       company: job.company,
-      stamp: job.stamp
+      stamp: job.stamp,
+      starttime: newStartTime,
+      endtime: newEndTime
     }) 
 
     setIsEditing(false); // Disable edit mode after saving changes
@@ -195,6 +202,20 @@ export default function TasksTable() {
                 <option value="rushedStamp">Rushed Stamp</option>
                 <option value="none">None</option>
               </select>
+            </div>
+            <div className="input-group d-none d-sm-flex">
+              <div className="input-group-prepend">
+                <span className="input-group-text" id="">Start Time</span>
+              </div>
+                    <input type="datetime-local" className="form-control" id="startDate" value={moment(job.starttime).format('YYYY-MM-DDTHH:mm')}
+                    onChange={(e) => handleInputChange(e, 'starttime')}/>
+            </div>
+            <div className="input-group d-none d-sm-flex">
+              <div className="input-group-prepend">
+                <span className="input-group-text" id="">End Time</span>
+              </div>
+                    <input type="datetime-local" className="form-control" id="startDate" value={moment(job.endtime).format('YYYY-MM-DDTHH:mm')}
+                    onChange={(e) => handleInputChange(e, 'endtime')}/>
             </div>
           </fieldset>
       </div>

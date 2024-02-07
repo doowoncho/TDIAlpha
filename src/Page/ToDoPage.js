@@ -9,6 +9,8 @@ import { enCA } from 'date-fns/locale';
 import { useNavigate } from 'react-router-dom';
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
+let users = await getAllUsers();
+
 const locales = {
   "en-CA": enCA
 }
@@ -59,10 +61,11 @@ export default function ToDoPage() {
       let tempEvents = [];
       for (let task of tasks) {
         let event = {
-          title: task.assigned ? getAllUsers().find(user => user.id === task.assigned).name : 'Unassigned',
+          title: task.assigned ? users.find(user => user.id === task.assigned).name + ': ' + task.type : 'Unassigned: ' + task.type,
           id: task.id,
           start: task.starttime ? new Date(task.starttime) : new Date(task.endtime),
           end: task.endtime ? new Date(task.endtime) : new Date(task.starttime),
+          color: task.assigned ? users.find(user => user.id === task.assigned).color : ''
         };
         tempEvents.push(event);
       }
@@ -78,6 +81,15 @@ export default function ToDoPage() {
 
   const handleToggle = () => {
     setToggle(!toggle);
+  };
+
+  const eventStyleGetter = (event) => {
+    const backgroundColor = event.color;
+    return {
+      style: {
+        backgroundColor,
+      },
+    };
   };
 
   return (
@@ -97,6 +109,7 @@ export default function ToDoPage() {
           style={{ height: '600px', margin: '50px' }}
           onSelectEvent={(event) => handleEventClick(event)}
           views={['month', 'day', 'week']}
+          eventPropGetter={eventStyleGetter}
         />
       </div>
     </div>

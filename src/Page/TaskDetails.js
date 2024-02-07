@@ -63,13 +63,23 @@ export default function Orders() {
   const saveChanges = async () => {
     var newStartTime = task.starttime ? new Date(task.starttime) : null
     var newEndTime = task.endtime ? new Date(task.endtime) : null
-
+    var taskType
+    if(newStartTime && newEndTime){
+      taskType = 'both'
+    }
+    else if(newStartTime){
+      taskType = 'place'
+    }
+    else if(newEndTime){
+      taskType = 'pickup'
+    }
     await updatetask(task.id, 
     {
       starttime: newStartTime,
       endtime: newEndTime, 
       notes: task.notes,
-      setup: task.setup
+      setup: task.setup,
+      type: taskType
     }) 
 
     setIsEditing(false); // Disable edit mode after saving changes
