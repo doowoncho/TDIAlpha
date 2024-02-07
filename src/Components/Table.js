@@ -35,17 +35,15 @@ function renderTableCell({ property, column, handleUpdate, currentPath }) {
 
   if (name === 'id') {
     return  currentPath.includes('/taskspage') ? <a href={`/taskdetails/${property.id}`} className="no-link-style">{property.id}</a> : <a href={`/taskspage/${property.id}`} className="no-link-style">{property.id}</a>;
-  } else if (name === 'assigned' && user.permission === 1) {
-    return <RenderAssignedDropdown property={property} handleUpdate={handleUpdate} />;
-  } else if (name === 'assigned') {
-    if (property[name] == null) {
-      return 'Not Assigned';
-    }
-    return users.filter(x => x.id == property[name])[0].name;
-  } else if (name === 'starttime' || name === 'endtime') {
-    if (property[name]) {
-      return moment(property[name]).format('MMMM DD YYYY h:mmA');
-    }
+  } else if (name === 'assigned'){
+      if(user.permission === 1){
+        return <RenderAssignedDropdown property={property} handleUpdate={handleUpdate} />;
+      }
+      else{
+        return property[name] ? users.filter(x => x.id == property[name])[0].name : 'Not Assigned';
+      }
+  }else if (name === 'starttime' || name === 'endtime') {
+      return property[name] ? moment(property[name]).format('MMMM DD YYYY h:mmA') : "";
   } else if (name === 'status') {
     return (
       <Dropdown>

@@ -42,6 +42,7 @@ model users {
   permission Int?
   email      String? @db.VarChar(50)
   password   String? @db.VarChar(50)
+  color      String? @db.VarChar(50)
 }
 
 model files {
