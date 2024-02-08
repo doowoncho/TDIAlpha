@@ -6,7 +6,7 @@ const FilterInput = ({ label, value, onChange }) => {
   };
 
   return (
-    <div className="mx-2">
+    <div className="me-2">
       <label className="form-label">{label}</label>
       <input
         type="text"
