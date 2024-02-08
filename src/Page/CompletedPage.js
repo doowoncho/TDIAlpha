@@ -3,6 +3,7 @@ import { useEffect, useState  } from "react";
 import { getAllJobs, deleteJob, updateJob} from "../Components/APICalls";
 import FilterInput from "../Components/FilterInput";
 import Select from "react-select";
+import { applySearchFilters } from "../Helpers/SearchUtils";
 
 const options = [
   { value: 'id', label: 'Id'},
@@ -14,11 +15,6 @@ const options = [
   { value: 'setup', label: 'Setup'},
   { value: 'company', label: 'Company'}
 ];
-
-function extraDay (date) {
-  date.setDate(date.getDate() + 1)
-  return date
-}
 
 export default function CompletedPage() {
   const [jobList, setJobList] = useState([]);
@@ -53,35 +49,13 @@ export default function CompletedPage() {
       });
 
       // Jobs filtered by search
-      const filteredDataWithSearchFilters = applySearchFilters(sortedData);
+      const filteredDataWithSearchFilters = applySearchFilters(sortedData, search, filters);
       setJobList(filteredDataWithSearchFilters);
 
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   }
-
-  const applySearchFilters = (data) => {
-    //get date ranges to work and it is perfect haha
-    if(Object.values(filters).every(value => value === false)){
-      return data
-    }
-
-    data = filters.startDate ? data.filter((job) => new Date(job.starttime) >= new Date(filters.startDate)) : data
-    data = filters.endDate ? data.filter((job) => new Date(job.endtime) <= extraDay((new Date(filters.endDate)))) : data
-
-    return data.filter((job) => {
-      const isIdMatch = filters.id === true && job.id.toString().indexOf(search) !== -1;
-      const isContactMatch = filters.contact === true && job.contact.toLowerCase().indexOf(search.toLowerCase()) !== -1;
-      const isWoMatch = filters.woNumber === true && job.wo_number.toString().indexOf(search) !== -1;
-      const isPoMatch = filters.poNumber === true && job.po_number.toString().indexOf(search) !== -1;
-      const isPermitNumberMatch = filters.permitNumber === true && job.permit_number?.toString().indexOf(search) !== -1;
-      const isRequestIDMatch = filters.requestID === true && job.request_id.toString().indexOf(search) !== -1;
-      const isSetupMatch = filters.setup === true && job.setup.toString().indexOf(search) !== -1;
-      const isCompanyMatch = filters.company === true && job.company.toString().indexOf(search) !== -1;
-      return isIdMatch || isSetupMatch || isContactMatch || isWoMatch || isPoMatch || isPermitNumberMatch || isRequestIDMatch || isCompanyMatch;
-    });
-  };
 
   const handleJobUpdate = async (id, params) => {
     await updateJob(id, params);
