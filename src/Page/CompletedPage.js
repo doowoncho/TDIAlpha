@@ -2,20 +2,36 @@ import Table from "../Components/Table";
 import { useEffect, useState  } from "react";
 import { getAllJobs, deleteJob, updateJob} from "../Components/APICalls";
 import FilterInput from "../Components/FilterInput";
+import Select from "react-select";
+import { applySearchFilters } from "../Helpers/SearchUtils";
+
+const options = [
+  { value: 'id', label: 'Id'},
+  { value: 'contact', label: 'Contact'},
+  { value: 'woNumber', label: 'WO Number'},
+  { value: 'poNumber', label: 'PO Number'},
+  { value: 'permitNumber', label: 'Permit Number'},
+  { value: 'requestID', label: 'Request Id'},
+  { value: 'setup', label: 'Setup'},
+  { value: 'company', label: 'Company'}
+];
 
 export default function CompletedPage() {
   const [jobList, setJobList] = useState([]);
   const [year, setYear] = useState([2016])
-  const [filterSettings, setFilterSettings] = useState({
-    id: "",
-    assigned: "",
-    contact: "",
-    startDate: "",
-    endDate: "",
-    woNumber: "",
-    poNumber: "",
-    permitNumber: "",
-    requestID: ""
+  const [search, setSearch] = useState([]);
+  const [filters, setFilters] = useState({
+    id: false,
+    assigned: false,
+    contact: false,
+    startDate: false,
+    endDate: false,
+    woNumber: false,
+    poNumber: false,
+    permitNumber: false,
+    requestID: false,
+    setup: true,
+    company: false
   });
 
   async function fetchData() {
@@ -33,27 +49,13 @@ export default function CompletedPage() {
       });
 
       // Jobs filtered by search
-      const filteredDataWithSearchFilters = applySearchFilters(sortedData, filterSettings);
+      const filteredDataWithSearchFilters = applySearchFilters(sortedData, search, filters);
       setJobList(filteredDataWithSearchFilters);
 
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   }
-
-  const applySearchFilters = (data, filters) => {
-    return data.filter((job) => {
-      const isIdMatch = filters.id === "" || job.id.toString().indexOf(filters.id) !== -1;
-      const isContactMatch = filters.contact === "" || job.contact.toLowerCase().indexOf(filters.contact.toLowerCase()) !== -1;
-      const isStartDateMatch = filters.startDate === "" || new Date(job.starttime) >= new Date(filters.startDate);
-      const isEndDateMatch = filters.endDate === "" || new Date(job.endtime) <= new Date(filters.endDate);
-      const isWoMatch = filters.woNumber === "" || job.wo_number.toString().indexOf(filters.woNumber) !== -1;
-      const isPoMatch = filters.poNumber === "" || job.po_number.toString().indexOf(filters.poNumber) !== -1;
-      const isPermitNumberMatch = filters.permitNumber === "" || job.permit_number.toString().indexOf(filters.permitNumber) !== -1;
-      const isRequestIDMatch = filters.requestID === "" || job.request_id.toString().indexOf(filters.requestID) !== -1;
-      return isIdMatch && isContactMatch && isStartDateMatch && isEndDateMatch && isWoMatch && isPoMatch && isPermitNumberMatch && isRequestIDMatch;
-    });
-  };
 
   const handleJobUpdate = async (id, params) => {
     await updateJob(id, params);
@@ -65,29 +67,79 @@ export default function CompletedPage() {
     fetchData()
   };
 
-  const handleFilterChange = (param, value) => {
-    setFilterSettings((prevSettings) => ({
-      ...prevSettings,
-      [param]: value
-    }));
+  const handleSearchChange = (value) => {
+    setSearch(value)
   };
+
+  const handleDateChange = (event, param) => {
+    const { value } = event.target;
+    setFilters({...filters,
+      [param]: value
+    });
+  };
+
+  const handleFilterChange = (selectedOptions) => {
+    const updatedSettings = { 
+      id: false,
+      assigned: false,
+      contact: false,
+      woNumber: false,
+      poNumber: false,
+      permitNumber: false,
+      requestID: false,
+      setup: false,
+      company: false
+    };
+
+    for(let i = 0; i<selectedOptions.length; i++){
+      updatedSettings[selectedOptions[i].value] = true
+    }
+
+    setFilters(updatedSettings);
+  }
 
   useEffect(() => {
     fetchData();
-  }, [filterSettings]);
+  }, [filters, search]);
 
   return (
       <div>
       <header className='container text-center my-4'>
         <h1>Complete Jobs - To Be Invoiced</h1>
         <div className="d-flex justify-content-center flex-wrap my-3">
-          <FilterInput label="ID" value={filterSettings.id} onChange={(value) => handleFilterChange('id', value)} />
-            
-          <FilterInput label="WO#" value={filterSettings.woNumber} onChange={(value) => handleFilterChange('woNumber', value)} />
-          <FilterInput label="Contact" value={filterSettings.contact} onChange={(value) => handleFilterChange('contact', value)} />
-          <FilterInput label="Permit Number" value={filterSettings.permitNumber} onChange={(value) => handleFilterChange('permitNumber', value)} />
-          <FilterInput label="PO number" value={filterSettings.poNumber} onChange={(value) => handleFilterChange('poNumber', value)} />
-          <FilterInput label="Request ID" value={filterSettings.requestID} onChange={(value) => handleFilterChange('requestID', value)} />
+        <div>
+          <label className="form-label">Filters</label>
+            <Select
+              defaultValue={[options[6]]}
+              isMulti
+              name="colors"
+              options={options}
+              className="basic-multi-select"
+              classNamePrefix="select"
+              onChange={handleFilterChange}
+              on
+            />
+        </div>
+          
+            <FilterInput label="Search" value={search} onChange={(value) => handleSearchChange(value)} />
+
+            <div className="mx-2">
+              <label className="form-label">Start Date</label>
+              <input
+                type="date"
+                className="form-control"
+                onChange={(e) => handleDateChange(e,'startDate')}
+                />
+            </div>
+
+            <div className="mx-2">
+              <label className="form-label">End Date</label>
+              <input
+                type="date"
+                className="form-control"
+                onChange={(e) => handleDateChange(e,'endDate')}
+                />
+            </div> 
         </div>
         <Table
             data={jobList}
