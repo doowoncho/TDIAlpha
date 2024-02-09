@@ -90,4 +90,5 @@ model contacts {
   name         String? @db.VarChar(50)
   phone_number String? @db.VarChar(50)
   email        String? @db.VarChar(50)
+  company      String? @db.VarChar(50)
 }

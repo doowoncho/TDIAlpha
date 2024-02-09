@@ -4,18 +4,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import Table from "../Components/Table";
 import FilterInput from "../Components/FilterInput";
 import Select from "react-select";
-import { applySearchFilters } from "../Helpers/SearchUtils";
-
-const options = [
-  { value: 'id', label: 'Id'},
-  { value: 'contact', label: 'Contact'},
-  { value: 'woNumber', label: 'WO Number'},
-  { value: 'poNumber', label: 'PO Number'},
-  { value: 'permitNumber', label: 'Permit Number'},
-  { value: 'requestID', label: 'Request Id'},
-  { value: 'setup', label: 'Setup'},
-  { value: 'company', label: 'Company'}
-];
+import { applySearchFilters, options } from "../Helpers/SearchUtils";
 
 const TableCards = ({ bg, header, icon, color, num }) => (
   <div className={`card ${bg} mx-2 border p-2 bg-white rounded`}>
@@ -52,9 +41,6 @@ export default function JobsTable() {
     setup: true,
     company: false
   });
-
-  // Entire list of jobs
-  const originalDataRef = useRef(null);
 
   const fetchData = async () => {
     try {
@@ -96,7 +82,7 @@ export default function JobsTable() {
 
   useEffect(() => {
     fetchData();
-  }, [tableType, filters, search]);
+  }, [tableType, filters, search, jobList]);
 
   const handleTableTypeChange = (newTableType) => {
     if (tableType !== newTableType) {

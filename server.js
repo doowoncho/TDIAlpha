@@ -47,26 +47,9 @@ app.get('/api/jobs', async (req, res) => {
   }
 });
 
-//gets all tasks with specific criteria... takes in an object with the properties
-app.get('/api/specifictasks', async (req, res) => {
+app.get('/api/contacts', async (req, res) => {
   try {
-    const { id, contact, starttime, endtime, status, setup, permit_number, notes, wo_number, po_number, assigned, npat} = req.query
-    const posts = await prisma.tasks.findMany({
-      where: {
-        contact: contact,
-        id: id, 
-        status: status,
-        setup: setup,
-        permit_number: permit_number, 
-        notes: notes, 
-        wo_number: wo_number, 
-        po_number: po_number,
-        assigned : assigned,
-        starttime: starttime ?? null,
-        endtime: endtime ?? null,
-        npat: npat
-      },
-    });
+    const posts = await prisma.contacts.findMany();
     res.json(posts);
   } catch (error) {
     console.error(error);
@@ -215,6 +198,24 @@ app.post('/api/createtask', async (req, res) => {
       },
     });
     res.json(newtask);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.post('/api/createContact', async (req, res) => {
+  const { name, company, phone_number, email } = req.body
+  try {
+    const newContact = await prisma.contacts.create({
+      data: {
+        name: name,
+        company: company, 
+        phone_number: phone_number,
+        email: email
+      },
+    });
+    res.json(newContact);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });

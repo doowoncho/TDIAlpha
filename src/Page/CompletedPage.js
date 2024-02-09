@@ -3,18 +3,7 @@ import { useEffect, useState  } from "react";
 import { getAllJobs, deleteJob, updateJob} from "../Components/APICalls";
 import FilterInput from "../Components/FilterInput";
 import Select from "react-select";
-import { applySearchFilters } from "../Helpers/SearchUtils";
-
-const options = [
-  { value: 'id', label: 'Id'},
-  { value: 'contact', label: 'Contact'},
-  { value: 'woNumber', label: 'WO Number'},
-  { value: 'poNumber', label: 'PO Number'},
-  { value: 'permitNumber', label: 'Permit Number'},
-  { value: 'requestID', label: 'Request Id'},
-  { value: 'setup', label: 'Setup'},
-  { value: 'company', label: 'Company'}
-];
+import { applySearchFilters, options } from "../Helpers/SearchUtils";
 
 export default function CompletedPage() {
   const [jobList, setJobList] = useState([]);
@@ -100,7 +89,7 @@ export default function CompletedPage() {
 
   useEffect(() => {
     fetchData();
-  }, [filters, search]);
+  }, [filters, search, jobList]);
 
   return (
       <div>

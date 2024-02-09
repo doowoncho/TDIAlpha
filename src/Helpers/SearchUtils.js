@@ -1,3 +1,14 @@
+export const options = [
+  { value: 'id', label: 'Id'},
+  { value: 'contact', label: 'Contact'},
+  { value: 'woNumber', label: 'WO Number'},
+  { value: 'poNumber', label: 'PO Number'},
+  { value: 'permitNumber', label: 'Permit Number'},
+  { value: 'requestID', label: 'Request Id'},
+  { value: 'setup', label: 'Setup'},
+  { value: 'company', label: 'Company'}
+];
+
 export function applySearchFilters(data, search, filters) {
     search = search && typeof search === 'string' ? search.toLowerCase() : '';
 
@@ -12,7 +23,7 @@ export function applySearchFilters(data, search, filters) {
       ? data.filter((job) => new Date(job.endtime) <= extraDay(new Date(filters.endDate)))
       : data;
   
-    return data.filter((job) => {
+    return data?.filter((job) => {
       const isIdMatch = filters.id === true && job.id.toString().indexOf(search) !== -1;
       const isContactMatch = filters.contact === true && job.contact.toLowerCase().indexOf(search) !== -1;
       const isWoMatch = filters.woNumber === true && job.wo_number.toString().toLowerCase().indexOf(search) !== -1;

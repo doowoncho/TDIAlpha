@@ -5,18 +5,7 @@ import FilterInput from "../Components/FilterInput";
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Select from "react-select";
-import { applySearchFilters } from "../Helpers/SearchUtils";
-
-const options = [
-  { value: 'id', label: 'Id'},
-  { value: 'contact', label: 'Contact'},
-  { value: 'woNumber', label: 'WO Number'},
-  { value: 'poNumber', label: 'PO Number'},
-  { value: 'permitNumber', label: 'Permit Number'},
-  { value: 'requestID', label: 'Request Id'},
-  { value: 'setup', label: 'Setup'},
-  { value: 'company', label: 'Company'}
-];
+import { applySearchFilters, options } from "../Helpers/SearchUtils";
 
 export default function InvoicePage() {
   const [jobList, setJobList] = useState([]);
@@ -102,7 +91,7 @@ export default function InvoicePage() {
 
   useEffect(() => {
     fetchData();
-  }, [filters, search]);
+  }, [filters, search, jobList]);
 
 
   return (
@@ -120,7 +109,6 @@ export default function InvoicePage() {
               className="basic-multi-select"
               classNamePrefix="select"
               onChange={handleFilterChange}
-              on
             />
         </div>
           
