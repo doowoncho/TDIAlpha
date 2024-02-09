@@ -201,6 +201,7 @@ function FormPage() {
                 classNamePrefix="select"
                 placeholder="Enter contact"
                 onChange={handleContactSelect}
+                getOptionLabel={(contacts) => `${contacts.label}: ${contacts.data.email}`}
                 required
             />
           </div>
