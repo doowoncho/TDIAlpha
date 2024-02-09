@@ -78,7 +78,7 @@ app.get('/api/specifictasks', async (req, res) => {
 app.put('/api/updatetask/:id', async (req, res) => {
   try {
     const taskId = parseInt(req.params.id) //id of task we are changing
-    const { starttime, endtime, setup, notes, assigned, jobId, completed } = req.body
+    const { starttime, endtime, setup, notes, assigned, jobId, completed, type } = req.body
     const task = await prisma.tasks.update({
       where: {
         id: taskId
@@ -90,7 +90,8 @@ app.put('/api/updatetask/:id', async (req, res) => {
         endtime: endtime,
         job_id: jobId,
         assigned: assigned,
-        completed: completed
+        completed: completed,
+        type: type
       }
     });
     res.json(task);

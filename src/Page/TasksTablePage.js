@@ -100,6 +100,7 @@ export default function TasksTable() {
   const saveChanges = async () => {
     var newStartTime = job.starttime ? new Date(job.starttime) : null
     var newEndTime = job.endtime ? new Date(job.endtime) : null
+
     await updateJob(job.id, 
     {
       contact:job.contact, 
