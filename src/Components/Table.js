@@ -182,7 +182,7 @@ export default function Table({ data, displayColumns, handleUpdate, handleDelete
               </td>
             ))}
             <td>
-              <button className='my-1 btn btn-outline-danger' onClick={() => { handleDelete(property.id) }}>
+              <button className='my-1 btn btn-outline-danger' onClick={() => handleDelete(property.id)}>
                 <i className="bi bi-trash"></i> Delete
               </button>
             </td>

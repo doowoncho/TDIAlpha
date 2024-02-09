@@ -1,18 +1,41 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '../Components/Firebase';
-import { createJob, createtask, uploadPhoto, getTasksByJobId, updateJob } from '../Components/APICalls';
+import { createJob, createtask, uploadPhoto, getTasksByJobId, updateJob, getAllContacts, createContact } from '../Components/APICalls';
 import DateInput from '../Components/DateInput';
 import { useNavigate } from "react-router-dom";
-import moment from 'moment';
+import CreatableSelect from 'react-select/creatable';
+import { createTaskForDate, createTasksForExWeekend, createTasksForRepeat } from '../Helpers/DateUtils';
 
 function FormPage() {
   const [dates, setDates] = useState([{ startDate: '', startTime: '', endDate: '', endTime: '', exWeekend: false, twentyFour: false, repeat: false }]);
   const [file, setFile] = useState(null);
+  const [contact, setContact] = useState(null);
+  const [contacts, setContacts] = useState(null)
   const [loading, setLoading] = useState(false); // New loading state
   const navigate = useNavigate();
 
+
+  useEffect(() => {
+    async function fetchContacts() {
+      const data = await getAllContacts();
+      const formattedOptions = data.map(contact => ({
+        label: contact.name,
+        data: contact // Store all contact data in 'data' property
+      }));
+      setContacts(formattedOptions);
+    }
+
+    fetchContacts();
+  }, []);
+
+  const handleContactSelect = (contact) => {
+    setContact(contact)
+    document.getElementById('companyName').value = contact.data != null ? contact.data.company : '';
+    document.getElementById('email').value = contact.data != null ? contact.data.email : '';
+    document.getElementById('phoneNumber').value = contact.data != null ? contact.data.phone_number : '';
+  };
 
   const handleDateChange = (index, field, value) => {
     const updatedDates = [...dates];
@@ -66,77 +89,9 @@ function FormPage() {
         await uploadPhoto(update);
       }
     }
-    
-    //DATE LOGIC
-    const createTaskForDate = async (startDate, startTime, endDate, endTime, job, location, taskType = "both") => {
-      let startDateTime 
-      let endDateTime 
-      
-      //different pick up and place days
-      if(startDate && endDate){
-        startDateTime= new Date(startDate + 'T' + startTime);
-        endDateTime= new Date(endDate + 'T' + endTime);
-      }
-      // same day pickup and place
-      else if (startDate && endTime){
-        startDateTime = new Date(startDate + 'T' + startTime);
-        endDateTime = new Date(startDate + 'T' + endTime);
-      }
-      // just place
-      else if (startDate && startTime){
-        startDateTime = new Date(startDate + 'T' + startTime);
-      }
-      //npat 
-      else if(startDate){
-        startDateTime = startDate
-      }
-      //just pickup
-      else{
-        endDateTime = new Date(endDate + 'T' + endTime);
-      }
-    const newtask = {
-      starttime: startDateTime,
-      endtime: endDateTime,
-      job_id: job.id,
-      setup: location,
-      completed: false,
-      type: taskType
-    };
-    await createtask(newtask);
-  };
-  
-  const createTasksForExWeekend = async (startDate, startTime, endDate, endTime, job, location) => {
-    let currentDate = new Date(startDate);
-    //creates first task
-    currentDate.setDate(currentDate.getDate() + 1)
-    await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, moment(currentDate).format('YYYY-MM-DD'), endTime, job, location);
-
-    while (currentDate <= new Date(endDate)) {
-      if (currentDate.getDay() === 5) {
-        // Task to pick up the sign on Fridays
-        await createTaskForDate(null, null, moment(currentDate).format('YYYY-MM-DD'), endTime, job, location, "pickup");
-      }
-      else if(currentDate.getDay() != 6 && currentDate.getDay() != 0){
-        //Task to keep repeating
-        await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, moment(currentDate).format('YYYY-MM-DD'), endTime, job, location);
-      }
-      currentDate.setDate(currentDate.getDate() + 1);
-    }
-      //creates last task
-      await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, moment(currentDate).format('YYYY-MM-DD'), endTime, job, location);
-  };
-  
-  const createTasksForRepeat = async (startDate, startTime, endDate, endTime, job, location) => {
-    let currentDate = new Date(startDate);
-    while (currentDate <= new Date(endDate)) {
-      currentDate.setDate(currentDate.getDate() + 1);
-      await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, moment(currentDate).format('YYYY-MM-DD'), endTime, job, location);
-    }
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault(); 
-    const contact = document.getElementById('contactName').value;
     const email = document.getElementById('email').value;
     const poNumber = document.getElementById('poNumber').value;
     const woNumber = document.getElementById('woNumber').value;
@@ -192,7 +147,7 @@ function FormPage() {
     
     updateJob(job.id, 
       {
-        contact:contact, 
+        contact:contact.label, 
         status: "New",
         starttime: earliestStartDate,
         endtime: latestEndDate, 
@@ -206,6 +161,15 @@ function FormPage() {
       }) 
 
       await fileUploading(job);
+      if(!contacts.find(x => x.data.name == contact.label && x.data.email == email)){
+        var temp = {
+          name: contact.label,
+          email: email,
+          phone_number: phoneNumber,
+          company: company
+        }
+        createContact(temp)
+      }
 
       setLoading(false); // Set loading state to false after all tasks are created
   
@@ -230,12 +194,19 @@ function FormPage() {
 
         <div className="container" style={{ maxWidth: '800px' }}>
           <div className="mb-3">
-            <label>Company Name</label>
-            <input type="text" className="form-control" id="companyName" placeholder="Enter name" required/>
+            <label>Contact Name</label>
+            <CreatableSelect
+                options={contacts}
+                className="basic-multi-select"
+                classNamePrefix="select"
+                placeholder="Enter contact"
+                onChange={handleContactSelect}
+                required
+            />
           </div>
           <div className="mb-3">
-            <label>Contact Name</label>
-            <input type="text" className="form-control" id="contactName" placeholder="Enter name" required/>
+            <label>Company Name</label>
+            <input type="text" className="form-control" id="companyName" placeholder="Enter name" required/>
           </div>
           <div className="mb-3">
             <label>Email address</label>

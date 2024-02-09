@@ -63,14 +63,14 @@ export default function Orders() {
   const saveChanges = async () => {
     var newStartTime = task.starttime ? new Date(task.starttime) : null
     var newEndTime = task.endtime ? new Date(task.endtime) : null
-    var taskType
-    if(newStartTime && newEndTime){
+    var taskType = ''
+    if(newStartTime !=null  && newEndTime !=null ){
       taskType = 'both'
     }
-    else if(newStartTime){
+    else if(newStartTime !=null){
       taskType = 'place'
     }
-    else if(newEndTime){
+    else if(newEndTime !=null){
       taskType = 'pickup'
     }
     await updatetask(task.id, 

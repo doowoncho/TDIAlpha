@@ -24,24 +24,16 @@ export async function getAllJobs() {
     }
   }
 
-// Gets all the tasks params from options
-export async function getSpecifictasks(params) {
+//Gets a list of all the contacts
+export async function getAllContacts() {
     try {
-        const queryString = new URLSearchParams(params).toString();
-        const url = `${server}/api/specifictasks?${queryString}`;
-
-        const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        });
-        const data = await response.json();
-        return(data)
+      const response = await fetch(`${server}/api/contacts`);
+      const data = await response.json();
+      return(data)
     } catch (error) {
-        console.error('Error fetching data:', error);
+      console.error('Error fetching data:', error);
     }
-}
+  }
   
 // Changes specific property of task with the given task id
 export async function updatetask(id, params) {
@@ -270,6 +262,23 @@ export async function createJob() {
         const createdjob = await response.json();
         console.log('Created Job:', createdjob);
         return createdjob
+    } catch (error) {
+        console.error('Error creating job:', error);
+    }
+}
+
+export async function createContact(params) {
+    try {
+        const response = await fetch(`${server}/api/createContact`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(params), 
+        });
+        const createdcontact = await response.json();
+        console.log('Created Contact:', createdcontact);
+        return createdcontact
     } catch (error) {
         console.error('Error creating job:', error);
     }
