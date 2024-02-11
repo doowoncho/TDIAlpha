@@ -145,6 +145,12 @@ export default function TasksTable() {
               </div>
               <input type="text" value={job.contact || ''} className="form-control" onChange={(e)=>handleInputChange(e, 'contact')}/>
             </div>
+            <div className="input-group d-none d-sm-flex">
+              <div className="input-group-prepend">
+                <span className="input-group-text" id="">Company</span>
+              </div>
+              <input type="text" value={job.company || ''} onChange={(e)=>handleInputChange(e, 'company')} className="form-control"/>
+            </div>
             <div className="input-group">
               <div className="input-group-prepend">
                 <span className="input-group-text" id="">Email</span>
@@ -187,12 +193,7 @@ export default function TasksTable() {
               </div>
               <input type="text" value={job.request_id || ''} onChange={(e)=>handleInputChange(e, 'request_id')} className="form-control"/>
             </div>
-            <div className="input-group d-none d-sm-flex">
-              <div className="input-group-prepend">
-                <span className="input-group-text" id="">Company</span>
-              </div>
-              <input type="text" value={job.company || ''} onChange={(e)=>handleInputChange(e, 'company')} className="form-control"/>
-            </div>
+          
             <div className="input-group d-none d-sm-flex">
               <div className="input-group-prepend">
                 <span className="input-group-text" id="">Stamp</span>
