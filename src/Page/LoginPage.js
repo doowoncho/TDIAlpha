@@ -29,11 +29,11 @@ export default function LoginPage() {
       <div className='container text-center my-4'>
         <h1>Login</h1>
         <div className="mb-3">
-          <label for="email">Email</label>
+          <label>Email</label>
           <input type="text" className="form-control" id="email" placeholder="Enter email"/>
         </div>
         <div className="mb-3"> 
-          <label for="password">Password</label>
+          <label>Password</label>
           <input type="text" className="form-control" id="password" placeholder="Enter password"/>
         </div>
         <div className="mb-3">

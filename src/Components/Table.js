@@ -2,6 +2,7 @@ import { Dropdown } from 'react-bootstrap';
 import { getUserById, getAllUsers, updatetask } from './APICalls';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { qbMath } from '../Helpers/TableUtils';
 
 const moment = require('moment');
 
@@ -30,6 +31,24 @@ function RenderAssignedDropdown({ property, handleUpdate }) {
   );
 }
 
+function QBInvoiceInput({ property, handleUpdate }) {
+  return (
+      <div className="input-group" style={{width:"150px"}}>
+        <input type="text" className={`form-control ${property.id}`} placeholder={property.qb_invoice} />
+        <div className="input-group-append">
+          <button className="btn btn-outline-success" onClick={() => {
+            const inputElement = document.querySelector(`.form-control[class*="${property.id}"]`);
+            var invoiceValue =  parseInt(inputElement.value);
+            handleUpdate(property.id, {qb_invoice: invoiceValue * 0.1 + invoiceValue});
+            inputElement.value = ''
+          }}>
+            <i className="bi bi-check2-circle"></i>
+          </button>
+        </div>
+      </div>
+  );
+}
+
 function renderTableCell({ property, column, handleUpdate, currentPath }) {
   const name = column.toLowerCase();
 
@@ -42,9 +61,12 @@ function renderTableCell({ property, column, handleUpdate, currentPath }) {
       else{
         return property[name] ? users.filter(x => x.id == property[name])[0].name : 'Not Assigned';
       }
-  }else if (name === 'starttime' || name === 'endtime') {
+  } else if (name === 'starttime' || name === 'endtime') {
       return property[name] ? moment(property[name]).format('MMMM DD YYYY h:mmA') : "";
-  } else if (name === 'status') {
+  } else if (name == 'qb_invoice'){
+    return  <QBInvoiceInput property={property} handleUpdate={handleUpdate}></QBInvoiceInput>
+  }
+  else if (name === 'status') {
     return (
       <Dropdown>
       <Dropdown.Toggle variant='white' id='dropdownMenuButton'>
@@ -127,18 +149,18 @@ function renderColumn(column) {
 
 function getColor(property) {
   if (property.completed) {
-    return 'bg-secondary text-light'; // Apply this class for condition1
+    return 'bg-secondary text-light'; 
   } 
   else if (property.type == "place") {
-    return 'bg-success text-light'; // Apply this class for condition2
+    return 'bg-success text-light'; 
   } else if (property.type == "pickup") {
-    return 'bg-warning text-dark'; // Apply this class for condition3
+    return 'bg-warning text-dark'; 
   }
   else if (property.type == "npat") {
-    return 'text-primary'; // Apply this class for condition3
+    return 'text-primary'; 
   }
   else{
-    return ''; // Default class if none of the conditions match
+    return ''; 
   }
 }
 
