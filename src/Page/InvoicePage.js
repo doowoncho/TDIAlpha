@@ -139,7 +139,7 @@ export default function InvoicePage() {
         </DropdownButton> */}
         <Table
             data={jobList}
-            displayColumns={["ID", "StartTime", "EndTime", "Status", "Setup", "Contact", "Permit_number", "Notes", "WO_number", "PO_number", "Request_ID", "Company"]}
+            displayColumns={["ID", "StartTime", "EndTime", "Status", "Setup", "Contact", "Company", "Permit_number", "Notes", "WO_number", "PO_number", "Request_ID", "QB_Invoice"]}
             handleUpdate={handleJobUpdate} handleDelete={handleJobDelete} 
           />
       </header>

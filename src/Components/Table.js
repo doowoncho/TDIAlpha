@@ -64,7 +64,7 @@ function renderTableCell({ property, column, handleUpdate, currentPath }) {
   } else if (name === 'starttime' || name === 'endtime') {
       return property[name] ? moment(property[name]).format('MMMM DD YYYY h:mmA') : "";
   } else if (name == 'qb_invoice'){
-    return  <QBInvoiceInput property={property} handleUpdate={handleUpdate}></QBInvoiceInput>
+    return currentPath.includes('/completed') ? <QBInvoiceInput property={property} handleUpdate={handleUpdate}/> : property[name]
   }
   else if (name === 'status') {
     return (
