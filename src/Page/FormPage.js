@@ -244,7 +244,7 @@ function FormPage() {
         </div>
       
 
-        <div className='container justify-content-center d-flex'>
+        <div className='container justify-content-center d-sm-flex overflow-auto'>
             <div className="flex-column">
               {dates.map((date, index) => (
                 <DateInput
@@ -259,6 +259,7 @@ function FormPage() {
             <button type="button" className="btn btn-primary my-2" onClick={addDate}> Add Date and Time </button>
             </div>
           </div>
+
 
         <div className="text-center">
           <button type="submit" className="btn btn-primary">Submit</button>
