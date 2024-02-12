@@ -6,7 +6,7 @@ export default function LegendPage() {
   <table class="table table-striped">
   <thead>
     <tr id="tableHeader">
-      <th scope="col">Pricing Legend</th>
+      <th scope="col">Pricing Page</th>
     </tr>
     <tr>
       <th scope="col">Short Form</th>

@@ -132,11 +132,11 @@ export default function InvoicePage() {
                 />
             </div> 
         </div>
-        <DropdownButton id="dropdown-basic-button" title="Dropdown button">
+        {/* <DropdownButton id="dropdown-basic-button" title="Dropdown button">
         <Dropdown.Item key={services.id} href={`#action/${services.id}`}>
                 {services.name}
               </Dropdown.Item>
-        </DropdownButton>
+        </DropdownButton> */}
         <Table
             data={jobList}
             displayColumns={["ID", "StartTime", "EndTime", "Status", "Setup", "Contact", "Permit_number", "Notes", "WO_number", "PO_number", "Request_ID", "Company"]}
