@@ -5,31 +5,11 @@ import Table from "../Components/Table";
 import FilterInput from "../Components/FilterInput";
 import Select from "react-select";
 import { applySearchFilters, options } from "../Helpers/SearchUtils";
+import { useLocation } from "react-router-dom";
+import { GridActionsCellItem, GridDeleteIcon } from "@mui/x-data-grid";
 
 const moment = require('moment');
 
-const columns = [
-  { field: 'id', headerName: 'ID', flex: 1},
-  { field: 'starttime', headerName: 'Start Time', flex: 1, minWidth: 160, 
-    valueFormatter: (params) => {
-      const date = moment(params.value).utcOffset('-07:00');
-      return date.format('MM/DD/YYYY h:mm A'); // Format date as MM/DD/YYYY h:mm AM/PM
-    }, 
-    type: 'dateTime', editable: true
-  },
-  { field: 'endtime', headerName: 'End Time', flex: 1, minWidth: 160,
-    valueFormatter: (params) => {
-      const date = moment(params.value).utcOffset('-07:00');
-      return date.format('MM/DD/YYYY h:mm A'); // Format date as MM/DD/YYYY h:mm AM/PM
-    }, 
-    type: 'dateTime', editable: true
-  },
-  { field: 'status', headerName: 'Status', flex: 1, minWidth: 120, editable: true,  type: 'singleSelect',
-  valueOptions: ['Market', 'Finance', 'Development'],},
-  { field: 'company', headerName: 'Company', flex: 1, minWidth: 200},
-  { field: 'setup', headerName: 'Setup', flex: 1, minWidth: 700},
-  { field: 'wo_number', headerName: 'WO Number', flex: 1, minWidth:300},
-]
 
 const TableCards = ({ bg, header, icon, color, num }) => (
   <div className={`card ${bg} mx-2 border p-2 bg-white rounded`}>
@@ -49,6 +29,47 @@ const TableCards = ({ bg, header, icon, color, num }) => (
 );
 
 export default function JobsTable() {
+
+  const location = useLocation();
+  const currentPath = location.pathname;
+  const columns = [
+    { field: 'id', headerName: 'ID', flex: 1, 
+      renderCell: (params) => {
+        return  currentPath?.includes('/taskspage') ? <a href={`/taskdetails/${params.value}`} className="no-link-style">{params.value}</a> : <a href={`/taskspage/${params.value}`} className="no-link-style">{params.value}</a>;
+      }
+    },
+    { field: 'starttime', headerName: 'Start Time', flex: 1, minWidth: 160, 
+      valueFormatter: (params) => {
+        const date = moment(params.value).utcOffset('-07:00');
+        return date.format('MM/DD/YYYY h:mm A'); // Format date as MM/DD/YYYY h:mm AM/PM
+      }, 
+      type: 'dateTime'
+    },
+    { field: 'endtime', headerName: 'End Time', flex: 1, minWidth: 160,
+      valueFormatter: (params) => {
+        const date = moment(params.value).utcOffset('-07:00');
+        return date.format('MM/DD/YYYY h:mm A'); // Format date as MM/DD/YYYY h:mm AM/PM
+      }, 
+      type: 'dateTime'
+    },
+    { field: 'status', headerName: 'Status', flex: 1, minWidth: 120, editable: true,  type: 'singleSelect',
+    valueOptions: ['Market', 'Finance', 'Development']},
+    { field: 'company', headerName: 'Company', flex: 1, minWidth: 200},
+    { field: 'setup', headerName: 'Setup', flex: 1, minWidth: 700},
+    { field: 'wo_number', headerName: 'WO Number', flex: 1, minWidth:300},
+    {
+      field: 'actions',
+      type: 'actions',
+      width: 80,
+      getActions: (params) => [
+        <GridActionsCellItem
+          icon={<GridDeleteIcon />}
+          label="Delete"
+        />
+      ],
+    },
+  ]
+
   const [tableType, setTableType] = useState("All");
   const [jobList, setjobList] = useState([]);
   const [search, setSearch] = useState([]);

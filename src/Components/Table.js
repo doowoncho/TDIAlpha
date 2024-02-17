@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { qbMath } from '../Helpers/TableUtils';
 import Box from '@mui/material/Box';
-import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import { DataGrid, GridToolbar, GridToolbarColumnsButton, GridToolbarExport } from '@mui/x-data-grid';
 
 const moment = require('moment');
 
@@ -190,7 +190,7 @@ export default function Table({ data, displayColumns, handleUpdate, handleDelete
 
   return (
   <div className='container my-3'>
-    <Box sx={{ height: 500, width: '100%' }}>
+    <Box sx={{height:'500px', width: '100%' }}>
       <DataGrid
         slots={{ toolbar: GridToolbar }}
         rows={data}
@@ -205,6 +205,7 @@ export default function Table({ data, displayColumns, handleUpdate, handleDelete
         pageSizeOptions={[5]}
         checkboxSelection
         disableRowSelectionOnClick
+        disableColumnFilter
       />
     </Box>
   <div className='table-responsive-sm'>
