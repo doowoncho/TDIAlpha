@@ -6,6 +6,31 @@ import FilterInput from "../Components/FilterInput";
 import Select from "react-select";
 import { applySearchFilters, options } from "../Helpers/SearchUtils";
 
+const moment = require('moment');
+
+const columns = [
+  { field: 'id', headerName: 'ID', flex: 1},
+  { field: 'starttime', headerName: 'Start Time', flex: 1, minWidth: 160, 
+    valueFormatter: (params) => {
+      const date = moment(params.value).utcOffset('-07:00');
+      return date.format('MM/DD/YYYY h:mm A'); // Format date as MM/DD/YYYY h:mm AM/PM
+    }, 
+    type: 'dateTime', editable: true
+  },
+  { field: 'endtime', headerName: 'End Time', flex: 1, minWidth: 160,
+    valueFormatter: (params) => {
+      const date = moment(params.value).utcOffset('-07:00');
+      return date.format('MM/DD/YYYY h:mm A'); // Format date as MM/DD/YYYY h:mm AM/PM
+    }, 
+    type: 'dateTime', editable: true
+  },
+  { field: 'status', headerName: 'Status', flex: 1, minWidth: 120, editable: true,  type: 'singleSelect',
+  valueOptions: ['Market', 'Finance', 'Development'],},
+  { field: 'company', headerName: 'Company', flex: 1, minWidth: 200},
+  { field: 'setup', headerName: 'Setup', flex: 1, minWidth: 700},
+  { field: 'wo_number', headerName: 'WO Number', flex: 1, minWidth:300},
+]
+
 const TableCards = ({ bg, header, icon, color, num }) => (
   <div className={`card ${bg} mx-2 border p-2 bg-white rounded`}>
     <div className={`card-body ${window.innerWidth < 768 ? 'p-0 text-center' : 'p-2'}`}>
@@ -193,6 +218,7 @@ export default function JobsTable() {
             displayColumns={[
               "ID", "StartTime", "EndTime", "Status", "Company", "Setup", "WO_Number"
             ]}
+            nColumns={columns}
             handleUpdate={handleJobUpdate}
             handleDelete={handleJobDelete}
           />

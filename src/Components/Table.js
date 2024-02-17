@@ -3,6 +3,8 @@ import { getUserById, getAllUsers, updatetask } from './APICalls';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { qbMath } from '../Helpers/TableUtils';
+import Box from '@mui/material/Box';
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 
 const moment = require('moment');
 
@@ -53,7 +55,7 @@ function renderTableCell({ property, column, handleUpdate, currentPath }) {
   const name = column.toLowerCase();
 
   if (name === 'id') {
-    return  currentPath.includes('/taskspage') ? <a href={`/taskdetails/${property.id}`} className="no-link-style">{property.id}</a> : <a href={`/taskspage/${property.id}`} className="no-link-style">{property.id}</a>;
+    return  currentPath?.includes('/taskspage') ? <a href={`/taskdetails/${property.id}`} className="no-link-style">{property.id}</a> : <a href={`/taskspage/${property.id}`} className="no-link-style">{property.id}</a>;
   } else if (name === 'assigned'){
       if(user.permission === 1){
         return <RenderAssignedDropdown property={property} handleUpdate={handleUpdate} />;
@@ -62,7 +64,7 @@ function renderTableCell({ property, column, handleUpdate, currentPath }) {
         return property[name] ? users.filter(x => x.id == property[name])[0].name : 'Not Assigned';
       }
   } else if (name === 'starttime' || name === 'endtime') {
-      return property[name] ? moment(property[name]).format('MMMM DD YYYY h:mmA') : "";
+      return property[name] ? moment(property[name]).format('MM/DD/YYYY h:mmA') : "";
   } else if (name == 'qb_invoice'){
     return currentPath.includes('/completed') ? <QBInvoiceInput property={property} handleUpdate={handleUpdate}/> : property[name]
   }
@@ -164,10 +166,15 @@ function getColor(property) {
   }
 }
 
-export default function Table({ data, displayColumns, handleUpdate, handleDelete }) {
+export default function Table({ data, displayColumns, handleUpdate, handleDelete, nColumns }) {
  const location = useLocation();
  // Access the current pathname to determine the current page
  const currentPath = location.pathname;
+
+ const columns = nColumns.map((column) => ({
+  ...column,
+  // Add any other configuration options as needed
+}));
 
   if (!data) {
     return (
@@ -183,6 +190,23 @@ export default function Table({ data, displayColumns, handleUpdate, handleDelete
 
   return (
   <div className='container my-3'>
+    <Box sx={{ height: 500, width: '100%' }}>
+      <DataGrid
+        slots={{ toolbar: GridToolbar }}
+        rows={data}
+        columns={columns}
+        initialState={{
+          pagination: {
+            paginationModel: {
+              pageSize: 5,
+            },
+          },
+        }}
+        pageSizeOptions={[5]}
+        checkboxSelection
+        disableRowSelectionOnClick
+      />
+    </Box>
   <div className='table-responsive-sm'>
     <table className='table table-hover'>
       <thead>
