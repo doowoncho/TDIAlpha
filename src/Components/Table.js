@@ -150,14 +150,14 @@ function renderColumn(column) {
 function getColor(property) {
   if (property.completed) {
     return 'bg-secondary text-light'; 
-  } 
+  }
+  else if (property.type == "npat") {
+    return 'text-primary'; 
+  }
   else if (property.type == "place") {
     return 'bg-success text-light'; 
   } else if (property.type == "pickup") {
     return 'bg-warning text-dark'; 
-  }
-  else if (property.type == "npat") {
-    return 'text-primary'; 
   }
   else{
     return ''; 
