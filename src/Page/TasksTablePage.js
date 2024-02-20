@@ -5,6 +5,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import Table from "../Components/Table";
 import { useParams } from "react-router-dom";
 import moment from "moment";
+import { TasksTableColumns } from "../Helpers/TableUtils";
  
 let user = await getUserById(window.sessionStorage.getItem("user"))
 
@@ -262,7 +263,7 @@ export default function TasksTable() {
       <h1>Tasks</h1>
       <Table
           data={taskList}
-          displayColumns={["ID", "StartTime", "EndTime", "Setup", "Assigned"]}
+          columns={TasksTableColumns}
           handleUpdate={handletaskUpdate} handleDelete={handletaskDelete} 
         />
       <button className='my-1 btn btn-outline-primary' onClick={()=>addTask()}> 

@@ -7,6 +7,7 @@ import Select from "react-select";
 import { applySearchFilters, options } from "../Helpers/SearchUtils";
 import { useLocation } from "react-router-dom";
 import { GridActionsCellItem, GridDeleteIcon } from "@mui/x-data-grid";
+import { JobsTableColumns } from "../Helpers/TableUtils";
 
 const moment = require('moment');
 
@@ -27,49 +28,8 @@ const TableCards = ({ bg, header, icon, color, num }) => (
     </div>
   </div>
 );
-
+{/* <a href={`/taskdetails/${params.value}`} className="no-link-style">{params.value}</a>  */}
 export default function JobsTable() {
-
-  const location = useLocation();
-  const currentPath = location.pathname;
-  const columns = [
-    { field: 'id', headerName: 'ID', flex: 1, 
-      renderCell: (params) => {
-        return  currentPath?.includes('/taskspage') ? <a href={`/taskdetails/${params.value}`} className="no-link-style">{params.value}</a> : <a href={`/taskspage/${params.value}`} className="no-link-style">{params.value}</a>;
-      }
-    },
-    { field: 'starttime', headerName: 'Start Time', flex: 1, minWidth: 160, 
-      valueFormatter: (params) => {
-        const date = moment(params.value).utcOffset('-07:00');
-        return date.format('MM/DD/YYYY h:mm A'); // Format date as MM/DD/YYYY h:mm AM/PM
-      }, 
-      type: 'dateTime'
-    },
-    { field: 'endtime', headerName: 'End Time', flex: 1, minWidth: 160,
-      valueFormatter: (params) => {
-        const date = moment(params.value).utcOffset('-07:00');
-        return date.format('MM/DD/YYYY h:mm A'); // Format date as MM/DD/YYYY h:mm AM/PM
-      }, 
-      type: 'dateTime'
-    },
-    { field: 'status', headerName: 'Status', flex: 1, minWidth: 120, editable: true,  type: 'singleSelect',
-    valueOptions: ['Market', 'Finance', 'Development']},
-    { field: 'company', headerName: 'Company', flex: 1, minWidth: 200},
-    { field: 'setup', headerName: 'Setup', flex: 1, minWidth: 700},
-    { field: 'wo_number', headerName: 'WO Number', flex: 1, minWidth:300},
-    {
-      field: 'actions',
-      type: 'actions',
-      width: 80,
-      getActions: (params) => [
-        <GridActionsCellItem
-          icon={<GridDeleteIcon />}
-          label="Delete"
-        />
-      ],
-    },
-  ]
-
   const [tableType, setTableType] = useState("All");
   const [jobList, setjobList] = useState([]);
   const [search, setSearch] = useState([]);
@@ -236,10 +196,7 @@ export default function JobsTable() {
         </div>
         <div>
           <Table data={jobList}
-            displayColumns={[
-              "ID", "StartTime", "EndTime", "Status", "Company", "Setup", "WO_Number"
-            ]}
-            nColumns={columns}
+            columns = {JobsTableColumns}
             handleUpdate={handleJobUpdate}
             handleDelete={handleJobDelete}
           />

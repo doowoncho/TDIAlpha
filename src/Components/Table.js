@@ -1,10 +1,11 @@
-import { Dropdown } from 'react-bootstrap';
+import { Alert, Dropdown } from 'react-bootstrap';
 import { getUserById, getAllUsers, updatetask } from './APICalls';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { qbMath } from '../Helpers/TableUtils';
 import Box from '@mui/material/Box';
 import { DataGrid, GridToolbar, GridToolbarColumnsButton, GridToolbarExport } from '@mui/x-data-grid';
+import { Snackbar } from '@mui/base';
 
 const moment = require('moment');
 
@@ -166,15 +167,12 @@ function getColor(property) {
   }
 }
 
-export default function Table({ data, displayColumns, handleUpdate, handleDelete, nColumns }) {
- const location = useLocation();
- // Access the current pathname to determine the current page
- const currentPath = location.pathname;
+export default function Table({ data, columns, handleUpdate, handleDelete }) {
+ const [snackbar, setSnackbar] = React.useState(null);
+ const handleCloseSnackbar = () => setSnackbar(null);
 
- const columns = nColumns.map((column) => ({
-  ...column,
-  // Add any other configuration options as needed
-}));
+const handleProcessRowUpdateError = React.useCallback((error) => {
+}, []);
 
   if (!data) {
     return (
@@ -202,42 +200,18 @@ export default function Table({ data, displayColumns, handleUpdate, handleDelete
             },
           },
         }}
+        processRowUpdate={(updatedRow) =>{
+          handleUpdate(updatedRow.id, updatedRow)
+          setSnackbar({ children: 'Changes successfully saved', severity: 'success' });
+          }
+        }
+        onProcessRowUpdateError={handleProcessRowUpdateError}
         pageSizeOptions={[5]}
-        checkboxSelection
-        disableRowSelectionOnClick
+        // checkboxSelection
         disableColumnFilter
+        editMode='row'
       />
     </Box>
-  <div className='table-responsive-sm'>
-    <table className='table table-hover'>
-      <thead>
-        <tr>
-          {displayColumns.map((column) => (
-            <th key={column}>
-              {currentPath.includes('/taskspage') ? renderColumn(column) : column}
-            </th>
-          ))}
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((property) => (
-          <tr key={property.id}>
-            {displayColumns.map((column) => (
-              <td key={`${property.id}-${column}`} className={getColor(property)}>
-                {renderTableCell({ property, column, handleUpdate, currentPath })}
-              </td>
-            ))}
-            <td>
-              <button className='my-1 btn btn-outline-danger' onClick={() => handleDelete(property.id)}>
-                <i className="bi bi-trash"></i> Delete
-              </button>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
 </div>
   );
 }

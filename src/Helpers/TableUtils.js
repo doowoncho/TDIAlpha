@@ -1,0 +1,76 @@
+const { GridActionsCellItem, GridDeleteIcon, GridDeleteForeverIcon } = require('@mui/x-data-grid');
+const moment = require('moment');
+
+export const JobsTableColumns = [
+        { field: 'id', headerName: 'ID', flex: 1, 
+          renderCell: (params) => {
+            return <a href={`/taskspage/${params.value}`} className="no-link-style">{params.value}</a>;
+          }, editable: true,  
+        },
+        { field: 'starttime', headerName: 'Start Time', flex: 1, minWidth: 160, 
+          valueFormatter: (params) => {
+            const date = moment(params.value).utcOffset('-07:00');
+            return date.format('MM/DD/YYYY h:mm A'); // Format date as MM/DD/YYYY h:mm AM/PM
+          }, 
+          type: 'dateTime', editable: true,
+        },
+        { field: 'endtime', headerName: 'End Time', flex: 1, minWidth: 160,
+          valueFormatter: (params) => {
+            const date = moment(params.value).utcOffset('-07:00');
+            return date.format('MM/DD/YYYY h:mm A'); // Format date as MM/DD/YYYY h:mm AM/PM
+          }, 
+          type: 'dateTime', editable: true,
+        },
+        { field: 'status', headerName: 'Status', flex: 1, minWidth: 120, editable: true,  type: 'singleSelect',
+        valueOptions: ['Approved', 'New Request', 'Development']},
+        { field: 'company', headerName: 'Company', flex: 1, minWidth: 200, editable: true, },
+        { field: 'setup', headerName: 'Setup', flex: 1, minWidth: 700, editable: true,},
+        { field: 'wo_number', headerName: 'WO Number', flex: 1, minWidth:300, editable: true,},
+        {
+          field: 'actions',
+          type: 'actions',
+          width: 80,
+          getActions: (params) => [
+            <GridActionsCellItem
+              icon={<GridDeleteForeverIcon />}
+              label="Delete"
+            />
+          ],
+        },
+      ]
+
+export const TasksTableColumns = [
+    { field: 'id', headerName: 'ID', flex: 1,
+      renderCell: (params) => {
+        return <a href={`/taskspage/${params.value}`} className="no-link-style">{params.value}</a>;
+      }, editable: true,  
+    },
+    { field: 'starttime', headerName: 'Start Time', flex: 1, minWidth: 160, 
+      valueFormatter: (params) => {
+        const date = moment(params.value).utcOffset('-07:00');
+        return date.format('MM/DD/YYYY h:mm A'); // Format date as MM/DD/YYYY h:mm AM/PM
+      }, 
+      type: 'dateTime', editable: true,
+    },
+    { field: 'endtime', headerName: 'End Time', flex: 1, minWidth: 160,
+      valueFormatter: (params) => {
+        const date = moment(params.value).utcOffset('-07:00');
+        return date.format('MM/DD/YYYY h:mm A'); // Format date as MM/DD/YYYY h:mm AM/PM
+      }, 
+      type: 'dateTime', editable: true,
+    },
+    { field: 'setup', headerName: 'Setup', flex: 1, editable: true, minWidth:700},
+    { field: 'assigned', headerName: 'Assigned', flex: 1, minWidth: 120, editable: true,  type: 'singleSelect',
+        valueOptions: ['Admin', 'Field']},
+    {
+      field: 'actions',
+      type: 'actions',
+      width: 80,
+      getActions: (params) => [
+        <GridActionsCellItem
+          icon={<GridDeleteIcon />}
+          label="Delete"
+        />
+      ],
+    },
+  ]
