@@ -7,14 +7,14 @@ export const JobsTableColumns = [
             return <a href={`/taskspage/${params.value}`} className="no-link-style">{params.value}</a>;
           }, editable: true,  
         },
-        { field: 'starttime', headerName: 'Start Time', flex: 1, minWidth: 160, 
+        { field: 'starttime', headerName: 'Start Time', flex: 1, minWidth: 180, 
           valueFormatter: (params) => {
             const date = moment(params.value).utcOffset('-07:00');
             return date.format('MM/DD/YYYY h:mm A'); // Format date as MM/DD/YYYY h:mm AM/PM
           }, 
           type: 'dateTime', editable: true,
         },
-        { field: 'endtime', headerName: 'End Time', flex: 1, minWidth: 160,
+        { field: 'endtime', headerName: 'End Time', flex: 1, minWidth: 180,
           valueFormatter: (params) => {
             const date = moment(params.value).utcOffset('-07:00');
             return date.format('MM/DD/YYYY h:mm A'); // Format date as MM/DD/YYYY h:mm AM/PM
@@ -24,7 +24,7 @@ export const JobsTableColumns = [
         { field: 'status', headerName: 'Status', flex: 1, minWidth: 120, editable: true,  type: 'singleSelect',
         valueOptions: ['Approved', 'New Request', 'Development']},
         { field: 'company', headerName: 'Company', flex: 1, minWidth: 200, editable: true, },
-        { field: 'setup', headerName: 'Setup', flex: 1, minWidth: 700, editable: true,},
+        { field: 'setup', headerName: 'Setup', flex: 1, minWidth: 800, editable: true,},
         { field: 'wo_number', headerName: 'WO Number', flex: 1, minWidth:300, editable: true,},
         {
           field: 'actions',
@@ -45,21 +45,21 @@ export const TasksTableColumns = [
         return <a href={`/taskspage/${params.value}`} className="no-link-style">{params.value}</a>;
       }, editable: true,  
     },
-    { field: 'starttime', headerName: 'Start Time', flex: 1, minWidth: 160, 
+    { field: 'starttime', headerName: 'Start Time', flex: 1, minWidth: 180, 
       valueFormatter: (params) => {
         const date = moment(params.value).utcOffset('-07:00');
         return date.format('MM/DD/YYYY h:mm A'); // Format date as MM/DD/YYYY h:mm AM/PM
       }, 
       type: 'dateTime', editable: true,
     },
-    { field: 'endtime', headerName: 'End Time', flex: 1, minWidth: 160,
+    { field: 'endtime', headerName: 'End Time', flex: 1, minWidth: 180,
       valueFormatter: (params) => {
         const date = moment(params.value).utcOffset('-07:00');
         return date.format('MM/DD/YYYY h:mm A'); // Format date as MM/DD/YYYY h:mm AM/PM
       }, 
       type: 'dateTime', editable: true,
     },
-    { field: 'setup', headerName: 'Setup', flex: 1, editable: true, minWidth:700},
+    { field: 'setup', headerName: 'Setup', flex: 1, editable: true, minWidth:800},
     { field: 'assigned', headerName: 'Assigned', flex: 1, minWidth: 120, editable: true,  type: 'singleSelect',
         valueOptions: ['Admin', 'Field']},
     {

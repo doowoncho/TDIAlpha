@@ -200,6 +200,10 @@ const handleProcessRowUpdateError = React.useCallback((error) => {
             },
           },
         }}
+        sx={{
+          boxShadow: 2,
+          fontSize: 16
+        }}
         processRowUpdate={(updatedRow) =>{
           handleUpdate(updatedRow.id, updatedRow)
           setSnackbar({ children: 'Changes successfully saved', severity: 'success' });
@@ -210,6 +214,7 @@ const handleProcessRowUpdateError = React.useCallback((error) => {
         // checkboxSelection
         disableColumnFilter
         editMode='row'
+        density="comfortable"
       />
     </Box>
 </div>
