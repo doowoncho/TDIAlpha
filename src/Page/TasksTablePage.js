@@ -170,25 +170,25 @@ export default function TasksTable() {
               </div>
               <input type="text" value={job.status || ''} className="form-control" readOnly/>
             </div>
-            <div className="input-group d-none d-sm-flex">
+            <div className="input-group d-sm-flex">
               <div className="input-group-prepend">
                 <span className="input-group-text" id="">WO Number</span>
               </div>
               <input type="text" value={job.wo_number || ''} onChange={(e)=>handleInputChange(e, 'wo_number')} className="form-control"/>
             </div>
-            <div className="input-group d-none d-sm-flex">
+            <div className="input-group d-sm-flex">
               <div className="input-group-prepend">
                 <span className="input-group-text" id="">Permit Number</span>
               </div>
               <input type="text" value={job.permit_number || ''} onChange={(e)=>handleInputChange(e, 'permit_number')} className="form-control"/>
             </div>
-            <div className="input-group d-none d-sm-flex">
+            <div className="input-group d-sm-flex">
               <div className="input-group-prepend">
                 <span className="input-group-text" id="">PO Number</span>
               </div>
               <input type="text" value={job.po_number || ''} onChange={(e)=>handleInputChange(e, 'po_number')} className="form-control"/>
             </div>
-            <div className="input-group d-none d-sm-flex">
+            <div className="input-group d-sm-flex">
               <div className="input-group-prepend">
                 <span className="input-group-text" id="">Request ID</span>
               </div>
@@ -206,14 +206,14 @@ export default function TasksTable() {
                 <option value="none">None</option>
               </select>
             </div>
-            <div className="input-group d-none d-sm-flex">
+            <div className="input-group d-sm-flex">
               <div className="input-group-prepend">
                 <span className="input-group-text" id="">Start Time</span>
               </div>
                     <input type="datetime-local" className="form-control" id="startDate" value={moment(job.starttime).format('YYYY-MM-DDTHH:mm')}
                     onChange={(e) => handleInputChange(e, 'starttime')}/>
             </div>
-            <div className="input-group d-none d-sm-flex">
+            <div className="input-group d-sm-flex">
               <div className="input-group-prepend">
                 <span className="input-group-text" id="">End Time</span>
               </div>
@@ -235,11 +235,11 @@ export default function TasksTable() {
           </>
         }
       </div>
-      <div className="card d-none d-sm-flex">
+      <div className="card d-sm-flex">
         <div className="card-header">
           Files
         </div>
-        <div className="d-flex flex-wrap justify-content-center">
+        <div className="d-sm-flex flex-wrap justify-content-center">
           <div className="mx-2 my-2">
             <label htmlFor="formFileDisabled" className="form-label my-1">Permit Confirmation</label>
             <FileUpload type="permitConfirmation" giveID={id}></FileUpload>

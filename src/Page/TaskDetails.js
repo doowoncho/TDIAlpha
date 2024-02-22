@@ -188,11 +188,11 @@ export default function Orders() {
       </div>
 
     <div className='container my-2'>
-      <div className="card d-none d-sm-flex">
+      <div className="card d-sm-flex">
         <div className="card-header">
           Files
         </div>
-        <div className="d-flex flex-wrap justify-content-center">
+        <div className="d-sm-flex flex-wrap justify-content-center">
           <div className="mx-2 my-2">
             <label htmlFor="formFileDisabled" className="form-label my-1">Permit Confirmation</label>
             <FileUpload type="permitConfirmation" giveID={jobID.toString()}></FileUpload>
