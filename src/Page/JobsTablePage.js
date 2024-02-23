@@ -15,8 +15,8 @@ const moment = require('moment');
 const TableCards = ({ bg, header, icon, color, num }) => (
   <div className={`card ${bg} mx-2 border p-2 bg-white rounded`}>
     <div className={`card-body ${window.innerWidth < 768 ? 'p-0 text-center' : 'p-2'}`}>
-      <div className="media d-flex">
-        <div className={`align-self-center ${window.innerWidth < 768 ? 'd-none' : ''}`}>
+      <div className="media d-sm-flex">
+        <div className={`align-self-center d-none d-sm-flex`}>
           <i className={`${icon} mx-3 ${color} text-xxl`} style={{ fontSize: "2rem" }}></i>
         </div>
         <div className='mx-3'></div>
@@ -142,16 +142,16 @@ export default function JobsTable() {
       <div className='border border-1 bg-light'>
         <div className="container d-flex justify-content-center my-3 flex-wrap">
           <button className="btn btn-link" onClick={() => handleTableTypeChange("New")} style={{ textDecoration: "none" }}>
-            <TableCards header="New Requests" num={counts.New} icon="bi bi-bell-fill" color="text-primary" />
+            <TableCards header="New" num={counts.New} icon="bi bi-bell-fill" color="text-primary" />
           </button>
           <button className="btn btn-link" onClick={() => handleTableTypeChange("Declined")} style={{ textDecoration: "none" }}>
-            <TableCards header="Declined jobs" num={counts.Declined} icon="bi bi-exclamation-lg" color="text-danger" />
+            <TableCards header="Declined" num={counts.Declined} icon="bi bi-exclamation-lg" color="text-danger" />
           </button>
           <button className="btn btn-link" onClick={() => handleTableTypeChange("Submitted")} style={{ textDecoration: "none" }}>
             <TableCards header="Submitted" num={counts.Submitted} icon="bi bi-check-lg" color="text-success" />
           </button>
           <button className="btn btn-link" onClick={() => handleTableTypeChange("All")} style={{ textDecoration: "none" }}>
-            <TableCards header="All jobs" num={counts.New + counts.Declined + counts.Submitted + counts.Approved} icon="bi bi-list" color="text-info" />
+            <TableCards header="All Jobs" num={counts.New + counts.Declined + counts.Submitted + counts.Approved} icon="bi bi-list" color="text-info" />
           </button>
         </div>
       </div>
