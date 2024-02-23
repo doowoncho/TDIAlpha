@@ -32,7 +32,7 @@ const Puller = styled('div')(({ theme }) => ({
   left: 'calc(50% - 15px)',
 }));
 
-function SwipeableEdgeDrawer({window, jobId, label}) {
+function SwipeableEdgeDrawer({window, jobId, label, type}) {
   const [open, setOpen] = useState();
   const toggleDrawer = (newOpen) => () => { setOpen(newOpen);};
 
@@ -91,10 +91,10 @@ function SwipeableEdgeDrawer({window, jobId, label}) {
           }}
         >
           <Puller />
-          <Typography sx={{ p: 2, color: 'text.secondary' }}>Permit Confirmation Files</Typography>
+          <Typography sx={{ p: 2, color: 'text.secondary' }}>{label}</Typography>
         </StyledBox>
         <StyledBox sx={{ px: 2, pb: 2, height: '100%', overflow: 'auto' }} className='container'>
-          <FileUpload type="permitConfirmation" giveID={jobId}></FileUpload>
+          <FileUpload type={type} giveID={jobId}></FileUpload>
         </StyledBox>
       </SwipeableDrawer>
       </div>
