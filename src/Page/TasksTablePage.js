@@ -6,6 +6,11 @@ import Table from "../Components/Table";
 import { useParams } from "react-router-dom";
 import moment from "moment";
 import { TasksTableColumns } from "../Helpers/TableUtils";
+import SwipeableEdgeDrawer from "../Components/Drawer";
+import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
+import FeedIcon from '@mui/icons-material/Feed';
+import MapIcon from '@mui/icons-material/Map';
+import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
  
 let user = await getUserById(window.sessionStorage.getItem("user"))
 
@@ -132,7 +137,6 @@ export default function TasksTable() {
 
   return (
     <div>
-
     {job && <div className="container text-center justify-content-center my-4 d-flex">
       <div>
       <div className="card mx-4">
@@ -240,21 +244,22 @@ export default function TasksTable() {
           Files
         </div>
         <div className="d-sm-flex flex-wrap justify-content-center">
+
           <div className="mx-2 my-2">
-            <label htmlFor="formFileDisabled" className="form-label my-1">Permit Confirmation</label>
-            <FileUpload type="permitConfirmation" giveID={id}></FileUpload>
+            {/* <label htmlFor="formFileDisabled" className="form-label my-1">Permit Confirmation</label> */}
+            <SwipeableEdgeDrawer jobId = {id} label = "Permit Confirmation"></SwipeableEdgeDrawer>
           </div>
           <div className="mx-2 my-2">
             <label htmlFor="formFileDisabled" className="form-label my-1">Permit</label>
-            <FileUpload type="permit" giveID={id}></FileUpload>
+            <FileUpload type="permit" jobId = {id} label = "Permit"></FileUpload>
           </div>
           <div className="mx-2 my-2">
             <label htmlFor="formFileDisabled" className="form-label my-1">Plan</label>
-            <FileUpload type="plan"  giveID={id}></FileUpload>
+            <FileUpload type="plan"  jobId = {id} label = "Plan"></FileUpload>
           </div>
           <div className="mx-2 my-2">
             <label htmlFor="formFileDisabled" className="form-label my-1">Photo</label>
-            <FileUpload type="photo" giveID={id}></FileUpload>
+            <FileUpload type="photo" jobId = {id} label = "Photo"></FileUpload>
           </div>
         </div>
       </div>

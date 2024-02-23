@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { getUserById, gettaskById, updatetask, getJobById, getFilesById, getTasksByJobId } from '../Components/APICalls';
 import '../Styles/TaskDetails.css';
 import FileUpload from '../Components/FileUpload';
+import SwipeableEdgeDrawer from '../Components/Drawer';
 
 let user = await getUserById(window.sessionStorage.getItem("user"))
 
@@ -114,7 +115,6 @@ export default function Orders() {
 
   return (
     <div>
-
       <div className='container d-flex justify-content-between mt-3'>
         <div className="d-flex">
           <a href={`/taskspage/${task.job_id}`}>Back</a>
