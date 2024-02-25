@@ -1,5 +1,9 @@
+import { getAllUsers } from '../Components/APICalls';
+
 const { GridActionsCellItem, GridDeleteIcon, GridDeleteForeverIcon } = require('@mui/x-data-grid');
 const moment = require('moment');
+let users = await getAllUsers();
+
 
 export const JobsTableColumns = [
         { field: 'id', headerName: 'ID', flex: 1, 
@@ -61,7 +65,12 @@ export const TasksTableColumns = [
     },
     { field: 'setup', headerName: 'Setup', flex: 1, editable: true, minWidth:800},
     { field: 'assigned', headerName: 'Assigned', flex: 1, minWidth: 120, editable: true,  type: 'singleSelect',
-        valueOptions: ['Admin', 'Field']},
+      valueOptions: () => {
+        return users.map(user => ({
+          label: user.name,
+          value: user.id
+      }))}
+    },
     {
       field: 'actions',
       type: 'actions',
