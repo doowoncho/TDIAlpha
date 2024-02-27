@@ -36,8 +36,6 @@ function SwipeableEdgeDrawer({window, jobId, label, type}) {
   const [open, setOpen] = useState();
   const toggleDrawer = (newOpen) => () => { setOpen(newOpen);};
 
-  // This is used only for the example
-  const container = window !== undefined ? () => window().document.body : undefined;
 
   const icon = () =>{
     switch(label) {
@@ -56,7 +54,7 @@ function SwipeableEdgeDrawer({window, jobId, label, type}) {
     <>
     <p1>{label}</p1>
     <div className='container'>
-      <CssBaseline />
+
       <Global
         styles={{
           '.MuiDrawer-root > .MuiPaper-root': {
@@ -65,9 +63,8 @@ function SwipeableEdgeDrawer({window, jobId, label, type}) {
           },
         }}
       />
-    <Button variant="contained" className='my-3' onClick={toggleDrawer(true)} style={{ height: '100px', width: '100px' }}>{icon()}</Button>
+        <Button variant="contained" className='my-3' onClick={toggleDrawer(true)} style={{ height: '60px', width: '40px' }}>{icon()}</Button>
       <SwipeableDrawer
-        container={container}
         anchor="bottom"
         open={open}
         onClose={toggleDrawer(false)}
@@ -75,9 +72,9 @@ function SwipeableEdgeDrawer({window, jobId, label, type}) {
         swipeAreaWidth={drawerBleeding}
         disableSwipeToOpen={false}
         ModalProps={{ keepMounted: false }}
-        PaperProps={{
-            style: {maxWidth: '500px', margin: '0 auto' } // Adjust width dynamically
-          }}
+        // PaperProps={{
+        //     style: {maxWidth: '500px', margin: '0 auto' } // Adjust width dynamically
+        //   }}
       >
         <StyledBox
           sx={{

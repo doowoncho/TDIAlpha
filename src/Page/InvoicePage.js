@@ -6,6 +6,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Select from "react-select";
 import { applySearchFilters, options } from "../Helpers/SearchUtils";
+import { InvoicePageColumns } from "../Helpers/TableUtils";
 
 export default function InvoicePage() {
   const [jobList, setJobList] = useState([]);
@@ -139,7 +140,7 @@ export default function InvoicePage() {
         </DropdownButton> */}
         <Table
             data={jobList}
-            displayColumns={["ID", "StartTime", "EndTime", "Status", "Setup", "Contact", "Company", "Permit_number", "Notes", "WO_number", "PO_number", "Request_ID", "QB_Invoice"]}
+            columns={InvoicePageColumns}
             handleUpdate={handleJobUpdate} handleDelete={handleJobDelete} 
           />
       </header>

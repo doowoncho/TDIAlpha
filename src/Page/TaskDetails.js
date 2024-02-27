@@ -115,6 +115,7 @@ export default function Orders() {
 
   return (
     <div>
+
       <div className='container d-flex justify-content-between mt-3'>
         <div className="d-flex">
           <a href={`/taskspage/${task.job_id}`}>Back</a>
@@ -188,30 +189,52 @@ export default function Orders() {
       </div>
 
     <div className='container my-2'>
-      <div className="card d-sm-flex">
+      <div className="card d-none d-sm-block" style={{width: '8 0%', margin: '0 auto'}}>
+          <div className="card-header">
+            Files
+          </div>
+            <div className="d-flex flex-wrap justify-content-center">
+              <div className="mx-2 my-2">
+                <label htmlFor="formFileDisabled" className="form-label my-1">Permit Confirmation</label>
+                <FileUpload type="permitConfirmation" giveID={id}></FileUpload>
+              </div>
+              <div className="mx-2 my-2">
+                <label htmlFor="formFileDisabled" className="form-label my-1">Permit</label>
+                <FileUpload type="permit" giveID={id}></FileUpload>
+              </div>
+              <div className="mx-2 my-2">
+                <label htmlFor="formFileDisabled" className="form-label my-1">Plan</label>
+                <FileUpload type="plan"  giveID={id}></FileUpload>
+              </div>
+              <div className="mx-2 my-2">
+                <label htmlFor="formFileDisabled" className="form-label my-1">Photo</label>
+                <FileUpload type="photo" giveID={id}></FileUpload>
+              </div>
+            </div>
+      </div>
+    </div>
+
+  <div className='container my-2'>
+      <div className="card d-block d-sm-none">
         <div className="card-header">
           Files
         </div>
-        <div className="d-sm-flex flex-wrap justify-content-center">
-          <div className="mx-2 my-2">
-            <label htmlFor="formFileDisabled" className="form-label my-1">Permit Confirmation</label>
-            <FileUpload type="permitConfirmation" giveID={jobID.toString()}></FileUpload>
+        <div className="d-flex flex-wrap justify-content-center">
+            <div className="mx-2 my-2">
+              <SwipeableEdgeDrawer type="permitConfirmation" jobId={id} label="Permit Confirmation"></SwipeableEdgeDrawer>
+            </div>
+            <div className="mx-2 my-2">
+              <SwipeableEdgeDrawer type="permit" jobId={id} label="Permit"></SwipeableEdgeDrawer>
+            </div>
+            <div className="mx-2 my-2">
+              <SwipeableEdgeDrawer type="plan" jobId={id} label="Plan"></SwipeableEdgeDrawer>
+            </div>
+            <div className="mx-2 my-2">
+              <SwipeableEdgeDrawer type="photo" jobId={id} label="Photo"></SwipeableEdgeDrawer>
+            </div>
           </div>
-          <div className="mx-2 my-2">
-            <label htmlFor="formFileDisabled" className="form-label my-1">Permit</label>
-            <FileUpload type="permit" giveID={jobID.toString()}></FileUpload>
-          </div>
-          <div className="mx-2 my-2">
-            <label htmlFor="formFileDisabled" className="form-label my-1">Map Drawing</label>
-            <FileUpload type="plan" giveID={jobID.toString()}></FileUpload>
-          </div>
-          <div className="mx-2 my-2">
-            <label htmlFor="formFileDisabled" className="form-label my-1">Photo</label>
-            <FileUpload type="photo" giveID={jobID.toString()}></FileUpload>
-          </div>
-        </div>
       </div>
-    </div>
+  </div>
 
       <div className="container">
         <div className="card my-3 mx-4">

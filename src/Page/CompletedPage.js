@@ -4,6 +4,7 @@ import { getAllJobs, deleteJob, updateJob} from "../Components/APICalls";
 import FilterInput from "../Components/FilterInput";
 import Select from "react-select";
 import { applySearchFilters, options } from "../Helpers/SearchUtils";
+import { CompletedPageColumns } from "../Helpers/TableUtils";
 
 export default function CompletedPage() {
   const [jobList, setJobList] = useState([]);
@@ -132,7 +133,7 @@ export default function CompletedPage() {
         </div>
         <Table
             data={jobList}
-            displayColumns={["ID", "StartTime", "EndTime", "Status", "Setup", "Contact", "Company", "Permit_number", "Notes", "WO_number", "PO_number", "Request_ID", "QB_Invoice"]}
+            columns={CompletedPageColumns}
             handleUpdate={handleJobUpdate} handleDelete={handleJobDelete} 
           />
       </header>
