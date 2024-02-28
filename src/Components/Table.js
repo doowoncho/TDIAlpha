@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import Snackbar from '@mui/material/Snackbar'; // Import Snackbar from @mui/material
 import moment from 'moment';
+import { getRowIdFromRowModel } from '@mui/x-data-grid/internals';
 
 export default function Table({ data, columns, handleUpdate }) {
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -10,11 +11,13 @@ export default function Table({ data, columns, handleUpdate }) {
 
   const handleCloseSnackbar = () => setSnackbarOpen(false);
 
-  const processRowUpdate = async (updatedRow) => {
-
-      await handleUpdate(updatedRow?.id, updatedRow);
-      setSnackbarMessage('Row updated successfully');
-      setSnackbarOpen(true);
+  const processRowUpdate = async (updatedRow, oldValue) => {
+      if(JSON.stringify(updatedRow) !== JSON.stringify(oldValue)){
+        await handleUpdate(updatedRow.id, updatedRow);
+        setSnackbarMessage('Row updated successfully');
+        setSnackbarOpen(true);
+      }
+      return updatedRow
   };
 
   const handleProcessRowUpdateError = (error) => {
@@ -41,7 +44,7 @@ export default function Table({ data, columns, handleUpdate }) {
           rows={data}
           columns={columns}
           pageSize={5}
-          processRowUpdate={(updatedRow) => processRowUpdate(updatedRow)}
+          processRowUpdate={processRowUpdate}
           onProcessRowUpdateError={handleProcessRowUpdateError}
           disableColumnFilter
           density="comfortable"

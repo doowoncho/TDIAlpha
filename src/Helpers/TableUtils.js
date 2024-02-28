@@ -100,9 +100,6 @@ export const CompletedPageColumns = [
   },
 ]
 
-
-
-
 export const JobsTableColumns = [
         { field: 'id', headerName: 'ID', flex: 1, 
           renderCell: (params) => {
