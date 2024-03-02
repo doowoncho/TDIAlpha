@@ -10,7 +10,7 @@ import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
 
 import Paper from '@mui/material/Paper';
-import { BottomNavigation, BottomNavigationAction } from '@mui/material';
+import { AppBar, BottomNavigation, BottomNavigationAction, Box, IconButton, Toolbar, Typography } from '@mui/material';
 import { FolderSpecialOutlined } from '@mui/icons-material';
 
 export default function NavBar() {
@@ -28,6 +28,25 @@ export default function NavBar() {
 
   return (
     <>
+    <Paper className='d-block d-sm-none'>
+      <AppBar position="static" sx={{ height: 50, boxShadow: 'none' }} color='inherit'>
+        <Toolbar>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+            />
+          <Typography variant="h10" component="div" sx={{ flexGrow: 1 }}>
+            TDI
+          </Typography>
+          <Button variant="light" className='mx-2 border'>Pricing</Button>
+          <Button variant="dark">Logout</Button>
+        </Toolbar>
+      </AppBar>
+    </Paper>
+
     <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3} className='d-block d-sm-none'>
         <BottomNavigation
           showLabels

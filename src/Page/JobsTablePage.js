@@ -2,14 +2,11 @@ import React, { useEffect, useState, useRef } from "react";
 import { getUserById, getAllUsers, getAllJobs, deleteJob, updateJob } from "../Components/APICalls";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Table from "../Components/Table";
-import FilterInput from "../Components/FilterInput";
-import Select from "react-select";
 import { applySearchFilters, options } from "../Helpers/SearchUtils";
 import { JobsTableColumns } from "../Helpers/TableUtils";
-import { getGridDateOperators } from "@mui/x-data-grid";
 
 const TableCards = ({ bg, header, icon, color, num }) => (
-  <div className={`card ${bg} mx-2 p-2 bg-white rounded`}>
+  <div className={`card mx-2 p-2 rounded`} style={{background: `${bg}`, border:"none"}}>
     <div className={`card-body ${window.innerWidth < 768 ? 'p-0 text-center' : 'p-2'}`}>
       <div className="media d-sm-flex">
         <div className={`align-self-center d-none d-sm-flex`}>
@@ -135,9 +132,9 @@ export default function JobsTable() {
 
   return (
     <div>
-        <div className="container d-flex justify-content-center my-4 flex-wrap">
-          <button className="btn btn-link" onClick={() => handleTableTypeChange("New")} style={{ textDecoration: "none" }}>
-            <TableCards header="New" num={counts.New} icon="bi bi-bell-fill" color="text-primary" />
+        <div className="container d-flex justify-content-center my-2 flex-wrap">
+          <button className="btn btn-link" onClick={() => handleTableTypeChange("New")} color="text-primary" style={{ textDecoration: "none" }}>
+            <TableCards header="New" num={counts.New} icon="bi bi-bell-fill" bg="#A1DCF3"  />
           </button>
           <button className="btn btn-link" onClick={() => handleTableTypeChange("Declined")} style={{ textDecoration: "none" }}>
             <TableCards header="Declined" num={counts.Declined} icon="bi bi-exclamation-lg" color="text-danger" />
@@ -149,8 +146,8 @@ export default function JobsTable() {
             <TableCards header="All Jobs" num={counts.New + counts.Declined + counts.Submitted + counts.Approved} icon="bi bi-list" color="text-info" />
           </button>
       </div>
-      <div className="my-4 container">
-        <div className="d-flex justify-content-center flex-wrap my-3">
+      <div className="container">
+        <div className="d-flex justify-content-center flex-wrap">
 
         {/* <div>
           <label className="form-label">Filters</label>
