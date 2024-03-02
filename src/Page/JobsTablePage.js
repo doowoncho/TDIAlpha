@@ -190,7 +190,7 @@ export default function JobsTable() {
             
         </div>
         <div>
-          <h2 className="mx-4">{tableType}</h2>
+          <h2 className="text-center">{tableType}</h2>
           <Table data={jobList}
             columns = {JobsTableColumns}
             handleUpdate={handleJobUpdate}
