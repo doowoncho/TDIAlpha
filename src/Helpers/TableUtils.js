@@ -1,6 +1,6 @@
-import { getAllUsers } from '../Components/APICalls';
+import { deleteJob, deletetask, getAllUsers } from '../Components/APICalls';
 
-const { GridActionsCellItem, GridDeleteIcon, GridDeleteForeverIcon } = require('@mui/x-data-grid');
+const { GridActionsCellItem, GridDeleteIcon, GridDeleteForeverIcon, getGridNumericOperators, getGridDateOperators } = require('@mui/x-data-grid');
 const moment = require('moment');
 let users = await getAllUsers();
 
@@ -16,6 +16,9 @@ export const InvoicePageColumns = [
       return date.format('MM/DD/YYYY h:mm A'); // Format date as MM/DD/YYYY h:mm AM/PM
     }, 
     type: 'dateTime', editable: true,
+    filterOperators: getGridDateOperators().filter(
+      (operator) => operator.value == 'onOrAfter',
+    ),
   },
   { field: 'endtime', headerName: 'End Time', flex: 1, minWidth: 180,
     valueFormatter: (params) => {
@@ -23,6 +26,9 @@ export const InvoicePageColumns = [
       return date.format('MM/DD/YYYY h:mm A'); // Format date as MM/DD/YYYY h:mm AM/PM
     }, 
     type: 'dateTime', editable: true,
+    filterOperators: getGridDateOperators().filter(
+      (operator) => operator.value == 'onOrBefore',
+    ),
   },
   { field: 'status', headerName: 'Status', flex: 1, minWidth: 120, editable: true,  type: 'singleSelect',
   valueOptions: ['Approved', 'New', 'Completed', 'Invoice', 'Declined']},
@@ -47,6 +53,7 @@ export const InvoicePageColumns = [
       <GridActionsCellItem
         icon={<GridDeleteForeverIcon />}
         label="Delete"
+        onClick={()=>deleteJob(params.id)}
       />
     ],
   },
@@ -64,6 +71,9 @@ export const CompletedPageColumns = [
       return date.format('MM/DD/YYYY h:mm A'); // Format date as MM/DD/YYYY h:mm AM/PM
     }, 
     type: 'dateTime', editable: true,
+    filterOperators: getGridDateOperators().filter(
+      (operator) => operator.value == 'onOrAfter',
+    ),
   },
   { field: 'endtime', headerName: 'End Time', flex: 1, minWidth: 180,
     valueFormatter: (params) => {
@@ -71,6 +81,9 @@ export const CompletedPageColumns = [
       return date.format('MM/DD/YYYY h:mm A'); // Format date as MM/DD/YYYY h:mm AM/PM
     }, 
     type: 'dateTime', editable: true,
+    filterOperators: getGridDateOperators().filter(
+      (operator) => operator.value == 'onOrBefore',
+    ),
   },
   { field: 'status', headerName: 'Status', flex: 1, minWidth: 120, editable: true,  type: 'singleSelect',
   valueOptions: ['Approved', 'New', 'Completed', 'Invoice', 'Declined']},
@@ -95,6 +108,7 @@ export const CompletedPageColumns = [
       <GridActionsCellItem
         icon={<GridDeleteForeverIcon />}
         label="Delete"
+        onClick={()=>deleteJob(params.id)}
       />
     ],
   },
@@ -112,13 +126,19 @@ export const JobsTableColumns = [
             return date.format('MM/DD/YYYY h:mm A'); // Format date as MM/DD/YYYY h:mm AM/PM
           }, 
           type: 'dateTime', editable: true,
+          filterOperators: getGridDateOperators().filter(
+            (operator) => operator.value == 'onOrAfter',
+          ),
         },
         { field: 'endtime', headerName: 'End Time', flex: 1, minWidth: 180,
           valueFormatter: (params) => {
             const date = moment(params.value).utcOffset('-07:00');
             return date.format('MM/DD/YYYY h:mm A'); // Format date as MM/DD/YYYY h:mm AM/PM
           }, 
-          type: 'dateTime', editable: true,
+          type: 'dateTime', editable: true, 
+          filterOperators: getGridDateOperators().filter(
+            (operator) => operator.value == 'onOrBefore',
+          ),
         },
         { field: 'status', headerName: 'Status', flex: 1, minWidth: 120, editable: true,  type: 'singleSelect',
         valueOptions: ['Approved', 'New', 'Completed', 'Invoice', 'Declined']},
@@ -133,6 +153,7 @@ export const JobsTableColumns = [
             <GridActionsCellItem
               icon={<GridDeleteForeverIcon />}
               label="Delete"
+              onClick={()=>deleteJob(params.id)}
             />
           ],
         },
@@ -150,6 +171,9 @@ export const TasksTableColumns = [
         return date.format('MM/DD/YYYY h:mm A'); // Format date as MM/DD/YYYY h:mm AM/PM
       }, 
       type: 'dateTime', editable: true,
+      filterOperators: getGridDateOperators().filter(
+        (operator) => operator.value == 'onOrAfter',
+      ),
     },
     { field: 'endtime', headerName: 'End Time', flex: 1, minWidth: 180,
       valueFormatter: (params) => {
@@ -157,15 +181,18 @@ export const TasksTableColumns = [
         return date.format('MM/DD/YYYY h:mm A'); // Format date as MM/DD/YYYY h:mm AM/PM
       }, 
       type: 'dateTime', editable: true,
+      filterOperators: getGridDateOperators().filter(
+        (operator) => operator.value == 'onOrBefore',
+      ),
     },
-    { field: 'setup', headerName: 'Setup', flex: 1, editable: true, minWidth:800},
     { field: 'assigned', headerName: 'Assigned', flex: 1, minWidth: 120, editable: true,  type: 'singleSelect',
-      valueOptions: () => {
-        return users.map(user => ({
-          label: user.name,
-          value: user.id
-      }))}
-    },
+    valueOptions: () => {
+      return users.map(user => ({
+        label: user.name,
+        value: user.id
+    }))}
+  },
+    { field: 'setup', headerName: 'Setup', flex: 1, editable: true, minWidth:800},
     {
       field: 'actions',
       type: 'actions',
@@ -174,6 +201,7 @@ export const TasksTableColumns = [
         <GridActionsCellItem
           icon={<GridDeleteIcon />}
           label="Delete"
+          onClick={()=>deletetask(params.id)}
         />
       ],
     },

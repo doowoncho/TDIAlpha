@@ -5,15 +5,11 @@ import Table from "../Components/Table";
 import FilterInput from "../Components/FilterInput";
 import Select from "react-select";
 import { applySearchFilters, options } from "../Helpers/SearchUtils";
-import { useLocation } from "react-router-dom";
-import { GridActionsCellItem, GridDeleteIcon } from "@mui/x-data-grid";
 import { JobsTableColumns } from "../Helpers/TableUtils";
-
-const moment = require('moment');
-
+import { getGridDateOperators } from "@mui/x-data-grid";
 
 const TableCards = ({ bg, header, icon, color, num }) => (
-  <div className={`card ${bg} mx-2 border p-2 bg-white rounded`}>
+  <div className={`card ${bg} mx-2 p-2 bg-white rounded`}>
     <div className={`card-body ${window.innerWidth < 768 ? 'p-0 text-center' : 'p-2'}`}>
       <div className="media d-sm-flex">
         <div className={`align-self-center d-none d-sm-flex`}>
@@ -139,8 +135,7 @@ export default function JobsTable() {
 
   return (
     <div>
-      <div className='border border-1 bg-light'>
-        <div className="container d-flex justify-content-center my-3 flex-wrap">
+        <div className="container d-flex justify-content-center my-4 flex-wrap">
           <button className="btn btn-link" onClick={() => handleTableTypeChange("New")} style={{ textDecoration: "none" }}>
             <TableCards header="New" num={counts.New} icon="bi bi-bell-fill" color="text-primary" />
           </button>
@@ -153,13 +148,11 @@ export default function JobsTable() {
           <button className="btn btn-link" onClick={() => handleTableTypeChange("All")} style={{ textDecoration: "none" }}>
             <TableCards header="All Jobs" num={counts.New + counts.Declined + counts.Submitted + counts.Approved} icon="bi bi-list" color="text-info" />
           </button>
-        </div>
       </div>
-      <div className="my-4 container text-center">
-        <h1>{tableType}</h1>
+      <div className="my-4 container">
         <div className="d-flex justify-content-center flex-wrap my-3">
 
-        <div>
+        {/* <div>
           <label className="form-label">Filters</label>
             <Select
               defaultValue={[options[6]]}
@@ -170,10 +163,10 @@ export default function JobsTable() {
               classNamePrefix="select"
               onChange={handleFilterChange}
               on
-            />
-        </div>
+              />
+        </div> */}
           
-            <FilterInput label="Search" value={search} onChange={(value) => handleSearchChange(value)} />
+            {/* <FilterInput label="Search" value={search} onChange={(value) => handleSearchChange(value)} />
 
             <div className="mx-2">
               <label className="form-label">Start Date</label>
@@ -191,15 +184,16 @@ export default function JobsTable() {
                 className="form-control"
                 onChange={(e) => handleDateChange(e,'endDate')}
                 />
-            </div> 
+            </div>  */}
             
         </div>
         <div>
+          <h2 className="mx-4">{tableType}</h2>
           <Table data={jobList}
             columns = {JobsTableColumns}
             handleUpdate={handleJobUpdate}
             handleDelete={handleJobDelete}
-          />
+            />
         </div>
       </div>
     </div>

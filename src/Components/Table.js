@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import Snackbar from '@mui/material/Snackbar'; // Import Snackbar from @mui/material
-import moment from 'moment';
-import { getRowIdFromRowModel } from '@mui/x-data-grid/internals';
 
 export default function Table({ data, columns, handleUpdate }) {
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -46,7 +44,7 @@ export default function Table({ data, columns, handleUpdate }) {
           pageSize={5}
           processRowUpdate={processRowUpdate}
           onProcessRowUpdateError={handleProcessRowUpdateError}
-          disableColumnFilter
+          // disableColumnFilter
           density="comfortable"
           editMode="cell" // Set editMode to "row" to prevent cells from popping out after editing
         />
