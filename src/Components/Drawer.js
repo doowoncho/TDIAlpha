@@ -16,14 +16,14 @@ import MapIcon from '@mui/icons-material/Map';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import { useState } from 'react';
 
-const drawerBleeding = 56;
+const drawerBleeding = 10;
 
 const StyledBox = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'light' ? '#fff' : grey[800],
 }));
 
 const Puller = styled('div')(({ theme }) => ({
-  width: 30,
+  width: 60,
   height: 6,
   backgroundColor: theme.palette.mode === 'light' ? grey[300] : grey[900],
   borderRadius: 3,
@@ -58,7 +58,7 @@ function SwipeableEdgeDrawer({window, jobId, label, type}) {
       <Global
         styles={{
           '.MuiDrawer-root > .MuiPaper-root': {
-            height: `calc(50% - ${drawerBleeding}px)`,
+            height: `calc(60% - ${drawerBleeding}px)`,
             overflow: 'visible',
           },
         }}
@@ -72,9 +72,6 @@ function SwipeableEdgeDrawer({window, jobId, label, type}) {
         swipeAreaWidth={drawerBleeding}
         disableSwipeToOpen={false}
         ModalProps={{ keepMounted: false }}
-        // PaperProps={{
-        //     style: {maxWidth: '500px', margin: '0 auto' } // Adjust width dynamically
-        //   }}
       >
         <StyledBox
           sx={{
@@ -88,9 +85,7 @@ function SwipeableEdgeDrawer({window, jobId, label, type}) {
           }}
         >
           <Puller />
-          <Typography sx={{ p: 2, color: 'text.secondary' }}>{label}</Typography>
-        </StyledBox>
-        <StyledBox sx={{ px: 2, pb: 2, height: '100%', overflow: 'auto' }} className='container'>
+          <Typography sx={{ p: 2, color: 'text.secondary'}}>{label}</Typography>
           <FileUpload type={type} giveID={jobId}></FileUpload>
         </StyledBox>
       </SwipeableDrawer>
@@ -99,5 +94,3 @@ function SwipeableEdgeDrawer({window, jobId, label, type}) {
   );
 }
 export default SwipeableEdgeDrawer;
-
-{/* <Skeleton variant="rectangular" height="100%" /> */}

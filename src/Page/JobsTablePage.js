@@ -4,9 +4,11 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import Table from "../Components/Table";
 import { applySearchFilters, options } from "../Helpers/SearchUtils";
 import { JobsTableColumns } from "../Helpers/TableUtils";
+import { BadgeOutlined, Mail, MailLock, MailOutline } from "@mui/icons-material";
+import { Badge } from "@mui/material";
 
 const TableCards = ({ bg, header, icon, color, num }) => (
-  <div className={`card mx-2 p-2 rounded`} style={{background: `${bg}`, border:"none"}}>
+  <div className={`card mx-2 mt-2 p-2 rounded`} style={{background: `${bg}`, border:"none"}}>
     <div className={`card-body ${window.innerWidth < 768 ? 'p-0 text-center' : 'p-2'}`}>
       <div className="media d-sm-flex">
         <div className={`align-self-center d-none d-sm-flex`}>
@@ -134,16 +136,19 @@ export default function JobsTable() {
     <div>
         <div className="container d-flex justify-content-center my-2 flex-wrap">
           <button className="btn btn-link" onClick={() => handleTableTypeChange("New")} color="text-primary" style={{ textDecoration: "none" }}>
+          {/* <Badge badgeContent={4} color="secondary">
+            <MailOutline color="action" />
+          </Badge> */}
             <TableCards header="New" num={counts.New} icon="bi bi-bell-fill" bg="#A1DCF3"  />
           </button>
           <button className="btn btn-link" onClick={() => handleTableTypeChange("Declined")} style={{ textDecoration: "none" }}>
-            <TableCards header="Declined" num={counts.Declined} icon="bi bi-exclamation-lg" color="text-danger" />
+            <TableCards header="Declined" num={counts.Declined} icon="bi bi-exclamation-lg" color="text-dark" bg="#FF8A8A"/>
           </button>
           <button className="btn btn-link" onClick={() => handleTableTypeChange("Submitted")} style={{ textDecoration: "none" }}>
-            <TableCards header="Submitted" num={counts.Submitted} icon="bi bi-check-lg" color="text-success" />
+            <TableCards header="Submitted" num={counts.Submitted} icon="bi bi-check-lg" color="text-success" bg="#C6E1BA" />
           </button>
           <button className="btn btn-link" onClick={() => handleTableTypeChange("All")} style={{ textDecoration: "none" }}>
-            <TableCards header="All Jobs" num={counts.New + counts.Declined + counts.Submitted + counts.Approved} icon="bi bi-list" color="text-info" />
+            <TableCards header="All Jobs" num={counts.New + counts.Declined + counts.Submitted + counts.Approved} icon="bi bi-list" bg="#F2EFEA" />
           </button>
       </div>
       <div className="container">
