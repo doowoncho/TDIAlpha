@@ -52,8 +52,8 @@ export default function NavBar() {
       <Paper sx={{ position: 'fixed', left: 0, right: 0, bottom:0, zIndex: 1000 }} className='d-block d-sm-none'>
         <BottomNavigation showLabels>
           <BottomNavigationAction label="All Jobs" icon={<Home />} href='/jobstable' value="jobs"/>
-          <BottomNavigationAction label="Invoices" icon={<AutoStories />} href="/invoices" value="invoices"/>
-          <BottomNavigationAction label="Completed" icon={<CheckCircle />} href='/completed' value="completed"/>
+          <BottomNavigationAction label="Invoiced" icon={<AutoStories />} href="/invoices" value="invoices"/>
+          <BottomNavigationAction label="ToBe Invoiced" icon={<CheckCircle />} href='/completed' value="completed"/>
           <BottomNavigationAction label="ToDo" icon={<CalendarMonth />} href='/todo' value="todo"/>
           <BottomNavigationAction label="Form" icon={<FeedIcon />} href='/form' value="from"/>
         </BottomNavigation>
@@ -70,8 +70,8 @@ export default function NavBar() {
             <Nav className="me-auto">
                 <>
                   <Nav.Link href="/jobstable">All Jobs</Nav.Link>
-                  <Nav.Link href="/invoices">Invoices</Nav.Link>
-                  <Nav.Link href="/completed">Completed</Nav.Link>
+                  <Nav.Link href="/invoices">Invoiced</Nav.Link>
+                  <Nav.Link href="/completed">To Be Invoiced</Nav.Link>
                   <Nav.Link href="/todo">ToDo</Nav.Link>
                   <Nav.Link href="/form">Form</Nav.Link>
                   <Nav.Link href="/legends">Pricing</Nav.Link>
