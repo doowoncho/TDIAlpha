@@ -57,80 +57,14 @@ export default function CompletedPage() {
     fetchData()
   };
 
-  const handleSearchChange = (value) => {
-    setSearch(value)
-  };
-
-  const handleDateChange = (event, param) => {
-    const { value } = event.target;
-    setFilters({...filters,
-      [param]: value
-    });
-  };
-
-  const handleFilterChange = (selectedOptions) => {
-    const updatedSettings = { 
-      id: false,
-      assigned: false,
-      contact: false,
-      woNumber: false,
-      poNumber: false,
-      permitNumber: false,
-      requestID: false,
-      setup: false,
-      company: false
-    };
-
-    for(let i = 0; i<selectedOptions.length; i++){
-      updatedSettings[selectedOptions[i].value] = true
-    }
-
-    setFilters(updatedSettings);
-  }
-
   useEffect(() => {
     fetchData();
-  }, [filters, search, jobList]);
+  }, [filters]);
 
   return (
       <div>
       <header className='container text-center my-4'>
-        <h1>Complete Jobs - To Be Invoiced</h1>
-        <div className="d-flex justify-content-center flex-wrap my-3">
-        <div>
-          <label className="form-label">Filters</label>
-            <Select
-              defaultValue={[options[6]]}
-              isMulti
-              name="colors"
-              options={options}
-              className="basic-multi-select"
-              classNamePrefix="select"
-              onChange={handleFilterChange}
-              on
-            />
-        </div>
-          
-            <FilterInput label="Search" value={search} onChange={(value) => handleSearchChange(value)} />
-
-            <div className="mx-2">
-              <label className="form-label">Start Date</label>
-              <input
-                type="date"
-                className="form-control"
-                onChange={(e) => handleDateChange(e,'startDate')}
-                />
-            </div>
-
-            <div className="mx-2">
-              <label className="form-label">End Date</label>
-              <input
-                type="date"
-                className="form-control"
-                onChange={(e) => handleDateChange(e,'endDate')}
-                />
-            </div> 
-        </div>
+        <h1>Completed Jobs - To Be Invoiced</h1>
         <Table
             data={jobList}
             columns={CompletedPageColumns}
