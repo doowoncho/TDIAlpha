@@ -5,7 +5,7 @@ export default function JobDetails({job, handleInputChange, isEditing, user}) {
     
     return (
         <div>
-        {job && <div className="container text-center justify-content-center my-4 d-flex">
+        {job && <div className="container text-center justify-content-center mt-4 d-flex">
             {user.permission == 1 &&
                 <>
                     {isEditing
@@ -104,7 +104,7 @@ export default function JobDetails({job, handleInputChange, isEditing, user}) {
                                     {job.company}
                                 </Typography>
                                 <Typography gutterBottom variant="h6" component="div">
-                                    {job.id}
+                                    {job.status}
                                 </Typography>
                             </Stack>
                             <Typography color="text.secondary" >
@@ -118,6 +118,30 @@ export default function JobDetails({job, handleInputChange, isEditing, user}) {
                                 <Chip color={job.stamp === 'reStamped' ? 'primary' : 'default'} label="Re-stamped" size="small"/>
                                 <Chip color={job.stamp === 'rushedStamp' ? 'primary' : 'default'} label="Rushed Stamp" size="small"/>
                             </Stack>
+                        </Box>
+                        <Divider />
+                        <Box sx={{ p: 2 }}>
+                            <Typography color="text.secondary">
+                                {`WO #: ${job.wo_number}`}
+                            </Typography>
+                            <Typography color="text.secondary" >
+                                {`Permit #: ${job.permit_number}`}
+                            </Typography>
+                            <Typography color="text.secondary" >
+                                {`PO #: ${job.po_number}`}
+                            </Typography>
+                            <Typography color="text.secondary" >
+                                {`Request Id: ${job.request_id}`}
+                            </Typography>
+                        </Box>
+                        <Divider />
+                        <Box sx={{ p: 2 }}>
+                            <Typography color="text.primary" >
+                                {`Start: ${moment(job.starttime).format('MMMM DD YYYY h:mm A')}`}
+                            </Typography>
+                            <Typography color="text.primary" >
+                                {`End: ${moment(job.endtime).format('MMMM DD YYYY h:mm A')}`}
+                            </Typography>
                         </Box>
                     </Card>
                     }

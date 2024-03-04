@@ -146,7 +146,7 @@ export default function TasksTable() {
                   <button className="btn btn-primary my-3 px-4" onClick={handleCancelClick}>Cancel</button>
                   <button className="btn btn-warning mx-2 my-3 px-4" onClick={saveChanges}>Save Changes</button>
                 </>
-              : <button className="btn btn-primary px-4 mb-2" onClick={handleEditClick}>Edit</button> 
+              : <button className="btn btn-primary px-4 mb-2 my-2" onClick={handleEditClick}>Edit</button> 
             }
           </>
         }
