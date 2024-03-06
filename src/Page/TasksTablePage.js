@@ -137,40 +137,30 @@ export default function TasksTable() {
 
   return (
     <>
-      <div className="container text-center">
-        {job && <JobDetails job={job} handleInputChange = {handleInputChange} isEditing={isEditing} user={user}/>}
-        {user.permission == 1 &&
-          <>
-            {isEditing
-              ? <>
-                  <button className="btn btn-primary my-3 px-4" onClick={handleCancelClick}>Cancel</button>
-                  <button className="btn btn-warning mx-2 my-3 px-4" onClick={saveChanges}>Save Changes</button>
-                </>
-              : <button className="btn btn-primary px-4 mb-2 my-2" onClick={handleEditClick}>Edit</button> 
-            }
-          </>
-        }
-      </div>
-      <div className="card d-none d-sm-block" style={{width: '70%', margin: '0 auto'}}>
-        <div className="card-header">
-          Files
-        </div>
-        <div className="d-flex flex-wrap justify-content-center">
-          <div className="mx-2 my-2">
-            <label htmlFor="formFileDisabled" className="form-label my-1">Permit Confirmation</label>
-            <FileUpload type="permitConfirmation" giveID={id}></FileUpload>
+      <div className="container text-center d-flex">
+        {job && <JobDetails job={job} handleInputChange = {handleInputChange} isEditing={isEditing} user={user} handleCancelClick={handleCancelClick} saveChanges={saveChanges} handleEditClick={handleEditClick}/>}
+        
+        <div className="card d-none d-sm-block my-4" style={{width: '70%', margin: '0 auto'}}>
+          <div className="card-header">
+            Files
           </div>
-          <div className="mx-2 my-2">
-            <label htmlFor="formFileDisabled" className="form-label my-1">Permit</label>
-            <FileUpload type="permit" giveID={id}></FileUpload>
-          </div>
-          <div className="mx-2 my-2">
-            <label htmlFor="formFileDisabled" className="form-label my-1">Plan</label>
-            <FileUpload type="plan"  giveID={id}></FileUpload>
-          </div>
-          <div className="mx-2 my-2">
-            <label htmlFor="formFileDisabled" className="form-label my-1">Photo</label>
-            <FileUpload type="photo" giveID={id}></FileUpload>
+          <div className="d-flex flex-wrap justify-content-center">
+            <div className="mx-2 my-2">
+              <label htmlFor="formFileDisabled" className="form-label my-1">Permit Confirmation</label>
+              <FileUpload type="permitConfirmation" giveID={id}></FileUpload>
+            </div>
+            <div className="mx-2 my-2">
+              <label htmlFor="formFileDisabled" className="form-label my-1">Permit</label>
+              <FileUpload type="permit" giveID={id}></FileUpload>
+            </div>
+            <div className="mx-2 my-2">
+              <label htmlFor="formFileDisabled" className="form-label my-1">Plan</label>
+              <FileUpload type="plan"  giveID={id}></FileUpload>
+            </div>
+            <div className="mx-2 my-2">
+              <label htmlFor="formFileDisabled" className="form-label my-1">Photo</label>
+              <FileUpload type="photo" giveID={id}></FileUpload>
+            </div>
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import { Box, Card, Chip, Divider, Stack, TextField, Typography } from "@mui/material";
 import moment from "moment";
 
-export default function JobDetails({job, handleInputChange, isEditing, user}) {
+export default function JobDetails({job, handleInputChange, isEditing, user, handleCancelClick, saveChanges, handleEditClick}) {
     
     return (
         <div>
@@ -120,7 +120,7 @@ export default function JobDetails({job, handleInputChange, isEditing, user}) {
                             </Stack>
                         </Box>
                         <Divider />
-                        <Box sx={{ p: 2 }}>
+                        <Box sx={{ p: 2, textAlign: "left" }}>
                             <Typography color="text.secondary">
                                 {`WO #: ${job.wo_number}`}
                             </Typography>
@@ -149,6 +149,17 @@ export default function JobDetails({job, handleInputChange, isEditing, user}) {
             }
             </div> 
             }
+                {user.permission == 1 &&
+                <>
+                    {isEditing
+                    ?   <>
+                            <button className="btn btn-primary my-3 px-4" onClick={handleCancelClick}>Cancel</button>
+                            <button className="btn btn-warning mx-2 my-3 px-4" onClick={saveChanges}>Save Changes</button>
+                        </>
+                    : <button className="btn btn-primary px-4 mb-2 my-2" onClick={handleEditClick}>Edit</button> 
+                    }
+                </>
+                } 
         </div> 
     )
 }
