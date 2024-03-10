@@ -8,6 +8,7 @@ import getDay from 'date-fns/getDay';
 import { enCA } from 'date-fns/locale';
 import { useNavigate } from 'react-router-dom';
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import "../Helpers/Calendar.css";
 
 let users = await getAllUsers();
 
@@ -100,13 +101,13 @@ export default function ToDoPage() {
       </div>
       <div>
         <Calendar
-          defaultView={isMobileScreen ? 'day' : 'month'}
+          defaultView={isMobileScreen ? 'week' : 'month'}
           tooltipAccessor="start"
           localizer={localizer}
           events={events}
           startAccessor="start"
           endAccessor="end"
-          style={{ height: '600px', margin: '50px' }}
+          style={{ height: '600px', ...(isMobileScreen ? {} : { marginLeft: '80px', marginRight: '80px' }) }}
           onSelectEvent={(event) => handleEventClick(event)}
           views={['month', 'day', 'week']}
           eventPropGetter={eventStyleGetter}

@@ -4,7 +4,7 @@ import { Global } from '@emotion/react';
 import { styled } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { grey } from '@mui/material/colors';
-import Button from '@mui/material/Button';
+import Button from 'react-bootstrap/Button';
 import Box from '@mui/material/Box';
 import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
@@ -53,7 +53,7 @@ function SwipeableEdgeDrawer({window, jobId, label, type}) {
   return (
     <>
     <p1>{label}</p1>
-    <div className='container'>
+    <div className='container d-flex justify-content-center align-items-center'>
 
       <Global
         styles={{
@@ -63,7 +63,7 @@ function SwipeableEdgeDrawer({window, jobId, label, type}) {
           },
         }}
       />
-        <Button variant="contained" className='my-3' onClick={toggleDrawer(true)} style={{ height: '60px', width: '40px' }}>{icon()}</Button>
+        <Button variant="dark" className='my-3' onClick={toggleDrawer(true)} style={{ height: '60px', width: '80px' }}>{icon()}</Button>
       <SwipeableDrawer
         anchor="bottom"
         open={open}
@@ -72,6 +72,7 @@ function SwipeableEdgeDrawer({window, jobId, label, type}) {
         swipeAreaWidth={drawerBleeding}
         disableSwipeToOpen={false}
         ModalProps={{ keepMounted: false }}
+        // style={{ width: "12rem" }}
       >
         <StyledBox
           sx={{
