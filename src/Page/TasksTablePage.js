@@ -4,13 +4,13 @@ import { getAlltasks, updatetask, deletetask, getUserById, getAllUsers, getTasks
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Table from "../Components/Table";
 import { useParams } from "react-router-dom";
-import moment from "moment";
 import { TasksTableColumns } from "../Helpers/TableUtils";
 import SwipeableEdgeDrawer from "../Components/Drawer";
 import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
 import FeedIcon from '@mui/icons-material/Feed';
 import MapIcon from '@mui/icons-material/Map';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
+import JobDetails from "../Components/JobDetails";
  
 let user = await getUserById(window.sessionStorage.getItem("user"))
 
@@ -136,110 +136,11 @@ export default function TasksTable() {
   };
 
   return (
-    <div>
-    {job && <div className="container text-center justify-content-center my-4 d-flex">
-      <div>
-      <div className="card mx-4">
-        <div className="card-header">
-          Job Details
-        </div>
-          <fieldset disabled={!isEditing}>
-            <div className="input-group">
-              <div className="input-group-prepend">
-                <span className="input-group-text" id="">Contact</span>
-              </div>
-              <input type="text" value={job.contact || ''} className="form-control" onChange={(e)=>handleInputChange(e, 'contact')}/>
-            </div>
-            <div className="input-group">
-              <div className="input-group-prepend">
-                <span className="input-group-text" id="">Company</span>
-              </div>
-              <input type="text" value={job.company || ''} onChange={(e)=>handleInputChange(e, 'company')} className="form-control"/>
-            </div>
-            <div className="input-group">
-              <div className="input-group-prepend">
-                <span className="input-group-text" id="">Email</span>
-              </div>
-              <input type="text" value={job.email || ''} className="form-control" onChange={(e)=>handleInputChange(e, 'email')}/>
-            </div>
-            <div className="input-group">
-              <div className="input-group-prepend">
-                <span className="input-group-text" id="">Phone Number</span>
-              </div>
-              <input type="text" value={job.phone_number || ''} onChange={(e)=>handleInputChange(e, 'phone_number')} className="form-control"/>
-            </div>
-            <div className="input-group">
-              <div className="input-group-prepend">
-                <span className="input-group-text" id="">Status</span>
-              </div>
-              <input type="text" value={job.status || ''} className="form-control" readOnly/>
-            </div>
-            <div className="input-group d-sm-flex">
-              <div className="input-group-prepend">
-                <span className="input-group-text" id="">WO Number</span>
-              </div>
-              <input type="text" value={job.wo_number || ''} onChange={(e)=>handleInputChange(e, 'wo_number')} className="form-control"/>
-            </div>
-            <div className="input-group d-sm-flex">
-              <div className="input-group-prepend">
-                <span className="input-group-text" id="">Permit Number</span>
-              </div>
-              <input type="text" value={job.permit_number || ''} onChange={(e)=>handleInputChange(e, 'permit_number')} className="form-control"/>
-            </div>
-            <div className="input-group d-sm-flex">
-              <div className="input-group-prepend">
-                <span className="input-group-text" id="">PO Number</span>
-              </div>
-              <input type="text" value={job.po_number || ''} onChange={(e)=>handleInputChange(e, 'po_number')} className="form-control"/>
-            </div>
-            <div className="input-group d-sm-flex">
-              <div className="input-group-prepend">
-                <span className="input-group-text" id="">Request ID</span>
-              </div>
-              <input type="text" value={job.request_id || ''} onChange={(e)=>handleInputChange(e, 'request_id')} className="form-control"/>
-            </div>
-          
-            <div className="input-group">
-              <div className="input-group-prepend">
-                <span className="input-group-text" id="">Stamp</span>
-              </div>
-              <select value={job.stamp == null ? "none" : job.stamp} onChange={(e) => handleInputChange(e, 'stamp')}>
-                <option value="stamped">Stamped</option>
-                <option value="reStamped">Re-stamped</option>
-                <option value="rushedStamp">Rushed Stamp</option>
-                <option value="none">None</option>
-              </select>
-            </div>
-            <div className="input-group d-sm-flex">
-              <div className="input-group-prepend">
-                <span className="input-group-text" id="">Start Time</span>
-              </div>
-                    <input type="datetime-local" className="form-control" id="startDate" value={moment(job.starttime).format('YYYY-MM-DDTHH:mm')}
-                    onChange={(e) => handleInputChange(e, 'starttime')}/>
-            </div>
-            <div className="input-group d-sm-flex">
-              <div className="input-group-prepend">
-                <span className="input-group-text" id="">End Time</span>
-              </div>
-                    <input type="datetime-local" className="form-control" id="startDate" value={moment(job.endtime).format('YYYY-MM-DDTHH:mm')}
-                    onChange={(e) => handleInputChange(e, 'endtime')}/>
-            </div>
-          </fieldset>
-      </div>
-
-      {user.permission == 1 &&
-          <>
-            {isEditing
-              ? <>
-              <button className="btn btn-primary my-3 px-4" onClick={handleCancelClick}>Cancel</button>
-              <button className="btn btn-warning mx-2 my-3 px-4" onClick={saveChanges}>Save Changes</button>
-              </>
-              : <button className="btn btn-primary my-3 px-4" onClick={handleEditClick}>Edit</button> 
-            }
-          </>
-        }
-      </div>
-        <div className="card d-none d-sm-block" style={{width: '70%', margin: '0 auto'}}>
+    <>
+      <div className="container text-center d-flex">
+        {job && <JobDetails job={job} handleInputChange = {handleInputChange} isEditing={isEditing} user={user} handleCancelClick={handleCancelClick} saveChanges={saveChanges} handleEditClick={handleEditClick}/>}
+        
+        <div className="card d-none d-sm-block my-4" style={{width: '70%', margin: '0 auto'}}>
           <div className="card-header">
             Files
           </div>
@@ -263,37 +164,37 @@ export default function TasksTable() {
           </div>
         </div>
       </div>
-      }
       <div className="card d-block d-sm-none">
         <div className="card-header">
           Files
         </div>
-          <div className="d-flex flex-wrap justify-content-center">
-            <div className="mx-2 my-2">
-              <SwipeableEdgeDrawer type="permitConfirmation" jobId={id} label="Permit Confirmation"></SwipeableEdgeDrawer>
-            </div>
-            <div className="mx-2 my-2">
-              <SwipeableEdgeDrawer type="permit" jobId={id} label="Permit"></SwipeableEdgeDrawer>
-            </div>
-            <div className="mx-2 my-2">
-              <SwipeableEdgeDrawer type="plan" jobId={id} label="Plan"></SwipeableEdgeDrawer>
-            </div>
-            <div className="mx-2 my-2">
-              <SwipeableEdgeDrawer type="photo" jobId={id} label="Photo"></SwipeableEdgeDrawer>
-            </div>
+        <div className="d-flex flex-wrap justify-content-center">
+          <div className="mx-2 my-2">
+            <SwipeableEdgeDrawer type="permitConfirmation" jobId={id} label="Permit Confirmation"></SwipeableEdgeDrawer>
+          </div>
+          <div className="mx-2 my-2">
+            <SwipeableEdgeDrawer type="permit" jobId={id} label="Permit"></SwipeableEdgeDrawer>
+          </div>
+          <div className="mx-2 my-2">
+            <SwipeableEdgeDrawer type="plan" jobId={id} label="Plan"></SwipeableEdgeDrawer>
+          </div>
+          <div className="mx-2 my-2">
+            <SwipeableEdgeDrawer type="photo" jobId={id} label="Photo"></SwipeableEdgeDrawer>
           </div>
         </div>
+      </div>
     <header className='container text-center my-4'>
       <h1>Tasks</h1>
       <Table
-          data={taskList}
-          columns={TasksTableColumns}
-          handleUpdate={handletaskUpdate} handleDelete={handletaskDelete} 
-        />
+        data={taskList}
+        columns={TasksTableColumns}
+        handleUpdate={handletaskUpdate}
+        handleDelete={handletaskDelete} 
+      />
       <button className='my-1 btn btn-outline-primary' onClick={()=>addTask()}> 
         Add Task
       </button>
     </header>
-  </div>
+    </>
   );
 }

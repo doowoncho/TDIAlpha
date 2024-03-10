@@ -10,7 +10,6 @@ import { InvoicePageColumns } from "../Helpers/TableUtils";
 
 export default function InvoicePage() {
   const [jobList, setJobList] = useState([]);
-  const [services, setServices] = useState([]);
   const [search, setSearch] = useState([]);
   const [filters, setFilters] = useState({
     id: false,
@@ -59,85 +58,15 @@ export default function InvoicePage() {
     fetchData()
   };
 
-  const handleSearchChange = (value) => {
-    setSearch(value)
-  };
-
-  const handleDateChange = (event, param) => {
-    const { value } = event.target;
-    setFilters({...filters,
-      [param]: value
-    });
-  };
-
-  const handleFilterChange = (selectedOptions) => {
-    const updatedSettings = { 
-      id: false,
-      assigned: false,
-      contact: false,
-      woNumber: false,
-      poNumber: false,
-      permitNumber: false,
-      requestID: false,
-      setup: false,
-      company: false
-    };
-
-    for(let i = 0; i<selectedOptions.length; i++){
-      updatedSettings[selectedOptions[i].value] = true
-    }
-
-    setFilters(updatedSettings);
-  }
-
   useEffect(() => {
     fetchData();
-  }, [filters, search, jobList]);
+  }, []);
 
 
   return (
       <div>
       <header className='container text-center my-4'>
         <h1>Invoice Page</h1>
-        <div className="d-flex justify-content-center flex-wrap my-3">
-        <div>
-          <label className="form-label">Filters</label>
-            <Select
-              defaultValue={[options[6]]}
-              isMulti
-              name="colors"
-              options={options}
-              className="basic-multi-select"
-              classNamePrefix="select"
-              onChange={handleFilterChange}
-            />
-        </div>
-          
-            <FilterInput label="Search" value={search} onChange={(value) => handleSearchChange(value)} />
-
-            <div className="mx-2">
-              <label className="form-label">Start Date</label>
-              <input
-                type="date"
-                className="form-control"
-                onChange={(e) => handleDateChange(e,'startDate')}
-                />
-            </div>
-
-            <div className="mx-2">
-              <label className="form-label">End Date</label>
-              <input
-                type="date"
-                className="form-control"
-                onChange={(e) => handleDateChange(e,'endDate')}
-                />
-            </div> 
-        </div>
-        {/* <DropdownButton id="dropdown-basic-button" title="Dropdown button">
-        <Dropdown.Item key={services.id} href={`#action/${services.id}`}>
-                {services.name}
-              </Dropdown.Item>
-        </DropdownButton> */}
         <Table
             data={jobList}
             columns={InvoicePageColumns}
