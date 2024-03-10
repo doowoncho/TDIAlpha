@@ -1,8 +1,11 @@
+import { Button } from 'bootstrap';
 import { deleteJob, deletetask, getAllUsers } from '../Components/APICalls';
+import { Dialog, DialogTitle, Typography } from '@mui/material';
+import PopUp from '../Components/PopUp';
 
 const { GridActionsCellItem, GridDeleteIcon, GridDeleteForeverIcon, getGridNumericOperators, getGridDateOperators } = require('@mui/x-data-grid');
 const moment = require('moment');
-const statusChoices = ['Approved', 'New', 'Completed', 'Invoice', 'Declined', 'Submitted', 'Waiting']
+const statusChoices = ['Approved', 'New', 'Completed', 'Invoice', 'Declined', 'Submitted', 'Waiting', 'Canceled', 'Canceled OS']
 let users = await getAllUsers();
 
 
@@ -80,7 +83,7 @@ export const CompletedPageColumns = [
   { field: 'endtime', headerName: 'End Time', flex: 1, minWidth: 180,
     valueFormatter: (params) => {
       const date = moment(params.value).utcOffset('-07:00');
-      return date.format('MM/DD/YYYY h:mm A'); // Format date as MM/DD/YYYY h:mm AM/PM
+      return date ? date.format('MM/DD/YYYY h:mm A') : null; // Format date as MM/DD/YYYY h:mm AM/PM
     }, 
     type: 'dateTime', editable: true,
     filterOperators: getGridDateOperators().filter(
@@ -96,8 +99,14 @@ export const CompletedPageColumns = [
   { field: 'permit_number', headerName: 'Permit Number', flex: 1, minWidth: 200, editable: true, },
   { field: 'po_number', headerName: 'PO Number', flex: 1, minWidth:300, editable: true,},
   { field: 'wo_number', headerName: 'WO Number', flex: 1, minWidth:300, editable: true,},
-  { field: 'notes', headerName: 'Notes', flex: 1, minWidth: 200, editable: true, },
-  { field: 'qb_invoice', headerName: 'QB Invoice(+10%)', flex: 1, minWidth:300, editable: true, type: 'number', 
+  { field: 'notes', headerName: 'Notes', flex: 1, minWidth: 200, editable: false, 
+    
+    renderCell: (params) => {
+      return PopUp(params.id)
+      }
+
+  },
+  { field: 'qb_invoice', headerName: 'QB Invoice(+10%)', flex: 1, minWidth:200, editable: true, type: 'number', 
      valueFormatter: (params) => {
       return params.value * 1.1;// Format date as MM/DD/YYYY h:mm AM/PM
     },
@@ -170,7 +179,7 @@ export const TasksTableColumns = [
     { field: 'starttime', headerName: 'Start Time', flex: 1, minWidth: 180, 
       valueFormatter: (params) => {
         const date = moment(params.value).utcOffset('-07:00');
-        return date.format('MM/DD/YYYY h:mm A'); // Format date as MM/DD/YYYY h:mm AM/PM
+        return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : "" // Format date as MM/DD/YYYY h:mm AM/PM
       }, 
       type: 'dateTime', editable: true,
       filterOperators: getGridDateOperators().filter(
@@ -180,7 +189,7 @@ export const TasksTableColumns = [
     { field: 'endtime', headerName: 'End Time', flex: 1, minWidth: 180,
       valueFormatter: (params) => {
         const date = moment(params.value).utcOffset('-07:00');
-        return date.format('MM/DD/YYYY h:mm A'); // Format date as MM/DD/YYYY h:mm AM/PM
+        return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : "" // Format date as MM/DD/YYYY h:mm AM/PM
       }, 
       type: 'dateTime', editable: true,
       filterOperators: getGridDateOperators().filter(
