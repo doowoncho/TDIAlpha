@@ -10,7 +10,6 @@ let user = await getUserById(window.sessionStorage.getItem("user"))
 
 export default function Orders() {
   const { id } = useParams();
-  let jobID;
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [task, setTask] = useState({
@@ -21,8 +20,6 @@ export default function Orders() {
     setup: null
   });
   const [isEditing, setIsEditing] = useState(false); // State to track edit mode
-  const [job, setJob] = useState()
-  const [files, setFiles] = useState(null);
   const [isCompleted, setIsCompleted] = useState(task.completed || false);
 
   useEffect(() => {
@@ -31,14 +28,6 @@ export default function Orders() {
         const fetchedTask = await gettaskById(id);
         setTask(fetchedTask);
         setIsCompleted(fetchedTask.completed || false);
-  
-        const fetchedJob = await getJobById(fetchedTask.job_id);
-        setJob(fetchedJob);
-  
-        const fetchedFiles = await getFilesById(fetchedJob.id);
-        setFiles(fetchedFiles);
-        console.log(fetchedFiles);
-        console.log(files);
   
         setIsLoading(false);
       } catch (error) {
@@ -110,8 +99,6 @@ export default function Orders() {
     // Update the completion status in the database
     await updatetask(task.id, { completed: newCompletedStatus });
   };
-  
-  jobID = job.id;
 
   return (
     <div>
@@ -131,9 +118,9 @@ export default function Orders() {
             : 
             <>
             <button className="btn btn-primary px-4" onClick={handleEditClick}>Edit</button> 
-            <div class="form-check">
-              <input class="form-check-input m-1 h-50" type="checkbox" value="" id="flexCheckDefault" checked={isCompleted} onChange={handleCheckboxChange}></input>
-                <label class="form-check-label h5" for="flexCheckDefault">Mark As Complete</label>
+            <div className="form-check">
+              <input className="form-check-input m-1 h-50" type="checkbox" value="" id="flexCheckDefault" checked={isCompleted} onChange={handleCheckboxChange}></input>
+                <label className="form-check-label h5" htmlFor="flexCheckDefault">Mark As Complete</label>
             </div>
             </>
           }
@@ -196,19 +183,19 @@ export default function Orders() {
             <div className="d-flex flex-wrap justify-content-center">
               <div className="mx-2 my-2">
                 <label htmlFor="formFileDisabled" className="form-label my-1">Permit Confirmation</label>
-                <FileUpload type="permitConfirmation" giveID={id}></FileUpload>
+                <FileUpload type="permitConfirmation" giveID={task.job_id}></FileUpload>
               </div>
               <div className="mx-2 my-2">
                 <label htmlFor="formFileDisabled" className="form-label my-1">Permit</label>
-                <FileUpload type="permit" giveID={id}></FileUpload>
+                <FileUpload type="permit" giveID={task.job_id}></FileUpload>
               </div>
               <div className="mx-2 my-2">
                 <label htmlFor="formFileDisabled" className="form-label my-1">Plan</label>
-                <FileUpload type="plan"  giveID={id}></FileUpload>
+                <FileUpload type="plan"  giveID={task.job_id}></FileUpload>
               </div>
               <div className="mx-2 my-2">
                 <label htmlFor="formFileDisabled" className="form-label my-1">Photo</label>
-                <FileUpload type="photo" giveID={id}></FileUpload>
+                <FileUpload type="photo" giveID={task.job_id}></FileUpload>
               </div>
             </div>
       </div>
@@ -221,16 +208,16 @@ export default function Orders() {
         </div>
         <div className="d-flex flex-wrap justify-content-center">
             <div className="mx-2 my-2">
-              <SwipeableEdgeDrawer type="permitConfirmation" jobId={id} label="Permit Confirmation"></SwipeableEdgeDrawer>
+              <SwipeableEdgeDrawer type="permitConfirmation" jobId={task.job_id} label="Permit Confirmation"></SwipeableEdgeDrawer>
             </div>
             <div className="mx-2 my-2">
-              <SwipeableEdgeDrawer type="permit" jobId={id} label="Permit"></SwipeableEdgeDrawer>
+              <SwipeableEdgeDrawer type="permit" jobId={task.job_id} label="Permit"></SwipeableEdgeDrawer>
             </div>
             <div className="mx-2 my-2">
-              <SwipeableEdgeDrawer type="plan" jobId={id} label="Plan"></SwipeableEdgeDrawer>
+              <SwipeableEdgeDrawer type="plan" jobId={task.job_id} label="Plan"></SwipeableEdgeDrawer>
             </div>
             <div className="mx-2 my-2">
-              <SwipeableEdgeDrawer type="photo" jobId={id} label="Photo"></SwipeableEdgeDrawer>
+              <SwipeableEdgeDrawer type="photo" jobId={task.job_id} label="Photo"></SwipeableEdgeDrawer>
             </div>
           </div>
       </div>
