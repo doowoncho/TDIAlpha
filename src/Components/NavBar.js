@@ -43,7 +43,7 @@ export default function NavBar() {
             <Typography variant="h10" component="div" sx={{ flexGrow: 1 }}>
               TDI
             </Typography>
-            <Button variant="light" className='mx-2 border'>Pricing</Button>
+            <Button variant="light" className='mx-2 border' href='/legends'>Pricing</Button>
             <Button variant="dark">Logout</Button>
           </Toolbar>
         </AppBar>
@@ -53,7 +53,7 @@ export default function NavBar() {
         <BottomNavigation showLabels>
           <BottomNavigationAction label="All Jobs" icon={<Home />} href='/jobstable' value="jobs"/>
           <BottomNavigationAction label="Invoiced" icon={<AutoStories />} href="/invoices" value="invoices"/>
-          <BottomNavigationAction label="ToBe Invoiced" icon={<CheckCircle />} href='/completed' value="completed"/>
+          <BottomNavigationAction label="To Invoice" icon={<CheckCircle />} href='/completed' value="completed"/>
           <BottomNavigationAction label="ToDo" icon={<CalendarMonth />} href='/todo' value="todo"/>
           <BottomNavigationAction label="Form" icon={<FeedIcon />} href='/form' value="from"/>
         </BottomNavigation>

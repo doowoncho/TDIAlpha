@@ -64,7 +64,7 @@ export default function CompletedPage() {
   return (
       <div>
       <header className='container text-center my-4'>
-        <h1>Completed Jobs - To Be Invoiced</h1>
+        <h1>To Be Invoiced</h1>
         <Table
             data={jobList}
             columns={CompletedPageColumns}
