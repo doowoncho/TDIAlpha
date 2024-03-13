@@ -1,4 +1,4 @@
-import { deleteJob, deletetask, getAllUsers } from '../Components/APICalls';
+import { deleteJob, deletetask, getAllUsers, getUserById } from '../Components/APICalls';
 import { Dialog, DialogTitle, Typography } from '@mui/material';
 import PopUp from '../Components/PopUp';
 
@@ -16,13 +16,15 @@ const minWidthPermitNumber = 200;
 const minWidthPONumber = 300;
 const minWidthWONumber = 130;
 const minWidthNotes = 200;
-const minWidthQBInvoice = 200;
+const minWidthQBInvoice = 130;
 const minWidthActions = 40;
 
 let users = await getAllUsers();
+let user = await getUserById(window.sessionStorage.getItem("user"))
+const isEditable = user.permission == 1
 
 export const InvoicePageColumns = [
-  { field: 'id', headerName: 'ID', flex: 1, 
+  { field: 'id', headerName: 'ID', flex: 1,
     renderCell: (params) => {
       return <a href={`/taskspage/${params.value}`} className="no-link-style">{params.value}</a>;
     }
@@ -32,7 +34,7 @@ export const InvoicePageColumns = [
       const date = moment(params.value).utcOffset('-07:00');
       return date.format('MM/DD/YYYY h:mm A');
     }, 
-    type: 'dateTime', editable: true,
+    type: 'dateTime', editable: isEditable,
     filterOperators: getGridDateOperators().filter(
       (operator) => operator.value == 'onOrAfter',
     ),
@@ -42,27 +44,31 @@ export const InvoicePageColumns = [
       const date = moment(params.value).utcOffset('-07:00');
       return date.format('MM/DD/YYYY h:mm A');
     }, 
-    type: 'dateTime', editable: true,
+    type: 'dateTime', editable: isEditable,
     filterOperators: getGridDateOperators().filter(
       (operator) => operator.value == 'onOrBefore',
     ),
   },
-  { field: 'status', headerName: 'Status', flex: 1, minWidth: minWidthStatus, editable: true,  type: 'singleSelect',
+  { field: 'status', headerName: 'Status', flex: 1, minWidth: minWidthStatus, editable: isEditable,  type: 'singleSelect',
   valueOptions: statusChoices},
-  { field: 'setup', headerName: 'Setup', flex: 1, minWidth: minWidthSetup, editable: true,},
-  { field: 'company', headerName: 'Company', flex: 1, minWidth: minWidthCompany, editable: true, },
-  { field: 'contact', headerName: 'Contact', flex: 1, minWidth: minWidthContact, editable: true, },
-  { field: 'request_id', headerName: 'Request ID', flex: 1, minWidth: minWidthRequestId, editable: true,},
-  { field: 'permit_number', headerName: 'Permit Number', flex: 1, minWidth: minWidthPermitNumber, editable: true, },
-  { field: 'po_number', headerName: 'PO Number', flex: 1, minWidth: minWidthPONumber, editable: true,},
-  { field: 'wo_number', headerName: 'WO Number', flex: 1, minWidth: minWidthWONumber, editable: true,},
-  { field: 'notes', headerName: 'Notes', flex: 1, minWidth: minWidthNotes, editable: true, },
-  { field: 'permit_cost', headerName: 'Permit Cost(+10%)', flex: 1, minWidth: minWidthQBInvoice, editable: true, type: 'number', 
+  { field: 'setup', headerName: 'Setup', flex: 1, minWidth: minWidthSetup, editable: isEditable,},
+  { field: 'company', headerName: 'Company', flex: 1, minWidth: minWidthCompany, editable: isEditable, },
+  { field: 'contact', headerName: 'Contact', flex: 1, minWidth: minWidthContact, editable: isEditable, },
+  { field: 'request_id', headerName: 'Request ID', flex: 1, minWidth: minWidthRequestId, editable: isEditable,},
+  { field: 'permit_number', headerName: 'Permit Number', flex: 1, minWidth: minWidthPermitNumber, editable: isEditable, },
+  { field: 'po_number', headerName: 'PO Number', flex: 1, minWidth: minWidthPONumber, editable: isEditable,},
+  { field: 'wo_number', headerName: 'WO Number', flex: 1, minWidth: minWidthWONumber, editable: isEditable,},
+  { field: 'notes', headerName: 'Notes', flex: 1, minWidth: minWidthNotes, editable: false, 
+    renderCell: (params) => {
+      return PopUp(params.id)
+    }
+  },
+  { field: 'permit_cost', headerName: 'Permit Cost(+10%)', flex: 1, minWidth: minWidthQBInvoice, editable: isEditable, type: 'number', 
     valueFormatter: (params) => {
       return (params.value * 1.1).toFixed(2);
     },
   }, 
-  { field: 'qb_invoice', headerName: 'QB Invoice #', flex: 1, minWidth: minWidthQBInvoice, editable: true,},
+  { field: 'qb_invoice', headerName: 'QB Invoice #', flex: 1, minWidth: minWidthQBInvoice, editable: isEditable,},
   {
     field: 'actions',
     type: 'actions',
@@ -88,7 +94,7 @@ export const CompletedPageColumns = [
       const date = moment(params.value).utcOffset('-07:00');
       return date.format('MM/DD/YYYY h:mm A');
     }, 
-    type: 'dateTime', editable: true,
+    type: 'dateTime', editable: isEditable,
     filterOperators: getGridDateOperators().filter(
       (operator) => operator.value == 'onOrAfter',
     ),
@@ -98,31 +104,31 @@ export const CompletedPageColumns = [
       const date = moment(params.value).utcOffset('-07:00');
       return date ? date.format('MM/DD/YYYY h:mm A') : null;
     }, 
-    type: 'dateTime', editable: true,
+    type: 'dateTime', editable: isEditable,
     filterOperators: getGridDateOperators().filter(
       (operator) => operator.value == 'onOrBefore',
     ),
   },
-  { field: 'status', headerName: 'Status', flex: 1, minWidth: minWidthStatus, editable: true,  type: 'singleSelect',
+  { field: 'status', headerName: 'Status', flex: 1, minWidth: minWidthStatus, editable: isEditable,  type: 'singleSelect',
   valueOptions: statusChoices},
-  { field: 'setup', headerName: 'Setup', flex: 1, minWidth: minWidthSetup, editable: true,},
-  { field: 'company', headerName: 'Company', flex: 1, minWidth: minWidthCompany, editable: true, },
-  { field: 'contact', headerName: 'Contact', flex: 1, minWidth: minWidthContact, editable: true, },
-  { field: 'request_id', headerName: 'Request ID', flex: 1, minWidth: minWidthRequestId, editable: true,},
-  { field: 'permit_number', headerName: 'Permit Number', flex: 1, minWidth: minWidthPermitNumber, editable: true, },
-  { field: 'po_number', headerName: 'PO Number', flex: 1, minWidth: minWidthPONumber, editable: true,},
-  { field: 'wo_number', headerName: 'WO Number', flex: 1, minWidth: minWidthWONumber, editable: true,},
+  { field: 'setup', headerName: 'Setup', flex: 1, minWidth: minWidthSetup, editable: isEditable,},
+  { field: 'company', headerName: 'Company', flex: 1, minWidth: minWidthCompany, editable: isEditable, },
+  { field: 'contact', headerName: 'Contact', flex: 1, minWidth: minWidthContact, editable: isEditable, },
+  { field: 'request_id', headerName: 'Request ID', flex: 1, minWidth: minWidthRequestId, editable: isEditable,},
+  { field: 'permit_number', headerName: 'Permit Number', flex: 1, minWidth: minWidthPermitNumber, editable: isEditable, },
+  { field: 'po_number', headerName: 'PO Number', flex: 1, minWidth: minWidthPONumber, editable: isEditable,},
+  { field: 'wo_number', headerName: 'WO Number', flex: 1, minWidth: minWidthWONumber, editable: isEditable,},
   { field: 'notes', headerName: 'Notes', flex: 1, minWidth: minWidthNotes, editable: false, 
     renderCell: (params) => {
       return PopUp(params.id)
     }
   },
-  { field: 'permit_cost', headerName: 'Permit Cost(+10%)', flex: 1, minWidth: minWidthQBInvoice, editable: true, type: 'number', 
+  { field: 'permit_cost', headerName: 'Permit Cost(+10%)', flex: 1, minWidth: minWidthQBInvoice, editable: isEditable, type: 'number', 
     valueFormatter: (params) => {
       return (params.value * 1.1).toFixed(2);
     },
   }, 
-  { field: 'qb_invoice', headerName: 'QB Invoice #', flex: 1, minWidth: minWidthQBInvoice, editable: true},
+  { field: 'qb_invoice', headerName: 'QB Invoice #', flex: 1, minWidth: minWidthQBInvoice, editable: isEditable},
   {
     field: 'actions',
     type: 'actions',
@@ -148,7 +154,7 @@ export const JobsTableColumns = [
       const date = moment(params.value).utcOffset('-07:00');
       return date.format('MM/DD/YYYY h:mm A');
     }, 
-    type: 'dateTime', editable: true,
+    type: 'dateTime', editable: isEditable,
     filterOperators: getGridDateOperators().filter(
       (operator) => operator.value == 'onOrAfter',
     ),
@@ -158,17 +164,17 @@ export const JobsTableColumns = [
       const date = moment(params.value).utcOffset('-07:00');
       return date.format('MM/DD/YYYY h:mm A');
     }, 
-    type: 'dateTime', editable: true, 
+    type: 'dateTime', editable: isEditable, 
     filterOperators: getGridDateOperators().filter(
       (operator) => operator.value == 'onOrBefore',
     ),
   },
-  { field: 'status', headerName: 'Status', flex: 1, minWidth: minWidthStatus, editable: true,  type: 'singleSelect',
+  { field: 'status', headerName: 'Status', flex: 1, minWidth: minWidthStatus, editable: isEditable,  type: 'singleSelect',
     valueOptions: statusChoices
   },
-  { field: 'company', headerName: 'Company', flex: 1, minWidth: minWidthCompany, editable: true, },
-  { field: 'setup', headerName: 'Setup', flex: 1, minWidth: minWidthSetup, editable: true,},
-  { field: 'wo_number', headerName: 'WO Number', flex: 1, minWidth: minWidthWONumber, editable: true,},
+  { field: 'company', headerName: 'Company', flex: 1, minWidth: minWidthCompany, editable: isEditable, },
+  { field: 'setup', headerName: 'Setup', flex: 1, minWidth: minWidthSetup, editable: isEditable,},
+  { field: 'wo_number', headerName: 'WO Number', flex: 1, minWidth: minWidthWONumber, editable: isEditable,},
   {
     field: 'actions',
     type: 'actions',
@@ -194,7 +200,7 @@ export const TasksTableColumns = [
         const date = moment(params.value).utcOffset('-07:00');
         return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : ""
       }, 
-      type: 'dateTime', editable: true,
+      type: 'dateTime', editable: isEditable,
       filterOperators: getGridDateOperators().filter(
         (operator) => operator.value == 'onOrAfter',
       ),
@@ -204,19 +210,19 @@ export const TasksTableColumns = [
         const date = moment(params.value).utcOffset('-07:00');
         return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : ""
       }, 
-      type: 'dateTime', editable: true,
+      type: 'dateTime', editable: isEditable,
       filterOperators: getGridDateOperators().filter(
         (operator) => operator.value == 'onOrBefore',
       ),
     },
-    { field: 'assigned', headerName: 'Assigned', flex: 1, minWidth: minWidthStatus, editable: true,  type: 'singleSelect',
+    { field: 'assigned', headerName: 'Assigned', flex: 1, minWidth: minWidthStatus, editable: isEditable,  type: 'singleSelect',
     valueOptions: () => {
       return users.map(user => ({
         label: user.name,
         value: user.id
     }))}
   },
-    { field: 'setup', headerName: 'Setup', flex: 1, editable: true, minWidth: minWidthSetup},
+    { field: 'setup', headerName: 'Setup', flex: 1, editable: isEditable, minWidth: minWidthSetup},
     {
       field: 'actions',
       type: 'actions',

@@ -23,12 +23,13 @@ function SimpleDialog(props) {
   return (
     <> 
         <Dialog onClose={handleClose} open={open}>
-        <DialogTitle>Notes</DialogTitle>
+        <DialogTitle></DialogTitle>
         <DialogContent>     
             <List>
             {tasks.map((task) => (
+                task.notes &&
                 <ListItem key={task.id}>
-                  <ListItemText primary={`Task Id: ${task.id}`} secondary={`Notes: ${task.notes}`} />
+                  <ListItemText primary={`Notes: ${task.notes}`} secondary={`Task Id: ${task.id}`} />
                 </ListItem>
             ))}
             </List>
@@ -65,15 +66,7 @@ export default function PopUp( id ) {
   };
 
   if (!tasks.some(x => x.notes != null)) {
-    return (
-      <div>
-        <div className='container my-4'>
-          <div className='alert' role='alert'>
-            None
-          </div>
-        </div>
-      </div>
-    );
+    return 
   }
 
   return (
