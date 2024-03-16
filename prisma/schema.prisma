@@ -22,7 +22,8 @@ model jobs {
   contact       String?   @db.VarChar(255)
   setup         String?   @db.VarChar(255)
   stamp         String?   @db.VarChar(255)
-  qb_invoice    Float?
+  qb_invoice    String?   @db.VarChar(255)
+  permit_cost   Float?
 }
 
 model tasks {

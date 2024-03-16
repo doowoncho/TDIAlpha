@@ -15,13 +15,39 @@ import { DialogContent } from '@mui/material';
 import { getTasksByJobId } from './APICalls';
 
 function SimpleDialog(props) {
-  const { onClose, open, jobId } = props;
+  const { onClose, open, tasks } = props;
+  const handleClose = () => {
+    onClose();
+  };
+
+  return (
+    <> 
+        <Dialog onClose={handleClose} open={open}>
+        <DialogTitle></DialogTitle>
+        <DialogContent>     
+            <List>
+            {tasks.map((task) => (
+                task.notes &&
+                <ListItem key={task.id}>
+                  <ListItemText primary={`Notes: ${task.notes}`} secondary={`Task Id: ${task.id}`} />
+                </ListItem>
+            ))}
+            </List>
+        </DialogContent>
+        </Dialog>
+    </>
+  );
+}
+
+export default function PopUp( id ) {
+  const [open, setOpen] = React.useState(false);
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const tasksData = await getTasksByJobId(jobId);
+        const tasksData = await getTasksByJobId(id);
+        console.log(tasksData)
         setTasks(tasksData);
       } catch (error) {
         console.error('Error fetching tasks:', error);
@@ -29,45 +55,7 @@ function SimpleDialog(props) {
     };
 
     fetchTasks();
-  }, [jobId]);
-
-  const handleClose = () => {
-    onClose();
-  };
-
-  return (
-    <> 
-    {tasks &&
-        <Dialog onClose={handleClose} open={open}>
-        <DialogTitle>Notes</DialogTitle>
-        <DialogContent>     
-            <List>
-            {tasks.map((task) => (
-                <ListItem key={task.id}>
-                <ListItemAvatar>
-                    <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
-                    <PersonIcon />
-                    </Avatar>
-                </ListItemAvatar>
-                <ListItemText primary={task.title} />
-                </ListItem>
-            ))}
-            </List>
-        </DialogContent>
-        </Dialog>
-    }
-    </>
-  );
-}
-
-SimpleDialog.propTypes = {
-  onClose: PropTypes.func.isRequired,
-  open: PropTypes.bool.isRequired,
-  jobId: PropTypes.string.isRequired,
-};
-
-export default function PopUp({ id }) {
-  const [open, setOpen] = React.useState(false);
+  }, []);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -77,12 +65,16 @@ export default function PopUp({ id }) {
     setOpen(false);
   };
 
+  if (!tasks.some(x => x.notes != null)) {
+    return 
+  }
+
   return (
     <div>
       <Button variant="outlined" onClick={handleClickOpen}>
         Expand
       </Button>
-      <SimpleDialog open={open} onClose={handleClose} jobId={id} />
+      <SimpleDialog open={open} onClose={handleClose} tasks={tasks} />
     </div>
   );
 }
