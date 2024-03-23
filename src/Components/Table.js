@@ -29,8 +29,8 @@ export default function Table({ data, columns, handleUpdate }) {
     }
 
     switch (rowType) {
-      case 'place':
-        return 'place-row'; // Define CSS class for pending rows
+      // case 'place':
+      //   return 'place-row'; // Define CSS class for pending rows
       case 'npat':
         return 'npat-row'; // Define CSS class for completed rows
       default:
@@ -58,7 +58,6 @@ export default function Table({ data, columns, handleUpdate }) {
     <div className='container my-3'>
       <Box sx={{ height: '500px', width: '100%' }}>
         <DataGrid
-          className="custom-datagrid"
           slots={{ toolbar: GridToolbar }}
           rows={data}
           columns={columns}
@@ -69,6 +68,11 @@ export default function Table({ data, columns, handleUpdate }) {
           density="comfortable"
           editMode="cell" // Set editMode to "row" to prevent cells from popping out after editing
           getRowClassName={getRowClassName} //
+          sx={{
+            '& .MuiDataGrid-cell:hover': {
+              color: 'primary.main',
+            }
+          }} 
         />
       </Box>
       <Snackbar open={snackbarOpen} onClose={handleCloseSnackbar} message={snackbarMessage} />
