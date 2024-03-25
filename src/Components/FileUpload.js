@@ -4,6 +4,17 @@ import React, { useState, useEffect } from 'react';
 import { storage } from '../Components/Firebase';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { files, getFilesById, uploadPhoto, uploadPermitCon, uploadPermit, uploadPlan, deleteFile } from './APICalls';
+import { Paper } from '@mui/material';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
+import IconButton from '@mui/material/IconButton';
+import FolderIcon from '@mui/icons-material/Folder';
+import DeleteIcon from '@mui/icons-material/Delete';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import Button from 'react-bootstrap/Button';
 
 function FileUpload({type, giveID}) {
   const [file, setFile] = useState(null);
@@ -22,10 +33,14 @@ function FileUpload({type, giveID}) {
   })
   let fileBlob;
 
+  console.log(id, giveID);
+
   const fetchData = async () => {
     try {
       const response = await getFilesById(id);
+      console.log(response);
       setFilesData(response[type] || []);
+      console.log(filesData);
     } catch (error) {
       console.error('Error fetching files:', error);
     }
@@ -91,42 +106,86 @@ function FileUpload({type, giveID}) {
       setUploaded(updatedUploaded);
       setFileName(updatedFileName);
 
-      window.location.reload();
+      // window.location.reload();
   }
 
   return (
     <>
     {filesData && filesData.length > 0 ? (
       <div className={`card border border-success bg-light mx-2`} style={{ maxWidth: '300px' }}>
-        <div className="card-body">
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <Paper elevation={3} >
+          {/* <div className="card-body">
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              {filesData.map((fileItem) => (
+                <div key={fileItem.id}>
+                  <p className='mb-1'>
+                    <a href={fileItem.file} target="_blank" rel="noopener noreferrer">
+                      {fileItem.name}
+                    </a>
+                  </p>
+                  <button className='btn btn-outline-danger mb-2' onClick={() => handleDelete(fileItem.name)}>
+                    Delete File
+                  </button>
+                </div>
+              ))}
+              <input type="file" onChange={handleFileChange} className='mt-3'/>
+              <button className='my-2' onClick={handleUpload}>
+                Upload File
+              </button>
+            </div>
+          </div> */}
+          <List>
             {filesData.map((fileItem) => (
-              <div key={fileItem.id}>
-                <p className='mb-1'>
-                  <a href={fileItem.file} target="_blank" rel="noopener noreferrer">
-                    {fileItem.name}
-                  </a>
-                </p>
-                <button className='btn btn-outline-danger mb-2' onClick={() => handleDelete(fileItem.name)}>
-                  Delete File
-                </button>
-              </div>
+              <ListItem key={fileItem.id} style={{ width: '300px' }}>
+                <ListItemIcon>
+                  <FolderIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary={<a href={fileItem.file} target="_blank" rel="noopener noreferrer">{fileItem.name}</a>}
+                />
+                <ListItemSecondaryAction>
+                  <IconButton edge="end" aria-label="delete" onClick={() => handleDelete(fileItem.name)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
             ))}
-            <input type="file" onChange={handleFileChange} className='mt-3'/>
-            <button className='my-2' onClick={handleUpload}>
-              Upload File
-            </button>
-          </div>
-        </div>
+            {/* File Input and Upload Button */}
+            <ListItem>
+              <label htmlFor="upload-file">
+                <input
+                  type="file"
+                  id="upload-file"
+                  onChange={handleFileChange} // Hide the input visually
+                />
+                <div style={{ textAlign: 'center' }} className='d-flex justify-content-center align-items-center mt-2'>
+                  <Button variant="dark" component="span" onClick={handleUpload}>
+                    Upload File
+                  </Button>
+                </div>
+              </label>
+            </ListItem>
+          </List>
+        </Paper>
       </div>
     ) : (
       <div className='card mx-2' style={{ maxWidth: '300px' }}>
-        <div className="card-body">
-          <input type="file" onChange={handleFileChange} />
-          <button className='my-2 w-100' onClick={handleUpload}>
-            Upload File
-          </button>
-        </div>
+        <Paper elevation={3} >
+          <div className="card-body">
+            <label htmlFor="upload-file">
+              <input
+                type="file"
+                id="upload-file"
+                onChange={handleFileChange} // Hide the input visually
+              />
+              <div style={{ textAlign: 'center' }} className='d-flex justify-content-center align-items-center mt-2'>
+                <Button variant="dark" component="span" onClick={handleUpload}>
+                  Upload File
+                </Button>
+              </div>
+            </label>
+          </div>
+        </Paper>
       </div>
     )}
   </>
