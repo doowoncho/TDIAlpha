@@ -236,6 +236,24 @@ app.post('/api/createjob', async (req, res) => {
   }
 });
 
+app.post('/api/uploadReceipts/', async (req, res) => {
+  try {
+    const { name, file } = req.body;
+    
+      const createdFile = await prisma.receipts.create({
+        data: {
+          name: name,
+          file: file
+        }
+      });
+      res.json(createdFile);
+    }
+    catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Internal server error'})
+  }
+})
+
 app.post('/api/uploadPhoto/', async (req, res) => {
   try {
     const { job_id, name, file } = req.body;
@@ -409,6 +427,24 @@ app.delete('/api/deleteFile', async (req, res) => {
   }
 })
 
+app.delete('/api/deleteReceipts', async (req, res) => {
+  try {
+    const { name } = req.body;
+    
+    const deletedReceipts = await prisma.receipts.deleteMany({
+      where: {
+        name: name,
+      },
+    });
+
+    return res.json({ message: 'File deleted successfully' });
+    }
+    catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Internal server error'})
+  }
+})
+
 app.get('/api/getFiles/:id', async (req, res) => {
   try {
     const jobId = parseInt(req.params.id);
@@ -501,6 +537,16 @@ app.get('/api/users', async (req, res) => {
   try {
     const posts = await prisma.users.findMany();
     res.json(posts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.get('/api/getReceipts', async (req, res) => {
+  try {
+    const receipts = await prisma.receipts.findMany();
+    res.json(receipts);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });

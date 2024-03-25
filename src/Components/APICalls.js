@@ -169,6 +169,24 @@ export async function updateJob(id, params) {
     }
 }
 
+  // Uploads into the permits table
+  export async function uploadReceipts(params) {
+    try {
+        const url =`${server}/api/uploadReceipts/`;
+        const response = await fetch(url, {
+        method: 'POST', 
+        headers: {
+            'Content-Type': 'application/json',
+        },
+            body: JSON.stringify(params),
+        });
+
+        const fileUpdate = await response.json();
+    } catch (error) {
+        console.error('Error updating task:', error);
+    }
+}
+
 export async function deleteFile(name) {
     try {
 
@@ -183,6 +201,23 @@ export async function deleteFile(name) {
         console.error('Error deleting job:', error);
     }
 }
+
+export async function deleteReceipts(name) {
+    try {
+
+        await fetch(`${server}/api/deleteReceipts`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+            body: JSON.stringify({ name: name.filename }),
+        });
+    } catch (error) {
+        console.error('Error deleting job:', error);
+    }
+}
+
+
 
 export async function files(id, params) {
     try {
@@ -377,6 +412,16 @@ export async function getAllUsers() {
       console.error('Error fetching data:', error);
     }
   }
+
+export async function getReceipts() {
+    try {
+      const response = await fetch(`${server}/api/getReceipts`);
+      const data = await response.json();
+      return(data)
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+}
   export async function getUserByEmail(email) {
     try {
         const response = await fetch(`${server}/api/getUserByEmail/${email}`, {

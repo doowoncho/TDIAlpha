@@ -18,6 +18,7 @@ const minWidthWONumber = 130;
 const minWidthNotes = 200;
 const minWidthQBInvoice = 130;
 const minWidthActions = 40;
+const minWidthType = 100;
 
 let users = await getAllUsers();
 let user = await getUserById(window.sessionStorage.getItem("user"))
@@ -222,6 +223,7 @@ export const TasksTableColumns = [
         value: user.id
     }))}
   },
+    { field: 'type', headerName: 'Type', flex: 1, editable: isEditable, minWidth: minWidthType},
     { field: 'setup', headerName: 'Setup', flex: 1, editable: isEditable, minWidth: minWidthSetup},
     {
       field: 'actions',

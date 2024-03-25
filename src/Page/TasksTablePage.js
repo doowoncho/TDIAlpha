@@ -11,6 +11,17 @@ import FeedIcon from '@mui/icons-material/Feed';
 import MapIcon from '@mui/icons-material/Map';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import JobDetails from "../Components/JobDetails";
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
+import CloseIcon from '@mui/icons-material/Close';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
  
 let user = await getUserById(window.sessionStorage.getItem("user"))
 
@@ -38,6 +49,27 @@ export default function TasksTable() {
   const [isEditing, setIsEditing] = useState(false); // State to track edit mode
   //entire list of tasks
   const originalDataRef = useRef(null);
+  const [openDialog, setOpenDialog] = useState(false); // State variable to manage the visibility of the dialog
+  const [type, setType] = React.useState('');
+
+  // Function to handle the opening of the dialog
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
+  const handleAddTask = () => {
+    addTask(type);
+    setOpenDialog(false);
+  };
+
+  const handleType = (event) => {
+    setType(event.target.value);
+  };
+  
   
   useEffect(() => {
     const fetchData = async () => {
@@ -78,10 +110,10 @@ export default function TasksTable() {
     );
   };
   
-  async function addTask() {
+  async function addTask(type) {
     // Assuming createtask returns the newly created task, adjust accordingly
     let completed = false
-    const newTask = await createtask({ job_id: parseInt(id), completed: completed });
+    const newTask = await createtask({ job_id: parseInt(id), completed: completed, type: type });
   
     // Update the taskList with the new task
     settaskList((prevtasks) => [...prevtasks, newTask]);
@@ -191,9 +223,43 @@ export default function TasksTable() {
         handleUpdate={handletaskUpdate}
         handleDelete={handletaskDelete} 
       />
-      <button className='my-1 btn btn-outline-primary' onClick={()=>addTask()}> 
+      <button className='my-1 btn btn-outline-primary' onClick={handleOpenDialog}> 
         Add Task
       </button>
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <Button onClick={handleCloseDialog} className="ml-5" style={{ width:'10%', marginLeft:'auto'}}>
+          <CloseIcon />
+        </Button>
+        <DialogContent>
+          <DialogContentText>
+            Select The Type of Task
+          </DialogContentText>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Type</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={type}
+              label="Type"
+              onChange={handleType}
+            >
+              <MenuItem value={"NPAT"}>NPAT</MenuItem>
+              <MenuItem value={"Setup"}>Setup</MenuItem>
+              <MenuItem value={"Takedown"}>Takedown</MenuItem>
+            </Select>
+          </FormControl>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleAddTask}>
+            Add Task
+          </Button>
+        </DialogActions>
+      </Dialog>
     </header>
     </div>
   );

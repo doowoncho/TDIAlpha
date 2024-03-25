@@ -94,3 +94,9 @@ model contacts {
   email        String? @db.VarChar(50)
   company      String? @db.VarChar(50)
 }
+
+model receipts {
+  id   Int     @id @default(autoincrement())
+  name String? @db.VarChar(255)
+  file String? @db.VarChar(255)
+}
