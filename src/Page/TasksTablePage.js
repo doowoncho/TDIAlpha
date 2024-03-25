@@ -123,8 +123,16 @@ export default function TasksTable() {
       starttime: newStartTime,
       endtime: newEndTime
     }) 
+    
+    var npatTask = taskList.filter(x => x.type == "npat")[0]
+    if(npatTask){
+      console.log(npatTask)
+      var temp = new Date()
+      temp.setDate(newStartTime.getDate() - 1)
+      await handletaskUpdate(npatTask.id, {starttime: temp})
+    }
 
-    setIsEditing(false); // Disable edit mode after saving changes
+    setIsEditing(false);
   };
 
   const handleInputChange = async (e, jobProp) => {

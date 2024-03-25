@@ -80,29 +80,27 @@ app.put('/api/updatetask/:id', async (req, res) => {
     res.json(task);
 
     //complicated shit to make the job dates match the task earliest and latest dates
-    const job = await prisma.jobs.findFirst({ where: { id: jobId } });
+    const job = await prisma.jobs.findFirst({ where: { id: task.job_id } });
     if (job) {
       const earliestTask = await prisma.tasks.findFirst({
-        where: { job_id: job.id, starttime: { not: null }  },
+        where: { job_id: job.id, type: { not: 'npat' } },
         orderBy: { starttime: 'asc' },
       });
     
       const latestTask = await prisma.tasks.findFirst({
-        where: { job_id: job.id, endtime: { not: null } },
+        where: { job_id: job.id, type: { not: 'npat' } },
         orderBy: { endtime: 'desc' },
       });
-    
-      if (earliestTask || latestTask) {
-        await prisma.jobs.update({
-          where: {
-            id: job.id,
-          },
-          data: {
-            starttime: earliestTask.starttime,
-            endtime: latestTask.endtime,
-          },
-        });
-      }
+
+      await prisma.jobs.update({
+        where: {
+          id: job.id,
+        },
+        data: {
+          starttime: earliestTask.starttime,
+          endtime: latestTask.endtime,
+        },
+      });
     }
 
   } catch (error) {

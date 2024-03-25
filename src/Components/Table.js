@@ -3,6 +3,8 @@ import Box from '@mui/material/Box';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import Snackbar from '@mui/material/Snackbar'; // Import Snackbar from @mui/material
 
+import '../Styles/Rows.css'
+
 export default function Table({ data, columns, handleUpdate }) {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -16,6 +18,24 @@ export default function Table({ data, columns, handleUpdate }) {
         setSnackbarOpen(true);
       }
       return updatedRow
+  };
+
+  const getRowClassName = (params) => {
+    const isComplete = params.row.completed
+    const rowType = params.row.type; // Change 'status' to the field you want to base the color on
+
+    if(isComplete){
+      return 'completed-row'; 
+    }
+
+    switch (rowType) {
+      // case 'place':
+      //   return 'place-row'; // Define CSS class for pending rows
+      case 'npat':
+        return 'npat-row'; // Define CSS class for completed rows
+      default:
+        return ''; // Default class for other rows
+    }
   };
 
   const handleProcessRowUpdateError = (error) => {
@@ -47,6 +67,12 @@ export default function Table({ data, columns, handleUpdate }) {
           // disableColumnFilter
           density="comfortable"
           editMode="cell" // Set editMode to "row" to prevent cells from popping out after editing
+          getRowClassName={getRowClassName} //
+          sx={{
+            '& .MuiDataGrid-cell:hover': {
+              color: 'primary.main',
+            }
+          }} 
         />
       </Box>
       <Snackbar open={snackbarOpen} onClose={handleCloseSnackbar} message={snackbarMessage} />
