@@ -11,7 +11,7 @@ import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
 
 import Paper from '@mui/material/Paper';
 import { AppBar, BottomNavigation, BottomNavigationAction, Box, IconButton, Toolbar, Typography } from '@mui/material';
-import { AutoStories, CalendarMonth, CheckCircle, FolderSpecialOutlined, Home } from '@mui/icons-material';
+import { AutoStories, CalendarMonth, CheckCircle, FolderSpecialOutlined, Home, Receipt } from '@mui/icons-material';
 
 export default function NavBar() {
   const [isResponsive, setResponsive] = useState(false);
@@ -53,6 +53,7 @@ export default function NavBar() {
         <BottomNavigation showLabels>
           <BottomNavigationAction label="All Jobs" icon={<Home />} href='/jobstable' value="jobs"/>
           <BottomNavigationAction label="Invoiced" icon={<AutoStories />} href="/invoices" value="invoices"/>
+          <BottomNavigationAction label="Receipts" icon={<Receipt />} href='/receipts' value="receipts"/>
           <BottomNavigationAction label="To Invoice" icon={<CheckCircle />} href='/completed' value="completed"/>
           <BottomNavigationAction label="ToDo" icon={<CalendarMonth />} href='/todo' value="todo"/>
           <BottomNavigationAction label="Form" icon={<FeedIcon />} href='/form' value="from"/>
@@ -71,11 +72,11 @@ export default function NavBar() {
                 <>
                   <Nav.Link href="/jobstable">All Jobs</Nav.Link>
                   <Nav.Link href="/invoices">Invoiced</Nav.Link>
+                  <Nav.Link href="/receipts">Receipts</Nav.Link>
                   <Nav.Link href="/completed">To Be Invoiced</Nav.Link>
                   <Nav.Link href="/todo">ToDo</Nav.Link>
                   <Nav.Link href="/form">Form</Nav.Link>
                   <Nav.Link href="/legends">Pricing</Nav.Link>
-                  {/* <Nav.Link href="/receipts">Receipts</Nav.Link> */}
                   <Button variant="blue" style={{color:"white"}} onClick={() => { window.sessionStorage.clear(); window.location.reload() }}>Logout</Button>
                 </>
             </Nav>
