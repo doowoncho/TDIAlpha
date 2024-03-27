@@ -1,16 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
-import Avatar from '@mui/material/Avatar';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
-import PersonIcon from '@mui/icons-material/Person';
-import { blue } from '@mui/material/colors';
 import { DialogContent } from '@mui/material';
 import { getTasksByJobId } from './APICalls';
 
@@ -23,13 +17,13 @@ function SimpleDialog(props) {
   return (
     <> 
         <Dialog onClose={handleClose} open={open}>
-        <DialogTitle></DialogTitle>
+        <DialogTitle>Tasks with Notes</DialogTitle>
         <DialogContent>     
             <List>
             {tasks.map((task) => (
                 task.notes &&
                 <ListItem key={task.id}>
-                  <ListItemText primary={`Notes: ${task.notes}`} secondary={`Task Id: ${task.id}`} />
+                  <ListItemText primary={`Note: ${task.notes}`} secondary={`Task Id: ${task.id}`} />
                 </ListItem>
             ))}
             </List>
@@ -66,7 +60,7 @@ export default function PopUp( id ) {
   };
 
   if (!tasks.some(x => x.notes != null)) {
-    return 
+    return 'No Notes'
   }
 
   return (

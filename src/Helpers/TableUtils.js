@@ -33,7 +33,7 @@ export const InvoicePageColumns = [
   { field: 'starttime', headerName: 'Start Time', flex: 1, minWidth: minWidthStartTime, 
     valueFormatter: (params) => {
       const date = moment(params.value).utcOffset('-07:00');
-      return date.format('MM/DD/YYYY h:mm A');
+      return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : ""
     }, 
     type: 'dateTime', editable: isEditable,
     filterOperators: getGridDateOperators().filter(
@@ -43,7 +43,7 @@ export const InvoicePageColumns = [
   { field: 'endtime', headerName: 'End Time', flex: 1, minWidth: minWidthEndTime,
     valueFormatter: (params) => {
       const date = moment(params.value).utcOffset('-07:00');
-      return date.format('MM/DD/YYYY h:mm A');
+      return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : ""
     }, 
     type: 'dateTime', editable: isEditable,
     filterOperators: getGridDateOperators().filter(
@@ -93,7 +93,7 @@ export const CompletedPageColumns = [
   { field: 'starttime', headerName: 'Start Time', flex: 1, minWidth: minWidthStartTime, 
     valueFormatter: (params) => {
       const date = moment(params.value).utcOffset('-07:00');
-      return date.format('MM/DD/YYYY h:mm A');
+      return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : ""
     }, 
     type: 'dateTime', editable: isEditable,
     filterOperators: getGridDateOperators().filter(
@@ -103,7 +103,7 @@ export const CompletedPageColumns = [
   { field: 'endtime', headerName: 'End Time', flex: 1, minWidth: minWidthEndTime,
     valueFormatter: (params) => {
       const date = moment(params.value).utcOffset('-07:00');
-      return date ? date.format('MM/DD/YYYY h:mm A') : null;
+      return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : ""
     }, 
     type: 'dateTime', editable: isEditable,
     filterOperators: getGridDateOperators().filter(
@@ -153,7 +153,7 @@ export const JobsTableColumns = [
   { field: 'starttime', headerName: 'Start Time', flex: 1, minWidth: minWidthStartTime, 
     valueFormatter: (params) => {
       const date = moment(params.value).utcOffset('-07:00');
-      return date.format('MM/DD/YYYY h:mm A');
+      return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : ""
     }, 
     type: 'dateTime', editable: isEditable,
     filterOperators: getGridDateOperators().filter(
@@ -163,7 +163,7 @@ export const JobsTableColumns = [
   { field: 'endtime', headerName: 'End Time', flex: 1, minWidth: minWidthEndTime,
     valueFormatter: (params) => {
       const date = moment(params.value).utcOffset('-07:00');
-      return date.format('MM/DD/YYYY h:mm A');
+      return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : ""
     }, 
     type: 'dateTime', editable: isEditable, 
     filterOperators: getGridDateOperators().filter(
