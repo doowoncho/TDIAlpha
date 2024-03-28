@@ -248,6 +248,12 @@ export async function deletetask(id) {
             'Content-Type': 'application/json',
             }
         });
+
+        if (response.ok) {
+            console.log(`Task with ID ${id} deleted successfully`);
+            // Optionally, you can return true or some indication of success
+            return true;
+        }
     } catch (error) {
         console.error('Error deleting task:', error);
     }

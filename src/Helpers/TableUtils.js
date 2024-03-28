@@ -84,7 +84,9 @@ export const InvoicePageColumns = [
       <GridActionsCellItem
         icon={<GridDeleteForeverIcon />}
         label="Delete"
-        onClick={()=>deleteJob(params.id)}
+        onClick={()=>{
+          deletetask(params.id);   window.location.reload();
+        }}
       />
     ],
   },
@@ -149,7 +151,9 @@ export const CompletedPageColumns = [
       <GridActionsCellItem
         icon={<GridDeleteForeverIcon />}
         label="Delete"
-        onClick={()=>deleteJob(params.id)}
+        onClick={()=>{
+          deletetask(params.id);   window.location.reload();
+        }}
       />
     ],
   },
@@ -195,7 +199,9 @@ export const JobsTableColumns = [
       <GridActionsCellItem
         icon={<GridDeleteForeverIcon />}
         label="Delete"
-        onClick={()=>deleteJob(params.id)}
+        onClick={()=>{
+          deletetask(params.id);   window.location.reload();
+        }}
       />
     ],
   },
@@ -227,7 +233,7 @@ export const TasksTableColumns = [
         (operator) => operator.value == 'onOrBefore',
       ),
     },
-    { field: 'assigned', headerName: 'Assigned', flex: 1, minWidth: minWidthStatus, editable: isEditable,  type: 'singleSelect',
+    { field: 'assigned', headerName: 'Assigned', flex: 1, minWidth: 100, editable: isEditable,  type: 'singleSelect',
     valueOptions: () => {
       return users.map(user => ({
         label: user.name,
@@ -246,7 +252,9 @@ export const TasksTableColumns = [
         <GridActionsCellItem
           icon={<GridDeleteIcon />}
           label="Delete"
-          onClick={()=>deletetask(params.id)}
+          onClick={()=>{
+            deletetask(params.id);   window.location.reload();
+          }}
         />
       ],
     },

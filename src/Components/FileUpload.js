@@ -36,9 +36,7 @@ function FileUpload({type, giveID}) {
   const fetchData = async () => {
     try {
       const response = await getFilesById(id);
-      console.log(response);
       setFilesData(response[type] || []);
-      console.log(filesData);
     } catch (error) {
       console.error('Error fetching files:', error);
     }

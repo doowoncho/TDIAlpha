@@ -9,6 +9,8 @@ import { enCA } from 'date-fns/locale';
 import { useNavigate } from 'react-router-dom';
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "../Helpers/Calendar.css";
+import { CardContent, ListItem, ListItemText } from '@mui/material';
+import { Card } from 'react-bootstrap';
 
 let users = await getAllUsers();
 
@@ -112,6 +114,25 @@ export default function ToDoPage() {
           views={['month', 'day', 'week']}
           eventPropGetter={eventStyleGetter}
         />
+      </div>
+      <div className='container d-flex'>
+        {users.map((x) => (
+          <Card key={x.id}>
+            <CardContent>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                <ListItemText primary={`${x.name} `} />
+                  <div
+                    style={{
+                      width: 20,
+                      height: 20,
+                      backgroundColor: x.color,
+                      marginLeft: 10
+                    }}
+                  ></div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
       </div>
     </div>
   );
