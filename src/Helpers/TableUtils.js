@@ -4,8 +4,8 @@ import PopUp from '../Components/PopUp';
 
 const { GridActionsCellItem, GridDeleteIcon, GridDeleteForeverIcon, getGridNumericOperators, getGridDateOperators } = require('@mui/x-data-grid');
 const moment = require('moment-timezone');
-const statusChoices = ['Approved', 'New', 'Completed', 'Invoice', 'Declined', 'Submitted', 'Waiting', 'Canceled', 'Canceled OS']
-const taskChoices = ['NPAT', 'SameDay', 'Place', 'Takedown', 'Canceled', 'Canceled OS']
+const statusChoices = ['Approved', 'New', 'Completed', 'Invoice', 'Declined', 'Submitted', 'Waiting']
+const taskChoices = ['NPAT', 'SameDay', 'Place', 'Takedown', 'Cancelled', 'Cancelled OS']
 const minWidthStartTime = 180;
 const minWidthEndTime = 180;
 const minWidthStatus = 120;
@@ -85,7 +85,7 @@ export const InvoicePageColumns = [
         icon={<GridDeleteForeverIcon />}
         label="Delete"
         onClick={()=>{
-          deletetask(params.id);   window.location.reload();
+          deleteJob(params.id);   window.location.reload();
         }}
       />
     ],
@@ -152,7 +152,7 @@ export const CompletedPageColumns = [
         icon={<GridDeleteForeverIcon />}
         label="Delete"
         onClick={()=>{
-          deletetask(params.id);   window.location.reload();
+          deleteJob(params.id);   window.location.reload();
         }}
       />
     ],
@@ -200,7 +200,7 @@ export const JobsTableColumns = [
         icon={<GridDeleteForeverIcon />}
         label="Delete"
         onClick={()=>{
-          deletetask(params.id);   window.location.reload();
+          deleteJob(params.id);   window.location.reload();
         }}
       />
     ],
@@ -213,7 +213,7 @@ export const TasksTableColumns = [
         return <a href={`/taskdetails/${params.value}`} className="no-link-style">{params.value}</a>;
       }
     },
-    { field: 'starttime', headerName: 'Start Time', flex: 1, minWidth: minWidthStartTime, 
+    { field: 'starttime', headerName: 'Place Time', flex: 1, minWidth: minWidthStartTime, 
       valueFormatter: (params) => {
         const date = moment.tz(params.value, 'America/Edmonton');
         return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : ""
@@ -223,7 +223,7 @@ export const TasksTableColumns = [
         (operator) => operator.value == 'onOrAfter',
       ),
     },
-    { field: 'endtime', headerName: 'End Time', flex: 1, minWidth: minWidthEndTime,
+    { field: 'endtime', headerName: 'Takedown Time', flex: 1, minWidth: minWidthEndTime,
       valueFormatter: (params) => {
         const date = moment.tz(params.value, 'America/Edmonton');
         return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : ""

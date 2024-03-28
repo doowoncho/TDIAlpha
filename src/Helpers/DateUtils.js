@@ -2,7 +2,7 @@ import moment from 'moment';
 import { createtask } from '../Components/APICalls';
    
    //DATE LOGIC
-    export const createTaskForDate = async (startDate, startTime, endDate, endTime, job, location, taskType = "sameDay") => {
+    export const createTaskForDate = async (startDate, startTime, endDate, endTime, job, location, taskType = "SameDay") => {
         let startDateTime 
         let endDateTime 
         
@@ -48,7 +48,7 @@ import { createtask } from '../Components/APICalls';
       while (currentDate <= new Date(endDate)) {
         if (currentDate.getDay() === 5) {
           // Task to pick up the sign on Fridays
-          await createTaskForDate(null, null, moment(currentDate).format('YYYY-MM-DD'), endTime, job, location, "takeDown");
+          await createTaskForDate(null, null, moment(currentDate).format('YYYY-MM-DD'), endTime, job, location, "Takedown");
         }
         else if(currentDate.getDay() != 6 && currentDate.getDay() != 0){
           //Task to keep repeating

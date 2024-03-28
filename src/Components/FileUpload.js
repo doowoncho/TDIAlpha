@@ -91,9 +91,6 @@ function FileUpload({type, giveID}) {
         await uploadPhoto(update);
       }
 
-      console.log(id);
-      console.log(giveID);
-
       // await files(id, update);
       
       const updatedUploaded = { ...uploaded, [type]: true };
@@ -166,7 +163,6 @@ function FileUpload({type, giveID}) {
       </div>
     ) : (
       <div className='card mx-2' style={{ maxWidth: '300px' }}>
-        <Paper elevation={3} >
           <div className="card-body">
             <label htmlFor="upload-file">
               <input
@@ -181,7 +177,6 @@ function FileUpload({type, giveID}) {
               </div>
             </label>
           </div>
-        </Paper>
       </div>
     )}
   </>
