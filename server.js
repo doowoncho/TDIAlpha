@@ -176,7 +176,46 @@ app.delete('/api/deletejob/:id', async (req, res) => {
         job_id: jobId
       },
     });
-    res.json(deletedjob, deletedTasks);
+
+    // const deletedFiles = await prisma.files.deleteMany({
+    //   where: {
+    //     job_id: jobId
+    //   },
+    // });
+
+    const deletedLogs = await prisma.permitCosts.deleteMany({
+      where: {
+        job_id: jobId
+      },
+    });
+
+    const deletedPhotos = await prisma.photos.deleteMany({
+      where: {
+        job_id: jobId
+      },
+    });
+
+    const deletedPermits = await prisma.permits.deleteMany({
+      where: {
+        job_id: jobId
+      },
+    });
+
+    const deletedPermitConfirmations = await prisma.permitConfirmations.deleteMany({
+      where: {
+        job_id: jobId
+      },
+    });
+
+    const deletedPlans = await prisma.plans.deleteMany({
+      where: {
+        job_id: jobId
+      },
+    });
+
+    
+
+    res.json(deletedjob, deletedTasks, deletedFiles, deletedLogs, deletedPhotos, deletedPermits, deletedPermitConfirmations, deletedPlans );
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });
@@ -600,6 +639,22 @@ app.get('/api/gettasksbyjobid/:id', async (req, res) => {
   }
 });
 
+// get permit costs
+app.get('/api/getpermitcostlogsbyjobid/:id', async (req, res) => {
+  try {
+    const jobId = parseInt(req.params.id);
+    const permitCosts = await prisma.permitCosts.findMany({
+      where: {
+        job_id: jobId
+      }
+    });
+    res.json(permitCosts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 app.post('/api/createUser', async (req, res) => {
   try {
     const { email, name, permission, password } = req.body;
@@ -619,6 +674,26 @@ app.post('/api/createUser', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+app.post('/api/createPermitCostLog', async (req, res) => {
+  try {
+    const { job_id, cost, date } = req.body;
+
+    const newtask = await prisma.permitCosts.create({
+      data: {
+        job_id: job_id,
+        cost: cost,
+        date: date,
+      },
+    });
+
+    res.json(newtask);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 
 app.listen(3001, () => {
   console.log('Server is running on port 3001');

@@ -1,8 +1,6 @@
 import Table from "../Components/Table";
 import { useEffect, useState  } from "react";
 import { getAllJobs, deleteJob, updateJob} from "../Components/APICalls";
-import FilterInput from "../Components/FilterInput";
-import Select from "react-select";
 import { applySearchFilters, options } from "../Helpers/SearchUtils";
 import { CompletedPageColumns } from "../Helpers/TableUtils";
 

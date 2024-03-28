@@ -3,7 +3,7 @@ import { Dialog, DialogTitle, Typography } from '@mui/material';
 import PopUp from '../Components/PopUp';
 
 const { GridActionsCellItem, GridDeleteIcon, GridDeleteForeverIcon, getGridNumericOperators, getGridDateOperators } = require('@mui/x-data-grid');
-const moment = require('moment');
+const moment = require('moment-timezone');
 const statusChoices = ['Approved', 'New', 'Completed', 'Invoice', 'Declined', 'Submitted', 'Waiting', 'Canceled', 'Canceled OS']
 const minWidthStartTime = 180;
 const minWidthEndTime = 180;
@@ -32,7 +32,7 @@ export const InvoicePageColumns = [
   },
   { field: 'starttime', headerName: 'Start Time', flex: 1, minWidth: minWidthStartTime, 
     valueFormatter: (params) => {
-      const date = moment(params.value).utcOffset('-07:00');
+      const date = moment.tz(params.value, 'America/Edmonton');
       return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : ""
     }, 
     type: 'dateTime', editable: isEditable,
@@ -42,7 +42,7 @@ export const InvoicePageColumns = [
   },
   { field: 'endtime', headerName: 'End Time', flex: 1, minWidth: minWidthEndTime,
     valueFormatter: (params) => {
-      const date = moment(params.value).utcOffset('-07:00');
+      const date = moment.tz(params.value, 'America/Edmonton');
       return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : ""
     }, 
     type: 'dateTime', editable: isEditable,
@@ -69,6 +69,11 @@ export const InvoicePageColumns = [
       return (params.value * 1.1).toFixed(2);
     },
   }, 
+  { field: 'permit_logs', headerName: 'Permit Logs', flex: 1, minWidth: minWidthNotes, editable: false, 
+    renderCell: (params) => {
+      return PopUp(params.id, params.field)
+    }
+  },
   { field: 'qb_invoice', headerName: 'QB Invoice #', flex: 1, minWidth: minWidthQBInvoice, editable: isEditable,},
   {
     field: 'actions',
@@ -92,7 +97,7 @@ export const CompletedPageColumns = [
   },
   { field: 'starttime', headerName: 'Start Time', flex: 1, minWidth: minWidthStartTime, 
     valueFormatter: (params) => {
-      const date = moment(params.value).utcOffset('-07:00');
+      const date = moment.tz(params.value, 'America/Edmonton');
       return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : ""
     }, 
     type: 'dateTime', editable: isEditable,
@@ -102,7 +107,7 @@ export const CompletedPageColumns = [
   },
   { field: 'endtime', headerName: 'End Time', flex: 1, minWidth: minWidthEndTime,
     valueFormatter: (params) => {
-      const date = moment(params.value).utcOffset('-07:00');
+      const date = moment.tz(params.value, 'America/Edmonton');
       return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : ""
     }, 
     type: 'dateTime', editable: isEditable,
@@ -129,6 +134,11 @@ export const CompletedPageColumns = [
       return (params.value * 1.1).toFixed(2);
     },
   }, 
+  { field: 'permit_logs', headerName: 'Permit Logs', flex: 1, minWidth: minWidthNotes, editable: false, 
+  renderCell: (params) => {
+    return PopUp(params.id, params.field)
+  }
+  },
   { field: 'qb_invoice', headerName: 'QB Invoice #', flex: 1, minWidth: minWidthQBInvoice, editable: isEditable},
   {
     field: 'actions',
@@ -152,7 +162,7 @@ export const JobsTableColumns = [
   },
   { field: 'starttime', headerName: 'Start Time', flex: 1, minWidth: minWidthStartTime, 
     valueFormatter: (params) => {
-      const date = moment(params.value).utcOffset('-07:00');
+      const date = moment.tz(params.value, 'America/Edmonton');
       return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : ""
     }, 
     type: 'dateTime', editable: isEditable,
@@ -162,7 +172,7 @@ export const JobsTableColumns = [
   },
   { field: 'endtime', headerName: 'End Time', flex: 1, minWidth: minWidthEndTime,
     valueFormatter: (params) => {
-      const date = moment(params.value).utcOffset('-07:00');
+      const date = moment.tz(params.value, 'America/Edmonton');
       return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : ""
     }, 
     type: 'dateTime', editable: isEditable, 
@@ -198,7 +208,7 @@ export const TasksTableColumns = [
     },
     { field: 'starttime', headerName: 'Start Time', flex: 1, minWidth: minWidthStartTime, 
       valueFormatter: (params) => {
-        const date = moment(params.value).utcOffset('-07:00');
+        const date = moment.tz(params.value, 'America/Edmonton');
         return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : ""
       }, 
       type: 'dateTime', editable: isEditable,
@@ -208,7 +218,7 @@ export const TasksTableColumns = [
     },
     { field: 'endtime', headerName: 'End Time', flex: 1, minWidth: minWidthEndTime,
       valueFormatter: (params) => {
-        const date = moment(params.value).utcOffset('-07:00');
+        const date = moment.tz(params.value, 'America/Edmonton');
         return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : ""
       }, 
       type: 'dateTime', editable: isEditable,

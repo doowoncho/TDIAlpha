@@ -4,6 +4,7 @@ import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import Snackbar from '@mui/material/Snackbar'; // Import Snackbar from @mui/material
 
 import '../Styles/Rows.css'
+import { createPermitCostLog } from './APICalls';
 
 export default function Table({ data, columns, handleUpdate }) {
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -13,6 +14,9 @@ export default function Table({ data, columns, handleUpdate }) {
 
   const processRowUpdate = async (updatedRow, oldValue) => {
       if(JSON.stringify(updatedRow) !== JSON.stringify(oldValue)){
+        if(updatedRow.permit_cost != oldValue.permit_cost){
+            await createPermitCostLog({job_id: updatedRow.id, date: new Date(), cost: updatedRow.permit_cost})
+        }
         await handleUpdate(updatedRow.id, updatedRow);
         setSnackbarMessage('Row updated successfully');
         setSnackbarOpen(true);

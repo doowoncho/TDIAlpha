@@ -71,9 +71,9 @@ export default function NavBar() {
             <Nav className="me-auto">
                 <>
                   <Nav.Link href="/jobstable">All Jobs</Nav.Link>
+                  <Nav.Link href="/completed">To Be Invoiced</Nav.Link>
                   <Nav.Link href="/invoices">Invoiced</Nav.Link>
                   <Nav.Link href="/receipts">Receipts</Nav.Link>
-                  <Nav.Link href="/completed">To Be Invoiced</Nav.Link>
                   <Nav.Link href="/todo">ToDo</Nav.Link>
                   <Nav.Link href="/form">Form</Nav.Link>
                   <Nav.Link href="/legends">Pricing</Nav.Link>

@@ -29,7 +29,7 @@ export default function LoginPage() {
           width: "500px", 
           marginBottom: "200px", 
           background: "transparent", /* Semi-transparent white background */
-          backdropFilter: "blur(20px)", /* Apply the blur effect */ 
+          backdropFilter: "blur(30px)", /* Apply the blur effect */ 
           border: "1px solid rgba(255, 255, 255, 0.2)",
           boxShadow: "0 0 10px rgba(0,0,0,.2)"
         }}>

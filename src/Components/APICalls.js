@@ -452,6 +452,23 @@ export async function getReceipts() {
         console.error('Error creating task:', error);
     }
 }
+
+export async function createPermitCostLog(params) {
+    try {
+        const response = await fetch(`${server}/api/createPermitCostLog`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(params), 
+        });
+
+        const createdlog = await response.json();
+        console.log('Created Log:', createdlog);
+    } catch (error) {
+        console.error('Error creating task:', error);
+    }
+}
   
 // Get assigned tasks by userID
 export async function gettaskByUserId(id) {
@@ -469,3 +486,17 @@ export async function gettaskByUserId(id) {
   }
 }
 
+export async function getPermitCostLogsByJobId(id) {
+    try {
+        const response = await fetch(`${server}/api/getpermitcostlogsbyjobid/${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const permitCosts = await response.json();
+        return permitCosts;
+    } catch (error) {
+        console.error('Error fetching task:', error);
+    }
+}

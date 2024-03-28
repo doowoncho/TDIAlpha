@@ -100,3 +100,10 @@ model receipts {
   name String? @db.VarChar(255)
   file String? @db.VarChar(255)
 }
+
+model permitCosts {
+  id   Int     @id @default(autoincrement())
+  cost Int 
+  date DateTime @db.Timestamp(6)
+  job_id Int
+}
