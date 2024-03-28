@@ -137,10 +137,10 @@ export default function JobDetails({job, handleInputChange, isEditing, user, han
                         <Divider />
                         <Box sx={{ p: 2 }}>
                             <Typography color="text.primary" >
-                                {`Start: ${moment(job.starttime).format('MMMM DD YYYY h:mm A')}`}
+                                {job.starttime && `Start: ${moment(job.starttime).format('MMMM DD YYYY h:mm A')}`}
                             </Typography>
                             <Typography color="text.primary" >
-                                {`End: ${moment(job.endtime).format('MMMM DD YYYY h:mm A')}`}
+                                {job.endtime && `End: ${moment(job.endtime).format('MMMM DD YYYY h:mm A')}`}
                             </Typography>
                         </Box>
                     </Card>

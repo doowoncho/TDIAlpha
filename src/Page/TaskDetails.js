@@ -148,10 +148,10 @@ export default function Orders() {
                         </Box>
                         <Box sx={{ p: 2 }}>
                             <Stack direction="row" spacing={1}>
-                                <Chip color={task.type === 'Placed' ? 'primary' : 'default'} label="Stamped" size="small"/>
-                                <Chip color={task.type === 'Takedown' ? 'primary' : 'default'} label="Re-stamped" size="small"/>
-                                <Chip color={task.type === 'SameDay' ? 'primary' : 'default'} label="Rushed Stamp" size="small"/>
-                                <Chip color={task.type === 'NPAT' ? 'primary' : 'default'} label="Rushed Stamp" size="small"/>
+                                <Chip color={task.type === 'Place' ? 'primary' : 'default'} label="Place" size="small"/>
+                                <Chip color={task.type === 'Takedown' ? 'primary' : 'default'} label="Takedown" size="small"/>
+                                <Chip color={task.type === 'SameDay' ? 'primary' : 'default'} label="SameDay" size="small"/>
+                                <Chip color={task.type === 'NPAT' ? 'primary' : 'default'} label="NPAT" size="small"/>
                             </Stack>
                         </Box>
                         <Divider />
