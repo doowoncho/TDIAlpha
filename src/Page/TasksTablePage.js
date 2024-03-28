@@ -28,7 +28,7 @@ let user = await getUserById(window.sessionStorage.getItem("user"))
 export default function TasksTable() {
   const [files, setFiles] = useState("");
   const { id } = useParams();
-  const [taskList, settaskList] = useState();
+  const [taskList, settaskList] = useState([]);
   const [job, setJob] = useState({
       contact:null, 
       status: null,
@@ -77,7 +77,6 @@ export default function TasksTable() {
         const data = await getTasksByJobId(id);
         const jobData = await getJobById(id);
         setJob(jobData);
-
         //sort by newest
         const sortedData = data.sort((taskA, taskB) => {
           const timeA = taskA.endtime ? new Date(taskA.endtime) : new Date(taskA.starttime);

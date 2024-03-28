@@ -120,8 +120,8 @@ function FormPage() {
 
       if (dateTime.twentyFour) {
           // Two tasks, one for putting down and one for picking stuff up
-          await createTaskForDate(dateTime.startDate, dateTime.startTime, null, null, job, 'setup');
-          await createTaskForDate(null, null, dateTime.endDate, dateTime.endTime, job, location, 'takeDown');
+          await createTaskForDate(dateTime.startDate, dateTime.startTime, null, null, job, 'Place');
+          await createTaskForDate(null, null, dateTime.endDate, dateTime.endTime, job, location, 'Takedown');
       } 
       else if(dateTime.repeat){
           if (dateTime.exWeekend) {          

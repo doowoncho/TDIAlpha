@@ -52,7 +52,7 @@ function SwipeableEdgeDrawer({window, jobId, label, type}) {
 
   return (
     <>
-    <p1>{label}</p1>
+    <h1>{label}</h1>
     <div className='container d-flex justify-content-center align-items-center'>
 
       <Global

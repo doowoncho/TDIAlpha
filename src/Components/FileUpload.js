@@ -36,9 +36,7 @@ function FileUpload({type, giveID}) {
   const fetchData = async () => {
     try {
       const response = await getFilesById(id);
-      console.log(response);
       setFilesData(response[type] || []);
-      console.log(filesData);
     } catch (error) {
       console.error('Error fetching files:', error);
     }
@@ -92,9 +90,6 @@ function FileUpload({type, giveID}) {
       }else{
         await uploadPhoto(update);
       }
-
-      console.log(id);
-      console.log(giveID);
 
       // await files(id, update);
       
@@ -168,7 +163,6 @@ function FileUpload({type, giveID}) {
       </div>
     ) : (
       <div className='card mx-2' style={{ maxWidth: '300px' }}>
-        <Paper elevation={3} >
           <div className="card-body">
             <label htmlFor="upload-file">
               <input
@@ -183,7 +177,6 @@ function FileUpload({type, giveID}) {
               </div>
             </label>
           </div>
-        </Paper>
       </div>
     )}
   </>

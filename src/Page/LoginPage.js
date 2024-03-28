@@ -1,6 +1,5 @@
 import React from "react";
 import {  getUserByEmail } from "../Components/APICalls";
-import '../Styles/login.css'
 
 export default function LoginPage() {
 

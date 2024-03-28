@@ -12,6 +12,10 @@ export default function Table({ data, columns, handleUpdate }) {
 
   const handleCloseSnackbar = () => setSnackbarOpen(false);
 
+  const handleDelete = () =>{
+    setSnackbarMessage('Row updated successfully');
+  }
+
   const processRowUpdate = async (updatedRow, oldValue) => {
       if(JSON.stringify(updatedRow) !== JSON.stringify(oldValue)){
         if(updatedRow.permit_cost != oldValue.permit_cost){
@@ -28,7 +32,7 @@ export default function Table({ data, columns, handleUpdate }) {
     const isComplete = params.row.completed
     const rowType = params.row.type; // Change 'status' to the field you want to base the color on
 
-    if(isComplete){
+    if(isComplete || rowType == 'Cancelled' || rowType == 'Cancelled OS'){
       return 'completed-row'; 
     }
 
