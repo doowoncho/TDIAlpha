@@ -33,8 +33,6 @@ function FileUpload({type, giveID}) {
   })
   let fileBlob;
 
-  console.log(id, giveID);
-
   const fetchData = async () => {
     try {
       const response = await getFilesById(id);

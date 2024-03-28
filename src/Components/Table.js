@@ -35,7 +35,7 @@ export default function Table({ data, columns, handleUpdate }) {
     switch (rowType) {
       // case 'place':
       //   return 'place-row'; // Define CSS class for pending rows
-      case 'npat':
+      case 'NPAT':
         return 'npat-row'; // Define CSS class for completed rows
       default:
         return ''; // Default class for other rows

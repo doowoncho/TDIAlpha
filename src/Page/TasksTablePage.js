@@ -156,9 +156,8 @@ export default function TasksTable() {
       endtime: newEndTime
     }) 
     
-    var npatTask = taskList.filter(x => x.type == "npat")[0]
+    var npatTask = taskList.filter(x => x.type == "NPAT")[0]
     if(npatTask){
-      console.log(npatTask)
       var temp = new Date()
       temp.setDate(newStartTime.getDate() - 1)
       await handletaskUpdate(npatTask.id, {starttime: temp})
@@ -245,7 +244,7 @@ export default function TasksTable() {
         </Button>
         <DialogContent>
           <DialogContentText>
-            Select The Type of Task
+            Select Task Type
           </DialogContentText>
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Type</InputLabel>
@@ -257,8 +256,9 @@ export default function TasksTable() {
               onChange={handleType}
             >
               <MenuItem value={"NPAT"}>NPAT</MenuItem>
-              <MenuItem value={"Setup"}>Setup</MenuItem>
+              <MenuItem value={"Place"}>Place</MenuItem>
               <MenuItem value={"Takedown"}>Takedown</MenuItem>
+              <MenuItem value={"SameDay"}>SameDay</MenuItem>
             </Select>
           </FormControl>
         </DialogContent>

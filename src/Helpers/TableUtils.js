@@ -5,6 +5,7 @@ import PopUp from '../Components/PopUp';
 const { GridActionsCellItem, GridDeleteIcon, GridDeleteForeverIcon, getGridNumericOperators, getGridDateOperators } = require('@mui/x-data-grid');
 const moment = require('moment-timezone');
 const statusChoices = ['Approved', 'New', 'Completed', 'Invoice', 'Declined', 'Submitted', 'Waiting', 'Canceled', 'Canceled OS']
+const taskChoices = ['NPAT', 'SameDay', 'Place', 'Takedown', 'Canceled', 'Canceled OS']
 const minWidthStartTime = 180;
 const minWidthEndTime = 180;
 const minWidthStatus = 120;
@@ -233,7 +234,9 @@ export const TasksTableColumns = [
         value: user.id
     }))}
   },
-    { field: 'type', headerName: 'Type', flex: 1, editable: isEditable, minWidth: minWidthType},
+    { field: 'type', headerName: 'Type', flex: 1, editable: isEditable, minWidth: minWidthType, type: 'singleSelect',
+      valueOptions: taskChoices
+    },
     { field: 'setup', headerName: 'Setup', flex: 1, editable: isEditable, minWidth: minWidthSetup},
     {
       field: 'actions',

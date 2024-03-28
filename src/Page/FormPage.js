@@ -142,7 +142,7 @@ function FormPage() {
     if(NPAT){
       let npatStartDate = new Date(earliestStartDate);
       npatStartDate.setDate(npatStartDate.getDate() - 1)
-      await createTaskForDate(npatStartDate, null, null, null, job, location, "npat");
+      await createTaskForDate(npatStartDate, null, null, null, job, location, "NPAT");
     }
     
     updateJob(job.id, 

@@ -57,13 +57,13 @@ export default function Orders() {
     var newEndTime = task.endtime ? new Date(task.endtime) : null
     var taskType = ''
     if(newStartTime !=null  && newEndTime !=null ){
-      taskType = 'both'
+      taskType = 'SameDay'
     }
     else if(newStartTime !=null){
-      taskType = 'place'
+      taskType = 'Place'
     }
     else if(newEndTime !=null){
-      taskType = 'pickup'
+      taskType = 'Takedown'
     }
     await updatetask(task.id, 
     {
