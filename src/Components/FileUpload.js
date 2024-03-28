@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { storage } from '../Components/Firebase';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { files, getFilesById, uploadPhoto, uploadPermitCon, uploadPermit, uploadPlan, deleteFile } from './APICalls';
-import { Paper } from '@mui/material';
+import { CircularProgress, Paper } from '@mui/material';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -20,6 +20,7 @@ function FileUpload({type, giveID}) {
   const [file, setFile] = useState(null);
   const id = giveID;
   const [filesData, setFilesData] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [uploaded, setUploaded] = useState({
     "p_confirm": false,
     "permit": false,
@@ -37,6 +38,7 @@ function FileUpload({type, giveID}) {
     try {
       const response = await getFilesById(id);
       setFilesData(response[type] || []);
+      setLoading(false)
     } catch (error) {
       console.error('Error fetching files:', error);
     }
@@ -81,7 +83,6 @@ function FileUpload({type, giveID}) {
         file: fileBlob
       };
       if(type === "permitConfirmation"){
-        console.log(update);
         await uploadPermitCon(update);
       }else if(type === "permit"){
         await uploadPermit(update);
@@ -98,68 +99,74 @@ function FileUpload({type, giveID}) {
       
       setUploaded(updatedUploaded);
       setFileName(updatedFileName);
-
-      // window.location.reload();
   }
 
   return (
     <>
-    {filesData && filesData.length > 0 ? (
-      <div className={`card border border-success bg-light mx-2`} style={{ maxWidth: '300px' }}>
-        <Paper elevation={3} >
-          <List>
-            {filesData.map((fileItem) => (
-              <ListItem key={fileItem.id} style={{ width: '300px' }}>
-                <ListItemIcon>
-                  <FolderIcon />
-                </ListItemIcon>
-                <ListItemText
-                  primary={<a href={fileItem.file} target="_blank" rel="noopener noreferrer">{fileItem.name}</a>}
-                />
-                <ListItemSecondaryAction>
-                  <IconButton edge="end" aria-label="delete" onClick={() => handleDelete(fileItem.name)}>
-                    <DeleteIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            ))}
-            {/* File Input and Upload Button */}
-            <ListItem>
-              <label htmlFor="upload-file">
-                <input
-                  type="file"
-                  id="upload-file"
-                  onChange={handleFileChange} // Hide the input visually
-                />
-                <div style={{ textAlign: 'center' }} className='d-flex justify-content-center align-items-center mt-2'>
-                  <Button variant="dark" component="span" onClick={handleUpload}>
-                    Upload File
-                  </Button>
-                </div>
-              </label>
-            </ListItem>
-          </List>
-        </Paper>
-      </div>
-    ) : (
-      <div className='card mx-2' style={{ maxWidth: '300px' }}>
-          <div className="card-body">
-            <label htmlFor="upload-file">
-              <input
-                type="file"
-                id="upload-file"
-                onChange={handleFileChange} // Hide the input visually
-              />
-              <div style={{ textAlign: 'center' }} className='d-flex justify-content-center align-items-center mt-2'>
-                <Button variant="dark" component="span" onClick={handleUpload}>
-                  Upload File
-                </Button>
+      {loading ? ( // Show loading indicator while loading
+        <div style={{ textAlign: 'center' }}>
+          <CircularProgress />
+        </div>
+      ) : (
+        <>
+          {filesData && filesData.length > 0 ? (
+            <div className={`card border border-success bg-light mx-2`} style={{ maxWidth: '300px' }}>
+              <Paper elevation={3} >
+                <List>
+                  {filesData.map((fileItem) => (
+                    <ListItem key={fileItem.id} style={{ width: '300px' }}>
+                      <ListItemIcon>
+                        <FolderIcon />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={<a href={fileItem.file} target="_blank" rel="noopener noreferrer">{fileItem.name}</a>}
+                      />
+                      <ListItemSecondaryAction>
+                        <IconButton edge="end" aria-label="delete" onClick={() => handleDelete(fileItem.name)}>
+                          <DeleteIcon />
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  ))}
+                  {/* File Input and Upload Button */}
+                  <ListItem>
+                    <label htmlFor="upload-file">
+                      <input
+                        type="file"
+                        id="upload-file"
+                        onChange={handleFileChange} // Hide the input visually
+                      />
+                      <div style={{ textAlign: 'center' }} className='d-flex justify-content-center align-items-center mt-2'>
+                        <Button variant="dark" component="span" onClick={handleUpload}>
+                          Upload File
+                        </Button>
+                      </div>
+                    </label>
+                  </ListItem>
+                </List>
+              </Paper>
+            </div>
+          ) : (
+            <div className='card mx-2' style={{ maxWidth: '300px' }}>
+              <div className="card-body">
+                <label htmlFor="upload-file">
+                  <input
+                    type="file"
+                    id="upload-file"
+                    onChange={handleFileChange} // Hide the input visually
+                  />
+                  <div style={{ textAlign: 'center' }} className='d-flex justify-content-center align-items-center mt-2'>
+                    <Button variant="dark" component="span" onClick={handleUpload}>
+                      Upload File
+                    </Button>
+                  </div>
+                </label>
               </div>
-            </label>
-          </div>
-      </div>
-    )}
-  </>
+            </div>
+          )}
+        </>
+      )}
+    </>
   );
 }
 

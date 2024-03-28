@@ -52,7 +52,7 @@ function SwipeableEdgeDrawer({window, jobId, label, type}) {
 
   return (
     <>
-    <h1>{label}</h1>
+    <h5>{label}</h5>
     <div className='container d-flex justify-content-center align-items-center'>
 
       <Global
@@ -63,7 +63,7 @@ function SwipeableEdgeDrawer({window, jobId, label, type}) {
           },
         }}
       />
-        <Button variant="dark" className='my-3' onClick={toggleDrawer(true)} style={{ height: '60px', width: '80px' }}>{icon()}</Button>
+        <Button variant="dark" className='my-3' onClick={toggleDrawer(true)} style={{ height: '60px', width: '50px' }}>{icon()}</Button>
       <SwipeableDrawer
         anchor="bottom"
         open={open}

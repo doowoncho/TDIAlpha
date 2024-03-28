@@ -111,7 +111,7 @@ export default function Orders() {
           <a href={`/taskspage/${task.job_id}`} className="btn btn-link">Back</a>
         </div>
 
-        <div className="d-flex align-items-center ml-3">
+        <div className="d-flex align-items-center my-4">
           {user.permission === 1 &&
             <>
               {isEditing
@@ -122,7 +122,6 @@ export default function Orders() {
                 :
                 <>
                   <Button className="btn btn-primary mx-3" variant="dark" style={{ width:"5rem" }} onClick={handleEditClick}>Edit</Button>
-                  <label>Status</label>
                   <select className="form-select" aria-label="Default select example" onChange={(x) => handleStatusChange(x)}
                     value={isValidType(task.type) ? task.type : ""}>
                     <option value="">In Progress</option>
