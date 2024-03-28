@@ -119,7 +119,7 @@ export default function ToDoPage() {
         {users.map((x) => (
           <Card key={x.id}>
             <CardContent>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div style={{alignItems: 'center' }}>
                 <ListItemText primary={`${x.name} `} />
                   <div
                     style={{
