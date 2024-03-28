@@ -29,10 +29,9 @@ export default function Table({ data, columns, handleUpdate }) {
   };
 
   const getRowClassName = (params) => {
-    const isComplete = params.row.completed
     const rowType = params.row.type; // Change 'status' to the field you want to base the color on
 
-    if(isComplete || rowType == 'Cancelled' || rowType == 'Cancelled OS'){
+    if(rowType =='Finished' || rowType == 'Cancelled' || rowType == 'Cancelled OS'){
       return 'completed-row'; 
     }
 

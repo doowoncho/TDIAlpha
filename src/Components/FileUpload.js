@@ -107,26 +107,6 @@ function FileUpload({type, giveID}) {
     {filesData && filesData.length > 0 ? (
       <div className={`card border border-success bg-light mx-2`} style={{ maxWidth: '300px' }}>
         <Paper elevation={3} >
-          {/* <div className="card-body">
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              {filesData.map((fileItem) => (
-                <div key={fileItem.id}>
-                  <p className='mb-1'>
-                    <a href={fileItem.file} target="_blank" rel="noopener noreferrer">
-                      {fileItem.name}
-                    </a>
-                  </p>
-                  <button className='btn btn-outline-danger mb-2' onClick={() => handleDelete(fileItem.name)}>
-                    Delete File
-                  </button>
-                </div>
-              ))}
-              <input type="file" onChange={handleFileChange} className='mt-3'/>
-              <button className='my-2' onClick={handleUpload}>
-                Upload File
-              </button>
-            </div>
-          </div> */}
           <List>
             {filesData.map((fileItem) => (
               <ListItem key={fileItem.id} style={{ width: '300px' }}>

@@ -184,7 +184,7 @@ export default function TasksTable() {
           </div>
           <div className="d-flex flex-wrap">
             <div className="mx-2 my-2">
-              <label htmlFor="formFileDisabled" className="form-label my-1">Permit Confirmation</label>
+              <label htmlFor="formFileDisabled" className="form-label my-1">P.Confrim</label>
               <FileUpload type="permitConfirmation" giveID={id}></FileUpload>
             </div>
             <div className="mx-2 my-2">

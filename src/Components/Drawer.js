@@ -39,7 +39,7 @@ function SwipeableEdgeDrawer({window, jobId, label, type}) {
 
   const icon = () =>{
     switch(label) {
-        case "Permit Confirmation":
+        case "P. Confirm":
             return <ConfirmationNumberIcon></ConfirmationNumberIcon>
         case "Permit":
             return <FeedIcon></FeedIcon>
@@ -72,7 +72,6 @@ function SwipeableEdgeDrawer({window, jobId, label, type}) {
         swipeAreaWidth={drawerBleeding}
         disableSwipeToOpen={false}
         ModalProps={{ keepMounted: false }}
-        // style={{ width: "12rem" }}
       >
         <StyledBox
           sx={{
