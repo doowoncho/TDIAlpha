@@ -120,8 +120,8 @@ function FormPage() {
 
       if (dateTime.twentyFour) {
           // Two tasks, one for putting down and one for picking stuff up
-          await createTaskForDate(dateTime.startDate, dateTime.startTime, null, null, job, 'place');
-          await createTaskForDate(null, null, dateTime.endDate, dateTime.endTime, job, location, 'pickup');
+          await createTaskForDate(dateTime.startDate, dateTime.startTime, null, null, job, 'setup');
+          await createTaskForDate(null, null, dateTime.endDate, dateTime.endTime, job, location, 'takeDown');
       } 
       else if(dateTime.repeat){
           if (dateTime.exWeekend) {          
@@ -142,7 +142,7 @@ function FormPage() {
     if(NPAT){
       let npatStartDate = new Date(earliestStartDate);
       npatStartDate.setDate(npatStartDate.getDate() - 1)
-      await createTaskForDate(npatStartDate, null, null, null, job, location, "npat");
+      await createTaskForDate(npatStartDate, null, null, null, job, location, "NPAT");
     }
     
     updateJob(job.id, 

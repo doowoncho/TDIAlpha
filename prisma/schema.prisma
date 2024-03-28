@@ -22,7 +22,8 @@ model jobs {
   contact       String?   @db.VarChar(255)
   setup         String?   @db.VarChar(255)
   stamp         String?   @db.VarChar(255)
-  qb_invoice    Float?
+  qb_invoice    String?   @db.VarChar(255)
+  permit_cost   Float?
 }
 
 model tasks {
@@ -92,4 +93,17 @@ model contacts {
   phone_number String? @db.VarChar(50)
   email        String? @db.VarChar(50)
   company      String? @db.VarChar(50)
+}
+
+model receipts {
+  id   Int     @id @default(autoincrement())
+  name String? @db.VarChar(255)
+  file String? @db.VarChar(255)
+}
+
+model permitCosts {
+  id   Int     @id @default(autoincrement())
+  cost Int 
+  date DateTime @db.Timestamp(6)
+  job_id Int
 }

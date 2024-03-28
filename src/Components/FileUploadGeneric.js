@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { storage } from './Firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { uploadFile } from './APICalls';
+import { uploadFile, uploadReceipts } from './APICalls';
 
 function FileUpload({type, task, name}) {
   const [file, setFile] = useState(null);
@@ -26,22 +26,22 @@ function FileUpload({type, task, name}) {
       })
 
       let fileUpload = {};
-      if(type === "p_confirm"){
-        fileUpload = {permit_confirmation_file: fileBlob, permit_confirmation_name: file.name};
-      }else if(type === "permit"){
-        fileUpload = {permit_file: fileBlob, permit_name: file.name};
-      }else if(type === "map"){
-        fileUpload = {map_file: fileBlob, map_drawing_name: file.name};
-      }else{
-        fileUpload = {photo_file: fileBlob, photo_name: file.name};
-      }   
-      await uploadFile(fileUpload);
+      if(type === "receipts"){
+        fileUpload = {file: fileBlob, name: file.name}; 
+        await uploadReceipts(fileUpload);
+      }
   }
 
   return (
     <>
-      <input type="file" id="fileUpload" className='form-control' onChange={handleFileChange}/>
-      {/* <button onClick={handleUpload}>test</button> */}
+      <div className='card mx-2'>
+        <div className="card-body">
+          <input type="file" onChange={handleFileChange} />
+          <button className='my-2 w-100' onClick={handleUpload}>
+            Upload File
+          </button>
+        </div>
+      </div>
     </>
   );
 }

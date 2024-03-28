@@ -1,7 +1,6 @@
 import React from "react";
 import {  getUserByEmail } from "../Components/APICalls";
-
-// minsu@gmail.com  doowon@gmail.com jungsu@gmail.com PW: 123, Doowon permission 1, jungsu 2, minsu 3
+import '../Styles/login.css'
 
 export default function LoginPage() {
 
@@ -25,21 +24,28 @@ export default function LoginPage() {
   }
   
   return (
-    <div>
-      <div className='container text-center my-4'>
-        <h1>Login</h1>
-        <div className="mb-3">
-          <label>Email</label>
-          <input type="text" className="form-control" id="email" placeholder="Enter email"/>
+    <div style={{ background: 'url("https://images.unsplash.com/photo-1415594445260-63e18261587e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <div className='container text-center rounded' style={{ 
+          width: "500px", 
+          marginBottom: "200px", 
+          background: "transparent", /* Semi-transparent white background */
+          backdropFilter: "blur(30px)", /* Apply the blur effect */ 
+          border: "1px solid rgba(255, 255, 255, 0.2)",
+          boxShadow: "0 0 10px rgba(0,0,0,.2)"
+        }}>
+        <h1 className="my-3 text-white" >Login</h1>
+        <div className="mb-4 text-white">
+          <label>Name</label>
+          <input type="text" style={{background: "transparent", border: "1px solid rgba(255, 255, 255, 0.2)"}} className="form-control text-white" id="email"/>
         </div>
-        <div className="mb-3"> 
+        <div className="mb-4 text-white"> 
           <label>Password</label>
-          <input type="text" className="form-control" id="password" placeholder="Enter password"/>
+          <input type="text" style={{background: "transparent", border: "1px solid rgba(255, 255, 255, 0.2)"}} className="form-control text-white" id="password"/>
         </div>
         <div className="mb-3">
           <button type="submit" className="btn btn-primary" onClick={()=>login() }>login</button>
         </div>
       </div>
     </div>
-  );
+);
 }

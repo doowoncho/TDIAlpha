@@ -80,29 +80,27 @@ app.put('/api/updatetask/:id', async (req, res) => {
     res.json(task);
 
     //complicated shit to make the job dates match the task earliest and latest dates
-    const job = await prisma.jobs.findFirst({ where: { id: jobId } });
+    const job = await prisma.jobs.findFirst({ where: { id: task.job_id } });
     if (job) {
       const earliestTask = await prisma.tasks.findFirst({
-        where: { job_id: job.id, starttime: { not: null }  },
+        where: { job_id: job.id, type: { not: 'npat' } },
         orderBy: { starttime: 'asc' },
       });
     
       const latestTask = await prisma.tasks.findFirst({
-        where: { job_id: job.id, endtime: { not: null } },
+        where: { job_id: job.id, type: { not: 'npat' } },
         orderBy: { endtime: 'desc' },
       });
-    
-      if (earliestTask || latestTask) {
-        await prisma.jobs.update({
-          where: {
-            id: job.id,
-          },
-          data: {
-            starttime: earliestTask.starttime,
-            endtime: latestTask.endtime,
-          },
-        });
-      }
+
+      await prisma.jobs.update({
+        where: {
+          id: job.id,
+        },
+        data: {
+          starttime: earliestTask.starttime,
+          endtime: latestTask.endtime,
+        },
+      });
     }
 
   } catch (error) {
@@ -115,7 +113,7 @@ app.put('/api/updatetask/:id', async (req, res) => {
 app.put('/api/updatejob/:id', async (req, res) => {
   try {
     const jobId = parseInt(req.params.id) //id of task we are changing
-    const { contact, starttime, endtime, status, wo_number, po_number, email, phone_number, permit_number, request_id, company, setup, stamp, qb_invoice} = req.body
+    const { contact, starttime, endtime, status, wo_number, po_number, email, phone_number, permit_number, request_id, company, setup, stamp, qb_invoice, permit_cost} = req.body
     const posts = await prisma.jobs.update({
       where: {
         id: jobId
@@ -135,7 +133,8 @@ app.put('/api/updatejob/:id', async (req, res) => {
         company: company,
         setup: setup,
         stamp: stamp,
-        qb_invoice: qb_invoice
+        qb_invoice: qb_invoice,
+        permit_cost: permit_cost
       }
     });
     res.json(posts);
@@ -177,7 +176,46 @@ app.delete('/api/deletejob/:id', async (req, res) => {
         job_id: jobId
       },
     });
-    res.json(deletedjob, deletedTasks);
+
+    // const deletedFiles = await prisma.files.deleteMany({
+    //   where: {
+    //     job_id: jobId
+    //   },
+    // });
+
+    const deletedLogs = await prisma.permitCosts.deleteMany({
+      where: {
+        job_id: jobId
+      },
+    });
+
+    const deletedPhotos = await prisma.photos.deleteMany({
+      where: {
+        job_id: jobId
+      },
+    });
+
+    const deletedPermits = await prisma.permits.deleteMany({
+      where: {
+        job_id: jobId
+      },
+    });
+
+    const deletedPermitConfirmations = await prisma.permitConfirmations.deleteMany({
+      where: {
+        job_id: jobId
+      },
+    });
+
+    const deletedPlans = await prisma.plans.deleteMany({
+      where: {
+        job_id: jobId
+      },
+    });
+
+    
+
+    res.json(deletedjob, deletedTasks, deletedFiles, deletedLogs, deletedPhotos, deletedPermits, deletedPermitConfirmations, deletedPlans );
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });
@@ -234,6 +272,24 @@ app.post('/api/createjob', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+app.post('/api/uploadReceipts/', async (req, res) => {
+  try {
+    const { name, file } = req.body;
+    
+      const createdFile = await prisma.receipts.create({
+        data: {
+          name: name,
+          file: file
+        }
+      });
+      res.json(createdFile);
+    }
+    catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Internal server error'})
+  }
+})
 
 app.post('/api/uploadPhoto/', async (req, res) => {
   try {
@@ -408,6 +464,24 @@ app.delete('/api/deleteFile', async (req, res) => {
   }
 })
 
+app.delete('/api/deleteReceipts', async (req, res) => {
+  try {
+    const { name } = req.body;
+    
+    const deletedReceipts = await prisma.receipts.deleteMany({
+      where: {
+        name: name,
+      },
+    });
+
+    return res.json({ message: 'File deleted successfully' });
+    }
+    catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Internal server error'})
+  }
+})
+
 app.get('/api/getFiles/:id', async (req, res) => {
   try {
     const jobId = parseInt(req.params.id);
@@ -506,6 +580,16 @@ app.get('/api/users', async (req, res) => {
   }
 });
 
+app.get('/api/getReceipts', async (req, res) => {
+  try {
+    const receipts = await prisma.receipts.findMany();
+    res.json(receipts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 app.get('/api/getUserByEmail/:email', async (req, res) => {
   try {
     const emailID = req.params.email;
@@ -555,6 +639,22 @@ app.get('/api/gettasksbyjobid/:id', async (req, res) => {
   }
 });
 
+// get permit costs
+app.get('/api/getpermitcostlogsbyjobid/:id', async (req, res) => {
+  try {
+    const jobId = parseInt(req.params.id);
+    const permitCosts = await prisma.permitCosts.findMany({
+      where: {
+        job_id: jobId
+      }
+    });
+    res.json(permitCosts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 app.post('/api/createUser', async (req, res) => {
   try {
     const { email, name, permission, password } = req.body;
@@ -574,6 +674,26 @@ app.post('/api/createUser', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+app.post('/api/createPermitCostLog', async (req, res) => {
+  try {
+    const { job_id, cost, date } = req.body;
+
+    const newtask = await prisma.permitCosts.create({
+      data: {
+        job_id: job_id,
+        cost: cost,
+        date: date,
+      },
+    });
+
+    res.json(newtask);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 
 app.listen(3001, () => {
   console.log('Server is running on port 3001');

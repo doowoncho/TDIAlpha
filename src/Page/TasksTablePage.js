@@ -4,7 +4,24 @@ import { getAlltasks, updatetask, deletetask, getUserById, getAllUsers, getTasks
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Table from "../Components/Table";
 import { useParams } from "react-router-dom";
-import moment from "moment";
+import { TasksTableColumns } from "../Helpers/TableUtils";
+import SwipeableEdgeDrawer from "../Components/Drawer";
+import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
+import FeedIcon from '@mui/icons-material/Feed';
+import MapIcon from '@mui/icons-material/Map';
+import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
+import JobDetails from "../Components/JobDetails";
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
+import CloseIcon from '@mui/icons-material/Close';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
  
 let user = await getUserById(window.sessionStorage.getItem("user"))
 
@@ -32,6 +49,27 @@ export default function TasksTable() {
   const [isEditing, setIsEditing] = useState(false); // State to track edit mode
   //entire list of tasks
   const originalDataRef = useRef(null);
+  const [openDialog, setOpenDialog] = useState(false); // State variable to manage the visibility of the dialog
+  const [type, setType] = React.useState('');
+
+  // Function to handle the opening of the dialog
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
+  const handleAddTask = () => {
+    addTask(type);
+    setOpenDialog(false);
+  };
+
+  const handleType = (event) => {
+    setType(event.target.value);
+  };
+  
   
   useEffect(() => {
     const fetchData = async () => {
@@ -72,10 +110,10 @@ export default function TasksTable() {
     );
   };
   
-  async function addTask() {
+  async function addTask(type) {
     // Assuming createtask returns the newly created task, adjust accordingly
     let completed = false
-    const newTask = await createtask({ job_id: parseInt(id), completed: completed });
+    const newTask = await createtask({ job_id: parseInt(id), completed: completed, type: type });
   
     // Update the taskList with the new task
     settaskList((prevtasks) => [...prevtasks, newTask]);
@@ -117,8 +155,15 @@ export default function TasksTable() {
       starttime: newStartTime,
       endtime: newEndTime
     }) 
+    
+    var npatTask = taskList.filter(x => x.type == "NPAT")[0]
+    if(npatTask){
+      var temp = new Date()
+      temp.setDate(newStartTime.getDate() - 1)
+      await handletaskUpdate(npatTask.id, {starttime: temp})
+    }
 
-    setIsEditing(false); // Disable edit mode after saving changes
+    setIsEditing(false);
   };
 
   const handleInputChange = async (e, jobProp) => {
@@ -130,145 +175,100 @@ export default function TasksTable() {
   };
 
   return (
-    <div>
-
-    {job && <div className="container text-center justify-content-center my-4 d-flex">
-      <div>
-      <div className="card mx-4">
-        <div className="card-header">
-          Job Details
+    <div className="container">
+      <div className="container text-center justify-content-center d-flex">
+        {job && <JobDetails job={job} handleInputChange = {handleInputChange} isEditing={isEditing} user={user} handleCancelClick={handleCancelClick} saveChanges={saveChanges} handleEditClick={handleEditClick}/>}
+        
+        <div className="card d-none d-sm-block my-4" style={{width: '70%', margin: '0 auto'}}>
+          <div className="card-header">
+            Files
+          </div>
+          <div className="d-flex flex-wrap">
+            <div className="mx-2 my-2">
+              <label htmlFor="formFileDisabled" className="form-label my-1">Permit Confirmation</label>
+              <FileUpload type="permitConfirmation" giveID={id}></FileUpload>
+            </div>
+            <div className="mx-2 my-2">
+              <label htmlFor="formFileDisabled" className="form-label my-1">Permit</label>
+              <FileUpload type="permit" giveID={id}></FileUpload>
+            </div>
+            <div className="mx-2 my-2">
+              <label htmlFor="formFileDisabled" className="form-label my-1">Plan</label>
+              <FileUpload type="plan"  giveID={id}></FileUpload>
+            </div>
+            <div className="mx-2 my-2">
+              <label htmlFor="formFileDisabled" className="form-label my-1">Photo</label>
+              <FileUpload type="photo" giveID={id}></FileUpload>
+            </div>
+          </div>
         </div>
-          <fieldset disabled={!isEditing}>
-            <div className="input-group">
-              <div className="input-group-prepend">
-                <span className="input-group-text" id="">Contact</span>
-              </div>
-              <input type="text" value={job.contact || ''} className="form-control" onChange={(e)=>handleInputChange(e, 'contact')}/>
-            </div>
-            <div className="input-group">
-              <div className="input-group-prepend">
-                <span className="input-group-text" id="">Company</span>
-              </div>
-              <input type="text" value={job.company || ''} onChange={(e)=>handleInputChange(e, 'company')} className="form-control"/>
-            </div>
-            <div className="input-group">
-              <div className="input-group-prepend">
-                <span className="input-group-text" id="">Email</span>
-              </div>
-              <input type="text" value={job.email || ''} className="form-control" onChange={(e)=>handleInputChange(e, 'email')}/>
-            </div>
-            <div className="input-group">
-              <div className="input-group-prepend">
-                <span className="input-group-text" id="">Phone Number</span>
-              </div>
-              <input type="text" value={job.phone_number || ''} onChange={(e)=>handleInputChange(e, 'phone_number')} className="form-control"/>
-            </div>
-            <div className="input-group">
-              <div className="input-group-prepend">
-                <span className="input-group-text" id="">Status</span>
-              </div>
-              <input type="text" value={job.status || ''} className="form-control" readOnly/>
-            </div>
-            <div className="input-group d-sm-flex">
-              <div className="input-group-prepend">
-                <span className="input-group-text" id="">WO Number</span>
-              </div>
-              <input type="text" value={job.wo_number || ''} onChange={(e)=>handleInputChange(e, 'wo_number')} className="form-control"/>
-            </div>
-            <div className="input-group d-sm-flex">
-              <div className="input-group-prepend">
-                <span className="input-group-text" id="">Permit Number</span>
-              </div>
-              <input type="text" value={job.permit_number || ''} onChange={(e)=>handleInputChange(e, 'permit_number')} className="form-control"/>
-            </div>
-            <div className="input-group d-sm-flex">
-              <div className="input-group-prepend">
-                <span className="input-group-text" id="">PO Number</span>
-              </div>
-              <input type="text" value={job.po_number || ''} onChange={(e)=>handleInputChange(e, 'po_number')} className="form-control"/>
-            </div>
-            <div className="input-group d-sm-flex">
-              <div className="input-group-prepend">
-                <span className="input-group-text" id="">Request ID</span>
-              </div>
-              <input type="text" value={job.request_id || ''} onChange={(e)=>handleInputChange(e, 'request_id')} className="form-control"/>
-            </div>
-          
-            <div className="input-group">
-              <div className="input-group-prepend">
-                <span className="input-group-text" id="">Stamp</span>
-              </div>
-              <select value={job.stamp == null ? "none" : job.stamp} onChange={(e) => handleInputChange(e, 'stamp')}>
-                <option value="stamped">Stamped</option>
-                <option value="reStamped">Re-stamped</option>
-                <option value="rushedStamp">Rushed Stamp</option>
-                <option value="none">None</option>
-              </select>
-            </div>
-            <div className="input-group d-sm-flex">
-              <div className="input-group-prepend">
-                <span className="input-group-text" id="">Start Time</span>
-              </div>
-                    <input type="datetime-local" className="form-control" id="startDate" value={moment(job.starttime).format('YYYY-MM-DDTHH:mm')}
-                    onChange={(e) => handleInputChange(e, 'starttime')}/>
-            </div>
-            <div className="input-group d-sm-flex">
-              <div className="input-group-prepend">
-                <span className="input-group-text" id="">End Time</span>
-              </div>
-                    <input type="datetime-local" className="form-control" id="startDate" value={moment(job.endtime).format('YYYY-MM-DDTHH:mm')}
-                    onChange={(e) => handleInputChange(e, 'endtime')}/>
-            </div>
-          </fieldset>
       </div>
-
-      {user.permission == 1 &&
-          <>
-            {isEditing
-              ? <>
-              <button className="btn btn-primary my-3 px-4" onClick={handleCancelClick}>Cancel</button>
-              <button className="btn btn-warning mx-2 my-3 px-4" onClick={saveChanges}>Save Changes</button>
-              </>
-              : <button className="btn btn-primary my-3 px-4" onClick={handleEditClick}>Edit</button> 
-            }
-          </>
-        }
-      </div>
-      <div className="card d-sm-flex">
+      <div className="card d-block d-sm-none">
         <div className="card-header">
           Files
         </div>
-        <div className="d-sm-flex flex-wrap justify-content-center">
+        <div className="d-flex flex-wrap justify-content-center">
           <div className="mx-2 my-2">
-            <label htmlFor="formFileDisabled" className="form-label my-1">Permit Confirmation</label>
-            <FileUpload type="permitConfirmation" giveID={id}></FileUpload>
+            <SwipeableEdgeDrawer type="permitConfirmation" jobId={id} label="Permit Confirmation"></SwipeableEdgeDrawer>
           </div>
           <div className="mx-2 my-2">
-            <label htmlFor="formFileDisabled" className="form-label my-1">Permit</label>
-            <FileUpload type="permit" giveID={id}></FileUpload>
+            <SwipeableEdgeDrawer type="permit" jobId={id} label="Permit"></SwipeableEdgeDrawer>
           </div>
           <div className="mx-2 my-2">
-            <label htmlFor="formFileDisabled" className="form-label my-1">Plan</label>
-            <FileUpload type="plan"  giveID={id}></FileUpload>
+            <SwipeableEdgeDrawer type="plan" jobId={id} label="Plan"></SwipeableEdgeDrawer>
           </div>
           <div className="mx-2 my-2">
-            <label htmlFor="formFileDisabled" className="form-label my-1">Photo</label>
-            <FileUpload type="photo" giveID={id}></FileUpload>
+            <SwipeableEdgeDrawer type="photo" jobId={id} label="Photo"></SwipeableEdgeDrawer>
           </div>
         </div>
       </div>
-      </div>}
-    <header className='container text-center my-4'>
+    <header className='container text-center my-2'>
       <h1>Tasks</h1>
       <Table
-          data={taskList}
-          displayColumns={["ID", "StartTime", "EndTime", "Setup", "Assigned"]}
-          handleUpdate={handletaskUpdate} handleDelete={handletaskDelete} 
-        />
-      <button className='my-1 btn btn-outline-primary' onClick={()=>addTask()}> 
+        data={taskList}
+        columns={TasksTableColumns}
+        handleUpdate={handletaskUpdate}
+        handleDelete={handletaskDelete} 
+      />
+      <button className='my-1 btn btn-outline-primary' onClick={handleOpenDialog}> 
         Add Task
       </button>
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <Button onClick={handleCloseDialog} className="ml-5" style={{ width:'10%', marginLeft:'auto'}}>
+          <CloseIcon />
+        </Button>
+        <DialogContent>
+          <DialogContentText>
+            Select Task Type
+          </DialogContentText>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Type</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={type}
+              label="Type"
+              onChange={handleType}
+            >
+              <MenuItem value={"NPAT"}>NPAT</MenuItem>
+              <MenuItem value={"Place"}>Place</MenuItem>
+              <MenuItem value={"Takedown"}>Takedown</MenuItem>
+              <MenuItem value={"SameDay"}>SameDay</MenuItem>
+            </Select>
+          </FormControl>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleAddTask}>
+            Add Task
+          </Button>
+        </DialogActions>
+      </Dialog>
     </header>
-  </div>
+    </div>
   );
 }
