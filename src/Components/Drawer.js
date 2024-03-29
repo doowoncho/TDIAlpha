@@ -10,10 +10,12 @@ import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import FileUpload from './FileUpload';
+import FileUploadGeneric from './FileUploadGeneric'
 import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
 import FeedIcon from '@mui/icons-material/Feed';
 import MapIcon from '@mui/icons-material/Map';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
+import ReceiptIcon from '@mui/icons-material/Receipt';
 import { useState } from 'react';
 
 const drawerBleeding = 10;
@@ -47,6 +49,8 @@ function SwipeableEdgeDrawer({window, jobId, label, type}) {
             return <MapIcon></MapIcon>
         case "Photo":
             return <InsertPhotoIcon></InsertPhotoIcon>
+        case "Receipt":
+            return <ReceiptIcon></ReceiptIcon>
       }
   }
 
@@ -87,7 +91,11 @@ function SwipeableEdgeDrawer({window, jobId, label, type}) {
         >
           <Puller />
           <Typography sx={{ p: 2, color: 'text.secondary'}}>{label}</Typography>
-          <FileUpload type={type} giveID={jobId}></FileUpload>
+          {label === 'Receipt' ? (
+              <FileUploadGeneric type="receipts"></FileUploadGeneric>
+            ) : (
+              <FileUpload type={type} giveID={jobId}></FileUpload>
+            )}
         </StyledBox>
       </SwipeableDrawer>
       </div>
