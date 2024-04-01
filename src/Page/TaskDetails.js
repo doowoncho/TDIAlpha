@@ -5,8 +5,9 @@ import { getUserById, gettaskById, updatetask, getJobById, getFilesById, getTask
 import '../Styles/TaskDetails.css';
 import FileUpload from '../Components/FileUpload';
 import SwipeableEdgeDrawer from '../Components/Drawer';
-import { Card, Box, Divider, Typography, Stack, Paper, Checkbox, FormControlLabel } from '@mui/material';
+import { Card, Box, Divider, Typography, Stack, Paper, Chip, Select, MenuItem, InputLabel} from '@mui/material';
 import Button from 'react-bootstrap/Button';
+import { FormControl } from 'react-bootstrap';
 
 let user = await getUserById(window.sessionStorage.getItem("user"))
 
@@ -93,25 +94,24 @@ export default function Orders() {
     return <div>Error: {error}</div>;
   }
 
-  const handleCheckboxChange = async () => {
-    const newCompletedStatus = !isCompleted;
-    setIsCompleted(newCompletedStatus);
-    console.log(newCompletedStatus);
-
-    // Update the completion status in the database
-    await updatetask(task.id, { completed: newCompletedStatus });
+  const handleStatusChange = async (x) => {
+    await updatetask(task.id, { type: x.target.value });
+    window.location.reload()
   };
+
+  function isValidType(type) {
+    return ["Finished", "Cancelled", "Cancelled OS"].includes(type);
+  }
 
   return (
     <div>
-
-    <div className='container mt-3' style={{ padding: '0 15px' }}>
+    <div className='container mt-3'>
       <div className="d-flex justify-content-between align-items-center">
         <div className="d-flex">
           <a href={`/taskspage/${task.job_id}`} className="btn btn-link">Back</a>
         </div>
 
-        <div className="d-flex align-items-center ml-3"> {/* ml-auto adds margin to the left */}
+        <div className="d-flex align-items-center my-4">
           {user.permission === 1 &&
             <>
               {isEditing
@@ -121,15 +121,14 @@ export default function Orders() {
                 </>
                 :
                 <>
-                  <Button className="btn btn-primary mx-3 my-2" variant="dark" style={{ width:"5rem" }} onClick={handleEditClick}>Edit</Button>
-                  <div className="form-check ml-2">
-                    <FormControlLabel className='ml-2' control={
-                      <Checkbox className="form-check-input" type="checkbox" id="flexCheckDefault" checked={isCompleted} onChange={handleCheckboxChange} />
-                    }
-                    label="Complete"
-                    />
-                    {/* <label className="form-check-label" htmlFor="flexCheckDefault">Complete</label> */}
-                  </div>
+                  <Button className="btn btn-primary mx-3" variant="dark" style={{ width:"5rem" }} onClick={handleEditClick}>Edit</Button>
+                  <select className="form-select" aria-label="Default select example" onChange={(x) => handleStatusChange(x)}
+                    value={isValidType(task.type) ? task.type : ""}>
+                    <option value="">In Progress</option>
+                    <option value="Finished">Finished</option>
+                    <option value="Cancelled">Cancelled</option>
+                    <option value="Cancelled OS">Cancelled on Site</option>
+                  </select>
                 </>
               }
             </>
@@ -138,43 +137,81 @@ export default function Orders() {
       </div>
     </div>
       <div className="container text-center d-flex justify-content-center gap-3">
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Card variant="outlined" sx={{ maxWidth: 360 }}>
-            <Box sx={{ p: 2 }}>
-              <Stack direction="row" justifyContent="space-between" style={{ textAlign: "center" }}>
-                <Typography gutterBottom variant="h6" component="div">
-                  ID: {task.id}
-                </Typography>
-              </Stack>
-            </Box>
-            <Divider />
-            <Box sx={{ p: 2 }}>
-              <fieldset disabled={user.permission == 2 || !isEditing}>
-                {isEditing 
-                  ? <>
-                      <label htmlFor="exampleInputStartDate">Start Time:</label>
-                      <input type="datetime-local" className="form-control" id="startDate" value={moment(task.starttime).format('YYYY-MM-DDTHH:mm')} onChange={(e) => handleInputChange(e, 'starttime')}/>
-                      <label htmlFor="exampleInputEndDate">End Time:</label>
-                      <input type="datetime-local" className="form-control" id="enddate" value={moment(task.endtime).format('YYYY-MM-DDTHH:mm')} onChange={(e) => handleInputChange(e, 'endtime')}/>
-                    </>
-                  : <>
-                      {task.starttime &&
-                        <>
-                          <label htmlFor="exampleInputStartDate">Drop Off Time:</label>
-                          <input type="datetime-local" className="form-control" id="startDate" value={moment(task.starttime).format('YYYY-MM-DDTHH:mm')} onChange={(e) => handleInputChange(e, 'starttime')}/>
-                        </>
-                      }
-                      {task.endtime &&
-                        <>
-                          <label htmlFor="exampleInputEndDate">Pick Up Time:</label>
-                          <input type="datetime-local" className="form-control" id="enddate" value={moment(task.endtime).format('YYYY-MM-DDTHH:mm')} onChange={(e) => handleInputChange(e, 'endtime')}/>
-                        </>
-                      }
-                    </>
-                }
-              </fieldset>
-            </Box>
-          </Card>
+        <div>
+        <Card variant="outlined">
+                        <Box sx={{ p: 2 }}>
+                            <Stack direction="row" justifyContent="space-between" >
+                                <Typography gutterBottom variant="h5" component="div">
+                                    TaskId: {task.id}
+                                </Typography>
+                            </Stack>
+                        </Box>
+                        <Box sx={{ p: 2 }}>
+                            <Stack direction="row" spacing={1}>
+                                <Chip color={task.type === 'Place' ? 'primary' : 'default'} label="Place" size="small"/>
+                                <Chip color={task.type === 'Takedown' ? 'primary' : 'default'} label="Takedown" size="small"/>
+                                <Chip color={task.type === 'SameDay' ? 'primary' : 'default'} label="SameDay" size="small"/>
+                                <Chip color={task.type === 'NPAT' ? 'primary' : 'default'} label="NPAT" size="small"/>
+                            </Stack>
+                        </Box>
+                        <Divider />
+
+                        <fieldset disabled={user.permission == 2 || !isEditing}>
+                          {isEditing 
+                            ? <>
+                              <Box sx={{ p: 2, textAlign: "left" }}>
+                                  <Typography color="text.secondary">
+                                  <input
+                                    type="text"
+                                    className="form-control my-1"
+                                    id="notes"
+                                    value={task.setup ? task.setup : ""}
+                                    onChange={(e) => handleInputChange(e, 'setup')}/>
+                                  </Typography>
+                                  <Typography color="text.secondary" >
+                                  <label>Notes: </label>
+                                  <input
+                                    type="text"
+                                    className="form-control my-1"
+                                    id="notes"
+                                    value={task.notes ? task.notes : ""}
+                                    onChange={(e) => handleInputChange(e, 'notes')}/>
+                                  </Typography>
+                              </Box>
+                              <Box sx={{ p: 2 }}>
+                                  <label htmlFor="exampleInputStartDate">Place:</label>
+                                  <Typography color="text.primary" >
+                                  <input type="datetime-local" className="form-control" id="startDate" value={moment(task.starttime).format('YYYY-MM-DDTHH:mm')} onChange={(e) => handleInputChange(e, 'starttime')}/>
+                                  </Typography>
+                                  <label htmlFor="exampleInputEndDate">Takedown:</label>
+                                  <Typography color="text.primary" >
+                                  <input type="datetime-local" className="form-control" id="enddate" value={moment(task.endtime).format('YYYY-MM-DDTHH:mm')} onChange={(e) => handleInputChange(e, 'endtime')}/>
+                                  </Typography>
+                              </Box>
+                              </>
+                            : <>
+                              <Box sx={{ p: 2, textAlign: "left" }}>
+                                  <Typography color="text.secondary">
+                                      {`Setup: ${task.setup}`}
+                                  </Typography>
+                              <Divider />
+                                  <Typography color="text.secondary" >
+                                      {`Notes: ${task.notes}`}
+                                  </Typography>
+                              </Box>
+                              <Divider />
+                              <Box sx={{ p: 2 }}>
+                                  <Typography color="text.primary" >
+                                      {task.starttime && `Place: ${moment(task.starttime).format('MMMM DD YYYY h:mm A')}`}
+                                  </Typography>
+                                  <Typography color="text.primary" >
+                                      {task.endtime && `Takedown: ${moment(task.endtime).format('MMMM DD YYYY h:mm A')}`}
+                                  </Typography>
+                              </Box>
+                              </>
+                          }
+                        </fieldset>
+                    </Card>
         </div>
         <div className="d-none d-sm-block">
           <Paper elevation={3} className='py-2'>
@@ -185,7 +222,7 @@ export default function Orders() {
                 </div>
                   <div className="d-flex flex-wrap justify-content-center">
                     <div className="mx-2 my-2">
-                      <label htmlFor="formFileDisabled" className="form-label my-1">Permit Confirmation</label>
+                      <label htmlFor="formFileDisabled" className="form-label my-1">P. Confirm</label>
                       <FileUpload type="permitConfirmation" giveID={task.job_id}></FileUpload>
                     </div>
                     <div className="mx-2 my-2">
@@ -214,7 +251,7 @@ export default function Orders() {
           </div>
           <div className="d-flex flex-wrap justify-content-center">
               <div className="mx-2 my-2" style={{ width:"10rem", textAlign:"center" }}>
-                <SwipeableEdgeDrawer type="permitConfirmation" jobId={task.job_id} label="Permit Confirmation"></SwipeableEdgeDrawer>
+                <SwipeableEdgeDrawer type="permitConfirmation" jobId={task.job_id} label="P. Confirm"></SwipeableEdgeDrawer>
               </div>
               <div className="mx-2 my-2" style={{ width:"10rem", textAlign:"center" }}>
                 <SwipeableEdgeDrawer type="permit" jobId={task.job_id} label="Permit"></SwipeableEdgeDrawer>
@@ -229,58 +266,6 @@ export default function Orders() {
         </div>
       </Paper>
     </div>
-
-
-      <div className="container">
-        <Paper elevation={3}>
-          <div className="my-3 mx-4">
-            <div className="card-header">Setup</div>
-            <div>
-              <fieldset disabled={user.permission == 2 || !isEditing}>
-                <input
-                  type="text"
-                  className="form-control text-center my-4"
-                  id="notes"
-                  aria-describedby="emailHelp"
-                  value={task.setup ? task.setup : ""}
-                  onChange={(e) => handleInputChange(e, 'setup')}/>
-              </fieldset>
-            </div>
-          </div>
-        </Paper>
-      </div>
-
-      <div className="container">
-      <Paper elevation={3}>
-          <div className="my-3 mx-4">
-            <div>Notes</div>
-            <div>
-              <fieldset disabled={!isEditing}>
-                <input
-                  type="text"
-                  className="form-control text-center my-4"
-                  id="notes"
-                  aria-describedby="emailHelp"
-                  value={task.notes ? task.notes : ""}
-                  onChange={(e) => handleInputChange(e, 'notes')}/>
-              </fieldset>
-              {user.permission == 2 &&
-              <div className="d-flex justify-content-end">
-                {isEditing
-                  ? <>
-                      <button className="btn btn-primary px-4" onClick={handleCancelClick}>Cancel</button>
-                      <button className="btn btn-warning mx-2 px-4" onClick={saveChanges}>Save Changes</button>
-                    </>
-                  : 
-                  <button className="btn btn-primary px-4" onClick={handleEditClick}>Edit</button> 
-                }
-              </div>
-            }
-            </div>
-          </div>
-        </Paper>
-      </div>
-
     </div>
   );
 }

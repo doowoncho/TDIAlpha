@@ -178,13 +178,13 @@ export default function TasksTable() {
       <div className="container text-center justify-content-center d-flex">
         {job && <JobDetails job={job} handleInputChange = {handleInputChange} isEditing={isEditing} user={user} handleCancelClick={handleCancelClick} saveChanges={saveChanges} handleEditClick={handleEditClick}/>}
         
-        <div className="card d-none d-sm-block my-4" style={{width: '70%', margin: '0 auto'}}>
+        <div className="card d-none d-sm-block my-4">
           <div className="card-header">
             Files
           </div>
-          <div className="d-flex flex-wrap">
+          <div className="d-flex flex-wrap justify-content-center">
             <div className="mx-2 my-2">
-              <label htmlFor="formFileDisabled" className="form-label my-1">Permit Confirmation</label>
+              <label htmlFor="formFileDisabled" className="form-label my-1">P.Confrim</label>
               <FileUpload type="permitConfirmation" giveID={id}></FileUpload>
             </div>
             <div className="mx-2 my-2">
@@ -208,7 +208,7 @@ export default function TasksTable() {
         </div>
         <div className="d-flex flex-wrap justify-content-center">
           <div className="mx-2 my-2">
-            <SwipeableEdgeDrawer type="permitConfirmation" jobId={id} label="Permit Confirmation"></SwipeableEdgeDrawer>
+            <SwipeableEdgeDrawer type="permitConfirmation" jobId={id} label="P. Confirm"></SwipeableEdgeDrawer>
           </div>
           <div className="mx-2 my-2">
             <SwipeableEdgeDrawer type="permit" jobId={id} label="Permit"></SwipeableEdgeDrawer>

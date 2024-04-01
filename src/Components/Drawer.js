@@ -39,7 +39,7 @@ function SwipeableEdgeDrawer({window, jobId, label, type}) {
 
   const icon = () =>{
     switch(label) {
-        case "Permit Confirmation":
+        case "P. Confirm":
             return <ConfirmationNumberIcon></ConfirmationNumberIcon>
         case "Permit":
             return <FeedIcon></FeedIcon>
@@ -52,7 +52,7 @@ function SwipeableEdgeDrawer({window, jobId, label, type}) {
 
   return (
     <>
-    <h1>{label}</h1>
+    <h5>{label}</h5>
     <div className='container d-flex justify-content-center align-items-center'>
 
       <Global
@@ -63,7 +63,7 @@ function SwipeableEdgeDrawer({window, jobId, label, type}) {
           },
         }}
       />
-        <Button variant="dark" className='my-3' onClick={toggleDrawer(true)} style={{ height: '60px', width: '80px' }}>{icon()}</Button>
+        <Button variant="dark" className='my-3' onClick={toggleDrawer(true)} style={{ height: '60px', width: '50px' }}>{icon()}</Button>
       <SwipeableDrawer
         anchor="bottom"
         open={open}
@@ -72,7 +72,6 @@ function SwipeableEdgeDrawer({window, jobId, label, type}) {
         swipeAreaWidth={drawerBleeding}
         disableSwipeToOpen={false}
         ModalProps={{ keepMounted: false }}
-        // style={{ width: "12rem" }}
       >
         <StyledBox
           sx={{
