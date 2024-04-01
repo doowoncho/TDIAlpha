@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { storage } from './Firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { uploadFile, uploadReceipts } from './APICalls';
+import Button from '@mui/material/Button';
 
 function FileUpload({type, task, name}) {
   const [file, setFile] = useState(null);
@@ -30,16 +31,18 @@ function FileUpload({type, task, name}) {
         fileUpload = {file: fileBlob, name: file.name}; 
         await uploadReceipts(fileUpload);
       }
+    
+      window.location.reload();
   }
 
   return (
     <>
-      <div className='card mx-2'>
+      <div className='mx-2'>
         <div className="card-body">
           <input type="file" onChange={handleFileChange} />
-          <button className='my-2 w-100' onClick={handleUpload}>
+          <Button variant='contained' className='my-2 w-100' onClick={handleUpload}>
             Upload File
-          </button>
+          </Button>
         </div>
       </div>
     </>
