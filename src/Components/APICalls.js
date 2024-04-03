@@ -459,9 +459,9 @@ export async function getReceipts() {
     }
 }
 
-export async function createPermitCostLog(params) {
+export async function createInvoiceLog(params) {
     try {
-        const response = await fetch(`${server}/api/createPermitCostLog`, {
+        const response = await fetch(`${server}/api/createInvoiceLog`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -492,9 +492,9 @@ export async function gettaskByUserId(id) {
   }
 }
 
-export async function getPermitCostLogsByJobId(id) {
+export async function getInvoiceLogsByJobId(id) {
     try {
-        const response = await fetch(`${server}/api/getpermitcostlogsbyjobid/${id}`, {
+        const response = await fetch(`${server}/api/getInvoiceLogsByJobId/${id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

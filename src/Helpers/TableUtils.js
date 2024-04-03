@@ -70,12 +70,12 @@ export const InvoicePageColumns = [
       return (params.value * 1.1).toFixed(2);
     },
   }, 
-  { field: 'permit_logs', headerName: 'Permit Logs', flex: 1, minWidth: minWidthNotes, editable: false, 
-    renderCell: (params) => {
-      return PopUp(params.id, params.field)
-    }
+  { field: 'qb_invoice', headerName: 'QB Invoice #', flex: 1, minWidth: minWidthQBInvoice, editable: isEditable, type: 'number'},
+  { field: 'qb_invoice_logs', headerName: 'Permit Logs', flex: 1, minWidth: minWidthNotes, editable: false, 
+  renderCell: (params) => {
+    return PopUp(params.id, params.field)
+  }
   },
-  { field: 'qb_invoice', headerName: 'QB Invoice #', flex: 1, minWidth: minWidthQBInvoice, editable: isEditable,},
   {
     field: 'actions',
     type: 'actions',
@@ -137,12 +137,12 @@ export const CompletedPageColumns = [
       return (params.value * 1.1).toFixed(2);
     },
   }, 
-  { field: 'permit_logs', headerName: 'Permit Logs', flex: 1, minWidth: minWidthNotes, editable: false, 
+  { field: 'qb_invoice', headerName: 'QB Invoice #', flex: 1, minWidth: minWidthQBInvoice, editable: isEditable, type: 'number' },
+  { field: 'qb_invoice_logs', headerName: 'Permit Logs', flex: 1, minWidth: minWidthNotes, editable: false, 
   renderCell: (params) => {
     return PopUp(params.id, params.field)
   }
   },
-  { field: 'qb_invoice', headerName: 'QB Invoice #', flex: 1, minWidth: minWidthQBInvoice, editable: isEditable},
   {
     field: 'actions',
     type: 'actions',

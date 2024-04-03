@@ -113,7 +113,7 @@ app.put('/api/updatetask/:id', async (req, res) => {
 app.put('/api/updatejob/:id', async (req, res) => {
   try {
     const jobId = parseInt(req.params.id) //id of task we are changing
-    const { contact, starttime, endtime, status, wo_number, po_number, email, phone_number, permit_number, request_id, company, setup, stamp, qb_invoice, permit_cost} = req.body
+    const { contact, starttime, endtime, status, wo_number, po_number, email, phone_number, permit_number, request_id, company, setup, stamp, qb_invoice} = req.body
     const posts = await prisma.jobs.update({
       where: {
         id: jobId
@@ -133,8 +133,7 @@ app.put('/api/updatejob/:id', async (req, res) => {
         company: company,
         setup: setup,
         stamp: stamp,
-        qb_invoice: qb_invoice,
-        permit_cost: permit_cost
+        qb_invoice: qb_invoice ? parseInt(qb_invoice) : null,
       }
     });
     res.json(posts);
@@ -640,15 +639,15 @@ app.get('/api/gettasksbyjobid/:id', async (req, res) => {
 });
 
 // get permit costs
-app.get('/api/getpermitcostlogsbyjobid/:id', async (req, res) => {
+app.get('/api/getInvoiceLogsByJobId/:id', async (req, res) => {
   try {
     const jobId = parseInt(req.params.id);
-    const permitCosts = await prisma.permitCosts.findMany({
+    const invoiceLogs = await prisma.qbInvoiceLogs.findMany({
       where: {
         job_id: jobId
       }
     });
-    res.json(permitCosts);
+    res.json(invoiceLogs);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });
@@ -675,19 +674,19 @@ app.post('/api/createUser', async (req, res) => {
   }
 });
 
-app.post('/api/createPermitCostLog', async (req, res) => {
+app.post('/api/createInvoiceLog', async (req, res) => {
   try {
-    const { job_id, cost, date } = req.body;
+    const { job_id, number, date } = req.body;
 
-    const newtask = await prisma.permitCosts.create({
+    const newLog = await prisma.qbInvoiceLogs.create({
       data: {
         job_id: job_id,
-        cost: cost,
+        number: parseInt(number),
         date: date,
       },
     });
 
-    res.json(newtask);
+    res.json(newLog);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });

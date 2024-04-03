@@ -6,7 +6,7 @@ import ListItemText from '@mui/material/ListItemText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 import { DialogContent } from '@mui/material';
-import { getPermitCostLogsByJobId, getTasksByJobId } from './APICalls';
+import { getInvoiceLogsByJobId, getTasksByJobId } from './APICalls';
 const moment = require('moment-timezone');
 
 function NotesBox(props) {
@@ -46,12 +46,12 @@ logs.sort((a, b) => moment(b.date).valueOf() - moment(a.date).valueOf());
   return (
     <> 
         <Dialog onClose={handleClose} open={open}>
-        <DialogTitle>Costs are without 10% increase</DialogTitle>
+        <DialogTitle>Quick Book Numbers</DialogTitle>
         <DialogContent>     
             <List>
-            {logs.map((permitCost) => (
-                <ListItem key={permitCost.id}>
-                  <ListItemText primary={`Cost: ${permitCost.cost}`} secondary={`Created Date: ${moment.tz(permitCost.date, 'America/Edmonton').format('MM/DD/YYYY h:mm A')}`}/>
+            {logs.map((invoiceLog) => (
+                <ListItem key={invoiceLog.id}>
+                  <ListItemText primary={`QB Invoice #: ${invoiceLog.number}`} secondary={`Created Date: ${moment.tz(invoiceLog.date, 'America/Edmonton').format('MM/DD/YYYY h:mm A')}`}/>
                 </ListItem>
             ))}
             </List>
@@ -70,7 +70,7 @@ export default function PopUp( id, field ) {
     const fetchTasks = async () => {
       try {
         const tasksData = await getTasksByJobId(id);
-        const logsData = await getPermitCostLogsByJobId(id)
+        const logsData = await getInvoiceLogsByJobId(id)
         setLogs(logsData);
         setTasks(tasksData);
       } catch (error) {
@@ -89,10 +89,10 @@ export default function PopUp( id, field ) {
     setOpen(false);
   };
 
-  if (field == 'permit_logs'){
+  if (field == 'qb_invoice_logs'){
     return <div>
             <Button variant="outlined" onClick={handleClickOpen}>
-              Costs
+              Logs
             </Button>
             <PermitLogsBox open={open} onClose={handleClose} logs={logs} />
           </div>
