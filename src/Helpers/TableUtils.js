@@ -1,5 +1,4 @@
 import { deleteJob, deletetask, getAllUsers, getUserById } from '../Components/APICalls';
-import { Dialog, DialogTitle, Typography } from '@mui/material';
 import PopUp from '../Components/PopUp';
 
 const { GridActionsCellItem, GridDeleteIcon, GridDeleteForeverIcon, getGridNumericOperators, getGridDateOperators } = require('@mui/x-data-grid');

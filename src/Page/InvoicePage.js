@@ -1,7 +1,6 @@
 import Table from "../Components/Table";
 import { useEffect, useRef, useState  } from "react";
 import { getAllJobs, deleteJob, updateJob} from "../Components/APICalls";
-import { applySearchFilters, options } from "../Helpers/SearchUtils";
 import { InvoicePageColumns } from "../Helpers/TableUtils";
 
 export default function InvoicePage() {

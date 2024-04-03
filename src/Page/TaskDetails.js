@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import { useParams } from 'react-router-dom';
-import { getUserById, gettaskById, updatetask, getJobById, getFilesById, getTasksByJobId } from '../Components/APICalls';
+import { getUserById, gettaskById, updatetask } from '../Components/APICalls';
 import '../Styles/TaskDetails.css';
 import FileUpload from '../Components/FileUpload';
 import SwipeableEdgeDrawer from '../Components/Drawer';
-import { Card, Box, Divider, Typography, Stack, Paper, Chip, Select, MenuItem, InputLabel} from '@mui/material';
+import { Card, Box, Divider, Typography, Stack, Paper, Chip} from '@mui/material';
 import Button from 'react-bootstrap/Button';
-import { FormControl } from 'react-bootstrap';
 
 let user = await getUserById(window.sessionStorage.getItem("user"))
 

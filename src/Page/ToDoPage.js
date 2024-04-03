@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getAllUsers, getAlltasks, getJobById, gettaskByUserId } from '../Components/APICalls';
+import { getAllUsers, getAlltasks, gettaskByUserId } from '../Components/APICalls';
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import format from 'date-fns/format';
 import parse from 'date-fns/parse';
@@ -9,7 +9,7 @@ import { enCA } from 'date-fns/locale';
 import { useNavigate } from 'react-router-dom';
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "../Helpers/Calendar.css";
-import { CardContent, ListItem, ListItemText } from '@mui/material';
+import { CardContent, ListItemText } from '@mui/material';
 import { Card } from 'react-bootstrap';
 
 let users = await getAllUsers();

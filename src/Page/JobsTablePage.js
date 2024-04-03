@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
-import { getUserById, getAllUsers, getAllJobs, deleteJob, updateJob, getTasksByJobId } from "../Components/APICalls";
+import { getAllJobs, deleteJob, updateJob } from "../Components/APICalls";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Table from "../Components/Table";
-import { applySearchFilters, options } from "../Helpers/SearchUtils";
+import { applySearchFilters } from "../Helpers/SearchUtils";
 import { JobsTableColumns } from "../Helpers/TableUtils";
-import { BadgeOutlined, CheckCircleOutline, Error, ErrorOutline, Mail, MailLock, MailOutline, NotificationAdd, Notifications, NotificationsOutlined, ReportProblem } from "@mui/icons-material";
+import { CheckCircleOutline, ErrorOutline, MailOutline, NotificationsOutlined } from "@mui/icons-material";
 import { Badge } from "@mui/material";
 
 const TableCards = ({ bg, header, icon, color, num }) => (

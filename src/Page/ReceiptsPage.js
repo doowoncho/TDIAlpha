@@ -7,16 +7,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import { storage } from '../Components/Firebase';
 import { ref, deleteObject } from 'firebase/storage';
 import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Table from "../Components/Table";
-import { useParams } from "react-router-dom";
-import { TasksTableColumns } from "../Helpers/TableUtils";
 import SwipeableEdgeDrawer from "../Components/Drawer";
-import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
-import FeedIcon from '@mui/icons-material/Feed';
-import MapIcon from '@mui/icons-material/Map';
-import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
-import JobDetails from "../Components/JobDetails";
 
 export default function ReceiptsPage() {
   const [files, setFiles] = useState([]);
