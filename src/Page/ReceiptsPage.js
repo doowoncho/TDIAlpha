@@ -20,11 +20,12 @@ import JobDetails from "../Components/JobDetails";
 
 export default function ReceiptsPage() {
   const [files, setFiles] = useState([]);
+  const isMounted = useRef(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-
+        if (!isMounted.current) return; // Check if component is still mounted
         async function fetchFiles() {
           try {
             const fetchedFiles = await getReceipts();
@@ -40,6 +41,10 @@ export default function ReceiptsPage() {
       }
   };
     fetchData();
+    return () => {
+      isMounted.current = false;
+    }
+    
   }, []);
 
   async function handleDelete(filename){

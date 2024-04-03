@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '../Components/Firebase';
@@ -15,7 +15,6 @@ function FormPage() {
   const [contacts, setContacts] = useState(null)
   const [loading, setLoading] = useState(false); // New loading state
   const navigate = useNavigate();
-
 
   useEffect(() => {
     async function fetchContacts() {

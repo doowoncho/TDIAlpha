@@ -1,5 +1,5 @@
 import Table from "../Components/Table";
-import { useEffect, useState  } from "react";
+import { useEffect, useRef, useState  } from "react";
 import { getAllJobs, deleteJob, updateJob} from "../Components/APICalls";
 import { applySearchFilters, options } from "../Helpers/SearchUtils";
 import { InvoicePageColumns } from "../Helpers/TableUtils";
@@ -7,22 +7,11 @@ import { InvoicePageColumns } from "../Helpers/TableUtils";
 export default function InvoicePage() {
   const [jobList, setJobList] = useState([]);
   const [search, setSearch] = useState([]);
-  const [filters, setFilters] = useState({
-    id: false,
-    assigned: false,
-    contact: false,
-    startDate: false,
-    endDate: false,
-    woNumber: false,
-    poNumber: false,
-    permitNumber: false,
-    requestID: false,
-    setup: true,
-    company: false
-  });
+  const isMounted = useRef(true);
 
   async function fetchData() {
     try {
+      if (!isMounted.current) return; // Check if component is still mounted
       const data = await getAllJobs();
       if (data == null) return;
 
@@ -35,9 +24,7 @@ export default function InvoicePage() {
         return timeA - timeB;
       });
 
-      // Jobs filtered by search
-      const filteredDataWithSearchFilters = applySearchFilters(sortedData, search, filters);
-      setJobList(filteredDataWithSearchFilters);
+      setJobList(sortedData);
 
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -56,6 +43,10 @@ export default function InvoicePage() {
 
   useEffect(() => {
     fetchData();
+
+    return () => {
+      isMounted.current = false;
+    }
   }, []);
 
 

@@ -43,32 +43,32 @@ function FileUpload({type, giveID}) {
       console.error('Error fetching files:', error);
     }
   };
-
+  
   // Call the fetchData function when the component mounts or when id changes
   useEffect(() => {
     fetchData();
-  }, [id, type]);
-
+  }, [id, type, uploaded]);
+  
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     setFile(selectedFile);
   };
-
+  
   async function handleDelete(filename){
     console.log(filename);
     await deleteFile({filename});
     const fileDelete = ref(storage, `${filename}`);
     await deleteObject(fileDelete);
     window.location.reload();
-
   }
   
   async function handleUpload(){
+    setLoading(true)
     const fileRef = ref(storage, `${file.name}`);
-
+    
     await uploadBytes(fileRef, file).then((snapshot) => {
-        console.log('Uploaded a blob or file!');
-      });
+      console.log('Uploaded a blob or file!');
+    });
     
     await getDownloadURL(ref(storage, `${file.name}`))
     .then((url) => {
@@ -77,28 +77,29 @@ function FileUpload({type, giveID}) {
     })
     
     let id_int = parseInt(giveID);
-      let update = {
-        job_id: id_int,
-        name: file.name,
-        file: fileBlob
-      };
-      if(type === "permitConfirmation"){
-        await uploadPermitCon(update);
-      }else if(type === "permit"){
-        await uploadPermit(update);
-      }else if(type === "plan"){
-        await uploadPlan(update);
-      }else{
-        await uploadPhoto(update);
-      }
-
-      // await files(id, update);
-      
-      const updatedUploaded = { ...uploaded, [type]: true };
-      const updatedFileName = { ...fileName };
-      
-      setUploaded(updatedUploaded);
-      setFileName(updatedFileName);
+    let update = {
+      job_id: id_int,
+      name: file.name,
+      file: fileBlob
+    };
+    if(type === "permitConfirmation"){
+      await uploadPermitCon(update);
+    }else if(type === "permit"){
+      await uploadPermit(update);
+    }else if(type === "plan"){
+      await uploadPlan(update);
+    }else{
+      await uploadPhoto(update);
+    }
+    
+    // await files(id, update);
+    
+    const updatedUploaded = { ...uploaded, [type]: true };
+    const updatedFileName = { ...fileName };
+    
+    setUploaded(updatedUploaded);
+    setFileName(updatedFileName);
+    setLoading(false)
   }
 
   return (

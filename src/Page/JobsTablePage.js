@@ -42,9 +42,11 @@ export default function JobsTable() {
     setup: true,
     company: false
   });
+  const isMounted = useRef(true);
 
   const fetchData = async () => {
     try {
+      if (!isMounted.current) return; // Check if component is still mounted
       const data = await getAllJobs();
       // Different counts for the jobs filters
       const newCount = data.filter((job) => job.status === "New" || job.status === 'Waiting').length;
@@ -83,6 +85,10 @@ export default function JobsTable() {
 
   useEffect(() => {
     fetchData();
+
+    return () => {
+      isMounted.current = false;
+    }
   }, [tableType]);
 
   const handleTableTypeChange = (newTableType) => {

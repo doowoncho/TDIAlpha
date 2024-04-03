@@ -64,7 +64,7 @@ export default function ToDoPage() {
       let tempEvents = [];
       for (let task of tasks) {
         let event = {
-          title: task.assigned ? users.find(user => user.id === task.assigned).name + ': ' + task.type : 'Unassigned: ' + task.type,
+          title:  task.type + ': ' + task?.setup,
           id: task.id,
           start: task.starttime ? new Date(task.starttime) : new Date(task.endtime),
           end: task.endtime ? new Date(task.endtime) : new Date(task.starttime),
@@ -103,7 +103,7 @@ export default function ToDoPage() {
       </div>
       <div>
         <Calendar
-          defaultView={isMobileScreen ? 'week' : 'month'}
+          defaultView={isMobileScreen ? 'day' : 'month'}
           tooltipAccessor="start"
           localizer={localizer}
           events={events}
@@ -126,7 +126,8 @@ export default function ToDoPage() {
                       width: 20,
                       height: 20,
                       backgroundColor: x.color,
-                      marginLeft: 10
+                      marginLeft: 10,
+                      borderRadius: 100
                     }}
                   ></div>
               </div>
