@@ -1,30 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { getAllUsers, getAlltasks, gettaskByUserId } from '../Components/APICalls';
-import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
-import format from 'date-fns/format';
-import parse from 'date-fns/parse';
-import startOfWeek from 'date-fns/startOfWeek';
-import getDay from 'date-fns/getDay';
 import { enCA } from 'date-fns/locale';
 import { useNavigate } from 'react-router-dom';
-import "react-big-calendar/lib/css/react-big-calendar.css";
 import "../Helpers/Calendar.css";
 import { CardContent, ListItemText } from '@mui/material';
 import { Card } from 'react-bootstrap';
+import { ScheduleComponent, Day, Week, Month, Agenda, Inject } from '@syncfusion/ej2-react-schedule';
 
 let users = await getAllUsers();
-
-const locales = {
-  "en-CA": enCA
-}
-
-const localizer = dateFnsLocalizer({
-  format,
-  parse,
-  startOfWeek,
-  getDay,
-  locales
-})
 
 export default function ToDoPage() {
   const [events, setEvents] = useState([]);
@@ -64,11 +47,11 @@ export default function ToDoPage() {
       let tempEvents = [];
       for (let task of tasks) {
         let event = {
-          title:  task.type + ': ' + task?.setup,
-          id: task.id,
-          start: task.starttime ? new Date(task.starttime) : new Date(task.endtime),
-          end: task.endtime ? new Date(task.endtime) : new Date(task.starttime),
-          color: task.assigned ? users.find(user => user.id === task.assigned).color : ''
+          Subject:  task.type + ': ' + task?.setup,
+          Id: task.id,
+          StartTime: task.starttime ? new Date(task.starttime) : new Date(task.endtime),
+          EndTime: task.endtime ? new Date(task.endtime) : new Date(task.starttime),
+          CategoryColor: task.assigned ? users.find(user => user.id === task.assigned).color : ''
         };
         tempEvents.push(event);
       }
@@ -78,42 +61,45 @@ export default function ToDoPage() {
     }
   }
 
-  const handleEventClick = (event) => {
-    navigate(`/taskdetails/${event.id}`);
+  const handleEventClick = ({event}) => {
+    navigate(`/taskdetails/${event.Id}`);
   };
+
+  const handleCellClick = (args) => {
+    args.cancel = true; // Cancel the default behavior
+}
 
   const handleToggle = () => {
     setToggle(!toggle);
   };
 
-  const eventStyleGetter = (event) => {
-    const backgroundColor = event.color;
-    return {
-      style: {
-        backgroundColor,
-      },
-    };
-  };
+  const eventSettings = { dataSource: events }
+  function onEventRendered(args) {
+    let categoryColor = args.data.CategoryColor;
+    args.element.style.backgroundColor = categoryColor;
+  }
 
   return (
     <div>
+
       <div className="form-check form-switch my-3 mx-5">
         <label className="form-check-label" htmlFor="flexSwitchCheckDefault">Show All tasks</label>
         <input className="form-check-input" type="checkbox" id="flexSwitchCheckDefault" onChange={handleToggle}/>
       </div>
-      <div>
-        <Calendar
-          defaultView={isMobileScreen ? 'day' : 'month'}
-          tooltipAccessor="start"
-          localizer={localizer}
-          events={events}
-          startAccessor="start"
-          endAccessor="end"
-          style={{ height: '600px', ...(isMobileScreen ? {} : { marginLeft: '80px', marginRight: '80px' }) }}
-          onSelectEvent={(event) => handleEventClick(event)}
-          views={['month', 'day', 'week']}
-          eventPropGetter={eventStyleGetter}
-        />
+      <div className='container'>
+      <ScheduleComponent 
+        height={'650px'} 
+        eventSettings={eventSettings} 
+        eventDoubleClick={(event) => handleEventClick(event)}
+        eventClick={(event) => handleEventClick(event)}
+        cellClick={(args) => handleCellClick(args)}
+        cellDoubleClick={(args) => handleCellClick(args)}
+        currentView={isMobileScreen ? 'Day' : 'Month'}
+        eventRendered={onEventRendered.bind(this)}
+        views={['Day', 'Week', 'Month', 'Agenda']}
+      >
+        <Inject services={[Day, Week, Month, Agenda]} />
+      </ScheduleComponent>
       </div>
       <div className='container d-flex'>
         {users.map((x) => (

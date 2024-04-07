@@ -10,6 +10,7 @@ import CompletedPage from "./Page/CompletedPage";
 import JobsTable from "./Page/JobsTablePage";
 import Receipts from "./Page/ReceiptsPage";
 import LegendPage from "./Page/LegendPage";
+import './index.css'
 
 const App = () => {
   const isUserLoggedIn = window.sessionStorage.getItem("user");
