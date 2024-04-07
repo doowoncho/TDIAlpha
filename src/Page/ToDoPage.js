@@ -51,7 +51,7 @@ export default function ToDoPage() {
           Id: task.id,
           StartTime: task.starttime ? new Date(task.starttime) : new Date(task.endtime),
           EndTime: task.endtime ? new Date(task.endtime) : new Date(task.starttime),
-          CategoryColor: task.assigned ? users.find(user => user.id === task.assigned).color : ''
+          CategoryColor: task.assigned ? users.find(user => user.id === task.assigned)?.color : ''
         };
         tempEvents.push(event);
       }

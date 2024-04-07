@@ -55,7 +55,6 @@ function FileUpload({type, giveID}) {
   };
   
   async function handleDelete(filename){
-    console.log(filename);
     await deleteFile({filename});
     const fileDelete = ref(storage, `${filename}`);
     await deleteObject(fileDelete);

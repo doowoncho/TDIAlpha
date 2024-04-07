@@ -75,11 +75,6 @@ export default function Table({ data, columns, handleUpdate }) {
           density="comfortable"
           editMode="cell" // Set editMode to "row" to prevent cells from popping out after editing
           getRowClassName={getRowClassName} //
-          sx={{
-            '& .MuiDataGrid-cell:hover': {
-              color: 'primary.main',
-            }
-          }} 
         />
       </Box>
       <Snackbar open={snackbarOpen} onClose={handleCloseSnackbar} message={snackbarMessage} />

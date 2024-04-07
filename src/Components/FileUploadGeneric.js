@@ -3,9 +3,11 @@ import { storage } from './Firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { uploadFile, uploadReceipts } from './APICalls';
 import Button from '@mui/material/Button';
+import { CircularProgress } from '@mui/material';
 
 function FileUpload({type, task, name}) {
   const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
   let fileBlob;
 
   const handleFileChange = (event) => {
@@ -14,8 +16,8 @@ function FileUpload({type, task, name}) {
   };
 
   async function handleUpload(){
+    setLoading(true)
     const fileRef = ref(storage, `${file.name}`);
-    console.log(fileRef)
     await uploadBytes(fileRef, file).then((snapshot) => {
         console.log('Uploaded a blob or file!');
       });
@@ -31,8 +33,16 @@ function FileUpload({type, task, name}) {
         fileUpload = {file: fileBlob, name: file.name}; 
         await uploadReceipts(fileUpload);
       }
-    
+      setLoading(false)
       window.location.reload();
+  }
+
+  if (loading) {
+    return (
+      <div style={{ textAlign: 'center' }}>
+          <CircularProgress />
+        </div>
+    );
   }
 
   return (
