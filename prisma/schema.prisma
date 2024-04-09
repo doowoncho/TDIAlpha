@@ -22,7 +22,7 @@ model jobs {
   contact       String?   @db.VarChar(255)
   setup         String?   @db.VarChar(255)
   stamp         String?   @db.VarChar(255)
-  qb_invoice    Int?       
+  qb_invoice    Int?
   permit_cost   Float?
 }
 
@@ -102,8 +102,8 @@ model receipts {
 }
 
 model qbInvoiceLogs {
-  id   Int     @id @default(autoincrement())
-  number Int 
-  date DateTime @db.Timestamp(6)
+  id     Int      @id @default(autoincrement())
+  number Int
+  date   DateTime @db.Timestamp(6)
   job_id Int
 }

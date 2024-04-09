@@ -29,8 +29,8 @@ import { createtask } from '../Components/APICalls';
           endDateTime = new Date(endDate + 'T' + endTime);
         }
       const newtask = {
-        starttime: startDateTime,
-        endtime: endDateTime,
+        starttime: moment.tz(startDateTime, 'America/Edmonton'),
+        endtime: moment.tz(endDateTime, 'America/Edmonton'),
         job_id: job.id,
         setup: location,
         completed: false,

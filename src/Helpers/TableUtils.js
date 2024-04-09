@@ -19,7 +19,6 @@ const minWidthNotes = 200;
 const minWidthQBInvoice = 130;
 const minWidthActions = 40;
 const minWidthType = 100;
-
 let users = await getAllUsers();
 let user = await getUserById(window.sessionStorage.getItem("user"))
 const isEditable = user.permission == 1
@@ -31,21 +30,21 @@ export const InvoicePageColumns = [
     }
   },
   { field: 'starttime', headerName: 'Start Time', flex: 1, minWidth: minWidthStartTime, 
-    valueFormatter: (params) => {
-      const date = moment.tz(params.value, 'America/Edmonton');
-      return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : ""
-    }, 
-    type: 'dateTime', editable: isEditable,
+      valueFormatter: (params) => {
+        const date = moment.tz(params.value, 'America/Edmonton');
+        return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : ""
+      }, 
+    type: 'dateTime', editable: false,
     filterOperators: getGridDateOperators().filter(
       (operator) => operator.value == 'onOrAfter',
     ),
   },
   { field: 'endtime', headerName: 'End Time', flex: 1, minWidth: minWidthEndTime,
-    valueFormatter: (params) => {
-      const date = moment.tz(params.value, 'America/Edmonton');
-      return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : ""
-    }, 
-    type: 'dateTime', editable: isEditable,
+      valueFormatter: (params) => {
+        const date = moment.tz(params.value, 'America/Edmonton');
+        return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : ""
+      }, 
+    type: 'dateTime', editable: false,
     filterOperators: getGridDateOperators().filter(
       (operator) => operator.value == 'onOrBefore',
     ),
@@ -102,7 +101,7 @@ export const CompletedPageColumns = [
       const date = moment.tz(params.value, 'America/Edmonton');
       return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : ""
     }, 
-    type: 'dateTime', editable: isEditable,
+    type: 'dateTime', editable: false,
     filterOperators: getGridDateOperators().filter(
       (operator) => operator.value == 'onOrAfter',
     ),
@@ -112,7 +111,7 @@ export const CompletedPageColumns = [
       const date = moment.tz(params.value, 'America/Edmonton');
       return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : ""
     }, 
-    type: 'dateTime', editable: isEditable,
+    type: 'dateTime', editable: false,
     filterOperators: getGridDateOperators().filter(
       (operator) => operator.value == 'onOrBefore',
     ),
@@ -169,7 +168,7 @@ export const JobsTableColumns = [
       const date = moment.tz(params.value, 'America/Edmonton');
       return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : ""
     }, 
-    type: 'dateTime', editable: isEditable,
+    type: 'dateTime', editable: false,
     filterOperators: getGridDateOperators().filter(
       (operator) => operator.value == 'onOrAfter',
     ),
@@ -179,7 +178,7 @@ export const JobsTableColumns = [
       const date = moment.tz(params.value, 'America/Edmonton');
       return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : ""
     }, 
-    type: 'dateTime', editable: isEditable, 
+    type: 'dateTime', editable: false, 
     filterOperators: getGridDateOperators().filter(
       (operator) => operator.value == 'onOrBefore',
     ),
@@ -217,7 +216,7 @@ export const TasksTableColumns = [
         const date = moment.tz(params.value, 'America/Edmonton');
         return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : ""
       }, 
-      type: 'dateTime', editable: isEditable,
+      type: 'dateTime', editable: false,
       filterOperators: getGridDateOperators().filter(
         (operator) => operator.value == 'onOrAfter',
       ),
@@ -227,7 +226,7 @@ export const TasksTableColumns = [
         const date = moment.tz(params.value, 'America/Edmonton');
         return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : ""
       }, 
-      type: 'dateTime', editable: isEditable,
+      type: 'dateTime', editable: false,
       filterOperators: getGridDateOperators().filter(
         (operator) => operator.value == 'onOrBefore',
       ),

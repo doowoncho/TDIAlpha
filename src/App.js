@@ -11,7 +11,9 @@ import JobsTable from "./Page/JobsTablePage";
 import Receipts from "./Page/ReceiptsPage";
 import LegendPage from "./Page/LegendPage";
 import './index.css'
+import moment from "moment";
 
+moment.tz.setDefault('America/Edmonton');
 const App = () => {
   const isUserLoggedIn = window.sessionStorage.getItem("user");
 

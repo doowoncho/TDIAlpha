@@ -51,12 +51,12 @@ export default function NavBar() {
 
       <Paper sx={{ position: 'fixed', left: 0, right: 0, bottom:0, zIndex: 1000 }} className='d-block d-sm-none'>
         <BottomNavigation showLabels>
-          <BottomNavigationAction label="All Jobs" icon={<Home />} href='/jobstable' value="jobs"/>
-          <BottomNavigationAction label="Invoiced" icon={<AutoStories />} href="/invoices" value="invoices"/>
-          <BottomNavigationAction label="Receipts" icon={<Receipt />} href='/receipts' value="receipts"/>
-          <BottomNavigationAction label="To Invoice" icon={<CheckCircle />} href='/completed' value="completed"/>
-          <BottomNavigationAction label="ToDo" icon={<CalendarMonth />} href='/todo' value="todo"/>
-          <BottomNavigationAction label="Form" icon={<FeedIcon />} href='/form' value="from"/>
+          <BottomNavigationAction sx={{ minWidth: "50px" }} label="Jobs" icon={<Home />} href='/jobstable' value="jobs"/>
+          <BottomNavigationAction  sx={{ minWidth: "50px" }}label="Invoiced" icon={<AutoStories />} href="/invoices" value="invoices"/>
+          <BottomNavigationAction sx={{ minWidth: "50px" }}  label="Receipts" icon={<Receipt />} href='/receipts' value="receipts"/>
+          <BottomNavigationAction sx={{ minWidth: "50px" }} label="ToInvoice" icon={<CheckCircle />} href='/completed' value="completed"/>
+          <BottomNavigationAction sx={{ minWidth: "50px" }} label="ToDo" icon={<CalendarMonth />} href='/todo' value="todo"/>
+          <BottomNavigationAction sx={{ minWidth: "50px" }} label="Form" icon={<FeedIcon />} href='/form' value="from"/>
         </BottomNavigation>
       </Paper>
 
