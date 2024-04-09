@@ -71,7 +71,6 @@ export default function TasksTable() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (!isMounted.current) return; // Check if component is still mounted
         const data = await getTasksByJobId(id);
         const jobData = await getJobById(id);
         setJob(jobData);
@@ -97,9 +96,6 @@ export default function TasksTable() {
       }
   };
     fetchData();
-    return () => {
-      isMounted.current = false;
-    }
   }, []);
 
   const handletaskUpdate = async (id, params) => {

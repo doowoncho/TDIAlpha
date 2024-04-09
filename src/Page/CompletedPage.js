@@ -12,7 +12,6 @@ export default function CompletedPage() {
 
   async function fetchData() {
     try {
-      if (!isMounted.current) return; // Check if component is still mounted
       const data = await getAllJobs();
       if (data == null) return;
 
@@ -46,9 +45,6 @@ export default function CompletedPage() {
   useEffect(() => {
     fetchData();
 
-    return () => {
-      isMounted.current = false;
-    }
   });
 
   return (
