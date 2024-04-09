@@ -2,7 +2,7 @@ import { Box, Card, Chip, Divider, Stack, TextField, Typography } from "@mui/mat
 import moment from "moment";
 
 export default function JobDetails({job, handleInputChange, isEditing, user, handleCancelClick, saveChanges, handleEditClick}) {
-    
+    console.log(job.stamp)
     return (
         <div>
         {job && <div className="container text-center justify-content-center mt-4 d-flex">
@@ -114,6 +114,7 @@ export default function JobDetails({job, handleInputChange, isEditing, user, han
                         <Divider />
                         <Box sx={{ p: 2 }}>
                             <Stack direction="row" spacing={1}>
+                                <Chip color={job.stamp === 'none' || job.stamp == null || job.stamp == "" ? 'primary' : 'default'} label="None" size="small"/>
                                 <Chip color={job.stamp === 'stamped' ? 'primary' : 'default'} label="Stamped" size="small"/>
                                 <Chip color={job.stamp === 'reStamped' ? 'primary' : 'default'} label="Re-stamped" size="small"/>
                                 <Chip color={job.stamp === 'rushedStamp' ? 'primary' : 'default'} label="Rushed Stamp" size="small"/>
