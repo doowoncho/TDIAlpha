@@ -78,7 +78,11 @@ export default function Orders() {
   };
 
   const handleInputChange = async (e, taskProp) => {
-    const newVal = e.target.value;
+    var newVal = e.target.value;
+    if(taskProp == 'starttime' || taskProp == 'endtime'){
+      var date = moment.tz(e.target.value, 'America/Edmonton')
+      newVal = date
+    }
     await setTask((prevTask) => ({
       ...prevTask,
       [taskProp]: newVal,
