@@ -82,8 +82,8 @@ export const InvoicePageColumns = [
       <GridActionsCellItem
         icon={<GridDeleteForeverIcon />}
         label="Delete"
-        onClick={()=>{
-          deleteJob(params.id);   window.location.reload();
+        onClick={async ()=>{
+          await deletetask(params.id);   window.location.reload();
         }}
       />
     ],
@@ -149,8 +149,8 @@ export const CompletedPageColumns = [
       <GridActionsCellItem
         icon={<GridDeleteForeverIcon />}
         label="Delete"
-        onClick={()=>{
-          deleteJob(params.id);   window.location.reload();
+        onClick={async ()=>{
+          await deletetask(params.id);   window.location.reload();
         }}
       />
     ],
@@ -197,8 +197,8 @@ export const JobsTableColumns = [
       <GridActionsCellItem
         icon={<GridDeleteForeverIcon />}
         label="Delete"
-        onClick={()=>{
-          deleteJob(params.id);   window.location.reload();
+        onClick={async ()=>{
+          await deletetask(params.id);   window.location.reload();
         }}
       />
     ],
@@ -250,8 +250,8 @@ export const TasksTableColumns = [
         <GridActionsCellItem
           icon={<GridDeleteIcon />}
           label="Delete"
-          onClick={()=>{
-            deletetask(params.id);   window.location.reload();
+          onClick={async ()=>{
+            await deletetask(params.id);   window.location.reload();
           }}
         />
       ],
