@@ -31,7 +31,7 @@ export const InvoicePageColumns = [
   },
   { field: 'starttime', headerName: 'Start Time', flex: 1, minWidth: minWidthStartTime, 
       valueFormatter: (params) => {
-        const date = moment.tz(params.value, 'America/Edmonton');
+        const date = moment(params.value);
         return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : ""
       }, 
     type: 'dateTime', editable: false,
@@ -41,7 +41,7 @@ export const InvoicePageColumns = [
   },
   { field: 'endtime', headerName: 'End Time', flex: 1, minWidth: minWidthEndTime,
       valueFormatter: (params) => {
-        const date = moment.tz(params.value, 'America/Edmonton');
+        const date = moment(params.value);
         return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : ""
       }, 
     type: 'dateTime', editable: false,
@@ -83,7 +83,7 @@ export const InvoicePageColumns = [
         icon={<GridDeleteForeverIcon />}
         label="Delete"
         onClick={async ()=>{
-          await deletetask(params.id);   window.location.reload();
+          await deleteJob(params.id);   window.location.reload();
         }}
       />
     ],
@@ -98,7 +98,7 @@ export const CompletedPageColumns = [
   },
   { field: 'starttime', headerName: 'Start Time', flex: 1, minWidth: minWidthStartTime, 
     valueFormatter: (params) => {
-      const date = moment.tz(params.value, 'America/Edmonton');
+      const date = moment(params.value);
       return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : ""
     }, 
     type: 'dateTime', editable: false,
@@ -108,7 +108,7 @@ export const CompletedPageColumns = [
   },
   { field: 'endtime', headerName: 'End Time', flex: 1, minWidth: minWidthEndTime,
     valueFormatter: (params) => {
-      const date = moment.tz(params.value, 'America/Edmonton');
+      const date = moment(params.value);
       return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : ""
     }, 
     type: 'dateTime', editable: false,
@@ -150,7 +150,7 @@ export const CompletedPageColumns = [
         icon={<GridDeleteForeverIcon />}
         label="Delete"
         onClick={async ()=>{
-          await deletetask(params.id);   window.location.reload();
+          await deleteJob(params.id);   window.location.reload();
         }}
       />
     ],
@@ -165,7 +165,7 @@ export const JobsTableColumns = [
   },
   { field: 'starttime', headerName: 'Start Time', flex: 1, minWidth: minWidthStartTime, 
     valueFormatter: (params) => {
-      const date = moment.tz(params.value, 'America/Edmonton');
+      const date = moment(params.value);
       return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : ""
     }, 
     type: 'dateTime', editable: false,
@@ -175,7 +175,7 @@ export const JobsTableColumns = [
   },
   { field: 'endtime', headerName: 'End Time', flex: 1, minWidth: minWidthEndTime,
     valueFormatter: (params) => {
-      const date = moment.tz(params.value, 'America/Edmonton');
+      const date = moment(params.value);
       return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : ""
     }, 
     type: 'dateTime', editable: false, 
@@ -197,8 +197,8 @@ export const JobsTableColumns = [
       <GridActionsCellItem
         icon={<GridDeleteForeverIcon />}
         label="Delete"
-        onClick={async ()=>{
-          await deletetask(params.id);   window.location.reload();
+        onClick={()=>{
+             deleteJob(params.id); window.location.reload();
         }}
       />
     ],
@@ -213,7 +213,7 @@ export const TasksTableColumns = [
     },
     { field: 'starttime', headerName: 'Place Time', flex: 1, minWidth: minWidthStartTime, 
       valueFormatter: (params) => {
-        const date = moment.tz(params.value, 'America/Edmonton');
+        const date = moment(params.value);
         return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : ""
       }, 
       type: 'dateTime', editable: false,
@@ -223,7 +223,7 @@ export const TasksTableColumns = [
     },
     { field: 'endtime', headerName: 'Takedown Time', flex: 1, minWidth: minWidthEndTime,
       valueFormatter: (params) => {
-        const date = moment.tz(params.value, 'America/Edmonton');
+        const date = moment(params.value);
         return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : ""
       }, 
       type: 'dateTime', editable: false,

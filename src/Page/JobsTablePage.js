@@ -65,18 +65,7 @@ export default function JobsTable() {
           : data.filter((job) => job.status !== "Invoice" && job.status !== 'Completed');
       }
 
-      // Sort by newest
-      const sortedData = filteredData.sort((jobA, jobB) => {
-        const timeA = jobA.endtime ? new Date(jobA.endtime) : new Date(jobA.starttime);
-        const timeB = jobB.endtime ? new Date(jobB.endtime) : new Date(jobB.starttime);
-
-        return timeA - timeB;
-      });
-
-      // Jobs filtered by search
-      const filteredDataWithSearchFilters = applySearchFilters(sortedData, search, filters);
-
-      setjobList(filteredDataWithSearchFilters);
+      setjobList(filteredData);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
