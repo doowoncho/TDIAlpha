@@ -1,24 +1,27 @@
 import moment from 'moment';
 import { createtask } from '../Components/APICalls';
+const { DateTime } = require('luxon');
    
    //DATE LOGIC
     export const createTaskForDate = async (startDate, startTime, endDate, endTime, job, location, taskType = "SameDay") => {
         let startDateTime 
         let endDateTime 
-        
+        const startDateTimeCalgary = DateTime.fromISO(`${startDate}T${startTime}`, { zone: 'America/Edmonton' });
+
+        console.log(startDateTimeCalgary, startDateTimeCalgary.toUTC().toISO())
         //different pick up and place days
         if(startDate && endDate){
-          startDateTime= new Date(startDate + 'T' + startTime);
-          endDateTime= new Date(endDate + 'T' + endTime);
+          startDateTime= DateTime.fromISO(`${startDate}T${startTime}`, { zone: 'America/Edmonton' });
+          endDateTime= DateTime.fromISO(`${endDate}T${endTime}`, { zone: 'America/Edmonton' })
         }
         // same day pickup and place
         else if (startDate && endTime){
-          startDateTime = new Date(startDate + 'T' + startTime);
-          endDateTime = new Date(startDate + 'T' + endTime);
+          startDateTime= DateTime.fromISO(`${startDate}T${startTime}`, { zone: 'America/Edmonton' });
+          endDateTime= DateTime.fromISO(`${startDate}T${endTime}`, { zone: 'America/Edmonton' })
         }
         // just place
         else if (startDate && startTime){
-          startDateTime = new Date(startDate + 'T' + startTime);
+          startDateTime= DateTime.fromISO(`${startDate}T${startTime}`, { zone: 'America/Edmonton' });     
         }
         //npat 
         else if(startDate){
@@ -26,11 +29,11 @@ import { createtask } from '../Components/APICalls';
         }
         //just pickup
         else{
-          endDateTime = new Date(endDate + 'T' + endTime);
+          endDateTime= DateTime.fromISO(`${endDate}T${endTime}`, { zone: 'America/Edmonton' })
         }
       const newtask = {
-        starttime: startDateTime,
-        endtime: endDateTime,
+        starttime: startDateTime.toUTC().toISO(),
+        endtime: endDateTime.toUTC().toISO(),
         job_id: job.id,
         setup: location,
         completed: false,

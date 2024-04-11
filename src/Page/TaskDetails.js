@@ -184,11 +184,11 @@ export default function Orders() {
                               <Box sx={{ p: 2 }}>
                                   <label htmlFor="exampleInputStartDate">Place:</label>
                                   <Typography color="text.primary" >
-                                  <input type="datetime-local" className="form-control" id="startDate" value={moment(task.starttime).format('YYYY-MM-DDTHH:mm')} onChange={(e) => handleInputChange(e, 'starttime')}/>
+                                  <input type="datetime-local" className="form-control" id="startDate" value={moment.tz(task.starttime, 'America/Edmonton').format('YYYY-MM-DDTHH:mm')} onChange={(e) => handleInputChange(e, 'starttime')}/>
                                   </Typography>
                                   <label htmlFor="exampleInputEndDate">Takedown:</label>
                                   <Typography color="text.primary" >
-                                  <input type="datetime-local" className="form-control" id="enddate" value={moment(task.endtime).format('YYYY-MM-DDTHH:mm')} onChange={(e) => handleInputChange(e, 'endtime')}/>
+                                  <input type="datetime-local" className="form-control" id="enddate" value={moment.tz(task.endtime, 'America/Edmonton').format('YYYY-MM-DDTHH:mm')} onChange={(e) => handleInputChange(e, 'endtime')}/>
                                   </Typography>
                               </Box>
                               </>
@@ -205,10 +205,10 @@ export default function Orders() {
                               <Divider />
                               <Box sx={{ p: 2 }}>
                                   <Typography color="text.primary" >
-                                      {task.starttime && `Place: ${moment(task.starttime).format('MMMM DD YYYY h:mm A')}`}
+                                      {task.starttime && `Place: ${moment.tz(task.starttime, 'America/Edmonton').format('MMMM DD YYYY h:mm A')}`}
                                   </Typography>
                                   <Typography color="text.primary" >
-                                      {task.endtime && `Takedown: ${moment(task.endtime).format('MMMM DD YYYY h:mm A')}`}
+                                      {task.endtime && `Takedown: ${moment.tz(task.endtime, 'America/Edmonton').format('MMMM DD YYYY h:mm A')}`}
                                   </Typography>
                               </Box>
                               </>

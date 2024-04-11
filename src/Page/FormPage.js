@@ -7,6 +7,7 @@ import DateInput from '../Components/DateInput';
 import { useNavigate } from "react-router-dom";
 import CreatableSelect from 'react-select/creatable';
 import { createTaskForDate, createTasksForExWeekend, createTasksForRepeat } from '../Helpers/DateUtils';
+import { DateTime } from 'luxon';
 
 function FormPage() {
   const [dates, setDates] = useState([{ startDate: '', startTime: '', endDate: '', endTime: '', exWeekend: false, twentyFour: false, repeat: false }]);
@@ -109,12 +110,13 @@ function FormPage() {
     await Promise.all(
       dates.map(async (dateTime) => {
       if (!earliestStartDate || new Date(dateTime.startDate) < earliestStartDate) {
-        earliestStartDate = new Date(dateTime.startDate + 'T' + dateTime.startTime);
+        earliestStartDate= DateTime.fromISO(`${dateTime.startDate }T${dateTime.startTime}`, { zone: 'America/Edmonton' });
+        // earliestStartDate = new Date(dateTime.startDate + 'T' + dateTime.startTime);
       }
       
       if ((!dateTime.endDate && (!latestEndDate || new Date(dateTime.startDate) > latestEndDate)) ||
       (dateTime.endDate && (!latestEndDate || new Date(dateTime.endDate) > latestEndDate))) {
-        latestEndDate = dateTime.endDate ? new Date(dateTime.endDate + 'T' + dateTime.endTime) : new Date(dateTime.startDate + 'T' + dateTime.endTime);
+        latestEndDate = dateTime.endDate ? DateTime.fromISO(`${dateTime.endDate }T${dateTime.endTime}`, { zone: 'America/Edmonton' }) : DateTime.fromISO(`${dateTime.startDate }T${dateTime.endTime}`, { zone: 'America/Edmonton' });;
       }
 
       if (dateTime.twentyFour) {
@@ -144,7 +146,7 @@ function FormPage() {
       await createTaskForDate(npatStartDate, null, null, null, job, location, "NPAT");
     }
     
-    updateJob(job.id, 
+    await updateJob(job.id, 
       {
         contact:contact.label, 
         status: "New",
