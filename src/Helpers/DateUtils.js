@@ -6,34 +6,32 @@ const { DateTime } = require('luxon');
     export const createTaskForDate = async (startDate, startTime, endDate, endTime, job, location, taskType = "SameDay") => {
         let startDateTime 
         let endDateTime 
-        const startDateTimeCalgary = DateTime.fromISO(`${startDate}T${startTime}`, { zone: 'America/Edmonton' });
 
-        console.log(startDateTimeCalgary, startDateTimeCalgary.toUTC().toISO())
         //different pick up and place days
         if(startDate && endDate){
-          startDateTime= DateTime.fromISO(`${startDate}T${startTime}`, { zone: 'America/Edmonton' });
-          endDateTime= DateTime.fromISO(`${endDate}T${endTime}`, { zone: 'America/Edmonton' })
+          startDateTime = moment.tz(`${startDate}T${startTime}`, 'America/Edmonton').utc()
+          endDateTime = moment.tz(`${endDate}T${endTime}`, 'America/Edmonton').utc()
         }
         // same day pickup and place
         else if (startDate && endTime){
-          startDateTime= DateTime.fromISO(`${startDate}T${startTime}`, { zone: 'America/Edmonton' });
-          endDateTime= DateTime.fromISO(`${startDate}T${endTime}`, { zone: 'America/Edmonton' })
+          startDateTime= moment.tz(`${startDate}T${startTime}`, 'America/Edmonton').utc()
+          endDateTime= moment.tz(`${startDate}T${endTime}`, 'America/Edmonton').utc()
         }
         // just place
         else if (startDate && startTime){
-          startDateTime= DateTime.fromISO(`${startDate}T${startTime}`, { zone: 'America/Edmonton' });     
+          startDateTime= moment.tz(`${startDate}T${startTime}`, 'America/Edmonton').utc()     
         }
         //npat 
         else if(startDate){
-          startDateTime = startDate
+          startDateTime = moment(startDate)
         }
         //just pickup
         else{
-          endDateTime= DateTime.fromISO(`${endDate}T${endTime}`, { zone: 'America/Edmonton' })
+          endDateTime= moment.tz(`${endDate}T${endTime}`, 'America/Edmonton').utc()
         }
       const newtask = {
-        starttime: startDateTime.toUTC().toISO(),
-        endtime: endDateTime.toUTC().toISO(),
+        starttime: startDateTime,
+        endtime: endDateTime,
         job_id: job.id,
         setup: location,
         completed: false,

@@ -110,8 +110,7 @@ function FormPage() {
     await Promise.all(
       dates.map(async (dateTime) => {
       if (!earliestStartDate || new Date(dateTime.startDate) < earliestStartDate) {
-        earliestStartDate= DateTime.fromISO(`${dateTime.startDate }T${dateTime.startTime}`, { zone: 'America/Edmonton' });
-        // earliestStartDate = new Date(dateTime.startDate + 'T' + dateTime.startTime);
+        earliestStartDate = DateTime.fromISO(`${dateTime.startDate }T${dateTime.startTime}`, { zone: 'America/Edmonton' });
       }
       
       if ((!dateTime.endDate && (!latestEndDate || new Date(dateTime.startDate) > latestEndDate)) ||
@@ -121,7 +120,7 @@ function FormPage() {
 
       if (dateTime.twentyFour) {
           // Two tasks, one for putting down and one for picking stuff up
-          await createTaskForDate(dateTime.startDate, dateTime.startTime, null, null, job, 'Place');
+          await createTaskForDate(dateTime.startDate, dateTime.startTime, null, null, job, location, 'Place');
           await createTaskForDate(null, null, dateTime.endDate, dateTime.endTime, job, location, 'Takedown');
       } 
       else if(dateTime.repeat){
@@ -143,7 +142,7 @@ function FormPage() {
     if(NPAT){
       let npatStartDate = new Date(earliestStartDate);
       npatStartDate.setDate(npatStartDate.getDate() - 1)
-      await createTaskForDate(npatStartDate, null, null, null, job, location, "NPAT");
+      await createTaskForDate(npatStartDate, null, null, null, job, location, "NPAT")
     }
     
     await updateJob(job.id, 

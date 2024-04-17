@@ -197,8 +197,8 @@ export const JobsTableColumns = [
       <GridActionsCellItem
         icon={<GridDeleteForeverIcon />}
         label="Delete"
-        onClick={()=>{
-             deleteJob(params.id); window.location.reload();
+        onClick={async ()=>{
+             await deleteJob(params.id); window.location.reload();
         }}
       />
     ],
