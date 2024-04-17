@@ -83,12 +83,12 @@ app.put('/api/updatetask/:id', async (req, res) => {
     const job = await prisma.jobs.findFirst({ where: { id: task.job_id } });
     if (job) {
       const earliestTask = await prisma.tasks.findFirst({
-        where: { job_id: job.id, type: { not: 'npat' } },
+        where: { job_id: job.id, type: { not: 'NPAT' } },
         orderBy: { starttime: 'asc' },
       });
     
       const latestTask = await prisma.tasks.findFirst({
-        where: { job_id: job.id, type: { not: 'npat' } },
+        where: { job_id: job.id, type: { not: 'NPAT' } },
         orderBy: { endtime: 'desc' },
       });
 

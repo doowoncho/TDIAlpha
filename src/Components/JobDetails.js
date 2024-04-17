@@ -10,7 +10,7 @@ export default function JobDetails({job, handleInputChange, isEditing, user, han
                 <>
                     {isEditing
                     ? <>
-                       <div className="card mx-4">
+                       <div className="card mx-4" style={{width: "340px"}}>
                     <div className="card-header">Job Details</div>
                     <fieldset disabled={!isEditing}>
                         <div className="input-group">
@@ -79,7 +79,7 @@ export default function JobDetails({job, handleInputChange, isEditing, user, han
                             <option value="none">None</option>
                         </select>
                         </div>
-                        <div className="input-group d-sm-flex">
+                        {/* <div className="input-group d-sm-flex">
                         <div className="input-group-prepend">
                             <span className="input-group-text" id="">Start Time</span>
                         </div>
@@ -92,7 +92,7 @@ export default function JobDetails({job, handleInputChange, isEditing, user, han
                         </div>
                                 <input type="datetime-local" className="form-control" id="startDate" value={moment(job.endtime).format('YYYY-MM-DDTHH:mm')}
                                 onChange={(e) => handleInputChange(e, 'endtime')}/>
-                        </div>
+                        </div> */}
                     </fieldset>
                 </div> 
                       </>

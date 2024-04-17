@@ -6,6 +6,7 @@ import "../Helpers/Calendar.css";
 import { CardContent, ListItemText } from '@mui/material';
 import { Card } from 'react-bootstrap';
 import { ScheduleComponent, Day, Week, Month, Agenda, Inject } from '@syncfusion/ej2-react-schedule';
+import moment from 'moment';
 
 let users = await getAllUsers();
 
@@ -46,11 +47,13 @@ export default function ToDoPage() {
       let tasks = toggle ? await gettaskByUserId(window.sessionStorage.getItem("user")) : await getAlltasks()
       let tempEvents = [];
       for (let task of tasks) {
+        let starttime = task.starttime ? task.starttime : task.endtime
+        let endtime = task.endtime ? task.endtime : task.starttime
         let event = {
           Subject:  task.type + ': ' + task?.setup,
           Id: task.id,
-          StartTime: task.starttime ? new Date(task.starttime) : new Date(task.endtime),
-          EndTime: task.endtime ? new Date(task.endtime) : new Date(task.starttime),
+          StartTime: new Date (starttime),
+          EndTime: new Date (endtime),
           CategoryColor: task.assigned ? users.find(user => user.id === task.assigned)?.color : ''
         };
         tempEvents.push(event);
@@ -97,6 +100,7 @@ export default function ToDoPage() {
         currentView={isMobileScreen ? 'Day' : 'Month'}
         eventRendered={onEventRendered.bind(this)}
         views={['Day', 'Week', 'Month', 'Agenda']}
+        timezone='America/Edmonton'
       >
         <Inject services={[Day, Week, Month, Agenda]} />
       </ScheduleComponent>

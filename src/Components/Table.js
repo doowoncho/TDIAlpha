@@ -5,6 +5,7 @@ import Snackbar from '@mui/material/Snackbar'; // Import Snackbar from @mui/mate
 
 import '../Styles/Rows.css'
 import { createInvoiceLog } from './APICalls';
+import moment from 'moment';
 
 export default function Table({ data, columns, handleUpdate }) {
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -19,7 +20,7 @@ export default function Table({ data, columns, handleUpdate }) {
   const processRowUpdate = async (updatedRow, oldValue) => {
       if(JSON.stringify(updatedRow) !== JSON.stringify(oldValue)){
         if(updatedRow.qb_invoice!= oldValue.qb_invoice){
-            await createInvoiceLog({job_id: updatedRow.id, date: new Date(), number: updatedRow.qb_invoice})
+            await createInvoiceLog({job_id: updatedRow.id, date: moment.tz(new Date(), 'America/Edmonton').utc(), number: updatedRow.qb_invoice})
         }
         await handleUpdate(updatedRow.id, updatedRow);
         setSnackbarMessage('Row updated successfully');

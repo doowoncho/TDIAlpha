@@ -17,6 +17,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import moment from "moment";
  
 let user = await getUserById(window.sessionStorage.getItem("user"))
 
@@ -155,15 +156,14 @@ export default function TasksTable() {
       request_id: job.request_id,
       company: job.company,
       stamp: job.stamp,
-      starttime: newStartTime,
-      endtime: newEndTime
+      // starttime: moment.tz(newStartTime, 'America/Edmonton').utc(),
+      // endtime: moment.tz(newEndTime, 'America/Edmonton').utc()
     }) 
     
     var npatTask = taskList.filter(x => x.type == "NPAT")[0]
     if(npatTask){
-      var temp = new Date()
-      temp.setDate(newStartTime.getDate() - 1)
-      await handletaskUpdate(npatTask.id, {starttime: temp})
+      newStartTime?.setDate(newStartTime.getDate() - 1)
+      await handletaskUpdate(npatTask.id, {starttime: moment.tz(newStartTime, 'America/Edmonton').utc()})
     }
 
     setIsEditing(false);
