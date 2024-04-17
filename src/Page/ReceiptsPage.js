@@ -59,13 +59,13 @@ export default function ReceiptsPage() {
   return (
     <>
     <div className="container">
-      <Paper elevation={2} className="mt-5 pb-3" style={{width: '70%', margin: '0 auto', textAlign: 'center'}}>
+      <div className="mt-5 pb-3" style={{width: '70%', margin: '0 auto', textAlign: 'center'}}>
         <h6>Receipts</h6>
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
           {files.map((fileItem, index) => (
-            <div key={fileItem.id} style={{width: '70%'}}>
-              <Card variant="outlined" className="mb-2" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap:'3%', width:'100%', margin:'auto', padding: '10px'}}>
-                <p className='mb-1 py-2' style={{ textAlign: 'left' }}>
+            <div key={fileItem.id} style={{ width: '90%' }}>
+              <Card variant="outlined" className="mb-2" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap:'3%', width:'90%', margin:'auto' }}>
+                <p className='mb-1 py-2' style={{ textAlign: 'center' }}>
                   <span>{index + 1}. </span>
                   <a href={fileItem.file} target="_blank" rel="noopener noreferrer">
                     {fileItem.name}
@@ -78,15 +78,23 @@ export default function ReceiptsPage() {
             </div>
           ))}
           </div>
-      <div className="d-sm-block">
-        <div style={{width: '90%', margin: '0 auto', textAlign: 'center'}} className="my-4"> 
+      </div>
+      <div className="d-none d-sm-block">
+        <Paper style={{width: '40%', margin: '0 auto', textAlign: 'center'}} className="my-4"> 
           <div className="d-flex flex-wrap" style={{ justifyContent:'center' }}>
             <div className="mx-2 mb-3">
+              <label htmlFor="formFileDisabled" className="form-label my-1">Receipts</label>
               <FileUpload type="receipts"></FileUpload>
             </div>
           </div>
-        </div>
+        </Paper>
       </div>
+      <Paper style={{ width: '70%', margin: '0 auto', textAlign: 'center' }} className="my-4 d-block d-sm-none">
+        <div className="d-flex flex-wrap" style={{ justifyContent: 'center' }}>
+          <div className="mx-2 mb-3">
+            <SwipeableEdgeDrawer type="receipts" label="Receipt"></SwipeableEdgeDrawer>
+          </div>
+        </div>
       </Paper>
       </div>
     </>

@@ -375,7 +375,6 @@ export async function getTasksByJobId(id) {
         console.error('Error fetching task:', error);
     }
   }
-
 export async function getFilesById(id) {
     try {
         const response = await fetch(`${server}/api/getFiles/${id}`, {

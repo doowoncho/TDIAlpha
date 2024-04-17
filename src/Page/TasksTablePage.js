@@ -109,7 +109,14 @@ export default function TasksTable() {
   async function addTask(type) {
     // Assuming createtask returns the newly created task, adjust accordingly
     let completed = false
-    const newTask = await createtask({ job_id: parseInt(id), completed: completed, type: type });
+    let startDate
+    if(type == "NPAT"){
+      let job = await getJobById(parseInt(id))
+      startDate = new Date(job.starttime);
+      startDate.setDate(startDate.getDate() - 1)
+    }
+
+    const newTask = await createtask({ job_id: parseInt(id), completed: completed, type: type, starttime: startDate});
   
     // Update the taskList with the new task
     settaskList((prevtasks) => [...prevtasks, newTask]);

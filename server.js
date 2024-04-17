@@ -622,7 +622,6 @@ app.get('/api/gettaskByUserId/:id', async (req, res) => {
   }
 });
 
-// get tasks for a user by id
 app.get('/api/gettasksbyjobid/:id', async (req, res) => {
   try {
     const jobId = parseInt(req.params.id);
