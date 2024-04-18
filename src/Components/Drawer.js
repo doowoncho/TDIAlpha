@@ -17,6 +17,7 @@ import MapIcon from '@mui/icons-material/Map';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import { useState } from 'react';
+import { Badge } from 'react-bootstrap';
 
 const drawerBleeding = 10;
 
@@ -66,7 +67,7 @@ function SwipeableEdgeDrawer({window, jobId, label, type}) {
             overflow: 'visible',
           },
         }}
-      />
+      />          
         <Button variant="dark" className='my-3' onClick={toggleDrawer(true)} style={{ height: '60px', width: '50px' }}>{icon()}</Button>
       <SwipeableDrawer
         anchor="bottom"

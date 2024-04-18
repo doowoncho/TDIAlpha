@@ -79,7 +79,7 @@ export default function Table({ data, columns, handleUpdate }) {
           timezone="America/Edmonton"
         />
       </Box>
-      <Snackbar open={snackbarOpen} onClose={handleCloseSnackbar} message={snackbarMessage} />
+      <Snackbar anchorOrigin={{ vertical: "top", horizontal: 'left' }} open={snackbarOpen} onClose={handleCloseSnackbar} message={snackbarMessage} autoHideDuration={2000} />
     </div>
   );
 }

@@ -44,7 +44,7 @@ export default function NavBar() {
               TDI
             </Typography>
             <Button variant="light" className='mx-2 border' href='/legends'>Pricing</Button>
-            <Button variant="dark">Logout</Button>
+            <Button variant="dark" onClick={() => { window.sessionStorage.clear(); window.location.reload() }}>Logout</Button>
           </Toolbar>
         </AppBar>
       </Paper>
@@ -77,7 +77,6 @@ export default function NavBar() {
                   <Nav.Link href="/todo">ToDo</Nav.Link>
                   <Nav.Link href="/form">Form</Nav.Link>
                   <Nav.Link href="/legends">Pricing</Nav.Link>
-                  <Button variant="blue" style={{color:"white"}} onClick={() => { window.sessionStorage.clear(); window.location.reload() }}>Logout</Button>
                 </>
             </Nav>
             <Button variant="dark" style={{color:"white"}} onClick={() => { window.sessionStorage.clear(); window.location.reload() }}>Logout</Button>

@@ -7,6 +7,7 @@ import FileUpload from '../Components/FileUpload';
 import SwipeableEdgeDrawer from '../Components/Drawer';
 import { Card, Box, Divider, Typography, Stack, Paper, Chip} from '@mui/material';
 import Button from 'react-bootstrap/Button';
+import { Badge } from 'react-bootstrap';
 
 let user = await getUserById(window.sessionStorage.getItem("user"))
 
@@ -115,8 +116,6 @@ export default function Orders() {
         </div>
 
         <div className="d-flex align-items-center my-4">
-          {user.permission === 1 &&
-            <>
               {isEditing
                 ? <>
                   <Button className="btn btn-primary mx-1 my-2" variant="light" onClick={handleCancelClick}>Cancel</Button>
@@ -134,8 +133,6 @@ export default function Orders() {
                   </select>
                 </>
               }
-            </>
-          }
         </div>
       </div>
     </div>
@@ -159,11 +156,11 @@ export default function Orders() {
                         </Box>
                         <Divider />
 
-                        <fieldset disabled={user.permission == 2 || !isEditing}>
                           {isEditing 
                             ? <>
                               <Box sx={{ p: 2, textAlign: "left" }}>
                                   <Typography color="text.secondary">
+                                  <label>Setup: </label>
                                   <input
                                     type="text"
                                     className="form-control my-1"
@@ -171,6 +168,7 @@ export default function Orders() {
                                     value={task.setup ? task.setup : ""}
                                     onChange={(e) => handleInputChange(e, 'setup')}/>
                                   </Typography>
+                                  <br></br>
                                   <Typography color="text.secondary" >
                                   <label>Notes: </label>
                                   <input
@@ -184,22 +182,23 @@ export default function Orders() {
                               <Box sx={{ p: 2 }}>
                                   <label htmlFor="exampleInputStartDate">Place:</label>
                                   <Typography color="text.primary" >
-                                  <input type="datetime-local" className="form-control" id="startDate" value={moment.tz(task.starttime, 'America/Edmonton').format('YYYY-MM-DDTHH:mm')} onChange={(e) => handleInputChange(e, 'starttime')}/>
+                                  <input type="datetime-local" className="form-control" id="startDate" value={moment.tz(task.starttime, 'America/Edmonton').format('YYYY-MM-DDTHH:mm')} onChange={(e) => handleInputChange(e, 'starttime')} disabled = {user.permission == 2}/>
                                   </Typography>
                                   <label htmlFor="exampleInputEndDate">Takedown:</label>
                                   <Typography color="text.primary" >
-                                  <input type="datetime-local" className="form-control" id="enddate" value={moment.tz(task.endtime, 'America/Edmonton').format('YYYY-MM-DDTHH:mm')} onChange={(e) => handleInputChange(e, 'endtime')}/>
+                                  <input type="datetime-local" className="form-control" id="enddate" value={moment.tz(task.endtime, 'America/Edmonton').format('YYYY-MM-DDTHH:mm')} onChange={(e) => handleInputChange(e, 'endtime')} disabled = {user.permission == 2}/>
                                   </Typography>
                               </Box>
                               </>
                             : <>
                               <Box sx={{ p: 2, textAlign: "left" }}>
                                   <Typography color="text.secondary">
-                                      {`Setup: ${task.setup}`}
+                                      {`${task.setup}`}
                                   </Typography>
+                                <br></br>
                               <Divider />
                                   <Typography color="text.secondary" >
-                                      {`Notes: ${task.notes}`}
+                                      {`Notes: ${task.notes ?? ""}`}
                                   </Typography>
                               </Box>
                               <Divider />
@@ -213,7 +212,6 @@ export default function Orders() {
                               </Box>
                               </>
                           }
-                        </fieldset>
                     </Card>
         </div>
         <div className="d-none d-sm-block">

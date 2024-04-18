@@ -2,12 +2,9 @@ import { Box, Card, Chip, Divider, Stack, TextField, Typography } from "@mui/mat
 import moment from "moment";
 
 export default function JobDetails({job, handleInputChange, isEditing, user, handleCancelClick, saveChanges, handleEditClick}) {
-    console.log(job.stamp)
     return (
         <div>
         {job && <div className="container text-center justify-content-center mt-4 d-flex">
-            {user.permission == 1 &&
-                <>
                     {isEditing
                     ? <>
                        <div className="card mx-4" style={{width: "340px"}}>
@@ -145,8 +142,6 @@ export default function JobDetails({job, handleInputChange, isEditing, user, han
                             </Typography>
                         </Box>
                     </Card>
-                    }
-                </>
             }
             </div> 
             }
