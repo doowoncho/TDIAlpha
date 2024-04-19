@@ -18,13 +18,15 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import moment from "moment";
+import { LinearProgress } from "@mui/material";
  
 let user = await getUserById(window.sessionStorage.getItem("user"))
 
 export default function TasksTable() {
-  const [files, setFiles] = useState("");
   const { id } = useParams();
-  const [taskList, settaskList] = useState([]);
+  const [files, setFiles] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [taskList, setTaskList] = useState([]);
   const [job, setJob] = useState({
       contact:null, 
       status: null,
@@ -42,7 +44,6 @@ export default function TasksTable() {
       starttime: null,
       endtime: null
   });
-  const isMounted = useRef(true);
 
   const [isEditing, setIsEditing] = useState(false); // State to track edit mode
   //entire list of tasks
@@ -72,30 +73,28 @@ export default function TasksTable() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getTasksByJobId(id);
-        const jobData = await getJobById(id);
-        setJob(jobData);
-        //sort by newest
-        const sortedData = data.sort((taskA, taskB) => {
+        const [tasks, job, files] = await Promise.all([
+          getTasksByJobId(id),
+          getJobById(id),
+          getFilesById(id)
+        ]);
+        setJob(job);
+  
+        // Sort tasks by newest
+        tasks.sort((taskA, taskB) => {
           const timeA = taskA.endtime ? new Date(taskA.endtime) : new Date(taskA.starttime);
           const timeB = taskB.endtime ? new Date(taskB.endtime) : new Date(taskB.starttime);
           return timeA - timeB;
-        })
-        settaskList(sortedData);
-
-        async function fetchFiles() {
-          try {
-            const fetchedFiles = await getFilesById(id);
-            setFiles(fetchedFiles);
-          } catch (error) {
-            console.error(error);
-          }
-        }
-        fetchFiles();
+        });
+        setTaskList(tasks);
+        setFiles(files);
+        setLoading(false)
+        
       } catch (error) {
         console.error("Error fetching data:", error);
       }
   };
+  
     fetchData();
   }, []);
 
@@ -177,6 +176,10 @@ export default function TasksTable() {
     }));
   };
 
+  if(loading == true){
+    return <LinearProgress />
+  }
+
   return (
     <div className="container">
       <div className="container text-center justify-content-center d-flex">
@@ -206,22 +209,22 @@ export default function TasksTable() {
           </div>
         </div>
       </div>
-      <div className="card d-block d-sm-none">
+      <div className="card d-block d-sm-none my-2">
         <div className="card-header">
           Files
         </div>
         <div className="d-flex flex-wrap justify-content-center">
           <div className="mx-2 my-2">
-            <SwipeableEdgeDrawer type="permitConfirmation" jobId={id} label="P. Confirm"></SwipeableEdgeDrawer>
+            <SwipeableEdgeDrawer type="permitConfirmation" jobId={id} label="P. Confirm" count = {files.permitConfirmation?.length}></SwipeableEdgeDrawer>
           </div>
           <div className="mx-2 my-2">
-            <SwipeableEdgeDrawer type="permit" jobId={id} label="Permit"></SwipeableEdgeDrawer>
+            <SwipeableEdgeDrawer type="permit" jobId={id} label="Permit" count = {files.permit?.length}></SwipeableEdgeDrawer>
           </div>
           <div className="mx-2 my-2">
-            <SwipeableEdgeDrawer type="plan" jobId={id} label="Plan"></SwipeableEdgeDrawer>
+            <SwipeableEdgeDrawer type="plan" jobId={id} label="Plan" count = {files.plan?.length}></SwipeableEdgeDrawer>
           </div>
           <div className="mx-2 my-2">
-            <SwipeableEdgeDrawer type="photo" jobId={id} label="Photo"></SwipeableEdgeDrawer>
+            <SwipeableEdgeDrawer type="photo" jobId={id} label="Photo" count = {files.photo?.length}></SwipeableEdgeDrawer>
           </div>
         </div>
       </div>

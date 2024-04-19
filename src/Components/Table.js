@@ -7,7 +7,7 @@ import '../Styles/Rows.css'
 import { createInvoiceLog } from './APICalls';
 import moment from 'moment';
 
-export default function Table({ data, columns, handleUpdate }) {
+export default function Table({ data, columns, handleUpdate, defaultSorting }) {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
@@ -77,11 +77,7 @@ export default function Table({ data, columns, handleUpdate }) {
           editMode="cell" // Set editMode to "row" to prevent cells from popping out after editing
           getRowClassName={getRowClassName} //
           timezone="America/Edmonton"
-          initialState={{
-            sorting: {
-              sortModel: [{ field: 'starttime', sort: 'asc' }],
-            },
-          }}
+          initialState={defaultSorting}
         />
       </Box>
       <Snackbar anchorOrigin={{ vertical: "top", horizontal: 'left' }} open={snackbarOpen} onClose={handleCloseSnackbar} message={snackbarMessage} autoHideDuration={2000} />

@@ -17,7 +17,8 @@ import MapIcon from '@mui/icons-material/Map';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import { useState } from 'react';
-import { Badge } from 'react-bootstrap';
+import { Badge } from "@mui/material";
+
 
 const drawerBleeding = 10;
 
@@ -35,7 +36,7 @@ const Puller = styled('div')(({ theme }) => ({
   left: 'calc(50% - 15px)',
 }));
 
-function SwipeableEdgeDrawer({window, jobId, label, type}) {
+function SwipeableEdgeDrawer({window, jobId, label, type, count}) {
   const [open, setOpen] = useState();
   const toggleDrawer = (newOpen) => () => { setOpen(newOpen);};
 
@@ -68,7 +69,10 @@ function SwipeableEdgeDrawer({window, jobId, label, type}) {
           },
         }}
       />          
-        <Button variant="dark" className='my-3' onClick={toggleDrawer(true)} style={{ height: '60px', width: '50px' }}>{icon()}</Button>
+      <Badge badgeContent={count} color="primary">
+          <Button variant="dark" className='my-3' onClick={toggleDrawer(true)} style={{ height: '60px', width: '50px' }}>{icon()}</Button>
+      </Badge>
+
       <SwipeableDrawer
         anchor="bottom"
         open={open}

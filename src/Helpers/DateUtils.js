@@ -3,7 +3,7 @@ import { createtask } from '../Components/APICalls';
 const { DateTime } = require('luxon');
    
    //DATE LOGIC
-    export const createTaskForDate = async (startDate, startTime, endDate, endTime, job, location, taskType = "SameDay") => {
+    export const createTaskForDate = async (startDate, startTime, endDate, endTime, job, location, taskType) => {
         let startDateTime 
         let endDateTime 
 
@@ -44,27 +44,28 @@ const { DateTime } = require('luxon');
       let currentDate = new Date(startDate);
       //creates first task
       currentDate.setDate(currentDate.getDate() + 1)
-      await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, moment(currentDate).format('YYYY-MM-DD'), endTime, job, location);
-  
+      await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, null, null, job, location, "Place");
+      await createTaskForDate(null, null, moment(currentDate).format('YYYY-MM-DD'), endTime, job, location, "Takedown");
+      currentDate.setDate(currentDate.getDate() + 1)
       while (currentDate <= new Date(endDate)) {
-        if (currentDate.getDay() === 5) {
-          // Task to pick up the sign on Fridays
-          await createTaskForDate(null, null, moment(currentDate).format('YYYY-MM-DD'), endTime, job, location, "Takedown");
-        }
-        else if(currentDate.getDay() != 6 && currentDate.getDay() != 0){
+
+        if(currentDate.getDay() != 6 && currentDate.getDay() != 0){
           //Task to keep repeating
-          await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, moment(currentDate).format('YYYY-MM-DD'), endTime, job, location);
+          await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, null, null, job, location, "Place");
+          await createTaskForDate(null, null, moment(currentDate).format('YYYY-MM-DD'), endTime, job, location, "Takedown");
         }
         currentDate.setDate(currentDate.getDate() + 1);
       }
         //creates last task
-        await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, moment(currentDate).format('YYYY-MM-DD'), endTime, job, location);
+        await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, null, null, job, location, "Place");
+        await createTaskForDate(null, null, moment(currentDate).format('YYYY-MM-DD'), endTime, job, location, "Takedown");
     };
     
     export const createTasksForRepeat = async (startDate, startTime, endDate, endTime, job, location) => {
       let currentDate = new Date(startDate);
       while (currentDate <= new Date(endDate)) {
         currentDate.setDate(currentDate.getDate() + 1);
-        await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, moment(currentDate).format('YYYY-MM-DD'), endTime, job, location);
+        await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, null, null, job, location, "Place");
+        await createTaskForDate(null, null, moment(currentDate).format('YYYY-MM-DD'), endTime, job, location, "Takedown");
       }
     };

@@ -118,12 +118,7 @@ function FormPage() {
         latestEndDate = dateTime.endDate ? DateTime.fromISO(`${dateTime.endDate }T${dateTime.endTime}`, { zone: 'America/Edmonton' }) : DateTime.fromISO(`${dateTime.startDate }T${dateTime.endTime}`, { zone: 'America/Edmonton' });;
       }
 
-      if (dateTime.twentyFour) {
-          // Two tasks, one for putting down and one for picking stuff up
-          await createTaskForDate(dateTime.startDate, dateTime.startTime, null, null, job, location, 'Place');
-          await createTaskForDate(null, null, dateTime.endDate, dateTime.endTime, job, location, 'Takedown');
-      } 
-      else if(dateTime.repeat){
+      if(dateTime.repeat){
           if (dateTime.exWeekend) {          
             // Creating tasks for the inbetween
             await createTasksForExWeekend(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.endTime, job, location);
@@ -133,7 +128,8 @@ function FormPage() {
       }
       else {
         // Non-twentyFour task
-        await createTaskForDate(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.endTime, job, location);
+        await createTaskForDate(dateTime.startDate, dateTime.startTime, null, null, job, location, 'Place');
+        await createTaskForDate(null, null, dateTime.startDate, dateTime.endTime, job, location, 'Takedown');
       }
     })
     );

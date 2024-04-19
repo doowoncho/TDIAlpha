@@ -95,25 +95,25 @@ export default function JobsTable() {
     <div>
         <div className="container d-flex justify-content-center my-2 flex-wrap">
           <button className="btn btn-link" onClick={() => handleTableTypeChange("New")} color="text-primary" style={{ textDecoration: "none" }}>
-            <Badge badgeContent={counts.New} color="primary" className="className='d-block d-sm-none mx-4 my-3">
+            <Badge badgeContent={counts.New} color="primary" className="d-block d-sm-none mx-4 my-3">
               <NotificationsOutlined color="action" />
             </Badge>
             <TableCards header="New" num={counts.New} icon="bi bi-bell-fill" bg="#A1DCF3"/>
           </button>
           <button className="btn btn-link" onClick={() => handleTableTypeChange("Declined")} style={{ textDecoration: "none" }}>
-            <Badge badgeContent={counts.Declined} color="success" className="className='d-block d-sm-none mx-4 my-3">
+            <Badge badgeContent={counts.Declined} color="success" className="d-block d-sm-none mx-4 my-3">
               <ErrorOutline color="action" />
             </Badge>
             <TableCards header="Declined" num={counts.Declined} icon="bi bi-exclamation-lg" color="text-dark" bg="#FF8A8A"/>
           </button>
           <button className="btn btn-link" onClick={() => handleTableTypeChange("Submitted")} style={{ textDecoration: "none" }}>
-            <Badge badgeContent={counts.Submitted} color="secondary" className="className='d-block d-sm-none mx-4 my-3">
+            <Badge badgeContent={counts.Submitted} color="secondary" className="d-block d-sm-none mx-4 my-3">
               <CheckCircleOutline color="action" />
             </Badge>
             <TableCards header="Submitted" num={counts.Submitted} icon="bi bi-check-lg" color="text-success" bg="#C6E1BA" />
           </button>
           <button className="btn btn-link" onClick={() => handleTableTypeChange("All")} style={{ textDecoration: "none" }}>
-            <Badge badgeContent={counts.New + counts.Declined + counts.Submitted + counts.Approved} color="secondary" className="className='d-block d-sm-none mx-4 my-3">
+            <Badge badgeContent={counts.New + counts.Declined + counts.Submitted + counts.Approved} color="secondary" className="d-block d-sm-none mx-4 my-3">
               <MailOutline color="action" />
             </Badge>
             <TableCards header="All Jobs" num={counts.New + counts.Declined + counts.Submitted + counts.Approved} icon="bi bi-list" bg="#F2EFEA" />
@@ -128,6 +128,7 @@ export default function JobsTable() {
             columns = {JobsTableColumns}
             handleUpdate={handleJobUpdate}
             handleDelete={handleJobDelete}
+            defaultSorting={{ sorting: { sortModel: [{ field: 'starttime', sort: 'asc' }] }}}
             />
         </div>
       </div>
