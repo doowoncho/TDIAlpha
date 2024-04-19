@@ -126,6 +126,11 @@ function FormPage() {
             await createTasksForRepeat(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.endTime, job, location)
           }
       }
+      else if(dateTime.twentyFour){
+        await createTaskForDate(dateTime.startDate, dateTime.startTime, null, null, job, location, 'Place');
+        await createTaskForDate(null, null, dateTime.endDate, dateTime.endTime, job, location, 'Takedown');
+      }
+
       else {
         // Non-twentyFour task
         await createTaskForDate(dateTime.startDate, dateTime.startTime, null, null, job, location, 'Place');
