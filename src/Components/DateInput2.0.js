@@ -8,16 +8,21 @@ export default function DateInput2({ index ,deleteDate, handleDateChange, handle
 
 
   const handleButtonOptions = (selected) => {
-    if(selected.value == "one"){
+    console.log(selected)
+    if(selected.target.value == "one"){
       handleOneDaySelected()
+      handleCheckboxChanges(index, 'twentyFour', false)
+      handleCheckboxChanges(index, 'repeat', false)
     }
-    else if(selected.value == "twentyFour"){
+    else if(selected.target.value == "twentyFour"){
       handleCheckboxChange(false)
-      handleCheckboxChanges(index, 'twentyFour', selected.checked)
+      handleCheckboxChanges(index, 'twentyFour', true)
+      handleCheckboxChanges(index, 'repeat', false)
     }
-    else if(selected.value == "repeat"){
+    else if(selected.target.value == "repeat"){
       handleCheckboxChange(true)
-      handleCheckboxChanges(index, 'repeat', selected.checked)
+      handleCheckboxChanges(index, 'repeat', true)
+      handleCheckboxChanges(index, 'twentyFour', false)
     }
   }
 
@@ -41,7 +46,7 @@ export default function DateInput2({ index ,deleteDate, handleDateChange, handle
           onChange={(e) => handleDateChange(index, 'startDate', e.target.value)}
           required
           />
-          
+
         <label className="mx-2">Start Time</label>
         <CustomTimePicker onChange={(selectedTime) => handleDateChange(index, 'startTime', selectedTime)} defaultTime={9} defaultPM={false}/>
       {showAdditionalInput && (
@@ -60,7 +65,7 @@ export default function DateInput2({ index ,deleteDate, handleDateChange, handle
       <label className="mx-2">End Time</label>
       <CustomTimePicker onChange={(selectedTime) => handleDateChange(index, 'endTime', selectedTime)} defaultTime={3} defaultPM={true}/>
   
-      <select className="form-select mx-3" style={{ width: '120px' }} onChange={(e) => handleButtonOptions(e.target)}>
+      <select className="form-select mx-3" style={{ width: '120px' }} onChange={(e) => handleButtonOptions(e)}>
         <option value="one">One Day</option>
         <option value="repeat">Repeat</option>
         <option value="twentyFour">24/7</option>
