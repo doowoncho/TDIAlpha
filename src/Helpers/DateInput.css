@@ -1,0 +1,5 @@
+@media (max-width: 425px) {
+    .d-flex {
+        flex-direction: column !important; /* Use !important to override any other flex-direction */
+    }
+}

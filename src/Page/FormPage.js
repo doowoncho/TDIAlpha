@@ -246,19 +246,19 @@ function FormPage() {
       
 
         <div className='container justify-content-center d-sm-flex overflow-auto'>
-            <div className="flex-column">
+            <div className="flex-column justify-content-center">
               {dates.map((date, index) => (
                 <DateInput
-                key={index}
-                date={date}
-                index={index}
-                handleDateChange={handleDateChange}
-                handleCheckboxChanges={handleCheckboxChanges}
-                deleteDate={deleteDate}
+                  key={index}
+                  date={date}
+                  index={index}
+                  handleDateChange={handleDateChange}
+                  handleCheckboxChanges={handleCheckboxChanges}
+                  deleteDate={deleteDate}
                 />
                 ))}
-            <button type="button" className="btn btn-primary my-2" onClick={addDate}> Add Date and Time </button>
             </div>
+            <button type="button" className="btn btn-primary my-2" onClick={addDate} style={{display:'flex', margin:'auto'}}> Add Date and Time </button>
           </div>
 
 
