@@ -1,5 +1,6 @@
 import { useState } from "react";
 import CustomTimePicker from "./CustomTimePicker";
+import styles from '../Helpers/DateInput.css';
 
 export default function DateInput({ date, index ,deleteDate, handleDateChange, handleCheckboxChanges }) {
   const [showAdditionalInput, setShowAdditionalInput] = useState(false);
@@ -16,7 +17,7 @@ export default function DateInput({ date, index ,deleteDate, handleDateChange, h
   }
 
     return (
-      <div className="d-flex align-items-center">
+      <div className="d-flex align-items-center justify-content-center">
         {showAdditionalInput ? <label>Start Date</label> : <label>Date</label>}
         <input
           type="date"
