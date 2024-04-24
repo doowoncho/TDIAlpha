@@ -54,7 +54,8 @@ export default function ToDoPage() {
           Id: task.id,
           StartTime: new Date (starttime),
           EndTime: new Date (endtime),
-          CategoryColor: task.assigned ? users.find(user => user.id === task.assigned)?.color : ''
+          CategoryColor: task.assigned ? users.find(user => user.id === task.assigned)?.color : '',
+          Completed: task.type == 'Finished' || task.type == 'Cancelled' || task.type == 'Cancelled OS'
         };
         tempEvents.push(event);
       }
@@ -78,12 +79,24 @@ export default function ToDoPage() {
 
   const eventSettings = { dataSource: events }
   function onEventRendered(args) {
+    if(args.data.Completed){
+      args.element.style.backgroundColor = "#808080";
+      return
+    }
     let categoryColor = args.data.CategoryColor;
     args.element.style.backgroundColor = categoryColor;
   }
 
   return (
     <div>
+      <div className='container d-flex'>
+        {users.map((x) => (
+          <div className='mx-1 my-2'>
+          <p1>{x.name}</p1>
+            <div style={{ width: 15, height: 15, backgroundColor: x.color, borderRadius: 100 }}></div>
+        </div>
+        ))}
+      </div>
 
       <div className="form-check form-switch my-3 mx-5">
         <label className="form-check-label" htmlFor="flexSwitchCheckDefault">Show All tasks</label>
@@ -104,26 +117,6 @@ export default function ToDoPage() {
       >
         <Inject services={[Day, Week, Month, Agenda]} />
       </ScheduleComponent>
-      </div>
-      <div className='container d-flex'>
-        {users.map((x) => (
-          <Card key={x.id}>
-            <CardContent>
-                <div style={{alignItems: 'center' }}>
-                <ListItemText primary={`${x.name} `} />
-                  <div
-                    style={{
-                      width: 20,
-                      height: 20,
-                      backgroundColor: x.color,
-                      marginLeft: 10,
-                      borderRadius: 100
-                    }}
-                  ></div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
       </div>
     </div>
   );

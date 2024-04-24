@@ -23,7 +23,7 @@ export default function LoginPage() {
   }
   
   return (
-    <div style={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+    <div style={{ height: '90vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <div className='container text-center rounded' style={{ 
           width: "500px", 
           border: "1px solid rgba(255, 255, 255, 0.2)",

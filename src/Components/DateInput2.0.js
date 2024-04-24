@@ -1,9 +1,25 @@
 import { useState } from "react";
 import CustomTimePicker from "./CustomTimePicker";
+import { InputLabel, MenuItem, Select } from "@mui/material";
 
-export default function DateInput({ index ,deleteDate, handleDateChange, handleCheckboxChanges }) {
+export default function DateInput2({ index ,deleteDate, handleDateChange, handleCheckboxChanges }) {
   const [showAdditionalInput, setShowAdditionalInput] = useState(false);
   const [showExWeekend, setShowExWeekend] = useState(false);
+
+
+  const handleButtonOptions = (selected) => {
+    if(selected.value == "one"){
+      handleOneDaySelected()
+    }
+    else if(selected.value == "twentyFour"){
+      handleCheckboxChange(false)
+      handleCheckboxChanges(index, 'twentyFour', selected.checked)
+    }
+    else if(selected.value == "repeat"){
+      handleCheckboxChange(true)
+      handleCheckboxChanges(index, 'repeat', selected.checked)
+    }
+  }
 
   const handleCheckboxChange = (showExcludeWeekend) => {
     setShowExWeekend(showExcludeWeekend)
@@ -25,7 +41,7 @@ export default function DateInput({ index ,deleteDate, handleDateChange, handleC
           onChange={(e) => handleDateChange(index, 'startDate', e.target.value)}
           required
           />
-
+          
         <label className="mx-2">Start Time</label>
         <CustomTimePicker onChange={(selectedTime) => handleDateChange(index, 'startTime', selectedTime)} defaultTime={9} defaultPM={false}/>
       {showAdditionalInput && (
@@ -43,26 +59,19 @@ export default function DateInput({ index ,deleteDate, handleDateChange, handleC
 
       <label className="mx-2">End Time</label>
       <CustomTimePicker onChange={(selectedTime) => handleDateChange(index, 'endTime', selectedTime)} defaultTime={3} defaultPM={true}/>
-      
-      <input className="form-check-input mx-2" type="radio" name="repeatOptions" value="repeat" onChange={(e) => {
-        handleOneDaySelected();}} defaultChecked/>
-      <label className="form-check-label" htmlFor="twentyFourOption">One Day</label>
+  
+      <select className="form-select mx-3" style={{ width: '120px' }} onChange={(e) => handleButtonOptions(e.target)}>
+        <option value="one">One Day</option>
+        <option value="repeat">Repeat</option>
+        <option value="twentyFour">24/7</option>
+      </select>
 
-      <input className="form-check-input mx-2" type="radio" name="repeatOptions" value="repeat" onChange={(e) => {
-        handleCheckboxChanges(index, 'repeat', e.target.checked);
-        handleCheckboxChange(true);}}/>
-      <label className="form-check-label" htmlFor="repeatOption">Repeat Jobs</label>
-
-      <input className="form-check-input mx-2" type="radio" name="repeatOptions" value="repeat" onChange={(e) => {
-        handleCheckboxChanges(index, 'twentyFour', e.target.checked);
-        handleCheckboxChange(false);}}/>
-      <label className="form-check-label" htmlFor="twentyFourOption">24/7</label>
       
       {showExWeekend && (
         <>
-          <input className="form-check-input mx-2" type="checkbox" value=""onChange={(e) => {
+          <input className="form-check-input mx-2" type="checkbox" value="" onChange={(e) => {
             handleCheckboxChanges(index, 'exWeekend', e.target.checked);}}/>
-          <label className="form-check-label" htmlFor="flexCheckDefault" > Exclude Weekends</label>
+          <label className="form-check-label" htmlFor="flexCheckDefault"> Exclude Weekends</label>
         </>
       )}
         {index === 0 ? null : (

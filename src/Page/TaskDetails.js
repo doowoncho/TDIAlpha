@@ -112,7 +112,7 @@ export default function Orders() {
     <div className='container mt-3'>
       <div className="d-flex justify-content-between align-items-center">
         <div className="d-flex">
-          <a href={`/taskspage/${task.job_id}`} className="btn btn-link">Back</a>
+          <a href={`/taskspage/${task.job_id}`} className="btn btn-link">Job</a>
         </div>
 
         <div className="d-flex align-items-center my-4">

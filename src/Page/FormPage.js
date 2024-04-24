@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import CreatableSelect from 'react-select/creatable';
 import { createTaskForDate, createTasksForExWeekend, createTasksForRepeat } from '../Helpers/DateUtils';
 import { DateTime } from 'luxon';
+import DateInput2 from '../Components/DateInput2.0';
 
 function FormPage() {
   const [dates, setDates] = useState([{ startDate: '', startTime: '', endDate: '', endTime: '', exWeekend: false, twentyFour: false, repeat: false }]);
@@ -42,9 +43,8 @@ function FormPage() {
     updatedDates[index][field] = value;
     setDates(updatedDates);
   };
-
+  
   const handleCheckboxChanges = (index, field, value) => {
-    console.log(index,field,value)
     const updatedDates = [...dates];
     updatedDates[index][field] = value;
     setDates(updatedDates);
@@ -248,7 +248,7 @@ function FormPage() {
         <div className='container justify-content-center d-sm-flex overflow-auto'>
             <div className="flex-column">
               {dates.map((date, index) => (
-                <DateInput
+                <DateInput2
                 key={index}
                 date={date}
                 index={index}

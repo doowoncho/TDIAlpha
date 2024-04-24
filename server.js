@@ -79,8 +79,10 @@ app.put('/api/updatetask/:id', async (req, res) => {
     });
     res.json(task);
 
+    
     //complicated shit to make the job dates match the task earliest and latest dates
     const job = await prisma.jobs.findFirst({ where: { id: task.job_id } });
+    
     if (job) {
       const earliestTask = await prisma.tasks.findFirst({
         where: { job_id: job.id, type: { not: 'NPAT' } },
@@ -98,7 +100,7 @@ app.put('/api/updatetask/:id', async (req, res) => {
         },
         data: {
           starttime: earliestTask.starttime,
-          endtime: latestTask.endtime,
+          endtime: latestTask.endtime
         },
       });
     }
@@ -113,7 +115,7 @@ app.put('/api/updatetask/:id', async (req, res) => {
 app.put('/api/updatejob/:id', async (req, res) => {
   try {
     const jobId = parseInt(req.params.id) //id of task we are changing
-    const { contact, starttime, endtime, status, wo_number, po_number, email, phone_number, permit_number, request_id, company, setup, stamp, qb_invoice} = req.body
+    const { contact, starttime, endtime, status, wo_number, po_number, email, phone_number, permit_number, request_id, company, setup, stamp, qb_invoice, permit_cost} = req.body
     const posts = await prisma.jobs.update({
       where: {
         id: jobId
@@ -133,6 +135,7 @@ app.put('/api/updatejob/:id', async (req, res) => {
         company: company,
         setup: setup,
         stamp: stamp,
+        permit_cost: permit_cost,
         qb_invoice: qb_invoice ? parseInt(qb_invoice) : null,
       }
     });
