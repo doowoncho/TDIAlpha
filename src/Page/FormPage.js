@@ -3,7 +3,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '../Components/Firebase';
 import { createJob, uploadPhoto, updateJob, getAllContacts, createContact } from '../Components/APICalls';
-import DateInput from '../Components/DateInput';
 import { useNavigate } from "react-router-dom";
 import CreatableSelect from 'react-select/creatable';
 import { createTaskForDate, createTasksForExWeekend, createTasksForRepeat } from '../Helpers/DateUtils';
