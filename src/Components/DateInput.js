@@ -17,7 +17,7 @@ export default function DateInput({ date, index ,deleteDate, handleDateChange, h
   }
 
     return (
-      <div className="d-flex align-items-center">
+      <div className="d-flex align-items-center justify-content-center">
         {showAdditionalInput ? <label>Start Date</label> : <label>Date</label>}
         <input
           type="date"
