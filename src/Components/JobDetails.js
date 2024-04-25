@@ -140,7 +140,7 @@ export default function JobDetails({job, handleInputChange, isEditing, user, han
       const handleClose = () => {
         setOpen(false);
       };
-
+      
     return (
         <div>
         {job && <div className="container text-center justify-content-center mt-4 d-flex">
@@ -177,7 +177,15 @@ export default function JobDetails({job, handleInputChange, isEditing, user, han
                         <div className="input-group-prepend">
                             <span className="input-group-text" id="">Status</span>
                         </div>
-                        <input type="text" value={job.status || ''} className="form-control" readOnly/>
+                        <select value={job?.status} onChange={(e) => handleInputChange(e, 'status')}>
+                            <option value="New">New</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Invoice">Invoice</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Declined">Declined</option>
+                            <option value="Submitted">Submitted</option>
+                            <option value="Waiting">Waiting</option>
+                        </select>
                         </div>
                         <div className="input-group d-sm-flex">
                         <div className="input-group-prepend">

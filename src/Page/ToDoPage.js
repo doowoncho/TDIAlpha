@@ -118,6 +118,9 @@ export default function ToDoPage() {
         <Inject services={[Day, Week, Month, Agenda]} />
       </ScheduleComponent>
       </div>
+      <br></br>
+    <br></br>
+    <br></br>
     </div>
   );
 }

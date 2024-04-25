@@ -105,14 +105,8 @@ export default function TasksTable() {
               // endtime: moment.tz(newEndTime, 'America/Edmonton').utc()
             }) 
         }
-
-        console.log(job);
-
         setJob(job);
-
-        
-  
-        // Sort tasks by newest
+         // Sort tasks by newest
         tasks.sort((taskA, taskB) => {
           const timeA = taskA.endtime ? new Date(taskA.endtime) : new Date(taskA.starttime);
           const timeB = taskB.endtime ? new Date(taskB.endtime) : new Date(taskB.starttime);
@@ -133,7 +127,7 @@ export default function TasksTable() {
   const handletaskUpdate = async (id, params) => {
     await updatetask(id, params);
     // No need to refetch data, just update the local state
-    settaskList((prevtasks) =>
+    setTaskList((prevtasks) =>
       prevtasks.map((task) => (task.id === id ? { ...task, ...params } : task))
     );
   };

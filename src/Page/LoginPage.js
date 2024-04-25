@@ -23,9 +23,12 @@ export default function LoginPage() {
   }
   
   return (
-    <div style={{ height: '90vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <div className='container text-center rounded' style={{ 
+    <div style={{ background: `url(${process.env.PUBLIC_URL}/LoginPageImage.jpg)`, backgroundSize: 'cover', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+         <div className='container text-center rounded' style={{ 
           width: "500px", 
+          marginBottom: "200px", 
+          background: "transparent", /* Semi-transparent white background */
+          backdropFilter: "blur(20px)", /* Apply the blur effect */ 
           border: "1px solid rgba(255, 255, 255, 0.2)",
           boxShadow: "0 0 10px rgba(0,0,0,.2)"
         }}>

@@ -41,7 +41,11 @@ export default function NavBar() {
               sx={{ mr: 2 }}
               />
             <Typography variant="h10" component="div" sx={{ flexGrow: 1 }}>
-              TDI
+            <img
+            src={process.env.PUBLIC_URL + '/TDI_Logo.png'}
+            alt="Logo"
+            height={50}
+          />
             </Typography>
             <Button variant="light" className='mx-2 border' href='/legends'>Pricing</Button>
             <Button variant="dark" onClick={() => { window.sessionStorage.clear(); window.location.reload() }}>Logout</Button>
@@ -66,7 +70,11 @@ export default function NavBar() {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" onClick={handleToggle} />
           <Navbar.Collapse id="responsive-navbar-nav">
           <Typography variant="h10" component="div" sx={{ flexGrow: 1 }}>
-              TDI
+          <img
+            src={process.env.PUBLIC_URL + '/TDI_Logo.png'}
+            alt="Logo"
+            height={60}
+          />
             </Typography>
             <Nav className="me-auto">
                 <>

@@ -81,6 +81,9 @@ export default function Table({ data, columns, handleUpdate, defaultSorting }) {
         />
       </Box>
       <Snackbar anchorOrigin={{ vertical: "top", horizontal: 'left' }} open={snackbarOpen} onClose={handleCloseSnackbar} message={snackbarMessage} autoHideDuration={2000} />
+      <br></br>
+    <br></br>
+    <br></br>
     </div>
   );
 }
