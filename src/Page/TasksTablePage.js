@@ -78,7 +78,39 @@ export default function TasksTable() {
           getJobById(id),
           getFilesById(id)
         ]);
+
+        let taskTotal = 0;
+        let taskFinished = 0;
+        for (let i = 0; i < tasks.length; i++) {
+          if (tasks[i]["type"] === "Finished" || tasks[i]["type"] === "Cancelled" || tasks[i]["type"] === "Cancelled OS") {
+            taskFinished++;
+          }
+          taskTotal++; 
+        }
+        if (taskTotal === taskFinished) {
+          await updateJob(job.id, 
+            {
+              contact:job.contact, 
+              status: "Completed",
+              wo_number: job.wo_number,
+              po_number: job.po_number,
+              email: job.email,
+              location: job.location,
+              phone_number: job.phone_number,
+              permit_number: job.permit_number,
+              request_id: job.request_id,
+              company: job.company,
+              stamp: job.stamp,
+              // starttime: moment.tz(newStartTime, 'America/Edmonton').utc(),
+              // endtime: moment.tz(newEndTime, 'America/Edmonton').utc()
+            }) 
+        }
+
+        console.log(job);
+
         setJob(job);
+
+        
   
         // Sort tasks by newest
         tasks.sort((taskA, taskB) => {
@@ -88,7 +120,7 @@ export default function TasksTable() {
         });
         setTaskList(tasks);
         setFiles(files);
-        setLoading(false)
+        setLoading(false);
         
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -119,13 +151,13 @@ export default function TasksTable() {
     const newTask = await createtask({ job_id: parseInt(id), completed: completed, type: type, starttime: startDate});
   
     // Update the taskList with the new task
-    settaskList((prevtasks) => [...prevtasks, newTask]);
+    setTaskList((prevtasks) => [...prevtasks, newTask]);
   }
 
   const handletaskDelete = async (id) => {
     await deletetask(id);
     // No need to refetch data, just update the local state
-    settaskList((prevtasks) => prevtasks.filter((task) => task.id !== id));
+    setTaskList((prevtasks) => prevtasks.filter((task) => task.id !== id));
   };
 
   const handleEditClick = () => {
