@@ -1,11 +1,12 @@
 import moment from 'moment';
 import { createtask } from '../Components/APICalls';
 const { DateTime } = require('luxon');
-   
-   //DATE LOGIC
-    export const createTaskForDate = async (startDate, startTime, endDate, endTime, job, location, taskType) => {
-        let startDateTime 
-        let endDateTime 
+
+//DATE LOGIC
+export const createTaskForDate = async (startDate, startTime, endDate, endTime, job, location, taskType) => {
+  console.log(job)
+  let startDateTime 
+  let endDateTime 
 
         //different pick up and place days
         if(startDate && endDate){

@@ -187,6 +187,26 @@ export async function updateJob(id, params) {
     }
 }
 
+    // Deletes task with params from options
+    export async function deleteTasksByJobId(id) {
+        try {
+            const response = await fetch(`${server}/api/deleteTasksByJobId/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                }
+            });
+
+            if (response.ok) {
+                // Optionally, you can return true or some indication of success
+                return true;
+            }
+        } catch (error) {
+            console.error('Error deleting task:', error);
+        }
+    }
+
+
 export async function deleteFile(name) {
     try {
 

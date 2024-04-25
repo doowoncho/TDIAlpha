@@ -27,7 +27,6 @@ const TableCards = ({ bg, header, icon, color, num }) => (
 export default function JobsTable() {
   const [tableType, setTableType] = useState("All");
   const [jobList, setjobList] = useState([]);
-  const [search, setSearch] = useState([]);
   const [counts, setCounts] = useState({ New: 0, Declined: 0, Submitted: 0, Approved: 0 });
   const [filters, setFilters] = useState({
     id: false,
@@ -42,7 +41,6 @@ export default function JobsTable() {
     setup: true,
     company: false
   });
-  const isMounted = useRef(true);
 
   const fetchData = async () => {
     try {
@@ -90,7 +88,7 @@ export default function JobsTable() {
     await deleteJob(id);
     fetchData()
   };
-
+  
   return (
     <div>
         <div className="container d-flex justify-content-center my-2 flex-wrap">

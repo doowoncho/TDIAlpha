@@ -1,7 +1,146 @@
-import { Box, Card, Chip, Divider, Stack, TextField, Typography } from "@mui/material";
+import { DateRange } from "@mui/icons-material";
+import { Box, Button, Card, Chip, CircularProgress, Dialog, DialogContent, DialogTitle, Divider, LinearProgress, List, Stack, TextField, Typography } from "@mui/material";
 import moment from "moment";
+import { useState } from "react";
+import DateInput2 from "./DateInput2.0";
+import { deleteTasksByJobId, getTasksByJobId, updateJob } from "./APICalls";
+import { DateTime } from "luxon";
+import { createTaskForDate, createTasksForExWeekend, createTasksForRepeat } from "../Helpers/DateUtils";
+
+function DateEditBox(props) {
+    const [dates, setDates] = useState([{ startDate: '', startTime: '', endDate: '', endTime: '', exWeekend: false, twentyFour: false, repeat: false }]);
+    const { onClose, open, job } = props;
+    const [loading, setLoading] = useState(false);
+    const handleClose = () => {
+      onClose();
+    };
+
+    const handleDateChange = (index, field, value) => {
+        const updatedDates = [...dates];
+        updatedDates[index][field] = value;
+        setDates(updatedDates);
+      };
+      
+      const handleCheckboxChanges = (index, field, value) => {
+        const updatedDates = [...dates];
+        updatedDates[index][field] = value;
+        setDates(updatedDates);
+      };
+    
+      const addDate = () => {
+        setDates([...dates, { startDate: '', startTime: '', endDate: '', endTime: '', exWeekend: false, twentyFour: false, repeat: false }]);
+      };
+
+      const deleteDate = (index) => {
+        const updatedDates = [...dates];
+        updatedDates.splice(index, 1);
+        setDates(updatedDates);
+      };
+    
+      const handleSubmit = async (e) => {
+        setLoading(true)
+        e.preventDefault(); 
+        //delete all tasks
+        await deleteTasksByJobId(job.id);
+
+        let earliestStartDate = null;
+        let latestEndDate = null;
+        const NPAT = document.getElementById('npat')?.checked;
+    
+        await Promise.all(
+          dates.map(async (dateTime) => {
+          if (!earliestStartDate || new Date(dateTime.startDate) < earliestStartDate) {
+            earliestStartDate = DateTime.fromISO(`${dateTime.startDate }T${dateTime.startTime}`, { zone: 'America/Edmonton' });
+          }
+          
+          if ((!dateTime.endDate && (!latestEndDate || new Date(dateTime.startDate) > latestEndDate)) ||
+          (dateTime.endDate && (!latestEndDate || new Date(dateTime.endDate) > latestEndDate))) {
+            latestEndDate = dateTime.endDate ? DateTime.fromISO(`${dateTime.endDate }T${dateTime.endTime}`, { zone: 'America/Edmonton' }) : DateTime.fromISO(`${dateTime.startDate }T${dateTime.endTime}`, { zone: 'America/Edmonton' });;
+          }
+    
+          if(dateTime.repeat){
+              if (dateTime.exWeekend) {          
+                // Creating tasks for the inbetween
+                await createTasksForExWeekend(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.endTime, job, job.setup);
+              } else {
+                await createTasksForRepeat(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.endTime, job, job.setup)
+              }
+          }
+          else if(dateTime.twentyFour){
+            await createTaskForDate(dateTime.startDate, dateTime.startTime, null, null, job, job.setup, 'Place');
+            await createTaskForDate(null, null, dateTime.endDate, dateTime.endTime, job, location, 'Takedown');
+          }
+    
+          else {
+            // Non-twentyFour task
+            await createTaskForDate(dateTime.startDate, dateTime.startTime, null, null, job, job.setup, 'Place');
+            await createTaskForDate(null, null, dateTime.startDate, dateTime.endTime, job, job.setup, 'Takedown');
+          }
+        })
+        );
+        
+        //NPAT task
+        if(NPAT){
+          let npatStartDate = new Date(earliestStartDate);
+          npatStartDate.setDate(npatStartDate.getDate() - 1)
+          await createTaskForDate(npatStartDate, null, null, null, job, job.setup, "NPAT")
+        }
+        
+        await updateJob(job.id, { starttime: earliestStartDate, endtime: latestEndDate }) 
+          setLoading(false)
+          handleClose()
+          window.location.reload()
+        }
+
+    if(loading == true){
+        return <LinearProgress />
+    }
+
+    return (
+      <> 
+          <Dialog onClose={handleClose} open={open} maxWidth="lg"> {/* Set maxWidth to lg for a larger dialog */}
+            <DialogTitle>Job Date Editor</DialogTitle>
+            <DialogContent>   
+                <form onSubmit={handleSubmit}>  
+                <div className='container justify-content-center d-sm-flex overflow-auto'>
+                    <div className="flex-column">
+                        <div className="mb-3">
+                            <input className="form-check-input mx-2" type="checkbox" id="npat"/>
+                            <label className="form-check-label">NPAT Job</label>
+                        </div>
+                    {dates.map((date, index) => (
+                        <DateInput2
+                        key={index}
+                        date={date}
+                        index={index}
+                        handleDateChange={handleDateChange}
+                        handleCheckboxChanges={handleCheckboxChanges}
+                        deleteDate={deleteDate}
+                        />
+                    ))}
+                    <button type="button" className="btn btn-primary my-2" onClick={addDate}> Add Date and Time </button>
+                    </div>
+                </div>
+                <div className="text-center">
+                    <button type="submit" className="btn btn-primary">Submit</button>
+                </div>
+                </form>
+            </DialogContent>
+            </Dialog>
+      </>
+    );
+  }
 
 export default function JobDetails({job, handleInputChange, isEditing, user, handleCancelClick, saveChanges, handleEditClick}) {
+    const [open, setOpen] = useState(false);
+    const handleClickOpen = () => {
+        setOpen(true);
+      };
+    
+      const handleClose = () => {
+        setOpen(false);
+      };
+
     return (
         <div>
         {job && <div className="container text-center justify-content-center mt-4 d-flex">
@@ -76,20 +215,8 @@ export default function JobDetails({job, handleInputChange, isEditing, user, han
                             <option value="none">None</option>
                         </select>
                         </div>
-                        {/* <div className="input-group d-sm-flex">
-                        <div className="input-group-prepend">
-                            <span className="input-group-text" id="">Start Time</span>
-                        </div>
-                                <input type="datetime-local" className="form-control" id="startDate" value={moment(job.starttime).format('YYYY-MM-DDTHH:mm')}
-                                onChange={(e) => handleInputChange(e, 'starttime')}/>
-                        </div>
-                        <div className="input-group d-sm-flex">
-                        <div className="input-group-prepend">
-                            <span className="input-group-text" id="">End Time</span>
-                        </div>
-                                <input type="datetime-local" className="form-control" id="startDate" value={moment(job.endtime).format('YYYY-MM-DDTHH:mm')}
-                                onChange={(e) => handleInputChange(e, 'endtime')}/>
-                        </div> */}
+                        <Button variant="outlined" style={{width: "100%"}} onClick={() => handleClickOpen()}>Edit Dates</Button>
+                        <DateEditBox open={open} onClose={handleClose} job = {job}></DateEditBox>
                     </fieldset>
                 </div> 
                       </>

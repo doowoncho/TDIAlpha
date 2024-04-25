@@ -7,7 +7,6 @@ import FileUpload from '../Components/FileUpload';
 import SwipeableEdgeDrawer from '../Components/Drawer';
 import { Card, Box, Divider, Typography, Stack, Paper, Chip} from '@mui/material';
 import Button from 'react-bootstrap/Button';
-import { Badge } from 'react-bootstrap';
 
 let user = await getUserById(window.sessionStorage.getItem("user"))
 
@@ -20,28 +19,26 @@ export default function Orders() {
     endtime: null,
     notes: null,
     job_id: null,
-    setup: null
+    setup: null,
+    type: null
   });
   const [isEditing, setIsEditing] = useState(false); // State to track edit mode
-  const [isCompleted, setIsCompleted] = useState(task.completed || false);
 
   useEffect(() => {
     async function fetchTask() {
       try {
+        console.log("test")
         const fetchedTask = await gettaskById(id);
         setTask(fetchedTask);
-        setIsCompleted(fetchedTask.completed || false);
-  
         setIsLoading(false);
       } catch (error) {
         setError('Error retrieving task!');
         setIsLoading(false);
       }
-      console.log(isCompleted);
     }
 
     fetchTask();
-  }, [id]);
+  }, []);
 
   const handleEditClick = () => {
     setIsEditing(true); // Enable edit mode
@@ -99,8 +96,11 @@ export default function Orders() {
   }
 
   const handleStatusChange = async (x) => {
+    await setTask((prevTask) => ({
+      ...prevTask,
+      type: x.target.value
+    }));
     await updatetask(task.id, { type: x.target.value });
-    window.location.reload()
   };
 
   function isValidType(type) {

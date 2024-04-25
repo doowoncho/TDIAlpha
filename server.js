@@ -47,6 +47,22 @@ app.get('/api/jobs', async (req, res) => {
   }
 });
 
+app.delete('/api/deleteTasksByJobId/:id', async (req, res) => {
+  try {
+    const jobId = parseInt(req.params.id) //id of task we are changing
+    console.log(jobId)
+    const tasks = await prisma.tasks.deleteMany({
+      where:{
+        job_id: jobId
+      }
+    });
+    res.json(tasks);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 app.get('/api/contacts', async (req, res) => {
   try {
     const posts = await prisma.contacts.findMany();
@@ -85,12 +101,12 @@ app.put('/api/updatetask/:id', async (req, res) => {
     
     if (job) {
       const earliestTask = await prisma.tasks.findFirst({
-        where: { job_id: job.id, type: { not: 'NPAT' } },
+        where: { job_id: job.id, type: { not: 'NPAT' }, starttime: { not: null}  },
         orderBy: { starttime: 'asc' },
       });
     
       const latestTask = await prisma.tasks.findFirst({
-        where: { job_id: job.id, type: { not: 'NPAT' } },
+        where: { job_id: job.id, type: { not: 'NPAT' }, endtime: { not: null} },
         orderBy: { endtime: 'desc' },
       });
 
