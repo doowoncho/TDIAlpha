@@ -42,7 +42,8 @@ export default function TasksTable() {
       company: null,
       stamp: null,
       starttime: null,
-      endtime: null
+      endtime: null,
+      notes: null
   });
 
   const [isEditing, setIsEditing] = useState(false); // State to track edit mode
@@ -69,6 +70,12 @@ export default function TasksTable() {
     setType(event.target.value);
   };
   
+  const notesChange = (event) =>{
+     setJob((prevTask) => ({
+      ...prevTask,
+      notes: event.target.value,
+    }));
+  }
   
   useEffect(() => {
     const fetchData = async () => {
@@ -210,7 +217,6 @@ export default function TasksTable() {
     <div className="container">
       <div className="container text-center justify-content-center d-flex">
         {job && <JobDetails job={job} handleInputChange = {handleInputChange} isEditing={isEditing} user={user} handleCancelClick={handleCancelClick} saveChanges={saveChanges} handleEditClick={handleEditClick}/>}
-        
         <div className="card d-none d-sm-block my-4">
           <div className="card-header">
             Files
@@ -255,6 +261,14 @@ export default function TasksTable() {
         </div>
       </div>
     <header className='container text-center my-2'>
+        <label>Notes: </label>
+        <input
+          type="text"
+          className="form-control my-1"
+          id="notes"
+          value={job.notes ?? ""}
+          onChange={(e) => notesChange(e)}/>
+          <Button variant="contained" onClick={() => updateJob(id, job)}>Save</Button>
       <h1>Tasks</h1>
       <Table
         data={taskList}

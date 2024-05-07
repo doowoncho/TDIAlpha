@@ -3,7 +3,7 @@ import PopUp from '../Components/PopUp';
 
 const { GridActionsCellItem, GridDeleteIcon, GridDeleteForeverIcon, getGridNumericOperators, getGridDateOperators } = require('@mui/x-data-grid');
 const moment = require('moment-timezone');
-const statusChoices = ['Approved', 'New', 'Completed', 'Invoice', 'Declined', 'Submitted', 'Waiting']
+const statusChoices = ['Approved', 'New', 'Completed', 'Invoice', 'Declined', 'Submitted', 'Waiting', 'Work Off Existing Closure']
 const taskChoices = ['NPAT', 'SameDay', 'Place', 'Takedown', 'Finished', 'Cancelled', 'Cancelled OS']
 const minWidthStartTime = 180;
 const minWidthEndTime = 180;
@@ -69,7 +69,7 @@ export const InvoicePageColumns = [
     },
   }, 
   { field: 'qb_invoice', headerName: 'QB Invoice #', flex: 1, minWidth: minWidthQBInvoice, editable: isEditable, type: 'number'},
-  { field: 'qb_invoice_logs', headerName: 'Permit Logs', flex: 1, minWidth: minWidthNotes, editable: false, 
+  { field: 'qb_invoice_logs', headerName: 'QB Logs', flex: 1, minWidth: minWidthNotes, editable: false, 
   renderCell: (params) => {
     return PopUp(params.id, params.field)
   }
@@ -136,7 +136,7 @@ export const CompletedPageColumns = [
     },
   }, 
   { field: 'qb_invoice', headerName: 'QB Invoice #', flex: 1, minWidth: minWidthQBInvoice, editable: isEditable, type: 'number' },
-  { field: 'qb_invoice_logs', headerName: 'Permit Logs', flex: 1, minWidth: minWidthNotes, editable: false, 
+  { field: 'qb_invoice_logs', headerName: 'QB Logs', flex: 1, minWidth: minWidthNotes, editable: false, 
   renderCell: (params) => {
     return PopUp(params.id, params.field)
   }

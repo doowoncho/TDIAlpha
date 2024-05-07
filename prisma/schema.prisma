@@ -24,6 +24,7 @@ model jobs {
   stamp         String?   @db.VarChar(255)
   qb_invoice    Int?
   permit_cost   Float?
+  notes         String?   @db.Text
 }
 
 model tasks {
@@ -49,14 +50,14 @@ model users {
 
 model files {
   id                       Int     @id @default(autoincrement())
-  photo_name               String? @db.VarChar(255)
-  photo_file               String? @db.VarChar(255)
-  permit_name              String? @db.VarChar(255)
-  permit_file              String? @db.VarChar(255)
-  permit_confirmation_name String? @db.VarChar(255)
-  permit_confirmation_file String? @db.VarChar(255)
-  map_drawing_name         String? @db.VarChar(255)
-  map_file                 String? @db.VarChar(255)
+  photo_name               String? @db.Text
+  photo_file               String? @db.Text
+  permit_name              String? @db.Text
+  permit_file              String? @db.Text
+  permit_confirmation_name String? @db.Text
+  permit_confirmation_file String? @db.Text
+  map_drawing_name         String? @db.Text
+  map_file                 String? @db.Text
 }
 
 model photos {
@@ -69,22 +70,22 @@ model photos {
 model permits {
   id     Int     @id @default(autoincrement())
   job_id Int?
-  name   String? @db.VarChar(255)
-  file   String? @db.VarChar(255)
+  name   String? @db.Text
+  file   String? @db.Text
 }
 
 model permitConfirmations {
   id     Int     @id @default(autoincrement())
   job_id Int?
-  name   String? @db.VarChar(255)
-  file   String? @db.VarChar(255)
+  name   String? @db.Text
+  file   String? @db.Text
 }
 
 model plans {
   id     Int     @id @default(autoincrement())
   job_id Int?
-  name   String? @db.VarChar(255)
-  file   String? @db.VarChar(255)
+  name   String? @db.Text
+  file   String? @db.Text
 }
 
 model contacts {
@@ -97,8 +98,8 @@ model contacts {
 
 model receipts {
   id   Int     @id @default(autoincrement())
-  name String? @db.VarChar(255)
-  file String? @db.VarChar(255)
+  name String? @db.Text
+  file String? @db.Text
 }
 
 model qbInvoiceLogs {
