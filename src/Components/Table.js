@@ -92,6 +92,7 @@ export default function Table({ data, columns, handleUpdate, defaultSorting, han
       timezone="America/Edmonton"
       initialState={defaultSorting}
       checkboxSelection 
+      disableRowSelectionOnClick
       onRowSelectionModelChange={(newRowSelectionModel) => {
         handleSelectionModelChange(newRowSelectionModel)
         setRowSelectionModel(newRowSelectionModel);

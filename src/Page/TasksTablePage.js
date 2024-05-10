@@ -43,7 +43,7 @@ export default function TasksTable() {
       stamp: null,
       starttime: null,
       endtime: null,
-      notes: null
+      jobNotes: null
   });
 
   const [isEditing, setIsEditing] = useState(false); // State to track edit mode
@@ -73,7 +73,7 @@ export default function TasksTable() {
   const notesChange = (event) =>{
      setJob((prevTask) => ({
       ...prevTask,
-      notes: event.target.value,
+      jobNotes: event.target.value,
     }));
   }
   
@@ -267,7 +267,7 @@ export default function TasksTable() {
         type="text"
         className="form-control my-1"
         id="notes"
-        value={job.notes ?? ""}
+        value={job.jobNotes ?? ""}
         onChange={(e) => notesChange(e)}
       />
       <Button variant="contained" onClick={() => updateJob(id, job)} style={{ alignSelf: 'flex-start', marginTop: '10px' }}>Save</Button>

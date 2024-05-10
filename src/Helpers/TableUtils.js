@@ -1,5 +1,7 @@
+import { Input, Switch, ToggleButton } from '@mui/material';
 import { deleteJob, deletetask, getAllUsers, getUserById } from '../Components/APICalls';
 import PopUp from '../Components/PopUp';
+import { CheckBox } from '@mui/icons-material';
 
 const { GridActionsCellItem, GridDeleteIcon, GridDeleteForeverIcon, getGridNumericOperators, getGridDateOperators } = require('@mui/x-data-grid');
 const moment = require('moment-timezone');
@@ -58,7 +60,8 @@ export const InvoicePageColumns = [
   { field: 'permit_number', headerName: 'Permit Number', flex: 1, minWidth: minWidthPermitNumber, editable: isEditable, },
   { field: 'po_number', headerName: 'PO Number', flex: 1, minWidth: minWidthPONumber, editable: isEditable,},
   { field: 'wo_number', headerName: 'WO Number', flex: 1, minWidth: minWidthWONumber, editable: isEditable,},
-  { field: 'notes', headerName: 'Notes', flex: 1, minWidth: minWidthNotes, editable: false, 
+  { field: 'jobNotes', headerName: 'Job Notes', flex: 1, minWidth: minWidthSetup, editable: isEditable},
+  { field: 'notes', headerName: 'Task Notes', flex: 1, minWidth: minWidthNotes, editable: false, 
     renderCell: (params) => {
       return PopUp(params.id)
     }
@@ -69,11 +72,12 @@ export const InvoicePageColumns = [
     },
   }, 
   { field: 'qb_invoice', headerName: 'QB Invoice #', flex: 1, minWidth: minWidthQBInvoice, editable: isEditable, type: 'number'},
-  { field: 'qb_invoice_logs', headerName: 'QB Logs', flex: 1, minWidth: minWidthNotes, editable: false, 
-  renderCell: (params) => {
-    return PopUp(params.id, params.field)
-  }
+  { field: 'qb_invoice_logs', headerName: 'QB Logs', flex: 1, minWidth: 110, editable: false, 
+    renderCell: (params) => {
+      return PopUp(params.id, params.field)
+    }
   },
+  { field: 'paid', headerName: 'Paid', flex: 1, editable: isEditable, minWidth: 100, type: 'boolean'}
 ]
 
 export const CompletedPageColumns = [
@@ -111,6 +115,7 @@ export const CompletedPageColumns = [
   { field: 'permit_number', headerName: 'Permit Number', flex: 1, minWidth: minWidthPermitNumber, editable: isEditable, },
   { field: 'po_number', headerName: 'PO Number', flex: 1, minWidth: minWidthPONumber, editable: isEditable,},
   { field: 'wo_number', headerName: 'WO Number', flex: 1, minWidth: minWidthWONumber, editable: isEditable,},
+  { field: 'jobNotes', headerName: 'Job Notes', flex: 1, minWidth: minWidthSetup, editable: isEditable},
   { field: 'notes', headerName: 'Notes', flex: 1, minWidth: minWidthNotes, editable: false, 
     renderCell: (params) => {
       return PopUp(params.id)

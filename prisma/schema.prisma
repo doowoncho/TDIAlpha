@@ -24,7 +24,8 @@ model jobs {
   stamp         String?   @db.VarChar(255)
   qb_invoice    Int?
   permit_cost   Float?
-  notes         String?   @db.Text
+  jobNotes         String?   @db.Text
+  paid          Boolean?
 }
 
 model tasks {
