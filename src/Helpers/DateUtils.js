@@ -46,20 +46,20 @@ export const createTaskForDate = async (startDate, startTime, endDate, endTime, 
       //creates first task
       currentDate.setDate(currentDate.getDate() + 1)
       await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, null, null, job, location, "Place");
-      await createTaskForDate(null, null, moment(currentDate).format('YYYY-MM-DD'), endTime, job, location, "Takedown");
+      await createTaskForDate(null, null, moment(currentDate).format('YYYY-MM-DD'), endTime, job, location, "Knockdown");
       currentDate.setDate(currentDate.getDate() + 1)
       while (currentDate <= new Date(endDate)) {
 
         if(currentDate.getDay() != 6 && currentDate.getDay() != 0){
           //Task to keep repeating
           await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, null, null, job, location, "Place");
-          await createTaskForDate(null, null, moment(currentDate).format('YYYY-MM-DD'), endTime, job, location, "Takedown");
+          await createTaskForDate(null, null, moment(currentDate).format('YYYY-MM-DD'), endTime, job, location, "Knockdown");
         }
         currentDate.setDate(currentDate.getDate() + 1);
       }
         //creates last task
         await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, null, null, job, location, "Place");
-        await createTaskForDate(null, null, moment(currentDate).format('YYYY-MM-DD'), endTime, job, location, "Takedown");
+        await createTaskForDate(null, null, moment(currentDate).format('YYYY-MM-DD'), endTime, job, location, "Knockdown");
     };
     
     export const createTasksForRepeat = async (startDate, startTime, endDate, endTime, job, location) => {
@@ -67,6 +67,6 @@ export const createTaskForDate = async (startDate, startTime, endDate, endTime, 
       while (currentDate <= new Date(endDate)) {
         currentDate.setDate(currentDate.getDate() + 1);
         await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, null, null, job, location, "Place");
-        await createTaskForDate(null, null, moment(currentDate).format('YYYY-MM-DD'), endTime, job, location, "Takedown");
+        await createTaskForDate(null, null, moment(currentDate).format('YYYY-MM-DD'), endTime, job, location, "Knockdown");
       }
     };

@@ -1,21 +1,25 @@
 import React, { useState } from 'react';
 import Box from '@mui/material/Box';
-import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import { DataGrid, GridDeleteForeverIcon, GridToolbar } from '@mui/x-data-grid';
 import Snackbar from '@mui/material/Snackbar'; // Import Snackbar from @mui/material
 
 import '../Styles/Rows.css'
-import { createInvoiceLog } from './APICalls';
+import { createInvoiceLog, deleteJob } from './APICalls';
 import moment from 'moment';
+import { Button } from 'react-bootstrap';
 
-export default function Table({ data, columns, handleUpdate, defaultSorting }) {
+export default function Table({ data, columns, handleUpdate, defaultSorting, handleDelete}) {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [rowSelectionModel, setRowSelectionModel] = useState([]);
 
   const handleCloseSnackbar = () => setSnackbarOpen(false);
 
-  const handleDelete = () =>{
-    setSnackbarMessage('Row updated successfully');
-  }
+  const handleSelectionModelChange = async (newSelection) => {
+    console.log(newSelection)
+    setRowSelectionModel(newSelection)
+    // Do something with the selected rows...
+  };
 
   const processRowUpdate = async (updatedRow, oldValue) => {
       if(JSON.stringify(updatedRow) !== JSON.stringify(oldValue)){
@@ -61,29 +65,41 @@ export default function Table({ data, columns, handleUpdate, defaultSorting }) {
       </div>
     );
   }
-
   return (
-    <div className='container my-3'>
-      <Box sx={{ height: '500px', width: '100%' }}>
-        <DataGrid
-          slots={{ toolbar: GridToolbar }}
-          rows={data}
-          columns={columns}
-          pageSize={5}
-          processRowUpdate={processRowUpdate}
-          onProcessRowUpdateError={handleProcessRowUpdateError}
-          // disableColumnFilter
-          density="comfortable"
-          editMode="cell" // Set editMode to "row" to prevent cells from popping out after editing
-          getRowClassName={getRowClassName} //
-          timezone="America/Edmonton"
-          initialState={defaultSorting}
-        />
-      </Box>
-      <Snackbar anchorOrigin={{ vertical: "top", horizontal: 'left' }} open={snackbarOpen} onClose={handleCloseSnackbar} message={snackbarMessage} autoHideDuration={2000} />
-      <br></br>
-    <br></br>
-    <br></br>
-    </div>
+    <div className='container my-3' style={{ position: 'relative' }}>
+  {rowSelectionModel.length > 0 && 
+    <Button 
+      variant="outlined" 
+      style={{ position: 'absolute', top: '-40px', right: '10px' }} // Adjust top and right as needed
+      onClick={() => rowSelectionModel.forEach(element => {
+        handleDelete(element);
+      })}
+    >
+      <GridDeleteForeverIcon />
+    </Button>
+  }
+  <Box sx={{ height: '500px', width: '100%' }}>
+    <DataGrid
+      slots={{ toolbar: GridToolbar }}
+      rows={data}
+      columns={columns}
+      pageSize={5}
+      processRowUpdate={processRowUpdate}
+      onProcessRowUpdateError={handleProcessRowUpdateError}
+      density="comfortable"
+      editMode="cell"
+      getRowClassName={getRowClassName}
+      timezone="America/Edmonton"
+      initialState={defaultSorting}
+      checkboxSelection 
+      onRowSelectionModelChange={(newRowSelectionModel) => {
+        handleSelectionModelChange(newRowSelectionModel)
+        setRowSelectionModel(newRowSelectionModel);
+      }}
+    />
+  </Box>
+  <Snackbar anchorOrigin={{ vertical: "top", horizontal: 'left' }} open={snackbarOpen} onClose={handleCloseSnackbar} message={snackbarMessage} autoHideDuration={2000} />
+</div>
+
   );
 }

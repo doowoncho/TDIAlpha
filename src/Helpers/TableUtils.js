@@ -4,7 +4,7 @@ import PopUp from '../Components/PopUp';
 const { GridActionsCellItem, GridDeleteIcon, GridDeleteForeverIcon, getGridNumericOperators, getGridDateOperators } = require('@mui/x-data-grid');
 const moment = require('moment-timezone');
 const statusChoices = ['Approved', 'New', 'Completed', 'Invoice', 'Declined', 'Submitted', 'Waiting', 'Work Off Existing Closure']
-const taskChoices = ['NPAT', 'SameDay', 'Place', 'Takedown', 'Finished', 'Cancelled', 'Cancelled OS']
+const taskChoices = ['NPAT', 'SameDay', 'Place', 'Pickup', 'Knockdown', 'Finished', 'Cancelled', 'Cancelled OS']
 const minWidthStartTime = 180;
 const minWidthEndTime = 180;
 const minWidthStatus = 120;
@@ -74,20 +74,6 @@ export const InvoicePageColumns = [
     return PopUp(params.id, params.field)
   }
   },
-  {
-    field: 'actions',
-    type: 'actions',
-    width: minWidthActions,
-    getActions: (params) => [
-      <GridActionsCellItem
-        icon={<GridDeleteForeverIcon />}
-        label="Delete"
-        onClick={async ()=>{
-          await deleteJob(params.id);   window.location.reload();
-        }}
-      />
-    ],
-  },
 ]
 
 export const CompletedPageColumns = [
@@ -141,20 +127,6 @@ export const CompletedPageColumns = [
     return PopUp(params.id, params.field)
   }
   },
-  {
-    field: 'actions',
-    type: 'actions',
-    width: minWidthActions,
-    getActions: (params) => [
-      <GridActionsCellItem
-        icon={<GridDeleteForeverIcon />}
-        label="Delete"
-        onClick={async ()=>{
-          await deleteJob(params.id);   window.location.reload();
-        }}
-      />
-    ],
-  },
 ]
 
 export const JobsTableColumns = [
@@ -189,20 +161,6 @@ export const JobsTableColumns = [
   { field: 'company', headerName: 'Company', flex: 1, minWidth: minWidthCompany, editable: isEditable, },
   { field: 'setup', headerName: 'Setup', flex: 1, minWidth: minWidthSetup, editable: isEditable,},
   { field: 'wo_number', headerName: 'WO Number', flex: 1, minWidth: minWidthWONumber, editable: isEditable,},
-  {
-    field: 'actions',
-    type: 'actions',
-    width: minWidthActions,
-    getActions: (params) => [
-      <GridActionsCellItem
-        icon={<GridDeleteForeverIcon />}
-        label="Delete"
-        onClick={async ()=>{
-             await deleteJob(params.id); window.location.reload();
-        }}
-      />
-    ],
-  },
 ]
 
 export const TasksTableColumns = [
@@ -221,7 +179,7 @@ export const TasksTableColumns = [
         (operator) => operator.value == 'onOrAfter',
       ),
     },
-    { field: 'endtime', headerName: 'Takedown Time', flex: 1, minWidth: minWidthEndTime,
+    { field: 'endtime', headerName: 'Knockdown Time', flex: 1, minWidth: minWidthEndTime,
       valueFormatter: (params) => {
         const date = moment.tz(params.value, 'America/Edmonton');
         return date.isValid() ? date.format('MM/DD/YYYY h:mm A') : ""
@@ -242,18 +200,4 @@ export const TasksTableColumns = [
       valueOptions: taskChoices
     },
     { field: 'setup', headerName: 'Setup', flex: 1, editable: isEditable, minWidth: minWidthSetup},
-    {
-      field: 'actions',
-      type: 'actions',
-      width: minWidthActions,
-      getActions: (params) => [
-        <GridActionsCellItem
-          icon={<GridDeleteIcon />}
-          label="Delete"
-          onClick={async ()=>{
-            await deletetask(params.id);   window.location.reload();
-          }}
-        />
-      ],
-    },
   ]

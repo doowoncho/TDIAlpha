@@ -44,6 +44,7 @@ export default function JobsTable() {
 
   const fetchData = async () => {
     try {
+      console.log("test")
       const data = await getAllJobs();
       // Different counts for the jobs filters
       const newCount = data.filter((job) => job.status === "New" || job.status === 'Waiting').length;
@@ -83,6 +84,10 @@ export default function JobsTable() {
     await updateJob(id, params);
     await fetchData()
   };
+
+  const refetch = async (id, params) => {
+    await fetchData()
+  }
   
   const handleJobDelete = async (id) => {
     await deleteJob(id);
@@ -123,6 +128,7 @@ export default function JobsTable() {
         <div>
           <h2 className="text-center">{tableType}</h2>
           <Table data={jobList}
+            update = {refetch}
             columns = {JobsTableColumns}
             handleUpdate={handleJobUpdate}
             handleDelete={handleJobDelete}

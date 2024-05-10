@@ -261,14 +261,17 @@ export default function TasksTable() {
         </div>
       </div>
     <header className='container text-center my-2'>
-        <label>Notes: </label>
-        <input
-          type="text"
-          className="form-control my-1"
-          id="notes"
-          value={job.notes ?? ""}
-          onChange={(e) => notesChange(e)}/>
-          <Button variant="contained" onClick={() => updateJob(id, job)}>Save</Button>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+      <label>Notes </label>
+      <input
+        type="text"
+        className="form-control my-1"
+        id="notes"
+        value={job.notes ?? ""}
+        onChange={(e) => notesChange(e)}
+      />
+      <Button variant="contained" onClick={() => updateJob(id, job)} style={{ alignSelf: 'flex-start', marginTop: '10px' }}>Save</Button>
+    </div>
       <h1>Tasks</h1>
       <Table
         data={taskList}
@@ -303,8 +306,9 @@ export default function TasksTable() {
             >
               <MenuItem value={"NPAT"}>NPAT</MenuItem>
               <MenuItem value={"Place"}>Place</MenuItem>
-              <MenuItem value={"Takedown"}>Takedown</MenuItem>
+              <MenuItem value={"Knockdown"}>Knockdown</MenuItem>
               <MenuItem value={"SameDay"}>SameDay</MenuItem>
+              <MenuItem value={"PickUp"}>Pickup</MenuItem>
             </Select>
           </FormControl>
         </DialogContent>

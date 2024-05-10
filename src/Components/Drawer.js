@@ -36,7 +36,7 @@ const Puller = styled('div')(({ theme }) => ({
   left: 'calc(50% - 15px)',
 }));
 
-function SwipeableEdgeDrawer({window, jobId, label, type, count}) {
+function SwipeableEdgeDrawer({window, jobId, label, type, count, files}) {
   const [open, setOpen] = useState();
   const toggleDrawer = (newOpen) => () => { setOpen(newOpen);};
 
@@ -98,7 +98,7 @@ function SwipeableEdgeDrawer({window, jobId, label, type, count}) {
           {label === 'Receipt' ? (
               <FileUploadGeneric type="receipts"></FileUploadGeneric>
             ) : (
-              <FileUpload type={type} giveID={jobId}></FileUpload>
+              <FileUpload type={type} giveID={jobId} files={files}></FileUpload>
             )}
         </StyledBox>
       </SwipeableDrawer>

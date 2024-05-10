@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import { useParams } from 'react-router-dom';
-import { getUserById, gettaskById, updatetask } from '../Components/APICalls';
+import { getFilesById, getUserById, gettaskById, updatetask } from '../Components/APICalls';
 import '../Styles/TaskDetails.css';
 import FileUpload from '../Components/FileUpload';
 import SwipeableEdgeDrawer from '../Components/Drawer';
-import { Card, Box, Divider, Typography, Stack, Paper, Chip} from '@mui/material';
+import { Card, Box, Divider, Typography, Stack, Paper, Chip, LinearProgress} from '@mui/material';
 import Button from 'react-bootstrap/Button';
 
 let user = await getUserById(window.sessionStorage.getItem("user"))
@@ -23,16 +23,18 @@ export default function Orders() {
     type: null
   });
   const [isEditing, setIsEditing] = useState(false); // State to track edit mode
+  const [files, setFiles] = useState("");
 
   useEffect(() => {
-    async function fetchTask() {
+    const fetchTask = async () => {
       try {
-        console.log("test")
-        const fetchedTask = await gettaskById(id);
-        setTask(fetchedTask);
+        var fetchedTask = await gettaskById(id)
+        setFiles(await getFilesById(fetchedTask.job_id))
+        setTask(await gettaskById(id))
         setIsLoading(false);
+
       } catch (error) {
-        setError('Error retrieving task!');
+        setError('Error retrieving task!' + error);
         setIsLoading(false);
       }
     }
@@ -61,7 +63,7 @@ export default function Orders() {
       taskType = 'Place'
     }
     else if(newEndTime !=null){
-      taskType = 'Takedown'
+      taskType = 'Knockdown'
     }
     await updatetask(task.id, 
     {
@@ -88,7 +90,7 @@ export default function Orders() {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <LinearProgress />
   }
 
   if (error) {
@@ -114,7 +116,6 @@ export default function Orders() {
         <div className="d-flex">
           <a href={`/taskspage/${task.job_id}`} className="btn btn-link">Job</a>
         </div>
-
         <div className="d-flex align-items-center my-4">
               {isEditing
                 ? <>
@@ -149,7 +150,7 @@ export default function Orders() {
                         <Box sx={{ p: 2 }}>
                             <Stack direction="row" spacing={1}>
                                 <Chip color={task.type === 'Place' ? 'primary' : 'default'} label="Place" size="small"/>
-                                <Chip color={task.type === 'Takedown' ? 'primary' : 'default'} label="Takedown" size="small"/>
+                                <Chip color={task.type === 'Knockdown' ? 'primary' : 'default'} label="Knockdown" size="small"/>
                                 <Chip color={task.type === 'SameDay' ? 'primary' : 'default'} label="SameDay" size="small"/>
                                 <Chip color={task.type === 'NPAT' ? 'primary' : 'default'} label="NPAT" size="small"/>
                             </Stack>
@@ -184,7 +185,7 @@ export default function Orders() {
                                   <Typography color="text.primary" >
                                   <input type="datetime-local" className="form-control" id="startDate" value={moment.tz(task.starttime, 'America/Edmonton').format('YYYY-MM-DDTHH:mm')} onChange={(e) => handleInputChange(e, 'starttime')} disabled = {user.permission == 2}/>
                                   </Typography>
-                                  <label htmlFor="exampleInputEndDate">Takedown:</label>
+                                  <label htmlFor="exampleInputEndDate">Knockdown:</label>
                                   <Typography color="text.primary" >
                                   <input type="datetime-local" className="form-control" id="enddate" value={moment.tz(task.endtime, 'America/Edmonton').format('YYYY-MM-DDTHH:mm')} onChange={(e) => handleInputChange(e, 'endtime')} disabled = {user.permission == 2}/>
                                   </Typography>
@@ -207,7 +208,7 @@ export default function Orders() {
                                       {task.starttime && `Place: ${moment.tz(task.starttime, 'America/Edmonton').format('MMMM DD YYYY h:mm A')}`}
                                   </Typography>
                                   <Typography color="text.primary" >
-                                      {task.endtime && `Takedown: ${moment.tz(task.endtime, 'America/Edmonton').format('MMMM DD YYYY h:mm A')}`}
+                                      {task.endtime && `Knockdown: ${moment.tz(task.endtime, 'America/Edmonton').format('MMMM DD YYYY h:mm A')}`}
                                   </Typography>
                               </Box>
                               </>
@@ -252,21 +253,24 @@ export default function Orders() {
           </div>
           <div className="d-flex flex-wrap justify-content-center">
               <div className="mx-2 my-2" style={{ width:"10rem", textAlign:"center" }}>
-                <SwipeableEdgeDrawer type="permitConfirmation" jobId={task.job_id} label="P. Confirm"></SwipeableEdgeDrawer>
+                <SwipeableEdgeDrawer type="permitConfirmation" jobId={task.job_id} label="P. Confirm" count = {files.permitConfirmation?.length}></SwipeableEdgeDrawer>
               </div>
               <div className="mx-2 my-2" style={{ width:"10rem", textAlign:"center" }}>
-                <SwipeableEdgeDrawer type="permit" jobId={task.job_id} label="Permit"></SwipeableEdgeDrawer>
+                <SwipeableEdgeDrawer type="permit" jobId={task.job_id} label="Permit" count = {files.permit?.length}></SwipeableEdgeDrawer>
               </div>
               <div className="mx-2 my-2" style={{ width:"10rem", textAlign:"center" }}>
-                <SwipeableEdgeDrawer type="plan" jobId={task.job_id} label="Plan"></SwipeableEdgeDrawer>
+                <SwipeableEdgeDrawer type="plan" jobId={task.job_id} label="Plan" count = {files.plan?.length}></SwipeableEdgeDrawer>
               </div>
               <div className="mx-2 my-2" style={{ width:"10rem", textAlign:"center" }}>
-                <SwipeableEdgeDrawer type="photo" jobId={task.job_id} label="Photo"></SwipeableEdgeDrawer>
+                <SwipeableEdgeDrawer type="photo" jobId={task.job_id} label="Photo" count = {files.photo?.length}></SwipeableEdgeDrawer>
               </div>
-            </div>
+           </div>
         </div>
       </Paper>
     </div>
+    <br></br>
+    <br></br>
+    <br></br>
     </div>
   );
 }
