@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import { getAllJobs, deleteJob, updateJob } from "../Components/APICalls";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Table from "../Components/Table";
-import { applySearchFilters } from "../Helpers/SearchUtils";
 import { JobsTableColumns } from "../Helpers/TableUtils";
 import { CheckCircleOutline, ErrorOutline, MailOutline, NotificationsOutlined } from "@mui/icons-material";
 import { Badge } from "@mui/material";
@@ -44,8 +43,8 @@ export default function JobsTable() {
 
   const fetchData = async () => {
     try {
-      console.log("test")
-      const data = await getAllJobs();
+      var data = await getAllJobs();
+      data = data.filter((job) => job.status !== "Deleted")
       // Different counts for the jobs filters
       const newCount = data.filter((job) => job.status === "New" || job.status === 'Waiting').length;
       const declinedCount = data.filter((job) => job.status === "Declined").length;
@@ -90,7 +89,8 @@ export default function JobsTable() {
   }
   
   const handleJobDelete = async (id) => {
-    await deleteJob(id);
+    await updateJob(id, {status: "Deleted"})
+    // await deleteJob(id);
     fetchData()
   };
   

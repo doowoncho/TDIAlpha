@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const { ReadableStreamDefaultController } = require('stream/web');
 const path = require('path');
+const cron = require('node-cron');
 
 const buildPath = path.join(__dirname, "build");
 
@@ -25,8 +26,78 @@ app.get("/", function(req, res) {
 app.use(bodyParser.json());
 app.use(cors());
 
-//api endpoints to be called in the code to make calls in the database
+const weeklyTask = async () => {
+  // Your task logic here
+   try {
+    const ids = await prisma.jobs.findMany({
+      where: {
+        status: "Deleted"
+      },
+      select: {
+        id: true
+      }
+    });
 
+    const idsToDelete = ids.map(job => job.id);
+    if (idsToDelete.length === 0) {
+      console.log("No jobs to delete.");
+      return;
+    }
+
+    const deletedjob = await prisma.jobs.deleteMany({
+      where: {
+        id: { in: idsToDelete }
+      },
+    });
+
+    const deletedTasks = await prisma.tasks.deleteMany({
+      where: {
+        job_id: { in: idsToDelete }
+      },
+    });
+
+    // const deletedFiles = await prisma.files.deleteMany({
+    //   where: {
+    //     job_id: jobId
+    //   },
+    // });
+
+    const deletedLogs = await prisma.permitCosts.deleteMany({
+      where: {
+        job_id: { in: idsToDelete }
+      },
+    });
+
+    const deletedPhotos = await prisma.photos.deleteMany({
+      where: {
+        job_id: { in: idsToDelete }
+      },
+    });
+
+    const deletedPermits = await prisma.permits.deleteMany({
+      where: {
+        job_id: { in: idsToDelete }
+      },
+    });
+
+    const deletedPermitConfirmations = await prisma.permitConfirmations.deleteMany({
+      where: {
+        job_id: { in: idsToDelete }
+      },
+    });
+
+    const deletedPlans = await prisma.plans.deleteMany({
+      where: {
+        job_id: { in: idsToDelete }
+      },
+    });
+
+    } catch (error) {
+    console.error(error);
+   }
+};
+
+//api endpoints to be called in the code to make calls in the database
 app.get('/api/tasks', async (req, res) => {
   try {
     const posts = await prisma.tasks.findMany();
@@ -713,6 +784,8 @@ app.post('/api/createInvoiceLog', async (req, res) => {
   }
 });
 
+// cron.schedule('* * * * *', weeklyTask);
+cron.schedule('0 0 * * 0', weeklyTask);
 
 app.listen(3001, () => {
   console.log('Server is running on port 3001');

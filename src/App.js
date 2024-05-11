@@ -11,6 +11,7 @@ import JobsTable from "./Page/JobsTablePage";
 import Receipts from "./Page/ReceiptsPage";
 import LegendPage from "./Page/LegendPage";
 import './index.css'
+import DeletedJobs from "./Page/DeleteJobsPage";
 const App = () => {
   const isUserLoggedIn = window.sessionStorage.getItem("user");
 
@@ -28,6 +29,7 @@ const App = () => {
           <Route path="/jobstable" element={<JobsTable />} />
           <Route path="/receipts" element={<Receipts />} />
           <Route path="/legends" element={<LegendPage/>} />
+          <Route path="/deleted" element={<DeletedJobs/>} />
         </>
       ) : (
         <>

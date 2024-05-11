@@ -35,7 +35,8 @@ export default function InvoicePage() {
   };
 
   const handleJobDelete = async id => {
-    await deleteJob(id);
+    await updateJob(id, {status: "Deleted"})
+    // await deleteJob(id);
     fetchData()
   };
 

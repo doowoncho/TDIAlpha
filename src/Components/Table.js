@@ -8,7 +8,7 @@ import { createInvoiceLog, deleteJob } from './APICalls';
 import moment from 'moment';
 import { Button } from 'react-bootstrap';
 
-export default function Table({ data, columns, handleUpdate, defaultSorting, handleDelete}) {
+export default function Table({ data, columns, handleUpdate, defaultSorting, handleDelete, showDeleteButton = true}) {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [rowSelectionModel, setRowSelectionModel] = useState([]);
@@ -91,7 +91,7 @@ export default function Table({ data, columns, handleUpdate, defaultSorting, han
       getRowClassName={getRowClassName}
       timezone="America/Edmonton"
       initialState={defaultSorting}
-      checkboxSelection 
+      checkboxSelection = {showDeleteButton} 
       disableRowSelectionOnClick
       onRowSelectionModelChange={(newRowSelectionModel) => {
         handleSelectionModelChange(newRowSelectionModel)

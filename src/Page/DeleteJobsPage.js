@@ -3,19 +3,15 @@ import { useEffect, useRef, useState  } from "react";
 import { getAllJobs, deleteJob, updateJob} from "../Components/APICalls";
 import { CompletedPageColumns } from "../Helpers/TableUtils";
 
-export default function CompletedPage() {
+export default function DeletedJobs() {
   const [jobList, setJobList] = useState([]);
-  const [year, setYear] = useState([2016])
-  const [search, setSearch] = useState([]);
-
-  const isMounted = useRef(true);
 
   async function fetchData() {
     try {
       const data = await getAllJobs();
       if (data == null) return;
 
-      const filteredData = data.filter(job => job.status == 'Completed')
+      const filteredData = data.filter(job => job.status == 'Deleted')
 
       // Sort by newest
       const sortedData = filteredData.sort((jobA, jobB) => {
@@ -38,8 +34,7 @@ export default function CompletedPage() {
   };
 
   const handleJobDelete = async id => {
-    await updateJob(id, {status: "Deleted"})
-    // await deleteJob(id);
+    await deleteJob(id);
     fetchData()
   };
 
@@ -51,11 +46,12 @@ export default function CompletedPage() {
   return (
       <div>
       <header className='container text-center my-4'>
-        <h1>To Be Invoiced</h1>
+        <h1>Deleted</h1>
         <Table
             data={jobList}
             columns={CompletedPageColumns}
             handleUpdate={handleJobUpdate} handleDelete={handleJobDelete} 
+            showDeleteButton={false}
           />
       </header>
     </div>
