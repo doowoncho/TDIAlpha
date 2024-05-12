@@ -39,8 +39,6 @@ const Puller = styled('div')(({ theme }) => ({
 function SwipeableEdgeDrawer({window, jobId, label, type, count, files}) {
   const [open, setOpen] = useState();
   const toggleDrawer = (newOpen) => () => { setOpen(newOpen);};
-
-
   const icon = () =>{
     switch(label) {
         case "P. Confirm":

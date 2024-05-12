@@ -224,19 +224,19 @@ export default function TasksTable() {
           <div className="d-flex flex-wrap justify-content-center">
             <div className="mx-2 my-2">
               <label htmlFor="formFileDisabled" className="form-label my-1">P.Confrim</label>
-              <FileUpload type="permitConfirmation" giveID={id}></FileUpload>
+              <FileUpload type="permitConfirmation" giveID={id} files={files}></FileUpload>
             </div>
             <div className="mx-2 my-2">
               <label htmlFor="formFileDisabled" className="form-label my-1">Permit</label>
-              <FileUpload type="permit" giveID={id}></FileUpload>
+              <FileUpload type="permit" giveID={id} files={files}></FileUpload>
             </div>
             <div className="mx-2 my-2">
               <label htmlFor="formFileDisabled" className="form-label my-1">Plan</label>
-              <FileUpload type="plan"  giveID={id}></FileUpload>
+              <FileUpload type="plan"  giveID={id} files={files}></FileUpload>
             </div>
             <div className="mx-2 my-2">
               <label htmlFor="formFileDisabled" className="form-label my-1">Photo</label>
-              <FileUpload type="photo" giveID={id}></FileUpload>
+              <FileUpload type="photo" giveID={id} files={files}></FileUpload>
             </div>
           </div>
         </div>
@@ -247,16 +247,16 @@ export default function TasksTable() {
         </div>
         <div className="d-flex flex-wrap justify-content-center">
           <div className="mx-2 my-2">
-            <SwipeableEdgeDrawer type="permitConfirmation" jobId={id} label="P. Confirm" count = {files.permitConfirmation?.length}></SwipeableEdgeDrawer>
+            <SwipeableEdgeDrawer type="permitConfirmation" jobId={id} label="P. Confirm" count = {files.permitConfirmation?.length} files={files}></SwipeableEdgeDrawer>
           </div>
           <div className="mx-2 my-2">
-            <SwipeableEdgeDrawer type="permit" jobId={id} label="Permit" count = {files.permit?.length}></SwipeableEdgeDrawer>
+            <SwipeableEdgeDrawer type="permit" jobId={id} label="Permit" count = {files.permit?.length} files={files}></SwipeableEdgeDrawer>
           </div>
           <div className="mx-2 my-2">
-            <SwipeableEdgeDrawer type="plan" jobId={id} label="Plan" count = {files.plan?.length}></SwipeableEdgeDrawer>
+            <SwipeableEdgeDrawer type="plan" jobId={id} label="Plan" count = {files.plan?.length} files={files}></SwipeableEdgeDrawer>
           </div>
           <div className="mx-2 my-2">
-            <SwipeableEdgeDrawer type="photo" jobId={id} label="Photo" count = {files.photo?.length}></SwipeableEdgeDrawer>
+            <SwipeableEdgeDrawer type="photo" jobId={id} label="Photo" count = {files.photo?.length} files={files}></SwipeableEdgeDrawer>
           </div>
         </div>
       </div>

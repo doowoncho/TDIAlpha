@@ -16,7 +16,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Button from 'react-bootstrap/Button';
 
-function FileUpload({type, giveID}) {
+function FileUpload({type, giveID, files}) {
   const [file, setFile] = useState(null);
   const id = giveID;
   const [filesData, setFilesData] = useState(null);
@@ -36,8 +36,8 @@ function FileUpload({type, giveID}) {
 
   const fetchData = async () => {
     try {
-      const response = await getFilesById(id);
-      setFilesData(response[type] || []);
+      // const response = await getFilesById(id);
+      setFilesData(files[type] || []);
       setLoading(false)
     } catch (error) {
       console.error('Error fetching files:', error);
@@ -99,6 +99,7 @@ function FileUpload({type, giveID}) {
     setUploaded(updatedUploaded);
     setFileName(updatedFileName);
     setLoading(false)
+    window.location.reload();
   }
 
   return (
