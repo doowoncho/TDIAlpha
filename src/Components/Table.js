@@ -72,6 +72,7 @@ export default function Table({ data, columns, handleUpdate, defaultSorting, han
     <div className='container my-3' style={{ position: 'relative' }}>
   {rowSelectionModel.length > 0 && 
     <DeletePopUp
+      style={{ position: 'absolute', top: '-40px', right: '10px' }} 
       open={deleteDialogOpen}
       setOpen={setDeleteDialogOpen}
       handleConfirm={(choice) => {

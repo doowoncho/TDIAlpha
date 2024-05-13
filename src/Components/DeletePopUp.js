@@ -14,7 +14,7 @@ export default function DeletePopUp({ open, setOpen, handleConfirm, filename }) 
     };
 
     return (
-        <React.Fragment>
+        <>
             <Button variant="outlined" onClick={() => setOpen(true)}>
                 <DeleteIcon />
             </Button>
@@ -39,6 +39,6 @@ export default function DeletePopUp({ open, setOpen, handleConfirm, filename }) 
                     </Button>
                 </DialogActions>
             </Dialog>
-        </React.Fragment>
+        </>
     );
 }

@@ -109,12 +109,9 @@ function FileUpload({ type, giveID, files }) {
                         primary={<a href={fileItem.file} target="_blank" rel="noopener noreferrer">{fileItem.name}</a>}
                       />
                       <ListItemSecondaryAction>
-                        <DeletePopUp
-                          open={open}
-                          setOpen={setOpen}
-                          handleConfirm={handleDeleteConfirmation}
-                          filename={fileItem.name} // Pass filename to DeletePopUp
-                        />
+                        <IconButton edge="end" aria-label="delete" onClick={() => handleDelete(fileItem.name)}>
+                          <DeleteIcon />
+                        </IconButton>
                       </ListItemSecondaryAction>
                     </ListItem>
                   ))}
