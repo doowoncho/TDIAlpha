@@ -32,11 +32,11 @@ export default function DeletePopUp({ open, setOpen, handleConfirm, filename }) 
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <MUIButton onClick={() => handleClose(true)} color="error" autoFocus>
-                        Yes
-                    </MUIButton>
                     <MUIButton onClick={() => handleClose(false)} color="primary">
                         No
+                    </MUIButton>
+                    <MUIButton onClick={() => handleClose(true)} color="error" autoFocus>
+                        Yes
                     </MUIButton>
                 </DialogActions>
             </Dialog>
