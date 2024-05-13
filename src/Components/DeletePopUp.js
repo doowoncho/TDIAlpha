@@ -31,11 +31,11 @@ export default function DeletePopUp({ open, setOpen, handleConfirm, filename }) 
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => handleClose(false)} color="primary">
-                        No
-                    </Button>
                     <Button onClick={() => handleClose(true)} color="error" autoFocus>
                         Yes
+                    </Button>
+                    <Button onClick={() => handleClose(false)} color="primary">
+                        No
                     </Button>
                 </DialogActions>
             </Dialog>
