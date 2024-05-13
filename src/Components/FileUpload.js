@@ -47,7 +47,7 @@ function FileUpload({type, giveID, files}) {
   // Call the fetchData function when the component mounts or when id changes
   useEffect(() => {
     fetchData();
-  }, [id, type, uploaded]);
+  }, []);
   
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
@@ -58,7 +58,8 @@ function FileUpload({type, giveID, files}) {
     await deleteFile({filename});
     const fileDelete = ref(storage, `${filename}`);
     await deleteObject(fileDelete);
-    window.location.reload();
+    files = await getFilesById(id);
+    fetchData()
   }
   
   async function handleUpload(){
@@ -91,6 +92,7 @@ function FileUpload({type, giveID, files}) {
       await uploadPhoto(update);
     }
     
+    
     // await files(id, update);
     
     const updatedUploaded = { ...uploaded, [type]: true };
@@ -98,8 +100,9 @@ function FileUpload({type, giveID, files}) {
     
     setUploaded(updatedUploaded);
     setFileName(updatedFileName);
+    files = await getFilesById(id);
+    fetchData()
     setLoading(false)
-    window.location.reload();
   }
 
   return (

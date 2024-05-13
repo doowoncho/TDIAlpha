@@ -51,6 +51,8 @@ export default function TasksTable() {
   const originalDataRef = useRef(null);
   const [openDialog, setOpenDialog] = useState(false); // State variable to manage the visibility of the dialog
   const [type, setType] = React.useState('');
+  const [selectedRowId, setSelectedRowId] = useState(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   // Function to handle the opening of the dialog
   const handleOpenDialog = () => {
@@ -85,7 +87,7 @@ export default function TasksTable() {
           getJobById(id),
           getFilesById(id)
         ]);
-
+  
         let taskTotal = 0;
         let taskFinished = 0;
         for (let i = 0; i < tasks.length; i++) {
@@ -126,7 +128,7 @@ export default function TasksTable() {
       } catch (error) {
         console.error("Error fetching data:", error);
       }
-  };
+    };
   
     fetchData();
   }, []);
@@ -156,9 +158,17 @@ export default function TasksTable() {
   }
 
   const handletaskDelete = async (id) => {
-    await deletetask(id);
-    // No need to refetch data, just update the local state
-    setTaskList((prevtasks) => prevtasks.filter((task) => task.id !== id));
+    setSelectedRowId(id); // Set the selected row ID
+    setDeleteDialogOpen(true); // Open the delete dialog
+    handleConfirmDelete(id);
+  };
+
+  const handleConfirmDelete = async (id) => {
+    await id.forEach(element => {
+      deletetask(element);
+    })
+    // setTaskList((prevtasks) => prevtasks.filter((task) => task.id !== id));
+    window.location.reload();
   };
 
   const handleEditClick = () => {

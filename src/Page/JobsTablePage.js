@@ -40,6 +40,8 @@ export default function JobsTable() {
     setup: true,
     company: false
   });
+  const [selectedRowId, setSelectedRowId] = useState(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -89,9 +91,16 @@ export default function JobsTable() {
   }
   
   const handleJobDelete = async (id) => {
-    await updateJob(id, {status: "Deleted"})
-    // await deleteJob(id);
-    fetchData()
+    setSelectedRowId(id); // Set the selected row ID
+    setDeleteDialogOpen(true); // Open the delete dialog
+    handleConfirmDelete(id);
+  };
+
+  const handleConfirmDelete = async (id) => {
+    await id.forEach(element => {
+      updateJob(element, {status: "Deleted"});
+    })
+    fetchData();
   };
   
   return (
@@ -132,8 +141,10 @@ export default function JobsTable() {
             columns = {JobsTableColumns}
             handleUpdate={handleJobUpdate}
             handleDelete={handleJobDelete}
+            confirmDelete={handleConfirmDelete}
             defaultSorting={{ sorting: { sortModel: [{ field: 'starttime', sort: 'asc' }] }}}
-            />
+            setSelectedRowId={setSelectedRowId}
+          />
         </div>
       </div>
     </div>

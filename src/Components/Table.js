@@ -7,11 +7,14 @@ import '../Styles/Rows.css'
 import { createInvoiceLog, deleteJob } from './APICalls';
 import moment from 'moment';
 import { Button } from 'react-bootstrap';
+import DeletePopUp from './DeletePopUp';
 
-export default function Table({ data, columns, handleUpdate, defaultSorting, handleDelete, showDeleteButton = true}) {
+export default function Table({ data, columns, handleUpdate, defaultSorting, handleDelete, showDeleteButton = true }) {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [rowSelectionModel, setRowSelectionModel] = useState([]);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [selectedRowId, setSelectedRowId] = useState(null);
 
   const handleCloseSnackbar = () => setSnackbarOpen(false);
 
@@ -68,15 +71,18 @@ export default function Table({ data, columns, handleUpdate, defaultSorting, han
   return (
     <div className='container my-3' style={{ position: 'relative' }}>
   {rowSelectionModel.length > 0 && 
-    <Button 
-      variant="outlined" 
-      style={{ position: 'absolute', top: '-40px', right: '10px' }} // Adjust top and right as needed
-      onClick={() => rowSelectionModel.forEach(element => {
-        handleDelete(element);
-      })}
-    >
-      <GridDeleteForeverIcon />
-    </Button>
+    <DeletePopUp
+      style={{ position: 'absolute', top: '-40px', right: '10px' }} 
+      open={deleteDialogOpen}
+      setOpen={setDeleteDialogOpen}
+      handleConfirm={(choice) => {
+        if (choice) {
+          handleDelete(rowSelectionModel); // Call the confirmDelete function passed as a prop
+        }
+        setDeleteDialogOpen(false);
+        setSelectedRowId(null); // Reset selected row id
+      }}
+    />
   }
   <Box sx={{ height: '500px', width: '100%' }}>
     <DataGrid
