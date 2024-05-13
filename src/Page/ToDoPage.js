@@ -110,7 +110,7 @@ export default function ToDoPage() {
         eventClick={(event) => handleEventClick(event)}
         cellClick={(args) => handleCellClick(args)}
         cellDoubleClick={(args) => handleCellClick(args)}
-        currentView={isMobileScreen ? 'Day' : 'Month'}
+        currentView={isMobileScreen ? 'Agenda' : 'Month'}
         eventRendered={onEventRendered.bind(this)}
         views={['Day', 'Week', 'Month', 'Agenda']}
         timezone='America/Edmonton'

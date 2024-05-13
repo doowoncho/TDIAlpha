@@ -4,12 +4,15 @@ import { DataGrid, GridDeleteForeverIcon, GridToolbar } from '@mui/x-data-grid';
 import Snackbar from '@mui/material/Snackbar'; // Import Snackbar from @mui/material
 
 import '../Styles/Rows.css'
-import { createInvoiceLog, deleteJob } from './APICalls';
+import { createInvoiceLog, deleteJob, getUserById } from './APICalls';
 import moment from 'moment';
 import { Button } from 'react-bootstrap';
 import DeletePopUp from './DeletePopUp';
 
+let user = await getUserById(window.sessionStorage.getItem("user"))
+
 export default function Table({ data, columns, handleUpdate, defaultSorting, handleDelete, showDeleteButton = true }) {
+  if(user.permission == 2){ showDeleteButton = false }
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [rowSelectionModel, setRowSelectionModel] = useState([]);

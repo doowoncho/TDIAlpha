@@ -68,7 +68,7 @@ function DateEditBox(props) {
           }
           else if(dateTime.twentyFour){
             await createTaskForDate(dateTime.startDate, dateTime.startTime, null, null, job, job.setup, 'Place');
-            await createTaskForDate(null, null, dateTime.endDate, dateTime.endTime, job, location, 'Knockdown');
+            await createTaskForDate(null, null, dateTime.endDate, dateTime.endTime, job, job.setup, 'Knockdown');
           }
     
           else {

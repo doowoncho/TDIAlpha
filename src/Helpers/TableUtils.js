@@ -5,7 +5,7 @@ import { CheckBox } from '@mui/icons-material';
 
 const { GridActionsCellItem, GridDeleteIcon, GridDeleteForeverIcon, getGridNumericOperators, getGridDateOperators } = require('@mui/x-data-grid');
 const moment = require('moment-timezone');
-const statusChoices = ['Approved', 'New', 'Completed', 'Invoice', 'Declined', 'Submitted', 'Waiting', 'Work Off Existing Closure']
+const statusChoices = ['Approved', 'New', 'Completed', 'Invoiced', 'Declined', 'Submitted', 'Waiting', 'Work Off Existing Closure']
 const taskChoices = ['NPAT', 'SameDay', 'Place', 'Pickup', 'Knockdown', 'Finished', 'Cancelled', 'Cancelled OS']
 const minWidthStartTime = 180;
 const minWidthEndTime = 180;
@@ -71,7 +71,7 @@ export const InvoicePageColumns = [
       return (params.value * 1.1).toFixed(2);
     },
   }, 
-  { field: 'qb_invoice', headerName: 'QB Invoice #', flex: 1, minWidth: minWidthQBInvoice, editable: isEditable, type: 'number'},
+  { field: 'qb_invoice', headerName: 'QB Invoice #', flex: 1, minWidth: minWidthQBInvoice, editable: isEditable },
   { field: 'qb_invoice_logs', headerName: 'QB Logs', flex: 1, minWidth: 110, editable: false, 
     renderCell: (params) => {
       return PopUp(params.id, params.field)
@@ -126,7 +126,7 @@ export const CompletedPageColumns = [
       return (params.value * 1.1).toFixed(2);
     },
   }, 
-  { field: 'qb_invoice', headerName: 'QB Invoice #', flex: 1, minWidth: minWidthQBInvoice, editable: isEditable, type: 'number' },
+  { field: 'qb_invoice', headerName: 'QB Invoice #', flex: 1, minWidth: minWidthQBInvoice, editable: isEditable },
   { field: 'qb_invoice_logs', headerName: 'QB Logs', flex: 1, minWidth: minWidthNotes, editable: false, 
   renderCell: (params) => {
     return PopUp(params.id, params.field)

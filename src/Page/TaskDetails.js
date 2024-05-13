@@ -56,7 +56,11 @@ export default function Orders() {
     var newStartTime = task.starttime ? new Date(task.starttime) : null
     var newEndTime = task.endtime ? new Date(task.endtime) : null
     var taskType = ''
-    if(newStartTime !=null  && newEndTime !=null ){
+    
+    if(task.type == "NPAT"){
+      taskType = task.type
+    }
+    else if(newStartTime !=null  && newEndTime !=null ){
       taskType = 'SameDay'
     }
     else if(newStartTime !=null){
@@ -167,7 +171,9 @@ export default function Orders() {
                                     className="form-control my-1"
                                     id="notes"
                                     value={task.setup ? task.setup : ""}
-                                    onChange={(e) => handleInputChange(e, 'setup')}/>
+                                    onChange={(e) => handleInputChange(e, 'setup')}
+                                    disabled = {user.permission == 2}
+                                    />                    
                                   </Typography>
                                   <br></br>
                                   <Typography color="text.secondary" >
@@ -232,11 +238,11 @@ export default function Orders() {
                       <FileUpload type="permit" giveID={task.job_id} files={files}></FileUpload>
                     </div>
                     <div className="mx-2 my-2">
-                      <label htmlFor="formFileDisabled" className="form-label my-1">Plan</label>
+                      <label htmlFor="formFileDisabled" className="form-label my-1">Photo</label>
                       <FileUpload type="plan"  giveID={task.job_id} files={files}></FileUpload>
                     </div>
                     <div className="mx-2 my-2">
-                      <label htmlFor="formFileDisabled" className="form-label my-1">Photo</label>
+                      <label htmlFor="formFileDisabled" className="form-label my-1">Plan</label>
                       <FileUpload type="photo" giveID={task.job_id} files={files}></FileUpload>
                     </div>
                   </div>
@@ -256,10 +262,10 @@ export default function Orders() {
                 <SwipeableEdgeDrawer type="permitConfirmation" jobId={task.job_id} label="P. Confirm" count = {files.permitConfirmation?.length} files={files}></SwipeableEdgeDrawer>
               </div>
               <div className="mx-2 my-2" style={{ width:"10rem", textAlign:"center" }}>
-                <SwipeableEdgeDrawer type="permit" jobId={task.job_id} label="Permit" count = {files.permit?.length} files={files}></SwipeableEdgeDrawer>
+                <SwipeableEdgeDrawer type="permit" jobId={task.job_id} label="Plan" count = {files.permit?.length} files={files}></SwipeableEdgeDrawer>
               </div>
               <div className="mx-2 my-2" style={{ width:"10rem", textAlign:"center" }}>
-                <SwipeableEdgeDrawer type="plan" jobId={task.job_id} label="Plan" count = {files.plan?.length} files={files}></SwipeableEdgeDrawer>
+                <SwipeableEdgeDrawer type="plan" jobId={task.job_id} label="Permit" count = {files.plan?.length} files={files}></SwipeableEdgeDrawer>
               </div>
               <div className="mx-2 my-2" style={{ width:"10rem", textAlign:"center" }}>
                 <SwipeableEdgeDrawer type="photo" jobId={task.job_id} label="Photo" count = {files.photo?.length} files={files}></SwipeableEdgeDrawer>

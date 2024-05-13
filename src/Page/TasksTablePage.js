@@ -233,7 +233,7 @@ export default function TasksTable() {
           </div>
           <div className="d-flex flex-wrap justify-content-center">
             <div className="mx-2 my-2">
-              <label htmlFor="formFileDisabled" className="form-label my-1">P.Confrim</label>
+              <label htmlFor="formFileDisabled" className="form-label my-1">P.Confirm</label>
               <FileUpload type="permitConfirmation" giveID={id} files={files}></FileUpload>
             </div>
             <div className="mx-2 my-2">
@@ -241,11 +241,11 @@ export default function TasksTable() {
               <FileUpload type="permit" giveID={id} files={files}></FileUpload>
             </div>
             <div className="mx-2 my-2">
-              <label htmlFor="formFileDisabled" className="form-label my-1">Plan</label>
+              <label htmlFor="formFileDisabled" className="form-label my-1">Photo</label>
               <FileUpload type="plan"  giveID={id} files={files}></FileUpload>
             </div>
             <div className="mx-2 my-2">
-              <label htmlFor="formFileDisabled" className="form-label my-1">Photo</label>
+              <label htmlFor="formFileDisabled" className="form-label my-1">Plan</label>
               <FileUpload type="photo" giveID={id} files={files}></FileUpload>
             </div>
           </div>
@@ -263,10 +263,10 @@ export default function TasksTable() {
             <SwipeableEdgeDrawer type="permit" jobId={id} label="Permit" count = {files.permit?.length} files={files}></SwipeableEdgeDrawer>
           </div>
           <div className="mx-2 my-2">
-            <SwipeableEdgeDrawer type="plan" jobId={id} label="Plan" count = {files.plan?.length} files={files}></SwipeableEdgeDrawer>
+            <SwipeableEdgeDrawer type="plan" jobId={id} label="Photo" count = {files.plan?.length} files={files}></SwipeableEdgeDrawer>
           </div>
           <div className="mx-2 my-2">
-            <SwipeableEdgeDrawer type="photo" jobId={id} label="Photo" count = {files.photo?.length} files={files}></SwipeableEdgeDrawer>
+            <SwipeableEdgeDrawer type="photo" jobId={id} label="Plan" count = {files.photo?.length} files={files}></SwipeableEdgeDrawer>
           </div>
         </div>
       </div>
@@ -279,6 +279,7 @@ export default function TasksTable() {
         id="notes"
         value={job.jobNotes ?? ""}
         onChange={(e) => notesChange(e)}
+        disabled = {user.permission == 2}
       />
       <Button variant="contained" onClick={() => updateJob(id, job)} style={{ alignSelf: 'flex-start', marginTop: '10px' }}>Save</Button>
     </div>

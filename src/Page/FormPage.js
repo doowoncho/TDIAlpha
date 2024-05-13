@@ -234,7 +234,7 @@ function FormPage() {
             <input type="text" className="form-control" id="location" placeholder="Enter Location" required/>
           </div>
           <div className="mb-3">
-            <label>Photo</label>
+            <label>Plan</label>
             <input type="file" id="fileUpload" className='form-control' onChange={handleFileChange}/>
           </div>
           <div className="mb-3">

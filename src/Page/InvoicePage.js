@@ -13,7 +13,7 @@ export default function InvoicePage() {
       const data = await getAllJobs();
       if (data == null) return;
 
-      const filteredData = data.filter(job => job.status == 'Invoice')
+      const filteredData = data.filter(job => job.status == 'Invoiced')
 
       // Sort by newest
       const sortedData = filteredData.sort((jobA, jobB) => {
