@@ -100,7 +100,14 @@ const weeklyTask = async () => {
 //api endpoints to be called in the code to make calls in the database
 app.get('/api/tasks', async (req, res) => {
   try {
-    const posts = await prisma.tasks.findMany();
+    const posts = await prisma.tasks.findMany({
+      include: {
+        job: true,
+      },
+      where:{
+        job: {status: {not: "Deleted"}}
+      }
+    });
     res.json(posts);
   } catch (error) {
     console.error(error);
@@ -702,9 +709,12 @@ app.get('/api/gettaskByUserId/:id', async (req, res) => {
   try {
     const userId = parseInt(req.params.id);
     const user = await prisma.tasks.findMany({
+      include: {
+        job: true,
+      },
       where: {
-        assigned: userId
-
+        assigned: userId,
+        job: {status: {not: "Deleted"}}
       }
     });
     res.json(user);
