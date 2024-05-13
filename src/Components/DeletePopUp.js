@@ -1,11 +1,12 @@
 import React from 'react';
-import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import DeleteIcon from '@mui/icons-material/Delete';
+import MUIButton from '@mui/material/Button';
+import { Button } from 'react-bootstrap';
 
 export default function DeletePopUp({ open, setOpen, handleConfirm, filename }) {
     const handleClose = (choice) => {
@@ -15,7 +16,7 @@ export default function DeletePopUp({ open, setOpen, handleConfirm, filename }) 
 
     return (
         <>
-            <Button variant="outlined" onClick={() => setOpen(true)}>
+            <Button style={{ position: 'absolute', top: '-40px', right: '10px' }}  variant="outlined" onClick={() => setOpen(true)}>
                 <DeleteIcon />
             </Button>
             <Dialog
@@ -31,12 +32,12 @@ export default function DeletePopUp({ open, setOpen, handleConfirm, filename }) 
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => handleClose(true)} color="error" autoFocus>
+                    <MUIButton onClick={() => handleClose(true)} color="error" autoFocus>
                         Yes
-                    </Button>
-                    <Button onClick={() => handleClose(false)} color="primary">
+                    </MUIButton>
+                    <MUIButton onClick={() => handleClose(false)} color="primary">
                         No
-                    </Button>
+                    </MUIButton>
                 </DialogActions>
             </Dialog>
         </>

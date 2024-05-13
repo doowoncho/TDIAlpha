@@ -1,3 +1,5 @@
+// FileUpload.js
+
 import React, { useState, useEffect } from 'react';
 import { storage } from '../Components/Firebase';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
@@ -13,84 +15,99 @@ import FolderIcon from '@mui/icons-material/Folder';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Button from 'react-bootstrap/Button';
-import DeletePopUp from './DeletePopUp'; // Import the DeletePopUp component
 
-function FileUpload({ type, giveID, files }) {
+function FileUpload({type, giveID, files}) {
   const [file, setFile] = useState(null);
-  const [open, setOpen] = useState(false); // State for delete confirmation popup
   const id = giveID;
   const [filesData, setFilesData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [uploaded, setUploaded] = useState({
+    "p_confirm": false,
+    "permit": false,
+    "map": false,
+  })
+  const [fileName, setFileName] = useState({
+    "p_confirm": "",
+    "permit": "",
+    "map": "",
+    "photo": ""
+  })
+  let fileBlob;
 
   const fetchData = async () => {
     try {
+      // const response = await getFilesById(id);
       setFilesData(files[type] || []);
-      setLoading(false);
+      setLoading(false)
     } catch (error) {
       console.error('Error fetching files:', error);
     }
   };
   
+  // Call the fetchData function when the component mounts or when id changes
   useEffect(() => {
     fetchData();
-  }, [id, type]);
-
+  }, []);
+  
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     setFile(selectedFile);
   };
-
+  
   async function handleDelete(filename){
     await deleteFile({filename});
     const fileDelete = ref(storage, `${filename}`);
     await deleteObject(fileDelete);
-    window.location.reload();
+    files = await getFilesById(id);
+    fetchData()
   }
-
-  async function handleUpload() {
-    setLoading(true);
+  
+  async function handleUpload(){
+    setLoading(true)
     const fileRef = ref(storage, `${file.name}`);
     
-    await uploadBytes(fileRef, file);
-    const url = await getDownloadURL(ref(storage, `${file.name}`));
-    const fileBlob = url;
-
-    const id_int = parseInt(giveID);
-    const update = {
+    await uploadBytes(fileRef, file).then((snapshot) => {
+      console.log('Uploaded a blob or file!');
+    });
+    
+    await getDownloadURL(ref(storage, `${file.name}`))
+    .then((url) => {
+      // `url` is the download URL for 'images/stars.jpg'
+      fileBlob = url
+    })
+    
+    let id_int = parseInt(giveID);
+    let update = {
       job_id: id_int,
       name: file.name,
       file: fileBlob
     };
-
-    // Handle different types of uploads
-    switch (type) {
-      case "permitConfirmation":
-        await uploadPermitCon(update);
-        break;
-      case "permit":
-        await uploadPermit(update);
-        break;
-      case "plan":
-        await uploadPlan(update);
-        break;
-      default:
-        await uploadPhoto(update);
+    if(type === "permitConfirmation"){
+      await uploadPermitCon(update);
+    }else if(type === "permit"){
+      await uploadPermit(update);
+    }else if(type === "plan"){
+      await uploadPlan(update);
+    }else{
+      await uploadPhoto(update);
     }
-
-    setLoading(false);
-    window.location.reload(); // Reload the page (consider better UX)
+    
+    
+    // await files(id, update);
+    
+    const updatedUploaded = { ...uploaded, [type]: true };
+    const updatedFileName = { ...fileName };
+    
+    setUploaded(updatedUploaded);
+    setFileName(updatedFileName);
+    files = await getFilesById(id);
+    fetchData()
+    setLoading(false)
   }
-
-  const handleDeleteConfirmation = async (choice, filename) => {
-    console.log(choice);
-    if (choice === true) {
-      await handleDelete(filename);
-    }
-  };
 
   return (
     <>
-      {loading ? (
+      {loading ? ( // Show loading indicator while loading
         <div style={{ textAlign: 'center' }}>
           <CircularProgress />
         </div>
@@ -115,12 +132,13 @@ function FileUpload({ type, giveID, files }) {
                       </ListItemSecondaryAction>
                     </ListItem>
                   ))}
+                  {/* File Input and Upload Button */}
                   <ListItem>
                     <label htmlFor="upload-file">
                       <input
                         type="file"
                         id="upload-file"
-                        onChange={handleFileChange}
+                        onChange={handleFileChange} // Hide the input visually
                       />
                       <div style={{ textAlign: 'center' }} className='d-flex justify-content-center align-items-center mt-2'>
                         <Button variant="dark" component="span" onClick={handleUpload}>
@@ -139,7 +157,7 @@ function FileUpload({ type, giveID, files }) {
                   <input
                     type="file"
                     id="upload-file"
-                    onChange={handleFileChange}
+                    onChange={handleFileChange} // Hide the input visually
                   />
                   <div style={{ textAlign: 'center' }} className='d-flex justify-content-center align-items-center mt-2'>
                     <Button variant="dark" component="span" onClick={handleUpload}>
