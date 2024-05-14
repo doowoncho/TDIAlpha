@@ -11,8 +11,10 @@ function DateEditBox(props) {
     const [dates, setDates] = useState([{ startDate: '', startTime: '', endDate: '', endTime: '', exWeekend: false, twentyFour: false, repeat: false }]);
     const { onClose, open, job } = props;
     const [loading, setLoading] = useState(false);
+    const [npatCheck, setNpatCheck] = useState(false);
     const handleClose = () => {
-      onClose();
+        onClose();
+        setNpatCheck(false)
     };
 
     const handleDateChange = (index, field, value) => {
@@ -37,6 +39,11 @@ function DateEditBox(props) {
         setDates(updatedDates);
       };
     
+      const handleNpatCheck = () => {
+        setNpatCheck(!npatCheck)
+        console.log(npatCheck)
+      };
+
       const handleSubmit = async (e) => {
         setLoading(true)
         e.preventDefault(); 
@@ -45,7 +52,6 @@ function DateEditBox(props) {
 
         let earliestStartDate = null;
         let latestEndDate = null;
-        const NPAT = document.getElementById('npat')?.checked;
     
         await Promise.all(
           dates.map(async (dateTime) => {
@@ -80,7 +86,7 @@ function DateEditBox(props) {
         );
         
         //NPAT task
-        if(NPAT){
+        if(npatCheck){
           let npatStartDate = new Date(earliestStartDate);
           npatStartDate.setDate(npatStartDate.getDate() - 1)
           await createTaskForDate(npatStartDate, null, null, null, job, job.setup, "NPAT")
@@ -105,7 +111,7 @@ function DateEditBox(props) {
                 <div className='container justify-content-center d-sm-flex overflow-auto'>
                     <div className="flex-column">
                         <div className="mb-3">
-                            <input className="form-check-input mx-2" type="checkbox" id="npat"/>
+                            <input className="form-check-input mx-2" type="checkbox" onClick={handleNpatCheck}/>
                             <label className="form-check-label">NPAT Job</label>
                         </div>
                     {dates.map((date, index) => (

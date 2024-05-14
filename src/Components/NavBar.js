@@ -47,6 +47,7 @@ export default function NavBar() {
             height={50}
           />
             </Typography>
+            <Button variant="light" className='mx-2 border' href='/invoices'>Invoiced</Button>
             <Button variant="light" className='mx-2 border' href='/legends'>Pricing</Button>
             <Button variant="dark" onClick={() => { window.sessionStorage.clear(); window.location.reload() }}>Logout</Button>
           </Toolbar>
@@ -56,10 +57,10 @@ export default function NavBar() {
       <Paper sx={{ position: 'fixed', left: 0, right: 0, bottom:0, zIndex: 1000 }} className='d-block d-sm-none'>
         <BottomNavigation showLabels>
           <BottomNavigationAction sx={{ minWidth: "50px" }} label="Jobs" icon={<Home />} href='/jobstable' value="jobs"/>
-          <BottomNavigationAction sx={{ minWidth: "50px" }} label="ToDo" icon={<CalendarMonth />} href='/todo' value="todo"/>
+          <BottomNavigationAction sx={{ minWidth: "50px" }} label="Agenda" icon={<CalendarMonth />} href='/todo' value="todo"/>
           <BottomNavigationAction sx={{ minWidth: "50px" }} label="Form" icon={<FeedIcon />} href='/form' value="from"/>
           <BottomNavigationAction sx={{ minWidth: "50px" }} label="ToInvoice" icon={<CheckCircle />} href='/completed' value="completed"/>
-          <BottomNavigationAction  sx={{ minWidth: "50px" }}label="Invoiced" icon={<AutoStories />} href="/invoices" value="invoices"/>
+          {/* <BottomNavigationAction  sx={{ minWidth: "50px" }}label="Invoiced" icon={<AutoStories />} href="/invoices" value="invoices"/> */}
           <BottomNavigationAction sx={{ minWidth: "50px" }}  label="Receipts" icon={<Receipt />} href='/receipts' value="receipts"/>
         </BottomNavigation>
       </Paper>
@@ -83,7 +84,7 @@ export default function NavBar() {
                   <Nav.Link href="/completed">To Be Invoiced</Nav.Link>
                   <Nav.Link href="/invoices">Invoiced</Nav.Link>
                   <Nav.Link href="/receipts">Receipts</Nav.Link>
-                  <Nav.Link href="/todo">ToDo</Nav.Link>
+                  <Nav.Link href="/todo">Agenda</Nav.Link>
                   <Nav.Link href="/legends">Pricing</Nav.Link>
                 </>
             </Nav>
