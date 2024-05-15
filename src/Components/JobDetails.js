@@ -89,6 +89,7 @@ function DateEditBox(props) {
         if(npatCheck){
           let npatStartDate = new Date(earliestStartDate);
           npatStartDate.setDate(npatStartDate.getDate() - 1)
+          npatStartDate.setUTCHours(18)
           await createTaskForDate(npatStartDate, null, null, null, job, job.setup, "NPAT")
         }
         
@@ -245,6 +246,9 @@ export default function JobDetails({job, handleInputChange, isEditing, user, han
                                     {job.status}
                                 </Typography>
                             </Stack>
+                            <Typography>
+                                {`${job.contact}`}
+                            </Typography>
                             <Typography color="text.secondary" >
                                 {`${job.email} - ${job.phone_number}`}
                             </Typography>

@@ -4,12 +4,14 @@ const { DateTime } = require('luxon');
 
 //DATE LOGIC
 export const createTaskForDate = async (startDate, startTime, endDate, endTime, job, location, taskType) => {
-  console.log(job)
   let startDateTime 
   let endDateTime 
-
+        //npat 
+        if(taskType == "NPAT"){
+          startDateTime = moment.tz(startDate, 'America/Edmonton').utc()
+        }
         //different pick up and place days
-        if(startDate && endDate){
+        else if(startDate && endDate){
           startDateTime = moment.tz(`${startDate}T${startTime}`, 'America/Edmonton').utc()
           endDateTime = moment.tz(`${endDate}T${endTime}`, 'America/Edmonton').utc()
         }
@@ -21,10 +23,6 @@ export const createTaskForDate = async (startDate, startTime, endDate, endTime, 
         // just place
         else if (startDate && startTime){
           startDateTime= moment.tz(`${startDate}T${startTime}`, 'America/Edmonton').utc()     
-        }
-        //npat 
-        else if(startDate){
-          startDateTime = moment(startDate)
         }
         //just pickup
         else{

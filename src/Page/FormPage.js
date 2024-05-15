@@ -142,6 +142,7 @@ function FormPage() {
     if(NPAT){
       let npatStartDate = new Date(earliestStartDate);
       npatStartDate.setDate(npatStartDate.getDate() - 1)
+      npatStartDate.setUTCHours(18)
       await createTaskForDate(npatStartDate, null, null, null, job, location, "NPAT")
     }
     
