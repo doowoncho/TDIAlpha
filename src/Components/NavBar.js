@@ -10,8 +10,8 @@ import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
 
 import Paper from '@mui/material/Paper';
-import { AppBar, BottomNavigation, BottomNavigationAction, Box, IconButton, Toolbar, Typography } from '@mui/material';
-import { AutoStories, CalendarMonth, CheckCircle, FolderSpecialOutlined, Home, Receipt } from '@mui/icons-material';
+import { AppBar, BottomNavigation, BottomNavigationAction, Box, IconButton, List, ListItemIcon, Toolbar, Typography } from '@mui/material';
+import { AutoStories, CalendarMonth, CheckCircle, FolderSpecialOutlined, Home, ListAlt, PersonPinCircle, Receipt } from '@mui/icons-material';
 
 export default function NavBar() {
   const [isResponsive, setResponsive] = useState(false);
@@ -60,7 +60,7 @@ export default function NavBar() {
           <BottomNavigationAction sx={{ minWidth: "50px" }} label="Agenda" icon={<CalendarMonth />} href='/todo' value="todo"/>
           <BottomNavigationAction sx={{ minWidth: "50px" }} label="Form" icon={<FeedIcon />} href='/form' value="from"/>
           <BottomNavigationAction sx={{ minWidth: "50px" }} label="ToInvoice" icon={<CheckCircle />} href='/completed' value="completed"/>
-          {/* <BottomNavigationAction  sx={{ minWidth: "50px" }}label="Invoiced" icon={<AutoStories />} href="/invoices" value="invoices"/> */}
+          <BottomNavigationAction  sx={{ minWidth: "50px" }}label="ToDo" icon={<ListAlt />} href="/todolist" value="todo"/>
           <BottomNavigationAction sx={{ minWidth: "50px" }}  label="Receipts" icon={<Receipt />} href='/receipts' value="receipts"/>
         </BottomNavigation>
       </Paper>
@@ -85,6 +85,7 @@ export default function NavBar() {
                   <Nav.Link href="/invoices">Invoiced</Nav.Link>
                   <Nav.Link href="/receipts">Receipts</Nav.Link>
                   <Nav.Link href="/todo">Agenda</Nav.Link>
+                  <Nav.Link href="/todolist">ToDo</Nav.Link>
                   <Nav.Link href="/legends">Pricing</Nav.Link>
                 </>
             </Nav>

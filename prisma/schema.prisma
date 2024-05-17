@@ -111,3 +111,9 @@ model qbInvoiceLogs {
   date   DateTime @db.Timestamp(6)
   job_id Int
 }
+
+model todo {
+  id     Int     @id @default(autoincrement())
+  text   String? @db.VarChar(255)
+  completed Boolean
+}

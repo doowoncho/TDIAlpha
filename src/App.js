@@ -12,6 +12,7 @@ import Receipts from "./Page/ReceiptsPage";
 import LegendPage from "./Page/LegendPage";
 import './index.css'
 import DeletedJobs from "./Page/DeleteJobsPage";
+import ToDoListPage from "./Page/ToDoListPage";
 const App = () => {
   const isUserLoggedIn = window.sessionStorage.getItem("user");
 
@@ -30,6 +31,7 @@ const App = () => {
           <Route path="/receipts" element={<Receipts />} />
           <Route path="/legends" element={<LegendPage/>} />
           <Route path="/deleted" element={<DeletedJobs/>} />
+          <Route path="/todolist" element={<ToDoListPage/>} />
         </>
       ) : (
         <>
@@ -42,6 +44,8 @@ const App = () => {
         <Route path="/invoices" element={<LoginPage />} />
         <Route path="/completed" element={<LoginPage />} />
         <Route path="/jobstable" element={<LoginPage />} />
+        <Route path="/deleted" element={<LoginPage/>} />
+        <Route path="/todolist" element={<LoginPage/>} />
         </>
       )}
       <Route path="/login" element={<LoginPage />} />
