@@ -525,3 +525,76 @@ export async function getInvoiceLogsByJobId(id) {
         console.error('Error fetching task:', error);
     }
 }
+
+export async function createToDo(params) {
+    try {
+        const response = await fetch(`${server}/api/createToDo`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(params), 
+        });
+        const createdjob = await response.json();
+        console.log('Created Job:', createdjob);
+        return createdjob;
+    } catch (error) {
+        console.error('Error creating job:', error);
+    }
+}
+
+export async function getAllTodo() {
+    try {
+      const response = await fetch(`${server}/api/ToDo`);
+      const data = await response.json();
+      return(data)
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+
+export async function deleteToDoById(id) {
+    try {
+        const response = await fetch(`${server}/api/deleteToDoById/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            }
+        });
+
+        if (response.ok) {
+            // Optionally, you can return true or some indication of success
+            return true;
+        }
+    } catch (error) {
+        console.error('Error deleting task:', error);
+    }
+}
+
+export async function updateToDoById(id, completed) {
+    try {
+      const url = `${server}/api/updateToDoById/${id}`;
+      const response = await fetch(url, {
+        method: 'PUT', 
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ completed: completed }),
+      });
+      const taskChanged = await response.json();
+      console.log('task changed:', taskChanged);
+      return taskChanged;
+    } catch (error) {
+      console.error('Error updating task:', error);
+    }
+  }
+
+export async function deleteAllToDo() {
+    const response = await fetch(`${server}/api/deleteAllToDo`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) {
+      throw new Error('Error deleting all tasks');
+    }
+    return response.json();
+  }

@@ -359,7 +359,6 @@ app.post('/api/createContact', async (req, res) => {
   }
 });
 
-
 app.post('/api/createjob', async (req, res) => {
   try {
     const newJob = await prisma.jobs.create({
@@ -431,7 +430,6 @@ app.post('/api/uploadPermitCon/', async (req, res) => {
 app.post('/api/uploadPermit/', async (req, res) => {
   try {
     const { job_id, name, file } = req.body;
-    
       const createdFile = await prisma.permits.create({
         data: {
           job_id: job_id,
@@ -788,6 +786,77 @@ app.post('/api/createInvoiceLog', async (req, res) => {
     });
 
     res.json(newLog);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.post('/api/createToDo', async (req, res) => {
+  try {
+    const { text } = req.body;
+
+    const newToDo = await prisma.todo.create({
+      data: {
+        text: text,
+        completed: false
+      },
+    });
+
+    res.json(newToDo);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.get('/api/ToDo', async (req, res) => {
+  try {
+    const posts = await prisma.todo.findMany();
+    res.json(posts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.delete('/api/deleteToDoById/:id', async (req, res) => {
+  try {
+    const todoId = parseInt(req.params.id) //id of task we are changing
+    const tasks = await prisma.todo.deleteMany({
+      where:{
+        id: todoId
+      }
+    });
+    res.json(tasks);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.put('/api/updateToDoById/:id', async (req, res) => {
+  try {
+    const jobId = parseInt(req.params.id)
+    const posts = await prisma.todo.update({
+      where: {
+        id: jobId
+      },
+      data:{
+        completed: true
+      }
+    });
+    res.json(posts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.delete('/api/deleteAllToDo', async (req, res) => {
+  try {
+    await prisma.todo.deleteMany({});
+    res.status(200).json({ message: 'All tasks deleted' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });
