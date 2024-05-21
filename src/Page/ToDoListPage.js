@@ -33,7 +33,7 @@ export default function ToDoListPage() {
 
   const toggleCompleted = async (id, currentCompleted) => {
     try {
-      const updatedTask = await updateToDoById(id, !currentCompleted);
+      const updatedTask = await updateToDoById(id, {completed: !currentCompleted});
       setTasks(prevTasks => prevTasks.map(task => task.id === id ? { ...task, completed: updatedTask.completed } : task));
     } catch (error) {
       console.error("Error toggling completed status:", error);
