@@ -22,9 +22,9 @@ model jobs {
   contact       String?   @db.VarChar(255)
   setup         String?   @db.VarChar(255)
   stamp         String?   @db.VarChar(255)
-  qb_invoice    Int?  
+  qb_invoice    Int?
   permit_cost   Float?
-  jobNotes      String?   @db.Text
+  jobNotes      String?
   paid          Boolean?
   tasks         tasks[]
 }
@@ -39,7 +39,7 @@ model tasks {
   starttime DateTime? @db.Timestamp(6)
   completed Boolean?
   type      String?   @db.VarChar(15)
-  job           jobs      @relation(fields: [job_id], references: [id])
+  job       jobs      @relation(fields: [job_id], references: [id])
 }
 
 model users {
@@ -53,14 +53,14 @@ model users {
 
 model files {
   id                       Int     @id @default(autoincrement())
-  photo_name               String? @db.Text
-  photo_file               String? @db.Text
-  permit_name              String? @db.Text
-  permit_file              String? @db.Text
-  permit_confirmation_name String? @db.Text
-  permit_confirmation_file String? @db.Text
-  map_drawing_name         String? @db.Text
-  map_file                 String? @db.Text
+  photo_name               String?
+  photo_file               String?
+  permit_name              String?
+  permit_file              String?
+  permit_confirmation_name String?
+  permit_confirmation_file String?
+  map_drawing_name         String?
+  map_file                 String?
 }
 
 model photos {
@@ -73,22 +73,22 @@ model photos {
 model permits {
   id     Int     @id @default(autoincrement())
   job_id Int?
-  name   String? @db.Text
-  file   String? @db.Text
+  name   String?
+  file   String?
 }
 
 model permitConfirmations {
   id     Int     @id @default(autoincrement())
   job_id Int?
-  name   String? @db.Text
-  file   String? @db.Text
+  name   String?
+  file   String?
 }
 
 model plans {
   id     Int     @id @default(autoincrement())
   job_id Int?
-  name   String? @db.Text
-  file   String? @db.Text
+  name   String?
+  file   String?
 }
 
 model contacts {
@@ -101,8 +101,8 @@ model contacts {
 
 model receipts {
   id   Int     @id @default(autoincrement())
-  name String? @db.Text
-  file String? @db.Text
+  name String?
+  file String?
 }
 
 model qbInvoiceLogs {
@@ -113,7 +113,7 @@ model qbInvoiceLogs {
 }
 
 model todo {
-  id     Int     @id @default(autoincrement())
-  text   String? @db.VarChar(255)
-  completed Boolean
+  id        Int      @id @default(autoincrement())
+  text      String?  @db.VarChar(255)
+  completed Boolean?
 }
