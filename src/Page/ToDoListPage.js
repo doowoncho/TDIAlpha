@@ -91,8 +91,8 @@ export default function ToDoListPage() {
         <div className="row mb-4">
           <div className="col-12 d-flex align-items-center">
             <TextField id="text" variant="outlined" className="flex-grow-1 me-2" />
-            <Button type="submit" onClick={addTask} variant="outlined" className="me-2">Add</Button>
-            <Button type="button" onClick={deleteAll} variant="contained" color="error">Delete All</Button>
+            <Button type="submit" onClick={addTask} variant="contained" className="me-2">Add</Button>
+            {/* <Button type="button" onClick={deleteAll} variant="contained" color="error">Delete All</Button> */}
           </div>
         </div>
         <ul className="list-group">
