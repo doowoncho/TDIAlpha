@@ -571,7 +571,7 @@ export async function deleteToDoById(id) {
     }
 }
 
-export async function updateToDoById(id, completed) {
+export async function updateToDoById(id, params) {
     try {
       const url = `${server}/api/updateToDoById/${id}`;
       const response = await fetch(url, {
@@ -579,7 +579,7 @@ export async function updateToDoById(id, completed) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ completed: completed }),
+        body: JSON.stringify(params),
       });
       const taskChanged = await response.json();
       console.log('task changed:', taskChanged);
@@ -587,7 +587,7 @@ export async function updateToDoById(id, completed) {
     } catch (error) {
       console.error('Error updating task:', error);
     }
-  }
+}
 
 export async function deleteAllToDo() {
     const response = await fetch(`${server}/api/deleteAllToDo`, {

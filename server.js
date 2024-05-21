@@ -837,16 +837,18 @@ app.delete('/api/deleteToDoById/:id', async (req, res) => {
 
 app.put('/api/updateToDoById/:id', async (req, res) => {
   try {
+    const { completed, text } = req.body
     const jobId = parseInt(req.params.id)
-    const posts = await prisma.todo.update({
+    const todo = await prisma.todo.update({
       where: {
         id: jobId
       },
       data:{
-        completed: true
+        text: text,
+        completed: completed
       }
     });
-    res.json(posts);
+    res.json(todo);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });
