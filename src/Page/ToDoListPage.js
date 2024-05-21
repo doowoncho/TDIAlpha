@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { createToDo, getAllTodo, deleteToDoById, updateToDoById, deleteAllToDo } from '../Components/APICalls';
+import { createToDo, getAllTodo, deleteToDoById, updateToDoById, deleteAllToDo, getUserById } from '../Components/APICalls';
 import { Button, Checkbox, IconButton, TextField, Input } from '@mui/material';
 import { DeleteOutline, Edit, Check } from '@mui/icons-material';
 import 'bootstrap/dist/css/bootstrap.min.css';
+let user = await getUserById(window.sessionStorage.getItem("user"))
 
 export default function ToDoListPage() {
   const [tasks, setTasks] = useState([]);
@@ -89,11 +90,12 @@ export default function ToDoListPage() {
       </div>
       <div className="container">
         <div className="row mb-4">
-          <div className="col-12 d-flex align-items-center">
+        {user.permission == 1 && <div className="col-12 d-flex align-items-center">
             <TextField id="text" variant="outlined" className="flex-grow-1 me-2" />
             <Button type="submit" onClick={addTask} variant="contained" className="me-2">Add</Button>
             {/* <Button type="button" onClick={deleteAll} variant="contained" color="error">Delete All</Button> */}
           </div>
+        }
         </div>
         <ul className="list-group">
           {tasks.map(task => (
@@ -103,7 +105,7 @@ export default function ToDoListPage() {
                   checked={task.completed || false} 
                   onChange={() => toggleCompleted(task.id, task.completed)} 
                 />
-                {editingTaskId === task.id ? (
+                {editingTaskId === task.id && user.permission == 1 ? (
                   <Input
                     value={editingText}
                     onChange={(e) => setEditingText(e.target.value)}
@@ -125,7 +127,7 @@ export default function ToDoListPage() {
                     </IconButton>
                   </>
                 ) : (
-                  <>
+                user.permission == 1 &&<>
                     <IconButton onClick={() => startEditing(task.id, task.text)} color="primary">
                       <Edit />
                     </IconButton>

@@ -812,7 +812,9 @@ app.post('/api/createToDo', async (req, res) => {
 
 app.get('/api/ToDo', async (req, res) => {
   try {
-    const posts = await prisma.todo.findMany();
+    const posts = await prisma.todo.findMany({
+      orderBy: { id: 'asc' }
+    });
     res.json(posts);
   } catch (error) {
     console.error(error);
