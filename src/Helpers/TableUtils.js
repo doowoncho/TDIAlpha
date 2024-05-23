@@ -165,6 +165,8 @@ export const JobsTableColumns = [
   },
   { field: 'company', headerName: 'Company', flex: 1, minWidth: minWidthCompany, editable: isEditable, },
   { field: 'setup', headerName: 'Setup', flex: 1, minWidth: minWidthSetup, editable: isEditable,},
+  { field: 'permit_number', headerName: 'Permit Number', flex: 1, minWidth: minWidthPermitNumber, editable: isEditable, },
+  { field: 'po_number', headerName: 'PO Number', flex: 1, minWidth: minWidthPONumber, editable: isEditable,},
   { field: 'wo_number', headerName: 'WO Number', flex: 1, minWidth: minWidthWONumber, editable: isEditable,},
 ]
 
