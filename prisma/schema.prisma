@@ -27,6 +27,7 @@ model jobs {
   jobNotes      String?
   paid          Boolean?
   tasks         tasks[]
+  color         String?   @db.VarChar(255)
 }
 
 model tasks {

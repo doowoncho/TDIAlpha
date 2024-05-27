@@ -6,6 +6,7 @@ import { CheckBox } from '@mui/icons-material';
 const { GridActionsCellItem, GridDeleteIcon, GridDeleteForeverIcon, getGridNumericOperators, getGridDateOperators } = require('@mui/x-data-grid');
 const moment = require('moment-timezone');
 const statusChoices = ['Approved', 'New', 'Completed', 'Invoiced', 'Declined', 'Submitted', 'Waiting', 'Work Off Existing Closure']
+const colorChoices = [' ','Green', 'Orange', 'Blue']
 const taskChoices = ['NPAT', 'SameDay', 'Place', 'Pickup', 'Knockdown', 'Finished', 'Cancelled', 'Cancelled OS']
 const minWidthStartTime = 180;
 const minWidthEndTime = 180;
@@ -14,8 +15,8 @@ const minWidthSetup = 400;
 const minWidthCompany = 150;
 const minWidthContact = 200;
 const minWidthRequestId = 200;
-const minWidthPermitNumber = 200;
-const minWidthPONumber = 300;
+const minWidthPermitNumber = 130;
+const minWidthPONumber = 130;
 const minWidthWONumber = 130;
 const minWidthNotes = 200;
 const minWidthQBInvoice = 130;
@@ -162,6 +163,9 @@ export const JobsTableColumns = [
   },
   { field: 'status', headerName: 'Status', flex: 1, minWidth: minWidthStatus, editable: isEditable,  type: 'singleSelect',
     valueOptions: statusChoices
+  },
+  { field: 'color', headerName: 'Color', flex: 1, minWidth: minWidthStatus, editable: isEditable,  type: 'singleSelect',
+    valueOptions: colorChoices
   },
   { field: 'company', headerName: 'Company', flex: 1, minWidth: minWidthCompany, editable: isEditable, },
   { field: 'setup', headerName: 'Setup', flex: 1, minWidth: minWidthSetup, editable: isEditable,},

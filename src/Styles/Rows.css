@@ -9,3 +9,15 @@
 .completed-row{
      background-color: rgb(145, 145, 145);
 }
+
+.green-row{
+     background-color: rgb(111, 179, 111);
+}
+
+.blue-row{
+     background-color: rgb(148, 191, 240);
+}
+
+.orange-row{
+     background-color: rgb(255, 141, 96);
+}

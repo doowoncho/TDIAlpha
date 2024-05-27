@@ -8,6 +8,7 @@ import CreatableSelect from 'react-select/creatable';
 import { createTaskForDate, createTasksForExWeekend, createTasksForRepeat } from '../Helpers/DateUtils';
 import { DateTime } from 'luxon';
 import DateInput2 from '../Components/DateInput2.0';
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 
 function FormPage() {
   const [dates, setDates] = useState([{ startDate: '', startTime: '', endDate: '', endTime: '', exWeekend: false, twentyFour: false, repeat: false }]);
@@ -99,6 +100,7 @@ function FormPage() {
     const company = document.getElementById('companyName').value;
     const NPAT = document.getElementById('npat').checked;
     const location = document.getElementById('location').value;
+    const color = document.getElementById('color').value;
 
     let job = await createJob()
     let earliestStartDate = null;
@@ -158,7 +160,8 @@ function FormPage() {
         setup: location,
         phone_number: phoneNumber,
         request_id: requestID,
-        company: company
+        company: company,
+        color: color
       }) 
 
       await fileUploading(job);
@@ -237,6 +240,14 @@ function FormPage() {
           <div className="mb-3">
             <label>Plan</label>
             <input type="file" id="fileUpload" className='form-control' onChange={handleFileChange}/>
+          </div>
+          <div className="mb-3">
+            <label>Color (Optional)</label>
+            <select class="form-select" id='color'>
+                <option value='Blue'>Blue</option>
+                <option value='Green'>Green</option>
+                <option value='Orange'>Orange</option>
+            </select>
           </div>
           <div className="mb-3">
             <input className="form-check-input mx-2" type="checkbox" id="npat"/>
