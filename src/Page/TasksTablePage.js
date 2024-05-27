@@ -293,6 +293,10 @@ export default function TasksTable() {
       <button className='my-1 btn btn-outline-primary' onClick={handleOpenDialog}> 
         Add Task
       </button>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
       <Dialog
         open={openDialog}
         onClose={handleCloseDialog}

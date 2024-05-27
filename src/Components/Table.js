@@ -87,7 +87,7 @@ export default function Table({ data, columns, handleUpdate, defaultSorting, han
       }}
     />
   }
-  <Box sx={{ height: '500px', width: '100%' }}>
+  <Box sx={{ height: '650px', width: '100%' }}>
     <DataGrid
       slots={{ toolbar: GridToolbar }}
       rows={data}
