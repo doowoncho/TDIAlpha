@@ -109,9 +109,9 @@ function FormPage() {
 
     await Promise.all(
       dates.map(async (dateTime) => {
-      if (!earliestStartDate || new Date(dateTime.startDate) < earliestStartDate) {
-        earliestStartDate = DateTime.fromISO(`${dateTime.startDate }T${dateTime.startTime}`, { zone: 'America/Edmonton' });
-      }
+        if (!earliestStartDate || DateTime.fromISO(`${dateTime.startDate }T${dateTime.startTime}`, { zone: 'America/Edmonton' }) < earliestStartDate) {
+          earliestStartDate = DateTime.fromISO(`${dateTime.startDate }T${dateTime.startTime}`, { zone: 'America/Edmonton' });
+        }
       
       if ((!dateTime.endDate && (!latestEndDate || new Date(dateTime.startDate) > latestEndDate)) ||
       (dateTime.endDate && (!latestEndDate || new Date(dateTime.endDate) > latestEndDate))) {
