@@ -8,7 +8,6 @@ import CreatableSelect from 'react-select/creatable';
 import { createTaskForDate, createTasksForExWeekend, createTasksForRepeat } from '../Helpers/DateUtils';
 import { DateTime } from 'luxon';
 import DateInput2 from '../Components/DateInput2.0';
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 
 function FormPage() {
   const [dates, setDates] = useState([{ startDate: '', startTime: '', endDate: '', endTime: '', exWeekend: false, twentyFour: false, repeat: false }]);
@@ -244,6 +243,7 @@ function FormPage() {
           <div className="mb-3">
             <label>Color (Optional)</label>
             <select class="form-select" id='color'>
+                <option value=''>None</option>
                 <option value='Blue'>Blue</option>
                 <option value='Green'>Green</option>
                 <option value='Orange'>Orange</option>

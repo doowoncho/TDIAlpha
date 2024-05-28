@@ -73,7 +73,6 @@ export default function Table({ data, columns, handleUpdate, defaultSorting, han
 
   const getRowClassName = (params) => {
     const rowType = params.row.type;
-    console.log(params)
     if(params.row.color != null){
       switch (params.row.color) {
         case 'Green':

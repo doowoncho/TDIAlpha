@@ -55,7 +55,7 @@ function DateEditBox(props) {
     
         await Promise.all(
           dates.map(async (dateTime) => {
-          if (!earliestStartDate || new Date(dateTime.startDate) < earliestStartDate) {
+          if (!earliestStartDate || DateTime.fromISO(`${dateTime.startDate }T${dateTime.startTime}`, { zone: 'America/Edmonton' }) < earliestStartDate) {
             earliestStartDate = DateTime.fromISO(`${dateTime.startDate }T${dateTime.startTime}`, { zone: 'America/Edmonton' });
           }
           
