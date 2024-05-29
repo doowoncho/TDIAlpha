@@ -55,8 +55,8 @@ function DateEditBox(props) {
     
         await Promise.all(
           dates.map(async (dateTime) => {
-          if (!earliestStartDate || DateTime.fromISO(`${dateTime.startDate }T${dateTime.startTime}`, { zone: 'America/Edmonton' }) < earliestStartDate) {
-            earliestStartDate = DateTime.fromISO(`${dateTime.startDate }T${dateTime.startTime}`, { zone: 'America/Edmonton' });
+          if (!earliestStartDate ||  new Date(dateTime.startDate) > latestEndDate < earliestStartDate) {
+            earliestStartDate = DateTime.fromISO(`${dateTime.startDate}`, { zone: 'America/Edmonton' });
           }
           
           if ((!dateTime.endDate && (!latestEndDate || new Date(dateTime.startDate) > latestEndDate)) ||
@@ -90,6 +90,7 @@ function DateEditBox(props) {
           let npatStartDate = new Date(earliestStartDate);
           npatStartDate.setDate(npatStartDate.getDate() - 1)
           npatStartDate.setUTCHours(18)
+          console.log(npatStartDate)
           await createTaskForDate(npatStartDate, null, null, null, job, job.setup, "NPAT")
         }
         

@@ -8,6 +8,7 @@ export const createTaskForDate = async (startDate, startTime, endDate, endTime, 
   let endDateTime 
         //npat 
         if(taskType == "NPAT"){
+          console.log(startDate)
           startDateTime = moment.tz(startDate, 'America/Edmonton').utc()
         }
         //different pick up and place days
@@ -62,9 +63,20 @@ export const createTaskForDate = async (startDate, startTime, endDate, endTime, 
     
     export const createTasksForRepeat = async (startDate, startTime, endDate, endTime, job, location) => {
       let currentDate = new Date(startDate);
+    
       while (currentDate <= new Date(endDate)) {
         currentDate.setDate(currentDate.getDate() + 1);
-        await createTaskForDate(moment(currentDate).format('YYYY-MM-DD'), startTime, null, null, job, location, "Place");
-        await createTaskForDate(null, null, moment(currentDate).format('YYYY-MM-DD'), endTime, job, location, "Knockdown");
+        const startDateTime = moment(`${moment(currentDate).format('YYYY-MM-DD')}T${startTime}`, 'YYYY-MM-DDTHH:mm');
+        const endDateTime = moment(`${moment(currentDate).format('YYYY-MM-DD')}T${endTime}`, 'YYYY-MM-DDTHH:mm');
+        
+        if (endDateTime.isBefore(startDateTime)) {
+          // Adjust endDateTime to be on the next day if it is before startDateTime
+          endDateTime.add(1, 'days');
+        }
+        
+        await createTaskForDate(startDateTime.format('YYYY-MM-DD'), startTime, null, null, job, location, "Place");
+        await createTaskForDate(null, null, endDateTime.format('YYYY-MM-DD'), endTime,  job, location, "Knockdown");
+    
+        // Move to the next day
       }
     };
