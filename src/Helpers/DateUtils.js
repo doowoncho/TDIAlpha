@@ -63,8 +63,9 @@ export const createTaskForDate = async (startDate, startTime, endDate, endTime, 
     
     export const createTasksForRepeat = async (startDate, startTime, endDate, endTime, job, location) => {
       let currentDate = new Date(startDate);
-    
-      while (currentDate <= new Date(endDate)) {
+      let currentEndDate = new Date(endDate)
+
+      while (currentDate <= currentEndDate) {
         currentDate.setDate(currentDate.getDate() + 1);
         const startDateTime = moment(`${moment(currentDate).format('YYYY-MM-DD')}T${startTime}`, 'YYYY-MM-DDTHH:mm');
         const endDateTime = moment(`${moment(currentDate).format('YYYY-MM-DD')}T${endTime}`, 'YYYY-MM-DDTHH:mm');
@@ -72,11 +73,11 @@ export const createTaskForDate = async (startDate, startTime, endDate, endTime, 
         if (endDateTime.isBefore(startDateTime)) {
           // Adjust endDateTime to be on the next day if it is before startDateTime
           endDateTime.add(1, 'days');
+          currentEndDate.setDate(currentEndDate.getDate() - 1);
         }
         
         await createTaskForDate(startDateTime.format('YYYY-MM-DD'), startTime, null, null, job, location, "Place");
         await createTaskForDate(null, null, endDateTime.format('YYYY-MM-DD'), endTime,  job, location, "Knockdown");
-    
-        // Move to the next day
+
       }
     };

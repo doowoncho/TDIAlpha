@@ -109,42 +109,41 @@ function FormPage() {
 
     await Promise.all(
       dates.map(async (dateTime) => {
-        if (!earliestStartDate || DateTime.fromISO(`${dateTime.startDate }T${dateTime.startTime}`, { zone: 'America/Edmonton' }) < earliestStartDate) {
-          earliestStartDate = DateTime.fromISO(`${dateTime.startDate }T${dateTime.startTime}`, { zone: 'America/Edmonton' });
+        const startDateTime = DateTime.fromISO(`${dateTime.startDate}T${dateTime.startTime}`, { zone: 'America/Edmonton' });
+        const endDateTime = dateTime.endDate ? DateTime.fromISO(`${dateTime.endDate}T${dateTime.endTime}`, { zone: 'America/Edmonton' }) : DateTime.fromISO(`${dateTime.startDate}T${dateTime.endTime}`, { zone: 'America/Edmonton' });
+  
+        if (!earliestStartDate || startDateTime < earliestStartDate) {
+          earliestStartDate = startDateTime;
         }
-      
-      if ((!dateTime.endDate && (!latestEndDate || new Date(dateTime.startDate) > latestEndDate)) ||
-      (dateTime.endDate && (!latestEndDate || new Date(dateTime.endDate) > latestEndDate))) {
-        latestEndDate = dateTime.endDate ? DateTime.fromISO(`${dateTime.endDate }T${dateTime.endTime}`, { zone: 'America/Edmonton' }) : DateTime.fromISO(`${dateTime.startDate }T${dateTime.endTime}`, { zone: 'America/Edmonton' });;
-      }
-
-      if(dateTime.repeat){
-          if (dateTime.exWeekend) {          
-            // Creating tasks for the inbetween
-            await createTasksForExWeekend(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.endTime, job, location);
+  
+        if (!latestEndDate || endDateTime > latestEndDate) {
+          latestEndDate = endDateTime;
+        }
+  
+        if (dateTime.repeat) {
+          if (dateTime.exWeekend) {
+            // Creating tasks for the in-between
+            await createTasksForExWeekend(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.endTime, job, job.setup);
           } else {
-            await createTasksForRepeat(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.endTime, job, location)
+            await createTasksForRepeat(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.endTime, job, job.setup);
           }
-      }
-      else if(dateTime.twentyFour){
-        await createTaskForDate(dateTime.startDate, dateTime.startTime, null, null, job, location, 'Place');
-        await createTaskForDate(null, null, dateTime.endDate, dateTime.endTime, job, location, 'Knockdown');
-      }
-
-      else {
-        // Non-twentyFour task
-        await createTaskForDate(dateTime.startDate, dateTime.startTime, null, null, job, location, 'Place');
-        await createTaskForDate(null, null, dateTime.startDate, dateTime.endTime, job, location, 'Knockdown');
-      }
-    })
+        } else if (dateTime.twentyFour) {
+          await createTaskForDate(dateTime.startDate, dateTime.startTime, null, null, job, job.setup, 'Place');
+          await createTaskForDate(null, null, dateTime.endDate, dateTime.endTime, job, job.setup, 'Knockdown');
+        } else {
+          // Non-twentyFour task
+          await createTaskForDate(dateTime.startDate, dateTime.startTime, null, null, job, job.setup, 'Place');
+          await createTaskForDate(null, null, dateTime.startDate, dateTime.endTime, job, job.setup, 'Knockdown');
+        }
+      })
     );
-    
-    //NPAT task
-    if(NPAT){
-      let npatStartDate = new Date(earliestStartDate);
-      npatStartDate.setUTCDate(npatStartDate.getDate() - 1)
-      npatStartDate.setUTCHours(18)
-      await createTaskForDate(npatStartDate, null, null, null, job, location, "NPAT")
+  
+    // NPAT task
+    if (npatCheck) {
+      // Using just the date part for earliestStartDate
+      let npatStartDate = earliestStartDate.startOf('day').minus({ days: 1 }).set({ hour: 12 });
+      console.log(npatStartDate);
+      await createTaskForDate(npatStartDate.toISO(), null, null, null, job, job.setup, "NPAT");
     }
     
     await updateJob(job.id, 
