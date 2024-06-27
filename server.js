@@ -125,6 +125,26 @@ app.get('/api/jobs', async (req, res) => {
   }
 });
 
+app.get('/api/statustypes', async (req, res) => {
+  try {
+    const posts = await prisma.statustypes.findMany();
+    res.json(posts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.get('/api/tasktypes', async (req, res) => {
+  try {
+    const posts = await prisma.tasktypes.findMany();
+    res.json(posts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 app.delete('/api/deleteTasksByJobId/:id', async (req, res) => {
   try {
     const jobId = parseInt(req.params.id) //id of task we are changing

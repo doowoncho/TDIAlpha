@@ -26,8 +26,8 @@ model jobs {
   permit_cost   Float?
   jobNotes      String?
   paid          Boolean?
-  tasks         tasks[]
   color         String?   @db.VarChar(255)
+  tasks         tasks[]
 }
 
 model tasks {
@@ -117,4 +117,14 @@ model todo {
   id        Int      @id @default(autoincrement())
   text      String?  @db.VarChar(255)
   completed Boolean?
+}
+
+model statustypes {
+  id   Int     @id @default(autoincrement())
+  name String?
+}
+
+model tasktypes {
+  id   Int     @id @default(autoincrement())
+  name String?
 }

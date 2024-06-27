@@ -13,6 +13,26 @@ export async function getAlltasks() {
     }
   }
 
+export async function getAllStatusTypes() {
+    try {
+      const response = await fetch(`${server}/api/statustypes`);
+      const data = await response.json();
+      return(data)
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+}
+
+export async function getAllTaskTypes() {
+    try {
+      const response = await fetch(`${server}/api/tasktypes`);
+      const data = await response.json();
+      return(data)
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+}
+
   // Gets a list of all the jobs
 export async function getAllJobs() {
     try {

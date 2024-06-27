@@ -1,13 +1,17 @@
-import { Input, Switch, ToggleButton } from '@mui/material';
-import { deleteJob, deletetask, getAllUsers, getUserById } from '../Components/APICalls';
+import { getAllStatusTypes, getAllTaskTypes, getAllUsers, getUserById } from '../Components/APICalls';
 import PopUp from '../Components/PopUp';
-import { CheckBox } from '@mui/icons-material';
 
-const { GridActionsCellItem, GridDeleteIcon, GridDeleteForeverIcon, getGridNumericOperators, getGridDateOperators } = require('@mui/x-data-grid');
+const { getGridDateOperators } = require('@mui/x-data-grid');
 const moment = require('moment-timezone');
-const statusChoices = ['Approved', 'New', 'Completed', 'Invoiced', 'Declined', 'Submitted', 'Waiting', 'Work Off Existing Closure']
+
+const statuses = await getAllStatusTypes()
+const statusChoices = statuses.map(status => status.name);
+
 const colorChoices = [' ','Green', 'Orange', 'Blue']
-const taskChoices = ['NPAT', 'SameDay', 'Place', 'Pickup', 'Knockdown', 'Finished', 'Cancelled', 'Cancelled OS']
+
+const tasks = await getAllTaskTypes()
+const taskChoices = tasks.map(tasks => tasks.name);
+
 const minWidthStartTime = 180;
 const minWidthEndTime = 180;
 const minWidthStatus = 120;
@@ -25,6 +29,8 @@ const minWidthType = 100;
 let users = await getAllUsers();
 let user = await getUserById(window.sessionStorage.getItem("user"))
 const isEditable = user.permission == 1
+
+console.log(statusChoices)
 
 export const InvoicePageColumns = [
   { field: 'id', headerName: 'ID', flex: 1,
