@@ -22,7 +22,8 @@ function FormPage() {
       const data = await getAllContacts();
       const formattedOptions = data.map(contact => ({
         label: contact.name,
-        data: contact // Store all contact data in 'data' property
+        data: contact, // Store all contact data in 'data' property
+        value: contact.name // has to have a value for the component to work
       }));
       setContacts(formattedOptions);
     }
