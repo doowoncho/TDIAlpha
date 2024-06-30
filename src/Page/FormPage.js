@@ -140,7 +140,7 @@ function FormPage() {
     );
   
     // NPAT task
-    if (npatCheck) {
+    if (NPAT) {
       // Using just the date part for earliestStartDate
       let npatStartDate = earliestStartDate.startOf('day').minus({ days: 1 }).set({ hour: 12 });
       console.log(npatStartDate);
