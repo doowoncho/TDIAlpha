@@ -131,9 +131,6 @@ export default function JobsTable() {
             <TableCards header="All Jobs" num={counts.New + counts.Declined + counts.Submitted + counts.Approved} icon="bi bi-list" bg="#F2EFEA" />
           </button>
       </div>
-      <div className="container">
-        <div className="d-flex justify-content-center flex-wrap">  
-        </div>
         <div>
           <h2 className="text-center">{tableType}</h2>
           <Table data={jobList}
@@ -146,7 +143,6 @@ export default function JobsTable() {
             setSelectedRowId={setSelectedRowId}
           />
         </div>
-      </div>
     </div>
   );
 }

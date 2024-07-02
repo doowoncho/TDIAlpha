@@ -111,7 +111,7 @@ export default function Table({ data, columns, handleUpdate, defaultSorting, han
   }
 
   return (
-    <div className='container my-3' style={{ position: 'relative' }}>
+    <div className='container-fluid my-3' style={{ position: 'relative' }}>
       {rowSelectionModel.length > 0 && 
         <DeletePopUp
           style={{ position: 'absolute', top: '-40px', right: '10px' }} 
@@ -125,7 +125,7 @@ export default function Table({ data, columns, handleUpdate, defaultSorting, han
           }}
         />
       }
-      <Box sx={{ height: '650px', width: '100%' }}>
+      <Box sx={{width: '100%' }}>
         <DataGrid
           slots={{ toolbar: GridToolbar }}
           rows={data}
