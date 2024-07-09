@@ -50,14 +50,13 @@ export default function CompletedPage() {
 
   return (
       <div>
-      <header className='container text-center my-4'>
-        <h1>To Be Invoiced</h1>
+        <br></br>
+        <h2 className="text-center">Invoice Page</h2>
         <Table
             data={jobList}
             columns={CompletedPageColumns}
             handleUpdate={handleJobUpdate} handleDelete={handleJobDelete} 
           />
-      </header>
     </div>
   );
 }

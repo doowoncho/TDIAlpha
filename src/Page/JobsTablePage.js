@@ -62,7 +62,7 @@ export default function JobsTable() {
       } else {
         filteredData = tableType !== "All"
           ? data.filter((job) => job.status === tableType)
-          : data.filter((job) => job.status !== "Invoice" && job.status !== 'Completed');
+          : data.filter((job) => job.status !== "Invoiced" && job.status !== 'Completed');
       }
 
       setjobList(filteredData);

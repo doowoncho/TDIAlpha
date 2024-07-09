@@ -124,17 +124,17 @@ function FormPage() {
         if (dateTime.repeat) {
           if (dateTime.exWeekend) {
             // Creating tasks for the in-between
-            await createTasksForExWeekend(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.endTime, job, job.setup);
+            await createTasksForExWeekend(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.endTime, job, location);
           } else {
-            await createTasksForRepeat(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.endTime, job, job.setup);
+            await createTasksForRepeat(dateTime.startDate, dateTime.startTime, dateTime.endDate, dateTime.endTime, job, location);
           }
         } else if (dateTime.twentyFour) {
-          await createTaskForDate(dateTime.startDate, dateTime.startTime, null, null, job, job.setup, 'Place');
-          await createTaskForDate(null, null, dateTime.endDate, dateTime.endTime, job, job.setup, 'Knockdown');
+          await createTaskForDate(dateTime.startDate, dateTime.startTime, null, null, job, location, 'Place');
+          await createTaskForDate(null, null, dateTime.endDate, dateTime.endTime, job, location, 'Knockdown');
         } else {
           // Non-twentyFour task
-          await createTaskForDate(dateTime.startDate, dateTime.startTime, null, null, job, job.setup, 'Place');
-          await createTaskForDate(null, null, dateTime.startDate, dateTime.endTime, job, job.setup, 'Knockdown');
+          await createTaskForDate(dateTime.startDate, dateTime.startTime, null, null, job, location, 'Place');
+          await createTaskForDate(null, null, dateTime.startDate, dateTime.endTime, job, location, 'Knockdown');
         }
       })
     );
@@ -144,7 +144,7 @@ function FormPage() {
       // Using just the date part for earliestStartDate
       let npatStartDate = earliestStartDate.startOf('day').minus({ days: 1 }).set({ hour: 12 });
       console.log(npatStartDate);
-      await createTaskForDate(npatStartDate.toISO(), null, null, null, job, job.setup, "NPAT");
+      await createTaskForDate(npatStartDate.toISO(), null, null, null, job, location, "NPAT");
     }
     
     await updateJob(job.id, 

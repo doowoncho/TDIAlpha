@@ -47,14 +47,13 @@ export default function InvoicePage() {
 
   return (
       <div>
-      <header className='container text-center my-4'>
-        <h1>Invoice Page</h1>
+        <br></br>
+        <h2 className="text-center">Invoice Page</h2>
         <Table
             data={jobList}
             columns={InvoicePageColumns}
             handleUpdate={handleJobUpdate} handleDelete={handleJobDelete} 
           />
-      </header>
     </div>
   );
 }

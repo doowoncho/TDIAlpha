@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import { useParams } from 'react-router-dom';
-import { getFilesById, getUserById, gettaskById, updatetask } from '../Components/APICalls';
+import { getFilesById, getUserById, gettaskById, updatetask, getAllStatusTypes } from '../Components/APICalls';
 import '../Styles/TaskDetails.css';
 import FileUpload from '../Components/FileUpload';
 import SwipeableEdgeDrawer from '../Components/Drawer';
@@ -9,6 +9,9 @@ import { Card, Box, Divider, Typography, Stack, Paper, Chip, LinearProgress} fro
 import Button from 'react-bootstrap/Button';
 
 let user = await getUserById(window.sessionStorage.getItem("user"))
+
+const statuses = await getAllStatusTypes()
+const statusChoices = statuses.map(status => status.name);
 
 export default function Orders() {
   const { id } = useParams();
