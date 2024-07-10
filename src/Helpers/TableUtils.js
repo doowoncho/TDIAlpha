@@ -30,8 +30,6 @@ let users = await getAllUsers();
 let user = await getUserById(window.sessionStorage.getItem("user"))
 const isEditable = user.permission == 1
 
-console.log(statusChoices)
-
 export const InvoicePageColumns = [
   { field: 'id', headerName: 'ID', flex: 1,
     renderCell: (params) => {

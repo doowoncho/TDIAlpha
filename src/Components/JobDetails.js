@@ -3,7 +3,7 @@ import { Box, Button, Card, Chip, CircularProgress, Dialog, DialogContent, Dialo
 import moment from "moment";
 import { useState } from "react";
 import DateInput2 from "./DateInput2.0";
-import { deleteTasksByJobId, getTasksByJobId, updateJob } from "./APICalls";
+import { deleteTasksByJobId, getAllStatusTypes, getTasksByJobId, updateJob } from "./APICalls";
 import { DateTime } from "luxon";
 import { createTaskForDate, createTasksForExWeekend, createTasksForRepeat } from "../Helpers/DateUtils";
 
@@ -147,7 +147,21 @@ export default function JobDetails({job, handleInputChange, isEditing, user, han
       const handleClose = () => {
         setOpen(false);
       };
-      
+
+      const populateOptions = async () => {
+        try {
+        let optionList = document.getElementById('options');
+          const statusOptions = await getAllStatusTypes();;
+          statusOptions.forEach(option => {
+            optionList.add(new Option(option.name));
+          });
+        } catch (error) {
+          console.error('Error fetching status types:', error);
+        }
+      };
+    
+      populateOptions();
+
     return (
         <div>
         {job && <div className="container text-center justify-content-center mt-4 d-flex">
@@ -184,14 +198,14 @@ export default function JobDetails({job, handleInputChange, isEditing, user, han
                         <div className="input-group-prepend">
                             <span className="input-group-text" id="">Status</span>
                         </div>
-                        <select value={job?.status} onChange={(e) => handleInputChange(e, 'status')}>
-                            <option value="New">New</option>
+                        <select value={job?.status} onChange={(e) => handleInputChange(e, 'status')} id="options">
+                            {/* <option value="New">New</option>
                             <option value="Completed">Completed</option>
                             <option value="Invoice">Invoice</option>
                             <option value="Approved">Approved</option>
                             <option value="Declined">Declined</option>
                             <option value="Submitted">Submitted</option>
-                            <option value="Waiting">Waiting</option>
+                            <option value="Waiting">Waiting</option> */}
                         </select>
                         </div>
                         <div className="input-group d-sm-flex">

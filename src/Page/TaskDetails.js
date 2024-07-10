@@ -10,9 +10,6 @@ import Button from 'react-bootstrap/Button';
 
 let user = await getUserById(window.sessionStorage.getItem("user"))
 
-const statuses = await getAllStatusTypes()
-const statusChoices = statuses.map(status => status.name);
-
 export default function Orders() {
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
@@ -115,7 +112,7 @@ export default function Orders() {
   function isValidType(type) {
     return ["Finished", "Cancelled", "Cancelled OS"].includes(type);
   }
-
+  
   return (
     <div>
     <div className='container mt-3'>
