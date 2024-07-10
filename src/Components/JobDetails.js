@@ -1,11 +1,12 @@
 import { DateRange } from "@mui/icons-material";
-import { Box, Button, Card, Chip, CircularProgress, Dialog, DialogContent, DialogTitle, Divider, LinearProgress, List, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, Card, Chip, CircularProgress, Dialog, DialogContent, DialogTitle, Divider, LinearProgress, List, Select, Stack, TextField, Typography } from "@mui/material";
 import moment from "moment";
 import { useState } from "react";
 import DateInput2 from "./DateInput2.0";
 import { deleteTasksByJobId, getAllStatusTypes, getTasksByJobId, updateJob } from "./APICalls";
 import { DateTime } from "luxon";
 import { createTaskForDate, createTasksForExWeekend, createTasksForRepeat } from "../Helpers/DateUtils";
+import ReactSelect from "react-select";
 
 function DateEditBox(props) {
     const [dates, setDates] = useState([{ startDate: '', startTime: '', endDate: '', endTime: '', exWeekend: false, twentyFour: false, repeat: false }]);
@@ -140,6 +141,7 @@ function DateEditBox(props) {
 
 export default function JobDetails({job, handleInputChange, isEditing, user, handleCancelClick, saveChanges, handleEditClick}) {
     const [open, setOpen] = useState(false);
+    const [options, setOptions] = useState([]);
     const handleClickOpen = () => {
         setOpen(true);
       };
@@ -149,18 +151,19 @@ export default function JobDetails({job, handleInputChange, isEditing, user, han
       };
 
       const populateOptions = async () => {
-        try {
-        let optionList = document.getElementById('options');
-          const statusOptions = await getAllStatusTypes();;
-          statusOptions.forEach(option => {
-            optionList.add(new Option(option.name));
-          });
+          try {
+            const statusOptions = await getAllStatusTypes();
+            setOptions(statusOptions.map(status => ({
+              value: status.name,
+              label: status.name
+            })))
+
         } catch (error) {
           console.error('Error fetching status types:', error);
         }
       };
     
-      populateOptions();
+          populateOptions();
 
     return (
         <div>
@@ -198,15 +201,11 @@ export default function JobDetails({job, handleInputChange, isEditing, user, han
                         <div className="input-group-prepend">
                             <span className="input-group-text" id="">Status</span>
                         </div>
-                        <select value={job?.status} onChange={(e) => handleInputChange(e, 'status')} id="options">
-                            {/* <option value="New">New</option>
-                            <option value="Completed">Completed</option>
-                            <option value="Invoice">Invoice</option>
-                            <option value="Approved">Approved</option>
-                            <option value="Declined">Declined</option>
-                            <option value="Submitted">Submitted</option>
-                            <option value="Waiting">Waiting</option> */}
-                        </select>
+                        <ReactSelect
+                            value={{ label: job?.status, value: job?.status }}
+                            options={options}
+                            onChange={(selectedOption) => handleInputChange({ target: { value: selectedOption?.value } }, 'status')}
+                        />
                         </div>
                         <div className="input-group d-sm-flex">
                         <div className="input-group-prepend">
