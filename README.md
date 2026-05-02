@@ -1,70 +1,84 @@
-# Getting Started with Create React App
+# TDIAlpha
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+TDIAlpha is a full-stack job management platform built for a Calgary-based traffic control company to streamline job scheduling, assignment, and tracking for field workers.
 
-## Available Scripts
+The system replaces manual coordination with a centralized web application, improving operational visibility and reducing administrative overhead.
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## Key Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+* Create, edit, and manage job requests
+* Assign jobs to workers with role-based access control
+* Track job status throughout its lifecycle
+* Secure authentication using JWT
+* Interface designed for both office staff and field workers
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## System Overview
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The application was designed and developed end-to-end, from requirements gathering to deployment.
 
-### `npm run build`
+### Backend
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+* Node.js and Express REST API
+* JWT-based authentication
+* Role-based access control (admin and staff roles)
+* PostgreSQL database hosted on Railway
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Frontend
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+* React-based user interface
+* Components for job creation, editing, and tracking
+* Workflow designed for efficient dispatch and updates
 
-### `npm run eject`
+### Infrastructure
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+* Deployed on AWS EC2
+* Environment configured for production use
+* Git-based version control and collaboration
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Tech Stack
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Frontend: React, JavaScript, HTML, CSS
+Backend: Node.js, Express
+Database: PostgreSQL
+Infrastructure: AWS EC2, Railway
+Authentication: JWT
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Impact
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+* Replaced manual job coordination with a centralized system
+* Improved clarity of job assignments for field workers
+* Reduced administrative overhead for dispatching and tracking work
+* Delivered a production-ready solution for a real client
 
-### Code Splitting
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Challenges and Learnings
 
-### Analyzing the Bundle Size
+* Designing workflows for both technical and non-technical users
+* Implementing secure role-based access across all endpoints
+* Managing deployment and environment configuration on AWS
+* Translating real-world business needs into a scalable system
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
+## Future Improvements
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+* Mobile-optimized interface for field workers
+* Real-time updates using WebSockets
+* Scheduling and route optimization
+* Reporting and analytics dashboard
 
-### Advanced Configuration
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Author
 
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Doowon Cho
+Calgary, Canada
